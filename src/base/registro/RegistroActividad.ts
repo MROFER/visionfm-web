@@ -12,7 +12,8 @@ export const RegistroActividad: CollectionConfig = {
     group: 'Sistema',
     useAsTitle: 'resumen',
     defaultColumns: ['fecha', 'quien', 'accion', 'resumen'],
-    description: 'Todo cambio del panel: quién, qué, antes y después, cuándo y desde dónde. Nadie lo puede editar ni borrar.',
+    description:
+      'Todo cambio del panel: quién, qué, antes y después, cuándo y desde dónde. Nadie lo puede editar ni borrar.',
   },
   defaultSort: '-fecha',
   access: {
@@ -23,7 +24,13 @@ export const RegistroActividad: CollectionConfig = {
     delete: () => false,
   },
   fields: [
-    { name: 'fecha', type: 'date', required: true, index: true, admin: { date: { pickerAppearance: 'dayAndTime' } } },
+    {
+      name: 'fecha',
+      type: 'date',
+      required: true,
+      index: true,
+      admin: { date: { pickerAppearance: 'dayAndTime' } },
+    },
     { name: 'quien', label: 'Quién', type: 'relationship', relationTo: 'usuarios', index: true },
     {
       name: 'accion',

@@ -12,7 +12,14 @@ import { diferencias, dispositivoDe, ipDe } from './diferencias'
 import { SLUG_REGISTRO } from './RegistroActividad'
 
 /** Campos del usuario cuyo cambio se registra como "cambió permisos". */
-const CAMPOS_DE_PERMISOS = new Set(['rol', 'ajusteNoticiasPublicar', 'motivoAjuste', 'seccionesPermitidas', 'activo', 'esOwner'])
+const CAMPOS_DE_PERMISOS = new Set([
+  'rol',
+  'ajusteNoticiasPublicar',
+  'motivoAjuste',
+  'seccionesPermitidas',
+  'activo',
+  'esOwner',
+])
 
 type Entrada = {
   accion: 'crear' | 'editar' | 'borrar' | 'cambiar-permisos' | 'ingresar' | 'salir'
@@ -31,7 +38,9 @@ async function registrar(req: PayloadRequest, entrada: Entrada) {
       fecha: new Date().toISOString(),
       quien: (quien ?? req.user?.id ?? null) as number | null,
       accion,
-      resumen: [coleccion, titulo ? `"${String(titulo).slice(0, 120)}"` : documentoId].filter(Boolean).join(' · '),
+      resumen: [coleccion, titulo ? `"${String(titulo).slice(0, 120)}"` : documentoId]
+        .filter(Boolean)
+        .join(' · '),
       coleccion,
       documentoId: documentoId != null ? String(documentoId) : undefined,
       campos: cambios?.campos,
@@ -45,9 +54,16 @@ async function registrar(req: PayloadRequest, entrada: Entrada) {
   })
 }
 
-const tituloDe = (doc: Record<string, unknown>) => doc.titulo ?? doc.nombre ?? doc.email ?? doc.alt ?? doc.filename
+const tituloDe = (doc: Record<string, unknown>) =>
+  doc.titulo ?? doc.nombre ?? doc.email ?? doc.alt ?? doc.filename
 
-const alCambiar: CollectionAfterChangeHook = async ({ collection, doc, previousDoc, operation, req }) => {
+const alCambiar: CollectionAfterChangeHook = async ({
+  collection,
+  doc,
+  previousDoc,
+  operation,
+  req,
+}) => {
   const cambios = diferencias(operation === 'create' ? null : previousDoc, doc)
   // Guardados sin cambios reales (por ejemplo, un ingreso que actualiza la sesión) no se registran
   if (operation === 'update' && cambios.campos.length === 0) return doc
@@ -74,18 +90,29 @@ const alBorrar: CollectionAfterDeleteHook = async ({ collection, doc, req }) => 
 }
 
 const alIngresar: CollectionAfterLoginHook = async ({ collection, user, req }) => {
-  await registrar(req, { accion: 'ingresar', coleccion: collection.slug, documentoId: user.id, quien: user.id })
+  await registrar(req, {
+    accion: 'ingresar',
+    coleccion: collection.slug,
+    documentoId: user.id,
+    quien: user.id,
+  })
   return user
 }
 
 const alSalir: CollectionAfterLogoutHook = async ({ collection, req }) => {
-  if (req.user) await registrar(req, { accion: 'salir', coleccion: collection.slug, documentoId: req.user.id })
+  if (req.user)
+    await registrar(req, { accion: 'salir', coleccion: collection.slug, documentoId: req.user.id })
 }
 
 const alCambiarFicha: GlobalAfterChangeHook = async ({ global, doc, previousDoc, req }) => {
   const cambios = diferencias(previousDoc, doc)
   if (cambios.campos.length > 0) {
-    await registrar(req, { accion: 'editar', coleccion: global.slug, titulo: global.label ?? global.slug, cambios })
+    await registrar(req, {
+      accion: 'editar',
+      coleccion: global.slug,
+      titulo: global.label ?? global.slug,
+      cambios,
+    })
   }
   return doc
 }

@@ -276,7 +276,7 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 ## Fichas globales
 
 ### ajustes
-`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas). Acceso: área Sistema.
+`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas; no se publican), `avisoPropio` (`imagenWeb` 970×90, `imagenMovil` 320×100, `link`: el aviso de la radio que ocupa las ubicaciones sin anuncios). Acceso: área Sistema.
 
 ### portada
 `notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).

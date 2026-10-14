@@ -3,10 +3,25 @@
  * Etapa 1: los 8 roles de fábrica están fijos en este archivo. En la etapa 2 pasan a la colección `roles`.
  */
 
-export const AREAS = ['radio', 'noticias', 'cinevision', 'institucional', 'publicidad', 'sistema'] as const
+export const AREAS = [
+  'radio',
+  'noticias',
+  'cinevision',
+  'institucional',
+  'publicidad',
+  'sistema',
+] as const
 export type Area = (typeof AREAS)[number]
 
-export const ACCIONES = ['ver', 'crear', 'editarPropio', 'editarTodo', 'publicar', 'aprobar', 'borrar'] as const
+export const ACCIONES = [
+  'ver',
+  'crear',
+  'editarPropio',
+  'editarTodo',
+  'publicar',
+  'aprobar',
+  'borrar',
+] as const
 export type Accion = (typeof ACCIONES)[number]
 
 export type Permisos = Record<Area, readonly Accion[]>
@@ -36,7 +51,14 @@ export const NOMBRES_ROL: Record<Rol, string> = {
 
 const TODO: readonly Accion[] = ACCIONES
 const NADA: readonly Accion[] = []
-const GESTION: readonly Accion[] = ['ver', 'crear', 'editarPropio', 'editarTodo', 'publicar', 'aprobar']
+const GESTION: readonly Accion[] = [
+  'ver',
+  'crear',
+  'editarPropio',
+  'editarTodo',
+  'publicar',
+  'aprobar',
+]
 const PROPIO: readonly Accion[] = ['ver', 'crear', 'editarPropio']
 
 const todasLasAreas = (acciones: readonly Accion[]): Permisos =>

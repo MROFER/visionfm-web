@@ -30,7 +30,12 @@ export const Secciones: CollectionConfig = {
         beforeValidate: [({ value, data }) => slugify(String(value || data?.nombre || ''))],
       },
     },
-    { name: 'descripcion', label: 'Descripción', type: 'textarea', admin: { description: 'Para Google (meta description).' } },
+    {
+      name: 'descripcion',
+      label: 'Descripción',
+      type: 'textarea',
+      admin: { description: 'Para Google (meta description).' },
+    },
     { name: 'orden', type: 'number', required: true, defaultValue: 0 },
   ],
 }

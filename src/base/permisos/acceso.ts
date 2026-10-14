@@ -16,7 +16,10 @@ type OpcionesArea = {
  * Acceso de una colección según su área. Se valida en el servidor en cada pedido,
  * también cuando se llama a la API directo.
  */
-export function accesoPorArea(area: Area, { campoAutor, lecturaPublica = false }: OpcionesArea = {}) {
+export function accesoPorArea(
+  area: Area,
+  { campoAutor, lecturaPublica = false }: OpcionesArea = {},
+) {
   const read: Access = ({ req }) => lecturaPublica || tienePermiso(usuarioDe(req), area, 'ver')
 
   const create: Access = ({ req }) => tienePermiso(usuarioDe(req), area, 'crear')
@@ -41,4 +44,11 @@ export function accesoFichaPorArea(area: Area) {
     read: () => true,
     update: (({ req }) => tienePermiso(usuarioDe(req), area, 'editarTodo')) as Access,
   }
+}
+
+/** Lectura de colecciones con borradores: el público ve solo lo publicado; quien tiene "Ver" en el área ve todo. */
+export function lecturaPublicadoOArea(area: Area): Access {
+  return ({ req }) =>
+    tienePermiso(usuarioDe(req), area, 'ver') ||
+    ({ _status: { equals: 'published' } } satisfies Where)
 }

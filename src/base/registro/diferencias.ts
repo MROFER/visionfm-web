@@ -53,5 +53,7 @@ export function dispositivoDe(userAgent: string | null | undefined) {
 /** IP real del visitante: Cloudflare la manda en CF-Connecting-IP. */
 export function ipDe(headers: Headers | undefined) {
   if (!headers) return null
-  return headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null
+  return (
+    headers.get('cf-connecting-ip') ?? headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null
+  )
 }
