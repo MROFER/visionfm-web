@@ -14,6 +14,7 @@ cp .env.example .env          # completar PAYLOAD_SECRET con cualquier texto lar
 docker compose up -d db       # Postgres 16
 pnpm install
 pnpm migrate                  # crea las tablas
+pnpm seed                     # datos de ejemplo (opcional)
 pnpm dev                      # sitio en http://localhost:3000, panel en /admin
 ```
 
@@ -29,6 +30,7 @@ Para levantar todo como en producción: `docker compose up --build`.
 | `src/base` | lo reutilizable entre clientes; no puede importar de `src/sitio` (lo controla el lint) |
 | `src/sitio` | lo propio de la radio |
 | `src/migrations` | migraciones de Postgres versionadas |
+| `src/seed` | datos de ejemplo para `pnpm seed` |
 
 ## Comandos
 
@@ -36,6 +38,7 @@ Para levantar todo como en producción: `docker compose up --build`.
 |---|---|
 | `pnpm lint` · `pnpm typecheck` · `pnpm test` | lo mismo que corre el CI |
 | `pnpm migrate:create nombre` | nueva migración después de cambiar colecciones |
+| `pnpm seed` | carga datos de ejemplo; solo en local, staging y la demo, y no duplica si se corre de nuevo. No crea usuarios: la primera cuenta del panel queda como Owner |
 | `pnpm generate:types` | actualiza `src/payload-types.ts` |
 | `pnpm generate:importmap` | después de sumar componentes propios al panel |
 
