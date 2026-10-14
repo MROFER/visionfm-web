@@ -1,0 +1,13 @@
+/* Provisorio hasta la fase 2, cuando entran los tokens del diseño (design/LEEME.md) */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f3f2ef;
+  color: #13161d;
+}
+
+.en-construccion {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 64px 16px;
+}
