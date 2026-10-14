@@ -147,7 +147,7 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 1. Anuncios → "Crear nuevo". Sube la imagen de 970×90 y la de 320×100 (el panel valida las medidas) y el link.
 2. Marca en qué ubicaciones aparece (o "Todas", "Todo Radio", "Todo Noticias") y, para Sección y Nota, en qué secciones.
 3. Elige fechas de vigencia y peso en la rotación.
-4. El mismo anuncio rota en todas las ubicaciones elegidas, sin duplicarlo. Fuera de vigencia deja de rotar solo.
+4. El mismo anuncio rota en todas las ubicaciones elegidas, sin duplicarlo. Fuera de vigencia deja de rotar solo; 7 días antes, quien tiene Publicidad recibe un aviso por email y en el panel para gestionar la renovación.
 5. Ubicaciones muestra qué anuncios rotan hoy en cada espacio; si uno queda vacío, sale el aviso propio de la radio.
 
 ### P7 · Responder mensajes

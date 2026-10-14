@@ -1,6 +1,6 @@
 # Plan de implementación · Visión 96.5 FM
 
-Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 266–376 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0.
+Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 269–380 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas).
 
 **Antes de empezar:** instalar la app de Claude en GitHub para `MROFER/visionfm-web`, elegir proveedor de VPS y conseguir acceso al Cloudflare de la radio. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
 
@@ -21,7 +21,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Tres buckets de R2 (público, privado, auditoría con bloqueo de objetos) y copia de respaldos fuera de Cloudflare | se restaura la base y los medios desde la copia externa |
 | Panel de Coolify detrás de Access; SPF, DKIM y DMARC del email remitente | un email de prueba llega a Gmail sin ir a spam |
 
-## Fase 1 · Contenido y panel · 64–88 h
+## Fase 1 · Contenido y panel · 66–90 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -37,6 +37,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Borradores, versiones, vista previa y publicación programada | una nota programada se publica sola a la hora |
 | Hooks de revalidación y purga de Cloudflare | publicar refresca solo las URL afectadas |
 | Vista de grilla de funciones con "Copiar semana anterior" | Cinevisión carga una semana en minutos |
+| Aviso de vencimiento de anuncios 7 días antes (email y panel) | un anuncio que vence en 7 días genera el aviso |
 | Seed con datos de ejemplo realistas | `pnpm seed` deja staging navegable |
 | **Hito:** la radio prueba el panel en staging | |
 
@@ -84,7 +85,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Inventario de registros DNS (MX, SPF, DKIM, verificaciones) | ningún registro se pierde en el cambio |
 | Ensayo en staging y revisión con la radio | |
 
-## Fase 5 · Calidad y lanzamiento · 34–50 h
+## Fase 5 · Calidad y lanzamiento · 35–52 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -92,7 +93,8 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Presupuestos de rendimiento y Lighthouse CI | objetivos del PRD en las 12 páginas |
 | Auditoría de accesibilidad WCAG 2.1 AA | sin errores en axe; navegación con teclado completa |
 | Cabeceras de seguridad, firewall, revisión de permisos | |
-| Monitoreo de disponibilidad, errores y respaldos probados (restaurar uno) | |
+| Monitoreo de disponibilidad, errores y respaldos probados (restaurar uno), con destinatarios de alertas definidos por la radio | |
+| Cuentas a nombre de la radio, usuario de emergencia en su gestor de contraseñas y planilla de cuentas entregada | el usuario de emergencia entra al panel |
 | Capacitación: prensa, Cinevisión y editor (1 h cada uno) + guía corta en PDF | |
 | Producción: carga de contenido real, migración final, cambio de DNS | sitio en `visionfm.com.uy`, viejo apagado |
 | Alta en Search Console, Bing Webmaster Tools y Google News Publisher Center; revisión de "Problemas de seguridad" y pedido de eliminación de URL de spam | sitemaps enviados, sin avisos de seguridad |

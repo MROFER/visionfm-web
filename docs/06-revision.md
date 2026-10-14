@@ -63,6 +63,10 @@ Revisión punta a punta de la arquitectura y los documentos 01–05 para detecta
 | 🟠 | No estaba definido quién mantiene el sitio después ni con qué tiempos de respuesta. | Definir abono y tiempos de respuesta en la propuesta comercial (fuera de este repo). |
 | 🟠 | Durante la migración final, la redacción podría publicar en el WordPress viejo y perderse. | Congelamiento de publicación de 24 h el día del cambio; las notas de ese día se cargan en el panel nuevo. |
 | 🟢 | Publicar en Facebook automáticamente al publicar una nota. | Fuera de la versión 1; se evalúa después. |
+| 🟠 | No estaba definido a nombre de quién quedan las cuentas. Si el dominio o Cloudflare quedan a nombre de una persona y esa persona se va, la radio pierde el sitio. | Dominio, Cloudflare, VPS, GitHub, R2, email transaccional y respaldo externo a nombre de la radio, con la agencia como invitada. Se entrega una planilla de cuentas en el lanzamiento. |
+| 🟠 | Si el Owner pierde su email o su Google, nadie pasa Cloudflare Access y el panel queda sin dueño. | Usuario de emergencia con rol Administrador y sus claves en un gestor de contraseñas de la radio (Bitwarden u otro); se prueba una vez antes de lanzar. |
+| 🟠 | Las alertas de caída del sitio o del stream no tenían destinatario ni responsable fuera de horario. | Definir quién recibe cada alerta y quién responde de noche y fines de semana; va de la mano con el abono de mantenimiento. |
+| 🟢 | Un anuncio vencido deja de salir sin que nadie se entere, y se puede perder la renovación. | Aviso por email y en el panel a quien tiene Publicidad 7 días antes del vencimiento. |
 
 ## 7. Segunda revisión (2026-10-14)
 
@@ -92,7 +96,9 @@ Se releyeron los siete documentos juntos, después de sumar permisos, auditoría
 
 1. ¿Qué periodistas publican sin revisión desde el primer día? (por defecto, ninguno)
 2. ¿Quiénes son editores y reciben el aviso de notas para revisar?
-3. ¿Quién es dueño del dominio y la cuenta de Cloudflare?
+3. ¿A nombre de quién están hoy el dominio y la cuenta de Cloudflare? ¿Se pueden pasar a una cuenta de la radio?
 4. ¿El dominio tiene email propio (`@visionfm.com.uy`)?
 5. ¿Hay transmisiones especiales recurrentes que reemplacen la grilla?
 6. ¿Los anunciantes reciben hoy algún reporte?
+7. ¿La radio tiene un gestor de contraseñas? ¿Quién será el usuario de emergencia?
+8. ¿Quién recibe las alertas de caída del sitio y del stream, y quién responde de noche y los fines de semana?

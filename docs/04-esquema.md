@@ -227,7 +227,7 @@ Acceso: área Cinevisión. Vista de panel propia: grilla semanal con "Copiar sem
 
 Las métricas por ubicación y por día van en una tabla aparte (`anunciosMetricas`: anuncio, ubicación, fecha, impresiones, clics) para poder exportarlas a CSV. Si una ubicación no tiene anuncios vigentes, se muestra el aviso propio de la radio configurado en `ajustes`.
 
-Acceso: área Publicidad. El sitio pide los anuncios vigentes; rotan en el navegador.
+Acceso: área Publicidad. El sitio pide los anuncios vigentes; rotan en el navegador. Una tarea diaria avisa 7 días antes de que un anuncio venza.
 
 ## mensajes
 
