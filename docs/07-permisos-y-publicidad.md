@@ -50,7 +50,9 @@ Un rol es un conjunto de permisos con nombre. El panel trae estos de fábrica y 
 
 ### Permisos por usuario
 
-Cada usuario tiene **un rol** y, opcionalmente, **ajustes propios** que suman o quitan permisos sobre su rol. Dos usuarios con el mismo rol pueden tener permisos distintos. Ejemplos: un periodista de confianza con Noticias → Publicar activado; dos managers, uno con Publicidad y otro sin ella; un editor que no puede borrar. Todo sin crear roles nuevos. La ficha del usuario muestra con colores qué viene del rol y qué es ajuste propio.
+Cada usuario tiene **un rol** y, opcionalmente, **ajustes propios** que suman o quitan permisos sobre su rol. Dos usuarios con el mismo rol pueden tener permisos distintos. Ejemplos: un periodista de confianza con Noticias → Publicar activado; dos managers, uno con Publicidad y otro sin ella; un editor que no puede borrar. Todo sin crear roles nuevos.
+
+Para que los ajustes no se desordenen con el tiempo, cada ajuste propio exige un **motivo** y queda marcado en la ficha y en un listado de "Usuarios con ajustes". La práctica recomendada es usar roles y dejar los ajustes como excepción. La ficha del usuario muestra con colores qué viene del rol y qué es ajuste propio.
 
 ### Delegación
 
@@ -80,6 +82,8 @@ Se registran: crear, editar, enviar a revisión, aprobar, devolver, publicar, de
 - **Quién lo ve:** quien tenga Sistema → Ver. Nadie lo puede editar ni borrar desde el panel, ni el Owner.
 - **Volver atrás:** desde el historial de un contenido se puede restaurar una versión anterior; la restauración también queda registrada.
 - **Conservación:** 2 años; después se archiva en R2.
+- **Copia inmutable:** cada noche el registro del día se exporta a un bucket de R2 con bloqueo de objetos, donde no se puede modificar ni borrar durante el plazo de conservación, ni siquiera con acceso al servidor. Es lo que lo hace válido como auditoría.
+- **Privacidad:** el registro guarda IP y dispositivo del personal. La política de privacidad interna lo informa (Ley 18.331).
 
 ### Cómo se aplica
 
@@ -105,7 +109,7 @@ Dos pasos, en este orden:
 1. **Cloudflare Access** pide el email y manda un código de un solo uso (o entra con Google). Solo pasan los emails de usuarios activos: al crear o desactivar un usuario, el panel actualiza la lista de Access sola.
 2. **Login del panel** con email y contraseña. Tras 5 intentos fallidos la cuenta se bloquea 10 minutos.
 
-El primer paso cumple la función de verificación en dos pasos (2FA) sin que nadie instale una app.
+El primer paso cumple la función de verificación en dos pasos (2FA) sin que nadie instale una app. Para **Owner y administradores** se exige además ingresar con Google, con la verificación en dos pasos de Google activada, porque el código por email es más débil si alguien accede a la casilla.
 
 ### Sesiones y recuperación
 
