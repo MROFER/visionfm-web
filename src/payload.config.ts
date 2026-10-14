@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 
 import { Medios } from './base/collections/Medios'
 import { Usuarios } from './base/collections/Usuarios'
+import { Secciones } from './sitio/collections/Secciones'
 import { migrations } from './migrations'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -35,7 +36,7 @@ export default buildConfig({
     supportedLanguages: { es },
     fallbackLanguage: 'es',
   },
-  collections: [Usuarios, Medios],
+  collections: [Usuarios, Medios, Secciones],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
