@@ -1,0 +1,35 @@
+# Desarrollo local.
+#   Solo la base, para trabajar con `pnpm dev`:   docker compose up -d db
+#   Todo de cero, como en producción:            docker compose up --build
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: visionfm
+      POSTGRES_PASSWORD: visionfm
+      POSTGRES_DB: visionfm
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U visionfm']
+      interval: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      DATABASE_URL: postgres://visionfm:visionfm@db:5432/visionfm
+      PAYLOAD_SECRET: dev-secreto-local-no-usar-en-produccion
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
