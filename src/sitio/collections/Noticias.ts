@@ -14,8 +14,10 @@ import {
   lecturaPublicadoOArea,
   seccionesDe,
   soloPublicaQuienPuede,
+  anotarSiEsBorrador,
   type UsuarioConPermisos,
 } from '@/base/permisos'
+import { aplicarFlujoEditorial, avisarCambioDeEstado } from '../hooks/flujo-noticias'
 
 const usuarioDe = (req: { user?: unknown }) => req.user as UsuarioConPermisos | null
 
@@ -45,7 +47,7 @@ const soloEnSeccionesPermitidas: CollectionBeforeChangeHook = ({ data, req }) =>
   return data
 }
 
-// docs/04-esquema.md (noticias). El flujo editorial (enviar a revisión, aprobar, devolver, avisos) va aparte.
+// docs/04-esquema.md (noticias) y docs/03-flujos.md (P2, flujo editorial)
 export const Noticias: CollectionConfig = {
   slug: 'noticias',
   labels: { singular: 'Nota', plural: 'Noticias' },
@@ -62,7 +64,14 @@ export const Noticias: CollectionConfig = {
     update: editar,
   },
   hooks: {
-    beforeChange: [autorPorDefecto(), soloEnSeccionesPermitidas, soloPublicaQuienPuede('noticias')],
+    beforeOperation: [anotarSiEsBorrador],
+    beforeChange: [
+      autorPorDefecto(),
+      soloEnSeccionesPermitidas,
+      soloPublicaQuienPuede('noticias'),
+      aplicarFlujoEditorial,
+    ],
+    afterChange: [avisarCambioDeEstado],
   },
   indexes: [
     { fields: ['seccion', 'slug'], unique: true },

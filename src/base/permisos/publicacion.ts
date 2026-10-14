@@ -1,17 +1,40 @@
-import { Forbidden, type CollectionBeforeChangeHook } from 'payload'
+import {
+  Forbidden,
+  type CollectionBeforeChangeHook,
+  type CollectionBeforeOperationHook,
+} from 'payload'
 
 import type { Area } from './matriz'
 import { tienePermiso, type UsuarioConPermisos } from './permisos'
 
 /**
- * Sin "Publicar" en el área no se puede guardar como publicado, ni llamando a la API directo.
- * El flujo editorial completo (enviar a revisión, aprobar, devolver) se apoya en esta regla.
+ * Los hooks de cambio no saben si se guarda un borrador o se despublica (los dos llegan con
+ * `_status: draft`); la operación sí, así que lo anota en el contexto del pedido.
+ */
+export const anotarSiEsBorrador: CollectionBeforeOperationHook = ({ args }) => {
+  if (args?.req) args.req.context.guardandoBorrador = Boolean((args as { draft?: boolean }).draft)
+  return args
+}
+
+/**
+ * Sin "Publicar" en el área no se puede publicar ni despublicar, ni llamando a la API directo.
+ * Guardar un borrador sobre algo publicado sí se puede: la versión publicada sigue en el sitio.
+ * Requiere `anotarSiEsBorrador` en `beforeOperation`.
  */
 export function soloPublicaQuienPuede(area: Area): CollectionBeforeChangeHook {
-  return ({ data, req }) => {
-    if (!req.user || data?._status !== 'published') return data
-    if (!tienePermiso(req.user as unknown as UsuarioConPermisos, area, 'publicar'))
+  return ({ data, originalDoc, req }) => {
+    if (!req.user) return data
+    const publica = data?._status === 'published'
+    const despublica =
+      originalDoc?._status === 'published' &&
+      data?._status === 'draft' &&
+      !req.context.guardandoBorrador
+    if (
+      (publica || despublica) &&
+      !tienePermiso(req.user as unknown as UsuarioConPermisos, area, 'publicar')
+    ) {
       throw new Forbidden(req.t)
+    }
     return data
   }
 }
