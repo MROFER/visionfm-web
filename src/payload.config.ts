@@ -7,6 +7,8 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { almacenamientoR2 } from './base/almacenamiento'
+import { conRevalidacion } from './base/cache'
 import { Archivos } from './base/collections/Archivos'
 import { Medios } from './base/collections/Medios'
 import { Paginas } from './base/collections/Paginas'
@@ -24,6 +26,7 @@ import { Noticias } from './sitio/collections/Noticias'
 import { Peliculas } from './sitio/collections/Peliculas'
 import { Programas } from './sitio/collections/Programas'
 import { Secciones } from './sitio/collections/Secciones'
+import { mapaDeCache } from './sitio/cache/mapa'
 import { Ajustes } from './sitio/globals/Ajustes'
 import { Cinevision } from './sitio/globals/Cinevision'
 import { Institucional } from './sitio/globals/Institucional'
@@ -33,76 +36,82 @@ import { migrations } from './migrations'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default buildConfig(
-  conRegistroDeActividad({
-    admin: {
-      user: Usuarios.slug,
-      importMap: {
-        baseDir: path.resolve(dirname),
-      },
-      meta: {
-        titleSuffix: ' · Visión 96.5 FM',
-      },
-    },
-    // La API de Payload vive en /cms-api, detrás de Cloudflare Access igual que /admin.
-    // /api queda para las rutas públicas propias del sitio (docs/02-trd.md, sección 4).
-    routes: {
-      admin: '/admin',
-      api: '/cms-api',
-    },
-    graphQL: {
-      disable: true,
-    },
-    i18n: {
-      supportedLanguages: { es },
-      fallbackLanguage: 'es',
-    },
-    collections: [
-      Noticias,
-      Secciones,
-      Entrevistas,
-      Programas,
-      ExcepcionesGrilla,
-      Equipo,
-      Peliculas,
-      Funciones,
-      Anuncios,
-      AnunciosMetricas,
-      Mensajes,
-      Paginas,
-      Medios,
-      Archivos,
-      Usuarios,
-      Redirecciones,
-      RegistroActividad,
-    ],
-    globals: [Portada, Cinevision, Institucional, Ajustes],
-    editor: lexicalEditor(),
-    secret: process.env.PAYLOAD_SECRET || '',
-    typescript: {
-      outputFile: path.resolve(dirname, 'payload-types.ts'),
-    },
-    db: postgresAdapter({
-      pool: {
-        connectionString: process.env.DATABASE_URL || '',
-      },
-      // Nunca `push` fuera de desarrollo: producción aplica las migraciones versionadas al arrancar
-      push: false,
-      prodMigrations: migrations,
-    }),
-    // Sin SMTP configurado (desarrollo y tests), los emails se escriben en el log
-    email: process.env.SMTP_HOST
-      ? nodemailerAdapter({
-          defaultFromAddress: process.env.EMAIL_FROM || 'no-responder@visionfm.uy',
-          defaultFromName: 'Visión 96.5 FM',
-          transportOptions: {
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT || 587),
-            secure: Number(process.env.SMTP_PORT) === 465,
-            auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  conRegistroDeActividad(
+    conRevalidacion(
+      {
+        admin: {
+          user: Usuarios.slug,
+          importMap: {
+            baseDir: path.resolve(dirname),
           },
-        })
-      : undefined,
-    sharp,
-    telemetry: false,
-  }),
+          meta: {
+            titleSuffix: ' · Visión 96.5 FM',
+          },
+        },
+        // La API de Payload vive en /cms-api, detrás de Cloudflare Access igual que /admin.
+        // /api queda para las rutas públicas propias del sitio (docs/02-trd.md, sección 4).
+        routes: {
+          admin: '/admin',
+          api: '/cms-api',
+        },
+        graphQL: {
+          disable: true,
+        },
+        i18n: {
+          supportedLanguages: { es },
+          fallbackLanguage: 'es',
+        },
+        collections: [
+          Noticias,
+          Secciones,
+          Entrevistas,
+          Programas,
+          ExcepcionesGrilla,
+          Equipo,
+          Peliculas,
+          Funciones,
+          Anuncios,
+          AnunciosMetricas,
+          Mensajes,
+          Paginas,
+          Medios,
+          Archivos,
+          Usuarios,
+          Redirecciones,
+          RegistroActividad,
+        ],
+        globals: [Portada, Cinevision, Institucional, Ajustes],
+        editor: lexicalEditor(),
+        secret: process.env.PAYLOAD_SECRET || '',
+        typescript: {
+          outputFile: path.resolve(dirname, 'payload-types.ts'),
+        },
+        db: postgresAdapter({
+          pool: {
+            connectionString: process.env.DATABASE_URL || '',
+          },
+          // Nunca `push` fuera de desarrollo: producción aplica las migraciones versionadas al arrancar
+          push: false,
+          prodMigrations: migrations,
+        }),
+        // Sin SMTP configurado (desarrollo y tests), los emails se escriben en el log
+        email: process.env.SMTP_HOST
+          ? nodemailerAdapter({
+              defaultFromAddress: process.env.EMAIL_FROM || 'no-responder@visionfm.uy',
+              defaultFromName: 'Visión 96.5 FM',
+              transportOptions: {
+                host: process.env.SMTP_HOST,
+                port: Number(process.env.SMTP_PORT || 587),
+                secure: Number(process.env.SMTP_PORT) === 465,
+                auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+              },
+            })
+          : undefined,
+        plugins: almacenamientoR2(),
+        sharp,
+        telemetry: false,
+      },
+      mapaDeCache,
+    ),
+  ),
 )

@@ -226,6 +226,8 @@ export interface Medio {
   id: number;
   alt: string;
   credito?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -449,6 +451,8 @@ export interface Archivo {
    * Adjuntos de formularios: no se publican.
    */
   privado?: boolean | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1224,6 +1228,8 @@ export interface PaginasSelect<T extends boolean = true> {
 export interface MediosSelect<T extends boolean = true> {
   alt?: T;
   credito?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1297,6 +1303,8 @@ export interface MediosSelect<T extends boolean = true> {
 export interface ArchivosSelect<T extends boolean = true> {
   descripcion?: T;
   privado?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
