@@ -2,7 +2,7 @@
 
 Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dominio provisorio, para presentarle a la radio un producto que funciona; la fase 6 traspasa todo a la radio si firma el contrato. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 283–402 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas). Las respuestas de la radio sumaron el reporte mensual a anunciantes (3–5 h) y la fase 6 de traspaso.
 
-**Antes de empezar:** pasar los DNS de `labs-fraybentos.uy` a Cloudflare (plan gratis). Las fases 0 a 4 corren en local, sin servidor.
+**Antes de empezar:** pasar los DNS de `fraybentos.uy` a Cloudflare (plan gratis). Las fases 0 a 4 corren en local, sin servidor.
 
 **Demo sin costo:** se aloja en Oracle Cloud Always Free (servidor ARM gratis, con Docker y Coolify igual que producción). Respaldo para el día de la presentación: una computadora de la agencia con Cloudflare Tunnel. El VPS pago llega recién en la fase 6, a cargo de la radio.
 
@@ -17,7 +17,7 @@ Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dom
 | Docker Compose para desarrollo y Dockerfile de producción | `docker compose up` levanta todo de cero |
 | Copiar el diseño a `design/` y los documentos a `docs/` | están en el repo |
 | GitHub Actions: lint, tipos, tests, build | CI verde en el primer PR |
-| VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `visionfm-staging.labs-fraybentos.uy` responde detrás de Access |
+| VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `visionfm-labs-staging.fraybentos.uy` responde detrás de Access |
 | Cloudflare: DNS de staging, R2, Access, reglas de WAF | panel pide código antes del login |
 | API de Payload en `/cms-api` detrás de Access, GraphQL apagado y validación del JWT de Access en el servidor | `curl` a `/cms-api/usuarios/login` sin Access devuelve 403 |
 | Tres buckets de R2 (público, privado, auditoría con bloqueo de objetos) y copia de respaldos fuera de Cloudflare | se restaura la base y los medios desde la copia externa |
@@ -140,7 +140,7 @@ Reuniones, revisiones de diseño, ajustes de la radio y pruebas en dispositivos 
 | Necesitamos | De quién | Para la fase |
 |---|---|---|
 | App de Claude instalada en el repo | Maximiliano | 0 |
-| DNS de `labs-fraybentos.uy` en Cloudflare y cuenta de Oracle Cloud Always Free | agencia | 0 (Oracle recién en la fase 5) |
+| DNS de `fraybentos.uy` en Cloudflare y cuenta de Oracle Cloud Always Free | agencia | 0 (Oracle recién en la fase 5) |
 | Cuentas de la radio y acceso a su dominio | radio, al firmar | 6 |
 | URL HTTPS del stream | proveedor del stream | 3 |
 | Contenido real para la demo: lo que ya está publicado en el sitio y redes de la radio | agencia lo carga | 4–5 |
