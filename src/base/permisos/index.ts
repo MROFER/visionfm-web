@@ -1,3 +1,5 @@
 export * from './acceso'
 export * from './matriz'
 export * from './permisos'
+export * from './acceso-archivos'
+export * from './publicacion'

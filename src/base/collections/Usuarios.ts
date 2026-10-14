@@ -39,7 +39,8 @@ export const Usuarios: CollectionConfig = {
     // Cada uno se ve a sí mismo; gestionar o aprobar notas permite ver al resto del equipo
     read: ({ req }) => {
       if (!req.user) return false
-      if (gestionaUsuarios(req.user) || tienePermiso(yo(req.user), 'noticias', 'aprobar')) return true
+      if (gestionaUsuarios(req.user) || tienePermiso(yo(req.user), 'noticias', 'aprobar'))
+        return true
       return { id: { equals: req.user.id } }
     },
     create: ({ req }) => gestionaUsuarios(req.user),
@@ -68,7 +69,11 @@ export const Usuarios: CollectionConfig = {
       async ({ req, operation, data, originalDoc }) => {
         // El primer usuario del sistema es el Owner
         if (operation === 'create') {
-          const { totalDocs } = await req.payload.count({ collection: 'usuarios', req, overrideAccess: true })
+          const { totalDocs } = await req.payload.count({
+            collection: 'usuarios',
+            req,
+            overrideAccess: true,
+          })
           if (totalDocs === 0) return { ...data, rol: 'owner', esOwner: true, activo: true }
         }
 
@@ -76,7 +81,11 @@ export const Usuarios: CollectionConfig = {
         if (!actor) return data
 
         // El Owner es intocable para todos los demás (regla 4)
-        if (operation === 'update' && originalDoc?.esOwner && String(actor.id) !== String(originalDoc.id)) {
+        if (
+          operation === 'update' &&
+          originalDoc?.esOwner &&
+          String(actor.id) !== String(originalDoc.id)
+        ) {
           throw new APIError('Solo el Owner puede modificar su propio usuario.', 403)
         }
 
@@ -147,7 +156,10 @@ export const Usuarios: CollectionConfig = {
       name: 'motivoAjuste',
       label: 'Motivo del ajuste',
       type: 'text',
-      admin: { condition: (_, s) => Boolean(s?.ajusteNoticiasPublicar && s.ajusteNoticiasPublicar !== 'rol') },
+      admin: {
+        condition: (_, s) =>
+          Boolean(s?.ajusteNoticiasPublicar && s.ajusteNoticiasPublicar !== 'rol'),
+      },
     },
     {
       name: 'seccionesPermitidas',
@@ -159,11 +171,22 @@ export const Usuarios: CollectionConfig = {
       admin: { description: 'Vacío = todas las secciones.' },
     },
     {
+      name: 'equipo',
+      label: 'Firma como',
+      type: 'relationship',
+      relationTo: 'equipo',
+      access: { update: soloGestionSobreOtros },
+      admin: { description: 'Ficha pública del equipo con la que firma sus notas.' },
+    },
+    {
       name: 'activo',
       type: 'checkbox',
       defaultValue: true,
       access: { update: soloGestionSobreOtros },
-      admin: { position: 'sidebar', description: 'Desactivar impide entrar al panel. Los usuarios no se borran.' },
+      admin: {
+        position: 'sidebar',
+        description: 'Desactivar impide entrar al panel. Los usuarios no se borran.',
+      },
     },
     {
       name: 'esOwner',

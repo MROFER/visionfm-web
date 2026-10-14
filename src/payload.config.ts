@@ -6,10 +6,27 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { Archivos } from './base/collections/Archivos'
 import { Medios } from './base/collections/Medios'
+import { Paginas } from './base/collections/Paginas'
+import { Redirecciones } from './base/collections/Redirecciones'
 import { Usuarios } from './base/collections/Usuarios'
 import { conRegistroDeActividad, RegistroActividad } from './base/registro'
+import { Anuncios } from './sitio/collections/Anuncios'
+import { AnunciosMetricas } from './sitio/collections/AnunciosMetricas'
+import { Entrevistas } from './sitio/collections/Entrevistas'
+import { Equipo } from './sitio/collections/Equipo'
+import { ExcepcionesGrilla } from './sitio/collections/ExcepcionesGrilla'
+import { Funciones } from './sitio/collections/Funciones'
+import { Mensajes } from './sitio/collections/Mensajes'
+import { Noticias } from './sitio/collections/Noticias'
+import { Peliculas } from './sitio/collections/Peliculas'
+import { Programas } from './sitio/collections/Programas'
 import { Secciones } from './sitio/collections/Secciones'
+import { Ajustes } from './sitio/globals/Ajustes'
+import { Cinevision } from './sitio/globals/Cinevision'
+import { Institucional } from './sitio/globals/Institucional'
+import { Portada } from './sitio/globals/Portada'
 import { migrations } from './migrations'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -38,7 +55,26 @@ export default buildConfig(
       supportedLanguages: { es },
       fallbackLanguage: 'es',
     },
-    collections: [Usuarios, Medios, Secciones, RegistroActividad],
+    collections: [
+      Noticias,
+      Secciones,
+      Entrevistas,
+      Programas,
+      ExcepcionesGrilla,
+      Equipo,
+      Peliculas,
+      Funciones,
+      Anuncios,
+      AnunciosMetricas,
+      Mensajes,
+      Paginas,
+      Medios,
+      Archivos,
+      Usuarios,
+      Redirecciones,
+      RegistroActividad,
+    ],
+    globals: [Portada, Cinevision, Institucional, Ajustes],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || '',
     typescript: {
