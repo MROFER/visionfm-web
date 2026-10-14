@@ -9,6 +9,13 @@ import {
   tienePermiso,
   type UsuarioConPermisos,
 } from '../permisos'
+import {
+  exigirClaveSegura,
+  exigirClaveSeguraAlRecuperar,
+  mandarInvitacion,
+  prepararInvitacion,
+  reenviarInvitacion,
+} from '../usuarios/invitacion'
 
 const yo = (user: unknown) => user as UsuarioConPermisos | null
 
@@ -34,7 +41,10 @@ export const Usuarios: CollectionConfig = {
     maxLoginAttempts: 5,
     lockTime: 10 * 60 * 1000,
     tokenExpiration: 7 * 24 * 60 * 60,
+    // "Olvidé mi contraseña" vale 1 h; la invitación usa el mismo mecanismo con 48 h
+    forgotPassword: { expiration: 60 * 60 * 1000 },
   },
+  endpoints: [reenviarInvitacion],
   access: {
     // Cada uno se ve a sí mismo; gestionar o aprobar notas permite ver al resto del equipo
     read: ({ req }) => {
@@ -59,6 +69,9 @@ export const Usuarios: CollectionConfig = {
     delete: () => false,
   },
   hooks: {
+    beforeOperation: [exigirClaveSeguraAlRecuperar],
+    beforeValidate: [prepararInvitacion, exigirClaveSegura],
+    afterChange: [mandarInvitacion],
     beforeLogin: [
       ({ user }) => {
         if (user?.activo === false) throw new APIError('Este usuario está desactivado.', 403)
@@ -112,6 +125,14 @@ export const Usuarios: CollectionConfig = {
         const motivo = data.motivoAjuste ?? originalDoc?.motivoAjuste
         if (ajuste && ajuste !== 'rol' && !motivo) {
           throw new APIError('Indicá el motivo del ajuste de permisos.', 400)
+        }
+
+        // Desactivar cierra todas sus sesiones; cambiar la contraseña cierra las demás
+        if (operation === 'update' && data.activo === false && originalDoc?.activo !== false) {
+          data.sessions = []
+        } else if (operation === 'update' && data.password && String(actor.id) === String(originalDoc?.id)) {
+          const actual = (req.user as { _sid?: string })._sid
+          data.sessions = (originalDoc?.sessions ?? []).filter((s: { id: string }) => s.id === actual)
         }
 
         return data
@@ -186,6 +207,15 @@ export const Usuarios: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Desactivar impide entrar al panel. Los usuarios no se borran.',
+      },
+    },
+    {
+      name: 'reenviarInvitacion',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        condition: (_, __, { user }) => tienePermiso(yo(user), 'sistema', 'editarTodo'),
+        components: { Field: '@/base/admin/ReenviarInvitacion#ReenviarInvitacion' },
       },
     },
     {
