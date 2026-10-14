@@ -6,6 +6,10 @@ Diseño del gestor de permisos, del alta y el ingreso de usuarios, y de la carga
 
 ## 1. Gestor de permisos
 
+> **Se construye en dos etapas** (decidido el 2026-10-14).
+> **Etapa 1, para el lanzamiento:** los 8 roles de fábrica fijos en código, el permiso Noticias → Publicar por persona, secciones permitidas, alta por invitación, ingreso en dos pasos y el registro de actividad completo con copia inmutable.
+> **Etapa 2, al mes del lanzamiento:** roles editables desde la grilla, roles nuevos, ajustes propios con motivo, reglas de delegación y transferencia de titularidad. Se ajusta con lo que se vea en el uso real.
+
 ### Cómo se organiza
 
 Los permisos se dan por **área** y, dentro de cada área, por **acción**. Las áreas siguen las secciones del sitio, más dos áreas internas.
