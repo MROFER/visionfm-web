@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { es } from '@payloadcms/translations/languages/es'
 import path from 'path'
@@ -88,6 +89,19 @@ export default buildConfig(
       push: false,
       prodMigrations: migrations,
     }),
+    // Sin SMTP configurado (desarrollo y tests), los emails se escriben en el log
+    email: process.env.SMTP_HOST
+      ? nodemailerAdapter({
+          defaultFromAddress: process.env.EMAIL_FROM || 'no-responder@visionfm.uy',
+          defaultFromName: 'Visión 96.5 FM',
+          transportOptions: {
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT || 587),
+            secure: Number(process.env.SMTP_PORT) === 465,
+            auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+          },
+        })
+      : undefined,
     sharp,
     telemetry: false,
   }),
