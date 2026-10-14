@@ -43,6 +43,8 @@ jobs:
       - run: pnpm test
       - name: Migraciones de cero sobre una base vacía
         run: pnpm migrate
+      - name: Permisos por rol contra la base (tests de integración)
+        run: pnpm test:int
       - name: Las migraciones cubren todo el esquema
         run: |
           pnpm migrate:create --skip-empty

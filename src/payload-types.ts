@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     usuarios: Usuario;
     medios: Medio;
+    secciones: Seccione;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     usuarios: UsuariosSelect<false> | UsuariosSelect<true>;
     medios: MediosSelect<false> | MediosSelect<true>;
+    secciones: SeccionesSelect<false> | SeccionesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -124,6 +126,26 @@ export interface UsuarioAuthOperations {
 export interface Usuario {
   id: number;
   nombre: string;
+  /**
+   * Se pueden asignar: Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial. Owner solo por transferencia.
+   */
+  rol: 'owner' | 'administrador' | 'manager' | 'editor' | 'periodista' | 'colaborador' | 'cinevision' | 'comercial';
+  /**
+   * Ajuste propio sobre el rol. Exige un motivo.
+   */
+  ajusteNoticiasPublicar?: ('rol' | 'permitir' | 'quitar') | null;
+  motivoAjuste?: string | null;
+  /**
+   * Vacío = todas las secciones.
+   */
+  seccionesPermitidas?: (number | Seccione)[] | null;
+  /**
+   * Desactivar impide entrar al panel. Los usuarios no se borran.
+   */
+  activo?: boolean | null;
+  esOwner?: boolean | null;
+  recibeAvisosRevision?: boolean | null;
+  avisosEmail?: ('al-instante' | 'resumen-por-hora' | 'nunca') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -143,6 +165,25 @@ export interface Usuario {
     | null;
   password?: string | null;
   collection: 'usuarios';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "secciones".
+ */
+export interface Seccione {
+  id: number;
+  nombre: string;
+  /**
+   * Se completa solo a partir del nombre.
+   */
+  slug: string;
+  /**
+   * Para Google (meta description).
+   */
+  descripcion?: string | null;
+  orden: number;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -195,6 +236,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'medios';
         value: number | Medio;
+      } | null)
+    | ({
+        relationTo: 'secciones';
+        value: number | Seccione;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -244,6 +289,14 @@ export interface PayloadMigration {
  */
 export interface UsuariosSelect<T extends boolean = true> {
   nombre?: T;
+  rol?: T;
+  ajusteNoticiasPublicar?: T;
+  motivoAjuste?: T;
+  seccionesPermitidas?: T;
+  activo?: T;
+  esOwner?: T;
+  recibeAvisosRevision?: T;
+  avisosEmail?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -280,6 +333,18 @@ export interface MediosSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "secciones_select".
+ */
+export interface SeccionesSelect<T extends boolean = true> {
+  nombre?: T;
+  slug?: T;
+  descripcion?: T;
+  orden?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
