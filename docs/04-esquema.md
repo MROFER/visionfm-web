@@ -288,10 +288,28 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 
 ## Relaciones
 
+```mermaid
+erDiagram
+  ROLES ||--o{ USUARIOS : asigna
+  USUARIOS }o--o{ SECCIONES : "puede escribir en"
+  USUARIOS |o--o| EQUIPO : "firma como"
+  USUARIOS ||--o{ NOTICIAS : "escribe, aprueba, publica"
+  USUARIOS ||--o{ REGISTRO_ACTIVIDAD : genera
+  SECCIONES ||--o{ NOTICIAS : agrupa
+  MEDIOS ||--o{ NOTICIAS : foto
+  PROGRAMAS }o--o{ EQUIPO : "conducido por"
+  PROGRAMAS ||--o{ HORARIOS : "sale al aire"
+  PROGRAMAS ||--o{ EXCEPCIONES_GRILLA : "reemplazado por"
+  PROGRAMAS ||--o{ ENTREVISTAS : "emitida en"
+  ARCHIVOS ||--o{ ENTREVISTAS : audio
+  PELICULAS ||--o{ FUNCIONES : "se proyecta en"
+  MEDIOS ||--o{ PELICULAS : afiche
+  ANUNCIOS }o--o{ SECCIONES : "segmentado por"
+  ANUNCIOS ||--o{ ANUNCIOS_METRICAS : mide
+  MEDIOS ||--o{ ANUNCIOS : imagenes
+  ARCHIVOS |o--o{ MENSAJES : adjunto
 ```
-usuarios ──< noticias >── secciones
-   │            └── medios
-   └── equipo >──< programas ──< entrevistas ── archivos
-peliculas ──< funciones
-anuncios, mensajes, paginas, redirecciones: independientes
-```
+
+Fichas únicas: `portada` → `noticias` y `peliculas`; `cinevision` → `medios`; `institucional` → `archivos` (kit comercial). `paginas` y `redirecciones` no tienen relaciones.
+
+En PostgreSQL, Payload guarda cada colección en su tabla, las relaciones muchos a muchos en tablas `_rels`, los arrays (como `horarios`) en subtablas y las versiones en tablas `_v`.
