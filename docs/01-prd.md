@@ -42,8 +42,9 @@ Un sitio que trate por igual a las tres partes del medio (radio, redacción y Ci
 
 **Panel** (Payload, en español):
 - Usuarios con roles: admin, editor, periodista, Cinevisión.
-- Noticias con borradores, programación de publicación, vista previa y campos obligatorios.
-- Entrevistas con audio, programas y grilla, equipo, películas y funciones con "Copiar semana anterior", anuncios, mensajes de formularios, ajustes generales.
+- Noticias con flujo editorial: subir y publicar son pasos separados; el editor decide por periodista si publica directo o si sus notas pasan por revisión (aprobar, programar o devolver con comentario).
+- Borradores, programación de publicación, vista previa y campos obligatorios.
+- Entrevistas con audio, programas y grilla con excepciones (partidos, feriados), equipo, películas y funciones con "Copiar semana anterior", anuncios con impresiones y clics, mensajes de formularios, ajustes generales.
 - Imágenes convertidas a WebP/AVIF automáticamente.
 
 **Plataforma:**
@@ -69,6 +70,7 @@ Un sitio que trate por igual a las tres partes del medio (radio, redacción y Ci
 | Disponibilidad | Si el VPS se cae, las páginas cacheadas siguen saliendo desde Cloudflare |
 | Accesibilidad | WCAG 2.1 AA; el diseño ya trae `aria-*`, foco visible y teclado |
 | Seguridad | Sin plugins de terceros, panel detrás de Cloudflare Access, IP del servidor oculta |
+| Datos personales | Ley 18.331: consentimiento en formularios, política de privacidad, borrado automático de mensajes y CV |
 | Costo | Infraestructura de USD 8–17 por mes |
 
 ## 6. Cómo medimos el éxito
@@ -103,4 +105,5 @@ Grilla de programación real, películas y funciones, precios y promociones del 
 - Next.js + Payload CMS en un solo proyecto, PostgreSQL, Cloudflare R2 para archivos (elegido el 2026-10-14 frente a Astro).
 - VPS con Coolify detrás de Cloudflare.
 - URL bajo las cuatro secciones del menú; `/radio` redirige a `/radio/programacion`.
-- El periodista publica directo (a confirmar con la radio).
+- El permiso de publicar es por periodista y lo maneja el editor; por defecto, las notas pasan por revisión (2026-10-14).
+- Revisión completa de la arquitectura en `06-revision.md`.

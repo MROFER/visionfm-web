@@ -14,7 +14,7 @@ La arquitectura completa (diagrama, estructura del repo, rutas, reproductor, cac
 | Email | SMTP transaccional (Resend o similar) vía `@payloadcms/email-nodemailer` |
 | Antispam | Cloudflare Turnstile |
 | Infra | VPS 2 vCPU / 4 GB con Coolify; Cloudflare delante (DNS, WAF, caché, Access) |
-| CI | GitHub Actions: lint, tipos, tests, build, Lighthouse CI |
+| CI | GitHub Actions: lint, tipos, tests, build de la imagen Docker (publicada en GitHub Container Registry), Lighthouse CI. El VPS no compila: Coolify descarga la imagen |
 | Runtime | Node 22 LTS, pnpm |
 
 Las versiones exactas se fijan al crear el repo: Next será la última que Payload 3 soporte oficialmente.
@@ -44,6 +44,7 @@ Definidas en `.env.example` (sin valores) y cargadas en Coolify. Nunca en el rep
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` | emails del panel y de formularios |
 | `PREVIEW_SECRET` | vista previa de borradores |
 | `CRON_SECRET` | tareas programadas (publicación programada, limpieza, refresco de medianoche) |
+| `INDEXNOW_KEY` | aviso a Bing al publicar |
 
 La URL del stream no es variable de entorno: vive en la ficha `ajustes` para que la radio pueda cambiarla.
 
@@ -59,6 +60,8 @@ Payload expone su API REST en `/api/{coleccion}`; el sitio la consume del lado d
 | `/api/formularios/{tipo}` | POST | crea un mensaje (multipart con adjunto); valida Turnstile y límite por IP | sin caché |
 | `/api/preview` | GET | activa la vista previa de un borrador con `PREVIEW_SECRET` | sin caché |
 | `/api/revalidar` | POST | uso interno de los hooks | sin caché |
+| `/a/{id}` | GET | link de salida de un anuncio: suma un clic y redirige | sin caché |
+| `/api/anuncios/impresiones` | POST | suma impresiones en lote desde el navegador | sin caché |
 
 Respuestas de error en JSON: `{ "error": { "codigo": "VALIDACION", "mensaje": "…", "campos": { … } } }` con códigos `VALIDACION` (400), `NO_AUTORIZADO` (401/403), `NO_ENCONTRADO` (404), `DEMASIADOS_ENVIOS` (429), `INTERNO` (500).
 
@@ -67,14 +70,16 @@ Respuestas de error en JSON: `{ "error": { "codigo": "VALIDACION", "mensaje": "�
 - Páginas públicas: generación estática con revalidación por etiquetas (`revalidateTag`). Etiquetas: `noticias`, `seccion:{slug}`, `nota:{id}`, `entrevistas`, `programas`, `cartelera`, `pelicula:{id}`, `anuncios`, `ajustes`.
 - Cada hook `afterChange` / `afterDelete` revalida sus etiquetas y purga en Cloudflare las URL afectadas.
 - Cloudflare cachea HTML (`Cache-Control: s-maxage=31536000, stale-while-revalidate`) y archivos estáticos. `/admin`, `/api/preview` y POST no se cachean.
-- Tareas programadas (cola de Payload + cron de Coolify): publicar notas programadas cada minuto, refrescar la cartelera a medianoche, borrar funciones de más de 90 días cada semana.
+- Tareas programadas (cola de Payload + cron de Coolify): publicar notas programadas y aprobadas cada minuto, refrescar la cartelera a medianoche, borrar funciones de más de 90 días y mensajes vencidos cada semana.
+- "Al aire" se recalcula cada minuto en el navegador con `/api/grilla`, que incluye las excepciones de los próximos 7 días.
+- Al publicar una nota: revalidación, purga de Cloudflare e IndexNow.
 
 ## 6. Manejo de errores y observabilidad
 
 - `error.tsx` por sección y `not-found.tsx` global con el diseño del sitio; página 500 estática servida por Cloudflare si la app no responde.
 - Logs estructurados en JSON a stdout; Coolify los guarda 14 días.
 - Errores del servidor y del navegador a Sentry (plan gratis) o GlitchTip autoalojado.
-- Monitoreo externo de disponibilidad del sitio y del stream cada 5 min (Uptime Kuma en el VPS o UptimeRobot), con alerta por email.
+- Monitoreo externo de disponibilidad del sitio y del stream cada 5 min (avisa a la radio y a la agencia) (Uptime Kuma en el VPS o UptimeRobot), con alerta por email.
 - Analítica: Cloudflare Web Analytics; eventos de reproducción del vivo y entrevistas.
 
 ## 7. Convenciones de código
@@ -94,6 +99,9 @@ Resumen; el detalle está en la página de arquitectura.
 - Adjuntos de formularios privados en R2, descargables solo con URL firmada desde el panel; tipos y tamaños validados en servidor.
 - Cabeceras: CSP estricta, HSTS, `X-Frame-Options: DENY` fuera del panel.
 - Renovate para dependencias; CI bloquea el merge si fallan los tests.
+- Permisos editoriales validados en el servidor, no solo ocultando botones: un periodista sin permiso no puede publicar ni llamando a la API directo (test por rol).
+- Subidas: límite de 100 MB por petición en el plan gratis de Cloudflare; audios hasta 90 MB, imágenes hasta 15 MB, adjuntos hasta 10 MB.
+- Búsqueda en Postgres con `unaccent` y diccionario español.
 
 ## 9. Pendiente de confirmar
 

@@ -64,7 +64,7 @@ Elementos globales en todas las páginas: barra superior (fecha, "Al aire", tel�
 6. **Sin funciones esta semana:** "No hay funciones programadas. Mirá los próximos estrenos." con link.
 
 ### F6 · Enviar un formulario (contacto, sumarse, tarifas)
-1. El usuario completa los campos; la validación avisa campo por campo al salir de cada uno.
+1. El usuario completa los campos; la validación avisa campo por campo al salir de cada uno. Debe marcar la casilla de consentimiento con link a la política de privacidad.
 2. Adjunta un archivo (opcional): se valida tipo y tamaño (máximo 10 MB) antes de subir.
 3. Envía: Cloudflare Turnstile verifica en segundo plano que no sea un bot.
 4. Éxito: el formulario se reemplaza por "Recibimos tu mensaje. Te respondemos a la brevedad." El mensaje queda en el panel y llega por email al destinatario configurado.
@@ -81,14 +81,43 @@ Elementos globales en todas las páginas: barra superior (fecha, "Al aire", tel�
 3. Payload pide email y contraseña. Tras 5 intentos fallidos la cuenta se bloquea 10 minutos.
 4. Ve solo las secciones que su rol permite.
 
-### P2 · El periodista publica una nota
+### P2 · Subir y publicar una nota
+
+Subir y publicar son dos pasos distintos. Quién puede publicar sin revisión lo decide el editor, periodista por periodista, con el permiso **Publica sin revisión** (por defecto, apagado).
+
+```
+borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar──▶ publicada
+   ▲                               │  │
+   └──────────Devolver─────────────┘  └──Aprobar y programar──▶ aprobada ──(hora)──▶ publicada
+   │
+   └──Publicar ahora / Programar (solo con "Publica sin revisión")──▶ publicada
+```
+
+**P2a · Subir (cualquier periodista)**
 1. Noticias → "Crear nueva". Escribe título; el slug se genera solo.
 2. Completa bajada, cuerpo, sección y foto. La foto puede subirse desde la galería del celular; se convierte a WebP/AVIF sola. El texto alternativo es obligatorio.
 3. El borrador se guarda solo cada pocos segundos.
 4. "Vista previa" abre la nota tal como se verá en el sitio.
-5. Elige: **Publicar ahora**, **Programar** (fecha y hora de Montevideo) o **Guardar borrador**.
-6. Si falta un campo obligatorio, el panel marca el campo y no deja publicar.
-7. Al publicar, se refrescan la nota, Inicio, la sección, Noticias y el RSS, y se borran esas URL de la caché de Cloudflare. En menos de 10 s está en línea.
+5. Si falta un campo obligatorio, el panel lo marca y no deja enviar ni publicar.
+
+**P2b · Periodista sin permiso de publicar**
+1. Ve un solo botón: **Enviar a revisión**. Puede proponer fecha y hora de publicación.
+2. La nota pasa a "En revisión" y los editores con avisos activados reciben un email con el link.
+3. El editor abre "Para revisar" (lista filtrada en el panel), lee la vista previa y puede corregir.
+4. Elige:
+   - **Aprobar y publicar**: sale ahora.
+   - **Aprobar y programar**: sale a la hora elegida.
+   - **Devolver**: escribe el motivo; la nota vuelve a borrador y el autor recibe un email con el comentario.
+5. El periodista corrige y vuelve a enviar.
+
+**P2c · Periodista con permiso (y editores)**
+1. Ve **Publicar ahora**, **Programar** y **Guardar borrador**. También puede enviar a revisión si quiere una segunda mirada.
+
+**P2d · Corregir una nota ya publicada**
+- Con permiso: el cambio sale al guardar y la nota muestra "Actualizado {fecha}".
+- Sin permiso: el cambio queda como borrador pendiente. La versión publicada sigue en el sitio hasta que un editor apruebe la corrección.
+
+**Al publicar** (cualquier camino): se refrescan la nota, Inicio, la sección, Noticias y el RSS, se borran esas URL de la caché de Cloudflare y se avisa a Bing por IndexNow. En menos de 10 s está en línea. Quedan registrados quién aprobó y quién publicó.
 
 ### P3 · El editor arma la portada
 1. Ajustes → Portada. Elige la nota destacada y la película destacada.
@@ -119,6 +148,17 @@ Elementos globales en todas las páginas: barra superior (fecha, "Al aire", tel�
 1. Programas: edita días y horarios de un programa, o crea uno nuevo con sus conductores.
 2. Guarda: se refresca la grilla y el cálculo de "Al aire" usa los nuevos horarios en la siguiente carga de cada página.
 
+### P9 · Cargar una transmisión especial
+1. Excepciones de grilla → "Crear nueva": fecha, horario y el programa o el título (ej. "Fútbol: Laureles vs. Anglo").
+2. Ese día y en ese horario, "Al aire" y "A continuación" muestran la excepción en lugar del programa habitual.
+
+### P10 · Gestionar periodistas
+1. El editor abre Usuarios → un periodista.
+2. Activa o desactiva **Publica sin revisión**. El cambio aplica desde la siguiente nota.
+
+### P11 · Ver el rendimiento de un anuncio
+1. Anuncios → un anuncio: impresiones y clics acumulados, para pasarle el dato al anunciante.
+
 ---
 
 ## Estados que el diseño no muestra y hay que construir
@@ -132,3 +172,5 @@ Elementos globales en todas las páginas: barra superior (fecha, "Al aire", tel�
 | 404 | Cualquier URL inexistente | Página con el header, "No encontramos esta página" y links a las cuatro secciones |
 | 500 | Error del servidor | Página estática servida por Cloudflare |
 | Formulario enviado / con error | Formularios | Ver F6 |
+| Nota en revisión | Panel del periodista | Etiqueta "En revisión"; no puede editarla hasta que la devuelvan |
+| Nota devuelta | Panel del periodista | Etiqueta "Devuelta" con el comentario del editor arriba del formulario |

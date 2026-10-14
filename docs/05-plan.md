@@ -1,6 +1,6 @@
 # Plan de implementación · Visión 96.5 FM
 
-Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total (225–320 h) coincide con la estimación de la guía de Payload.
+Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total quedó en 238–334 h: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración.
 
 **Antes de empezar:** instalar la app de Claude en GitHub para `MROFER/visionfm-web`, elegir proveedor de VPS y conseguir acceso al Cloudflare de la radio. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
 
@@ -18,12 +18,15 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `staging.visionfm.com.uy` responde detrás de Access |
 | Cloudflare: DNS de staging, R2, Access, reglas de WAF | panel pide código antes del login |
 
-## Fase 1 · Contenido y panel · 40–55 h
+## Fase 1 · Contenido y panel · 48–65 h
 
 | Tarea | Listo cuando |
 |---|---|
 | Colecciones y fichas del esquema (`docs/04-esquema.md`) con validaciones | todas visibles en el panel, migraciones versionadas |
 | Roles y permisos por colección y campo | cada rol ve y edita solo lo suyo (test por rol) |
+| Flujo editorial: estados, permiso "Publica sin revisión", lista "Para revisar", devolver con comentario, avisos por email | un periodista sin permiso no puede publicar ni por API; el editor aprueba, programa o devuelve |
+| Excepciones de grilla | un partido cargado reemplaza "Al aire" en su horario |
+| Prueba del panel en celular con un periodista real | sube una nota con foto desde el teléfono sin ayuda |
 | Panel en español con logo y colores de la radio | |
 | Medios a R2 con tamaños WebP/AVIF; archivos privados con URL firmada | subir una foto de celular genera los tamaños |
 | Borradores, versiones, vista previa y publicación programada | una nota programada se publica sola a la hora |
@@ -70,10 +73,12 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Script que lee notas, categorías e imágenes de la API REST de WordPress | |
 | Filtro de spam (entradas y enlaces ocultos) con lista revisada a mano | cero enlaces de casinos en lo migrado |
 | Conversión a Lexical, imágenes a R2, asignación de sección | |
-| Tabla de redirecciones 301 de todas las URL viejas | todas las URL del sitemap viejo responden 301 → 200 |
+| Tabla de redirecciones 301 de las notas legítimas y 410 de las URL de spam | todas las URL del sitemap viejo responden 301 → 200 o 410 |
+| Línea base: exportar Search Console, PageSpeed y URL con tráfico del sitio actual | archivos guardados antes del cambio |
+| Inventario de registros DNS (MX, SPF, DKIM, verificaciones) | ningún registro se pierde en el cambio |
 | Ensayo en staging y revisión con la radio | |
 
-## Fase 5 · Calidad y lanzamiento · 30–45 h
+## Fase 5 · Calidad y lanzamiento · 34–50 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -84,7 +89,10 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Monitoreo de disponibilidad, errores y respaldos probados (restaurar uno) | |
 | Capacitación: prensa, Cinevisión y editor (1 h cada uno) + guía corta en PDF | |
 | Producción: carga de contenido real, migración final, cambio de DNS | sitio en `visionfm.com.uy`, viejo apagado |
-| Alta en Search Console y envío de sitemaps | |
+| Alta en Search Console, Bing Webmaster Tools y Google News Publisher Center; revisión de "Problemas de seguridad" y pedido de eliminación de URL de spam | sitemaps enviados, sin avisos de seguridad |
+| Imagen Open Graph por nota y por defecto | la vista previa sale en WhatsApp y Facebook |
+| Consentimiento en formularios y borrado automático de mensajes | |
+| Congelamiento de publicación de 24 h el día del cambio | |
 | **Hito:** lanzamiento | |
 
 ## Coordinación y QA · 15–20 h
@@ -98,6 +106,7 @@ Reuniones, revisiones de diseño, ajustes de la radio y pruebas en dispositivos 
 - Semanas 1–2: monitoreo, ajustes y soporte a la redacción.
 - Mes 1: revisar Core Web Vitals reales y Search Console.
 - Extraer `src/base` + infraestructura a un repo plantilla de la agencia.
+- Evaluar publicación automática en Facebook al publicar una nota.
 
 ## Dependencias externas
 

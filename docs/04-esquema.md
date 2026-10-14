@@ -4,7 +4,7 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 
 **Convenciones**
 - Todas las colecciones tienen `id`, `createdAt` y `updatedAt` (los agrega Payload).
-- `slug`: se genera del título, único, solo `a-z 0-9 -`, editable.
+- `slug`: se genera del título, único, solo `a-z 0-9 -` (tildes y ñ se normalizan), editable.
 - Fechas en UTC en la base; el panel y el sitio muestran hora de `America/Montevideo`.
 - `*` = obligatorio. `✎` = con borradores y versiones.
 - Imágenes y archivos: relación a `medios` o `archivos`, guardados en Cloudflare R2.
@@ -21,8 +21,10 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 | `email`* | email | único, login |
 | `rol`* | select | admin · editor · periodista · cinevision |
 | `equipo` | relación → `equipo` | para firmar notas con la ficha pública |
+| `publicaSinRevision` | checkbox | solo para `periodista`; por defecto **no**. Lo cambian `editor` y `admin` |
+| `recibeAvisosRevision` | checkbox | solo para `editor` y `admin`; recibe email cuando hay una nota para revisar |
 
-Acceso: solo `admin` crea, edita y borra. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
+Acceso: solo `admin` crea, edita y borra usuarios; `editor` puede cambiar `publicaSinRevision` de los periodistas. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
 
 ## medios (upload)
 
@@ -67,11 +69,18 @@ Acceso: escribe `admin`.
 | `seccion`* | relación → `secciones` | |
 | `autor`* | relación → `usuarios` | por defecto, quien crea |
 | `fechaPublicacion`* | fecha y hora | por defecto, al publicar; si es futura, la nota se programa |
+| `fechaActualizacion` | fecha y hora | se completa al corregir una nota publicada; se muestra "Actualizado …" |
+| `estadoEditorial`* | select | borrador · en-revision · devuelta · aprobada · publicada (ver flujo P2) |
+| `comentarioEditor` | textarea | motivo al devolver una nota; visible para el autor |
+| `aprobadoPor` | relación → `usuarios` | se completa al aprobar |
+| `publicadoPor` | relación → `usuarios` | se completa al publicar |
 | `destacada` | checkbox | candidata a destacada en Noticias |
 | `seo` | grupo | `titulo`, `descripcion`, `imagen` (opcionales; caen a título, bajada y foto) |
 
-Índices: `(seccion, fechaPublicacion desc)`, `slug`, búsqueda de texto completo en español sobre `titulo + bajada + cuerpo`.
-Acceso: `periodista` crea y edita las suyas y publica; `editor` y `admin` todo.
+Índices: `(seccion, fechaPublicacion desc)`, `estadoEditorial`, `slug`, búsqueda de texto completo en español con `unaccent` sobre `titulo + bajada + cuerpo`.
+Acceso: `periodista` crea y edita las suyas; publica solo si tiene `publicaSinRevision`, si no, la envía a revisión. `editor` y `admin` editan, aprueban, devuelven y publican todas.
+Regla en el servidor (hook `beforeChange`): un periodista sin permiso no puede guardar `_status: published` ni `estadoEditorial: publicada|aprobada`; si edita una nota publicada, su cambio queda como borrador pendiente y la versión publicada sigue en línea hasta que un editor apruebe.
+Avisos por email: al pasar a `en-revision` → editores con `recibeAvisosRevision`; al pasar a `devuelta` o `publicada` → el autor.
 Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS y purgar Cloudflare. Si cambia sección o slug → crear redirección 301.
 
 ## entrevistas ✎
@@ -83,7 +92,7 @@ Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS
 | `slug`* | slug | |
 | `programa`* | relación → `programas` | |
 | `fecha`* | fecha | |
-| `audio`* | relación → `archivos` | MP3/M4A, máx. 100 MB |
+| `audio`* | relación → `archivos` | MP3/M4A, máx. 90 MB (límite de subida de Cloudflare: 100 MB) |
 | `duracion` | número (segundos) | se calcula del archivo |
 | `foto` | relación → `medios` | |
 | `resumen` | textarea | para SEO y buscador |
@@ -107,6 +116,20 @@ Acceso: `periodista`, `editor`, `admin`.
 Validación: el panel avisa si dos programas activos se superponen en día y horario. Un horario que cruza la medianoche se carga como dos filas.
 Acceso: `editor`, `admin`.
 API pública: `GET /api/grilla` devuelve la grilla semanal compacta (pocos KB) para calcular "Al aire" y "A continuación" en el navegador; se cachea en Cloudflare y se purga al guardar.
+
+## excepcionesGrilla
+
+Partidos, feriados o coberturas especiales que reemplazan la grilla habitual.
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| `fecha`* | fecha | |
+| `inicio`* / `fin`* | hora | |
+| `programa` | relación → `programas` | o bien `titulo` |
+| `titulo` | texto | ej. "Fútbol: Laureles vs. Anglo" |
+| `conduccion` | texto | |
+
+Acceso: `editor`, `admin`. `/api/grilla` incluye las excepciones de los próximos 7 días y el cálculo de "Al aire" las aplica antes que la grilla.
 
 ## equipo
 
@@ -168,6 +191,8 @@ Acceso: `cinevision`, `admin`. Vista de panel propia: grilla semanal con "Copiar
 | `desde`* / `hasta`* | fecha | vigencia |
 | `orden` | número | orden de rotación |
 | `activo` | checkbox | |
+| `impresiones` | número | solo lectura; se suma desde el sitio en lotes |
+| `clics` | número | solo lectura; se suma en el link de salida `/a/{id}` |
 
 Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el navegador.
 
@@ -183,10 +208,12 @@ Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el nave
 | `mensaje` | textarea | |
 | `adjunto` | relación → `archivos` (privado) | máx. 10 MB |
 | `estado`* | select | nuevo · leído · respondido |
+| `consentimiento`* | checkbox + fecha | aceptación de la política de privacidad (Ley 18.331) |
 
 Creación: solo por `POST /api/formularios/{tipo}` con Turnstile válido y límite de 5 envíos por IP por hora.
 Acceso: lectura y edición `editor`, `admin`. Nadie puede crear desde el panel.
 Hook: al crear, envía email al destinatario configurado en Ajustes según el tipo.
+Conservación: tarea semanal que borra mensajes y adjuntos de más de 12 meses (24 para `sumarse`).
 
 ## paginas ✎
 
@@ -205,7 +232,7 @@ Uso: textos legales en `/legal/[slug]`. Acceso: `admin`.
 |---|---|---|
 | `desde`* | texto | ruta vieja, única |
 | `hacia`* | texto o relación | ruta nueva o documento |
-| `tipo` | select | 301 · 302 |
+| `tipo` | select | 301 · 302 · 410 (spam y contenido eliminado) |
 
 Se cargan en la migración de WordPress y las crean los hooks de noticias. Acceso: `admin`.
 
