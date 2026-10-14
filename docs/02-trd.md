@@ -21,13 +21,13 @@ Las versiones exactas se fijan al crear el repo: Next será la última que Paylo
 
 ## 2. Entornos
 
-El sitio se construye primero en cuentas de la agencia, con un dominio provisorio (`visionfm.<dominio-agencia>`). Si la radio firma, se traspasa a cuentas de la radio y producción pasa a `visionfm.com.uy`. Por eso nada de la radio va fijo en el código: dominio, cuentas, buckets y remitente salen de variables de entorno.
+El sitio se construye primero en cuentas de la agencia, con un dominio provisorio (`visionfm.labs-fraybentos.uy`). Si la radio firma, se traspasa a cuentas de la radio y producción pasa a `visionfm.com.uy`. Por eso nada de la radio va fijo en el código: dominio, cuentas, buckets y remitente salen de variables de entorno.
 
 | Entorno | URL | Rama | Base de datos |
 |---|---|---|---|
 | Local | `localhost:3000` | cualquiera | Postgres en Docker + `pnpm seed` |
-| Staging | `staging.visionfm.<dominio-agencia>`, después `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
-| Demo (antes del contrato) | `visionfm.<dominio-agencia>` | `main` | propia, con datos reales del sitio público actual; `noindex` y detrás de Access para no competir en Google con el sitio actual |
+| Staging | `visionfm-staging.labs-fraybentos.uy`, después `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
+| Demo (antes del contrato) | `visionfm.labs-fraybentos.uy` | `main` | propia, con datos reales del sitio público actual; `noindex` y detrás de Access para no competir en Google con el sitio actual |
 | Producción | `visionfm.com.uy` | `main` | producción, en cuentas de la radio |
 
 Staging va detrás de Cloudflare Access completo (no es público) y con `noindex`.

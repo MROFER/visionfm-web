@@ -1,6 +1,6 @@
 # Plan de implementación · Visión 96.5 FM
 
-Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dominio provisorio, para presentarle a la radio un producto que funciona; la fase 6 traspasa todo a la radio si firma el contrato. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 280–397 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas). Las respuestas de la radio sumaron el reporte mensual a anunciantes (3–5 h) y la fase 6 de traspaso.
+Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dominio provisorio, para presentarle a la radio un producto que funciona; la fase 6 traspasa todo a la radio si firma el contrato. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 283–402 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas). Las respuestas de la radio sumaron el reporte mensual a anunciantes (3–5 h) y la fase 6 de traspaso.
 
 **Antes de empezar:** elegir el dominio provisorio de la agencia y el proveedor de VPS. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
 
@@ -15,7 +15,7 @@ Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dom
 | Docker Compose para desarrollo y Dockerfile de producción | `docker compose up` levanta todo de cero |
 | Copiar el diseño a `design/` y los documentos a `docs/` | están en el repo |
 | GitHub Actions: lint, tipos, tests, build | CI verde en el primer PR |
-| VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `staging.visionfm.<dominio-agencia>` responde detrás de Access |
+| VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `visionfm-staging.labs-fraybentos.uy` responde detrás de Access |
 | Cloudflare: DNS de staging, R2, Access, reglas de WAF | panel pide código antes del login |
 | API de Payload en `/cms-api` detrás de Access, GraphQL apagado y validación del JWT de Access en el servidor | `curl` a `/cms-api/usuarios/login` sin Access devuelve 403 |
 | Tres buckets de R2 (público, privado, auditoría con bloqueo de objetos) y copia de respaldos fuera de Cloudflare | se restaura la base y los medios desde la copia externa |
@@ -74,11 +74,13 @@ Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dom
 | Formularios con adjunto, Turnstile, límite por IP y email | un envío llega al email y queda en Mensajes |
 | **Hito:** el sitio funciona completo en staging | |
 
-## Fase 4 · Migración de WordPress · 15–25 h
+## Fase 4 · Migración de WordPress · 18–30 h
 
 | Tarea | Listo cuando |
 |---|---|
-| Script que lee notas, categorías e imágenes de la API REST de WordPress | |
+| Script que lee notas, categorías e imágenes de la API REST pública de WordPress (sin usuario). Si la API está cerrada, lee el sitemap y el HTML de cada nota | importa todas las notas del sitemap viejo |
+| Script repetible: cada nota se identifica por su id de WordPress, así una segunda corrida solo trae lo nuevo o lo cambiado | correrlo dos veces no duplica nada |
+| Entrevistas: ubicar dónde están hoy (notas con audio, YouTube, Facebook, SoundCloud u otro). Los audios propios se descargan a R2 como entrevistas; los que viven en plataformas externas se enlazan | cada entrevista vieja tiene su ficha en el sitio nuevo |
 | Filtro de spam (entradas y enlaces ocultos) con lista revisada a mano | cero enlaces de casinos en lo migrado |
 | Conversión a Lexical, imágenes a R2, asignación de sección | |
 | Tabla de redirecciones 301 de las notas legítimas y 410 de las URL de spam | todas las URL del sitemap viejo responden 301 → 200 o 410 |
@@ -113,7 +115,7 @@ Solo si la radio firma. El código no cambia: cambian las variables de entorno y
 | Registros DNS de `visionfm.com.uy`: sitio, staging, Access, SPF, DKIM y DMARC | un aviso del panel llega desde `avisos@visionfm.com.uy` |
 | Usuarios: Owner del dueño, Administrador de emergencia de la radio, Administrador de la agencia | el usuario de emergencia entra al panel |
 | Congelamiento de publicación de 24 h el día del cambio | |
-| Carga de contenido real, migración final del WordPress y cambio de DNS | sitio en `visionfm.com.uy`, viejo apagado |
+| Carga de contenido real, última corrida del script de migración (trae lo publicado desde la demo) y cambio de DNS | sitio en `visionfm.com.uy`, viejo apagado |
 | Apagar la demo y borrar los datos de la radio de las cuentas de la agencia | |
 | **Hito:** lanzamiento | |
 

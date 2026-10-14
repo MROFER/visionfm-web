@@ -116,6 +116,6 @@ Se releyeron los siete documentos juntos, después de sumar permisos, auditoría
 
 ## 9. Preguntas que quedan
 
-1. ¿Qué dominio usamos para la demo? GitHub Pages no sirve: solo publica páginas estáticas y el sitio necesita servidor y base de datos. Ver recomendación en el hilo.
+1. ~~¿Qué dominio usamos para la demo?~~ Subdominios de `labs-fraybentos.uy`: `visionfm.labs-fraybentos.uy` y `visionfm-staging.labs-fraybentos.uy` (con guion y no `staging.visionfm…`, porque el certificado gratis de Cloudflare cubre un solo nivel de subdominio). Requiere que los DNS de `labs-fraybentos.uy` estén en Cloudflare (plan gratis).
 
 **Respondido:** la demo muestra datos reales, tomados del sitio público actual de la radio (notas por la API pública del WordPress, grilla y cartelera cargadas a mano). Como ese contenido ya está en `visionfm.com.uy`, la demo va con `noindex` y detrás de Access: si Google la indexara, la vería como copia y podría perjudicar al sitio actual de la radio.
