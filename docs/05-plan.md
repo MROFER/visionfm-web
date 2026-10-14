@@ -1,12 +1,12 @@
 # Plan de implementación · Visión 96.5 FM
 
-Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 260–366 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`).
+Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 266–376 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0.
 
 **Antes de empezar:** instalar la app de Claude en GitHub para `MROFER/visionfm-web`, elegir proveedor de VPS y conseguir acceso al Cloudflare de la radio. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
 
 ---
 
-## Fase 0 · Base del proyecto · 16–24 h
+## Fase 0 · Base del proyecto · 22–34 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -17,6 +17,9 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | GitHub Actions: lint, tipos, tests, build | CI verde en el primer PR |
 | VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `staging.visionfm.com.uy` responde detrás de Access |
 | Cloudflare: DNS de staging, R2, Access, reglas de WAF | panel pide código antes del login |
+| API de Payload en `/cms-api` detrás de Access, GraphQL apagado y validación del JWT de Access en el servidor | `curl` a `/cms-api/usuarios/login` sin Access devuelve 403 |
+| Tres buckets de R2 (público, privado, auditoría con bloqueo de objetos) y copia de respaldos fuera de Cloudflare | se restaura la base y los medios desde la copia externa |
+| Panel de Coolify detrás de Access; SPF, DKIM y DMARC del email remitente | un email de prueba llega a Gmail sin ir a spam |
 
 ## Fase 1 · Contenido y panel · 64–88 h
 
@@ -26,7 +29,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Permisos etapa 1: 8 roles de fábrica fijos, permiso Noticias → Publicar por persona y secciones permitidas | test por rol y por acción, también por API |
 | Usuarios por invitación, sincronización con Cloudflare Access, sesiones visibles, desactivación | un usuario desactivado no pasa Access ni conserva sesiones |
 | Registro de actividad de todo el panel (quién, qué, antes/después, cuándo, desde dónde), historial por contenido y restauración | cualquier cambio aparece en el registro y nadie puede borrarlo |
-| Flujo editorial: estados, permiso "Publica sin revisión", lista "Para revisar", devolver con comentario, pendientes en el inicio del panel, contadores en el menú y avisos por email según preferencia | un periodista sin permiso no puede publicar ni por API; el editor aprueba, programa o devuelve |
+| Flujo editorial: estados, permiso Noticias → Publicar, lista "Para revisar", devolver con comentario, pendientes en el inicio del panel, contadores en el menú y avisos por email según preferencia | un periodista sin permiso no puede publicar ni por API; el editor aprueba, programa o devuelve |
 | Excepciones de grilla | un partido cargado reemplaza "Al aire" en su horario |
 | Prueba del panel en celular con un periodista real | sube una nota con foto desde el teléfono sin ayuda |
 | Panel en español con logo y colores de la radio | |
@@ -85,7 +88,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 
 | Tarea | Listo cuando |
 |---|---|
-| Metadata, datos estructurados, sitemaps (general y noticias), RSS, `llms.txt`, robots | validan en Rich Results Test |
+| Metadata, datos estructurados, sitemaps (general, noticias, entrevistas y películas), RSS, `llms.txt`, robots | validan en Rich Results Test |
 | Presupuestos de rendimiento y Lighthouse CI | objetivos del PRD en las 12 páginas |
 | Auditoría de accesibilidad WCAG 2.1 AA | sin errores en axe; navegación con teclado completa |
 | Cabeceras de seguridad, firewall, revisión de permisos | |

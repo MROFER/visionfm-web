@@ -20,16 +20,15 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 | `nombre`* | texto | |
 | `email`* | email | único, login |
 | `rol`* | relación → `roles` | Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial o uno creado |
-| `ajustesPermisos` | JSON | permisos que suman o quitan sobre el rol (área × acción) |
+| `ajustesPermisos` | JSON | permisos que suman o quitan sobre el rol (área × acción). En la etapa 1 solo se usa Noticias → Publicar |
 | `seccionesPermitidas` | relación múltiple → `secciones` | vacío = todas |
 | `activo`* | checkbox | desactivar cierra sesiones y quita el acceso en Cloudflare Access |
 | `esOwner` | checkbox | solo uno; no editable desde el panel salvo por transferencia |
 | `equipo` | relación → `equipo` | para firmar notas con la ficha pública |
-| `publicaSinRevision` | checkbox | solo para `periodista`; por defecto **no**. Lo cambian `editor` y `admin` |
-| `recibeAvisosRevision` | checkbox | solo para `editor` y `admin`; ve y recibe avisos de notas para revisar |
+| `recibeAvisosRevision` | checkbox | solo para quien tiene Noticias → Aprobar; recibe avisos de notas para revisar |
 | `avisosEmail` | select | al-instante · resumen-por-hora · nunca (por defecto, al instante) |
 
-Acceso: solo `admin` crea, edita y borra usuarios; `editor` puede cambiar `publicaSinRevision` de los periodistas. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
+Acceso: Owner y Administrador (Sistema) invitan, editan y desactivan usuarios; Owner, Administrador, Manager y Editor pueden dar o quitar Noticias → Publicar a periodistas y colaboradores. Los usuarios no se borran, se desactivan, para que el registro conserve el autor. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
 
 ## roles
 
@@ -38,6 +37,8 @@ Acceso: solo `admin` crea, edita y borra usuarios; `editor` puede cambiar `publi
 | `nombre`* | texto | único |
 | `permisos`* | JSON | por área (radio, noticias, cinevision, institucional, publicidad, sistema) y acción (ver, crear, editarPropio, editarTodo, publicar, aprobar, borrar) |
 | `deFabrica` | checkbox | los de fábrica se pueden editar pero no borrar |
+
+En la etapa 1 los 8 roles de fábrica están fijos en código y esta colección solo se lee; en la etapa 2 se editan desde la grilla del panel.
 
 ## registroActividad
 
@@ -63,7 +64,7 @@ Solo lectura para todos, incluido el Owner. Lo escribe un hook global `afterChan
 | `alt`* | texto | texto alternativo, máx. 160 caracteres |
 | `credito` | texto | fotógrafo o fuente |
 
-Acceso: lectura pública; crea cualquier rol; borra `admin` y `editor`.
+Acceso: lectura pública; crea cualquier usuario con Crear en alguna área; borra quien tiene Borrar en Noticias o Sistema.
 
 ## archivos (upload)
 
@@ -83,7 +84,7 @@ Audios de entrevistas, adjuntos y PDF. Separado de `medios` para no generar tama
 | `descripcion` | textarea | meta description de la sección |
 | `orden`* | número | orden en la tira y el menú |
 
-Acceso: escribe `admin`.
+Acceso: área Noticias (Editar todo).
 
 ## noticias ✎
 
@@ -107,7 +108,7 @@ Acceso: escribe `admin`.
 | `seo` | grupo | `titulo`, `descripcion`, `imagen` (opcionales; caen a título, bajada y foto) |
 
 Índices: `(seccion, fechaPublicacion desc)`, `estadoEditorial`, `slug`, búsqueda de texto completo en español con `unaccent` sobre `titulo + bajada + cuerpo`.
-Acceso: `periodista` crea y edita las suyas; publica solo si tiene `publicaSinRevision`, si no, la envía a revisión. `editor` y `admin` editan, aprueban, devuelven y publican todas.
+Acceso: área Noticias, limitada a `seccionesPermitidas`. Con Crear y Editar lo propio se cargan y editan las propias; con Publicar se publica o programa, si no, se envía a revisión; con Aprobar se aprueba o devuelve; con Editar todo se editan las de otros.
 Regla en el servidor (hook `beforeChange`): un periodista sin permiso no puede guardar `_status: published` ni `estadoEditorial: publicada|aprobada`; si edita una nota publicada, su cambio queda como borrador pendiente y la versión publicada sigue en línea hasta que un editor apruebe.
 Avisos: dentro del panel, el inicio y el menú muestran contadores calculados en vivo (notas `en-revision` para editores, `devuelta` para el autor, mensajes `nuevo`); no hace falta una tabla de notificaciones. Por email, según `avisosEmail` de cada usuario: al pasar a `en-revision` → editores con `recibeAvisosRevision`; al pasar a `devuelta` o `publicada` → el autor.
 Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS y purgar Cloudflare. Si cambia sección o slug → crear redirección 301.
@@ -128,7 +129,7 @@ Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS
 | `destacada` | checkbox | |
 
 Índices: `fecha desc`, `programa`, búsqueda de texto sobre `entrevistado + tema + resumen`.
-Acceso: `periodista`, `editor`, `admin`.
+Acceso: área Radio (Periodista y Editor pueden crear).
 
 ## programas
 
@@ -143,7 +144,7 @@ Acceso: `periodista`, `editor`, `admin`.
 | `activo` | checkbox | por defecto sí |
 
 Validación: el panel avisa si dos programas activos se superponen en día y horario. Un horario que cruza la medianoche se carga como dos filas.
-Acceso: `editor`, `admin`.
+Acceso: área Radio.
 API pública: `GET /api/grilla` devuelve la grilla semanal compacta (pocos KB) para calcular "Al aire" y "A continuación" en el navegador; se cachea en Cloudflare y se purga al guardar.
 
 ## excepcionesGrilla
@@ -158,7 +159,7 @@ Partidos, feriados o coberturas especiales que reemplazan la grilla habitual.
 | `titulo` | texto | ej. "Fútbol: Laureles vs. Anglo" |
 | `conduccion` | texto | |
 
-Acceso: `editor`, `admin`. `/api/grilla` incluye las excepciones de los próximos 7 días y el cálculo de "Al aire" las aplica antes que la grilla.
+Acceso: área Radio. `/api/grilla` incluye las excepciones de los próximos 7 días y el cálculo de "Al aire" las aplica antes que la grilla.
 
 ## equipo
 
@@ -172,7 +173,7 @@ Acceso: `editor`, `admin`. `/api/grilla` incluye las excepciones de los próximo
 | `redes` | array | `red` (select), `url` |
 | `orden`* | número | orden dentro del grupo |
 
-Acceso: `editor`, `admin`.
+Acceso: área Radio.
 
 ## peliculas ✎
 
@@ -194,7 +195,7 @@ Acceso: `editor`, `admin`.
 | `esEstreno` | checkbox | etiqueta "Estreno" |
 | `fechaEstreno` | fecha | si es futura, va a "Próximos estrenos" |
 
-Acceso: `cinevision`, `admin`.
+Acceso: área Cinevisión.
 
 ## funciones
 
@@ -207,7 +208,7 @@ Acceso: `cinevision`, `admin`.
 
 Índices: `(fechaHora)`, `(pelicula, fechaHora)`.
 Las funciones con `fechaHora` pasada no se consultan en el sitio. Se conservan 90 días y después se borran solas.
-Acceso: `cinevision`, `admin`. Vista de panel propia: grilla semanal con "Copiar semana anterior".
+Acceso: área Cinevisión. Vista de panel propia: grilla semanal con "Copiar semana anterior".
 
 ## anuncios
 
@@ -226,7 +227,7 @@ Acceso: `cinevision`, `admin`. Vista de panel propia: grilla semanal con "Copiar
 
 Las métricas por ubicación y por día van en una tabla aparte (`anunciosMetricas`: anuncio, ubicación, fecha, impresiones, clics) para poder exportarlas a CSV. Si una ubicación no tiene anuncios vigentes, se muestra el aviso propio de la radio configurado en `ajustes`.
 
-Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el navegador.
+Acceso: área Publicidad. El sitio pide los anuncios vigentes; rotan en el navegador.
 
 ## mensajes
 
@@ -243,7 +244,7 @@ Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el nave
 | `consentimiento`* | checkbox + fecha | aceptación de la política de privacidad (Ley 18.331) |
 
 Creación: solo por `POST /api/formularios/{tipo}` con Turnstile válido y límite de 5 envíos por IP por hora.
-Acceso: lectura y edición `editor`, `admin`. Nadie puede crear desde el panel.
+Acceso: área Institucional (Editor y Comercial ven los de su tipo). Nadie puede crear desde el panel.
 Hook: al crear, envía email al destinatario configurado en Ajustes según el tipo.
 Conservación: tarea semanal que borra mensajes y adjuntos de más de 12 meses (24 para `sumarse`).
 
@@ -256,7 +257,7 @@ Conservación: tarea semanal que borra mensajes y adjuntos de más de 12 meses (
 | `cuerpo`* | rich text | |
 | `seo` | grupo | |
 
-Uso: textos legales en `/legal/[slug]`. Acceso: `admin`.
+Uso: textos legales en `/legal/[slug]`. Acceso: área Institucional.
 
 ## redirecciones
 
@@ -266,23 +267,23 @@ Uso: textos legales en `/legal/[slug]`. Acceso: `admin`.
 | `hacia`* | texto o relación | ruta nueva o documento |
 | `tipo` | select | 301 · 302 · 410 (spam y contenido eliminado) |
 
-Se cargan en la migración de WordPress y las crean los hooks de noticias. Acceso: `admin`.
+Se cargan en la migración de WordPress y las crean los hooks de noticias. Acceso: área Sistema.
 
 ---
 
 ## Fichas globales
 
 ### ajustes
-`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas). Acceso: `admin`.
+`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas). Acceso: área Sistema.
 
 ### portada
-`notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: `editor`, `admin`.
+`notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).
 
 ### cinevision
-`carrusel` (array: `imagenWeb` 1440×640, `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: `cinevision`, `admin`.
+`carrusel` (array: `imagenWeb` 1440×640, `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: área Cinevisión.
 
 ### institucional
-`quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: `admin`.
+`quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: área Institucional.
 
 ---
 

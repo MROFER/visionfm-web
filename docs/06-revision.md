@@ -8,7 +8,7 @@ Revisión punta a punta de la arquitectura y los documentos 01–05 para detecta
 
 | | Hallazgo | Resolución |
 |---|---|---|
-| 🔴 | Subir una nota y publicarla eran el mismo paso. No había forma de que un editor apruebe antes de publicar ni de decidirlo por periodista. | Nuevo flujo con estados (borrador → en revisión → publicada / devuelta) y permiso **Publica sin revisión** por periodista, que maneja el editor. Ver `03-flujos.md` P2 y `04-esquema.md`. |
+| 🔴 | Subir una nota y publicarla eran el mismo paso. No había forma de que un editor apruebe antes de publicar ni de decidirlo por periodista. | Nuevo flujo con estados (borrador → en revisión → publicada / devuelta) y permiso por persona (hoy **Noticias → Publicar**, ver `07-permisos-y-publicidad.md`). Ver `03-flujos.md` P2 y `04-esquema.md`. |
 | 🟠 | Si un periodista editaba una nota ya publicada, el cambio salía en vivo sin control. | Los cambios de quien no tiene permiso quedan como borrador pendiente; la versión publicada sigue en el sitio hasta que el editor apruebe. |
 | 🟠 | No quedaba registro de quién publicó o aprobó cada nota. | Campos `publicadoPor`, `aprobadoPor` e historial de versiones de Payload. |
 | 🟢 | Las notas corregidas no lo decían. | Campo `fechaActualizacion` visible ("Actualizado …") y en los datos estructurados (`dateModified`). |
@@ -64,7 +64,31 @@ Revisión punta a punta de la arquitectura y los documentos 01–05 para detecta
 | 🟠 | Durante la migración final, la redacción podría publicar en el WordPress viejo y perderse. | Congelamiento de publicación de 24 h el día del cambio; las notas de ese día se cargan en el panel nuevo. |
 | 🟢 | Publicar en Facebook automáticamente al publicar una nota. | Fuera de la versión 1; se evalúa después. |
 
-## 7. Preguntas abiertas para la radio
+## 7. Segunda revisión (2026-10-14)
+
+Se releyeron los siete documentos juntos, después de sumar permisos, auditoría y publicidad por ubicaciones.
+
+**Huecos nuevos**
+
+| | Hallazgo | Resolución |
+|---|---|---|
+| 🔴 | La API de Payload (`/api/usuarios/login`) quedaba fuera de Cloudflare Access: alguien podía intentar entrar por API salteando el 2FA. | La API de Payload pasa a `/cms-api`, detrás de Access igual que `/admin`; GraphQL apagado; el servidor valida el JWT de Access. Las rutas públicas siguen en `/api`. |
+| 🟠 | R2 no guarda versiones: un borrado o un ataque a la cuenta de Cloudflare se lleva medios y respaldos. | Respaldos de base y medios copiados también fuera de Cloudflare (Backblaze B2 u otro S3). |
+| 🟠 | Un solo bucket mezclaba fotos públicas, CV privados y auditoría. | Tres buckets: público, privado (URL firmada) y auditoría con bloqueo de objetos. |
+| 🟠 | El panel de Coolify no estaba protegido. | Subdominio propio detrás de Access. |
+| 🟠 | Una vista previa de un borrador podía quedar en la caché de Cloudflare y verse en público. | Vista previa con `no-store` y regla de Cloudflare que saltea la caché con la cookie de vista previa. |
+| 🟢 | El buscador se puede abusar con muchas consultas. | Límite por IP en el WAF para `/api/buscar`. |
+| 🟢 | Los avisos por email podían caer en spam. | SPF, DKIM y DMARC en el dominio remitente. |
+| 🟢 | Los sitemaps no incluían entrevistas ni películas. | Sitemaps de noticias, entrevistas y películas. |
+
+**Inconsistencias corregidas**
+
+- PRD: roles viejos (admin, editor, periodista, Cinevisión) reemplazados por los 8 roles y las dos etapas; redirecciones 301 y 410; ruta del diseño en `design/`; decisiones nuevas (dos etapas, ramas, `/cms-api`).
+- TRD: staging solo con datos de ejemplo; variables de los tres buckets, Access y respaldo externo; `/api/anuncios` con ubicación y sección; etiquetas de caché de portada, grilla, Cinevisión, Institucional y páginas.
+- Esquema: el campo `publicaSinRevision` se eliminó (es Noticias → Publicar); cada colección dice qué área la controla en lugar de `admin` / `editor`; la colección `roles` es de solo lectura en la etapa 1.
+- Flujos y plan: "Publica sin revisión" pasa a Noticias → Publicar; fase 0 sube a 22–34 h.
+
+## 8. Preguntas abiertas para la radio
 
 1. ¿Qué periodistas publican sin revisión desde el primer día? (por defecto, ninguno)
 2. ¿Quiénes son editores y reciben el aviso de notas para revisar?

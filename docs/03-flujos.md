@@ -90,7 +90,7 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
    ▲                               │  │
    └──────────Devolver─────────────┘  └──Aprobar y programar──▶ aprobada ──(hora)──▶ publicada
    │
-   └──Publicar ahora / Programar (solo con "Publica sin revisión")──▶ publicada
+   └──Publicar ahora / Programar (solo con Noticias → Publicar)──▶ publicada
 ```
 
 **P2a · Subir (cualquier periodista)**

@@ -1,7 +1,7 @@
 # PRD · Nuevo sitio de Visión 96.5 FM
 
 **Cliente:** Visión 96.5 FM, Fray Bentos (Río Negro, Uruguay) · **Sitio:** visionfm.com.uy
-**Diseño:** Labs Fray Bentos (`docs/diseno/` o `/mnt/project-files/diseno/VisionFM-rediseno`)
+**Diseño:** Labs Fray Bentos (`design/` en el repo)
 **Estado:** borrador para revisión · 2026-10-14
 
 ## 1. Problema
@@ -41,15 +41,15 @@ Un sitio que trate por igual a las tres partes del medio (radio, redacción y Ci
 - Tres formularios con adjunto (contacto, sumarse, tarifas) con protección contra spam.
 
 **Panel** (Payload, en español):
-- Usuarios con roles: admin, editor, periodista, Cinevisión.
-- Noticias con flujo editorial: subir y publicar son pasos separados; el editor decide por periodista si publica directo o si sus notas pasan por revisión (aprobar, programar o devolver con comentario).
+- Usuarios por invitación con 8 roles de fábrica (Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial), permisos por área y acción, y registro de actividad completo (quién, qué, cuándo) con copia inmutable. Roles editables y delegación llegan en la etapa 2, al mes del lanzamiento.
+- Noticias con flujo editorial: subir y publicar son pasos separados; quien tiene el permiso Noticias → Publicar publica directo; el resto envía a revisión (aprobar, programar o devolver con comentario).
 - Borradores, programación de publicación, vista previa y campos obligatorios.
 - Entrevistas con audio, programas y grilla con excepciones (partidos, feriados), equipo, películas y funciones con "Copiar semana anterior", anuncios con impresiones y clics, mensajes de formularios, ajustes generales.
 - Imágenes convertidas a WebP/AVIF automáticamente.
 
 **Plataforma:**
 - SEO y AEO: metadata, datos estructurados (RadioStation, NewsArticle, Movie, ScreeningEvent), sitemaps, RSS, `llms.txt`.
-- Migración de las notas del WordPress, sin spam, con redirecciones 301.
+- Migración de las notas del WordPress, sin spam, con redirecciones 301 para las notas legítimas y 410 para las URL de spam.
 - Hosting en VPS con Cloudflare, staging, respaldos diarios, panel con 2FA.
 
 ### No entra (versión 1)
@@ -58,6 +58,7 @@ Un sitio que trate por igual a las tres partes del medio (radio, redacción y Ci
 - Venta de entradas en línea (las entradas se compran en boletería).
 - App nativa o notificaciones push.
 - Podcast en plataformas externas (Spotify, Apple) y transcripción de entrevistas.
+- Roles editables, roles nuevos y delegación de permisos (etapa 2, al mes del lanzamiento).
 - Varios idiomas.
 - Grabación automática del vivo.
 
@@ -105,5 +106,8 @@ Grilla de programación real, películas y funciones, precios y promociones del 
 - Next.js + Payload CMS en un solo proyecto, PostgreSQL, Cloudflare R2 para archivos (elegido el 2026-10-14 frente a Astro).
 - VPS con Coolify detrás de Cloudflare.
 - URL bajo las cuatro secciones del menú; `/radio` redirige a `/radio/programacion`.
-- El permiso de publicar es por periodista y lo maneja el editor; por defecto, las notas pasan por revisión (2026-10-14).
-- Revisión completa de la arquitectura en `06-revision.md`.
+- Publicar es el permiso Noticias → Publicar, por persona; por defecto el Periodista y el Colaborador no lo tienen y sus notas pasan por revisión (2026-10-14).
+- Permisos en dos etapas: roles fijos al lanzar, grilla editable y delegación al mes (2026-10-14).
+- Ramas: cada cambio entra por PR a `staging` y de `staging` a `main` (2026-10-14).
+- La API de Payload vive en `/cms-api`, detrás de Cloudflare Access igual que `/admin` (segunda revisión, 2026-10-14).
+- Revisiones completas de la arquitectura en `06-revision.md` (primera y segunda).
