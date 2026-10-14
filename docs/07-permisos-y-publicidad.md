@@ -50,7 +50,7 @@ Un rol es un conjunto de permisos con nombre. El panel trae estos de fábrica y 
 
 ### Permisos por usuario
 
-Cada usuario tiene **un rol** y, opcionalmente, **ajustes propios** que suman o quitan permisos sobre su rol. Ejemplo: un periodista de confianza con Noticias → Publicar activado, sin crear un rol nuevo. La ficha del usuario muestra con colores qué viene del rol y qué es ajuste propio.
+Cada usuario tiene **un rol** y, opcionalmente, **ajustes propios** que suman o quitan permisos sobre su rol. Dos usuarios con el mismo rol pueden tener permisos distintos. Ejemplos: un periodista de confianza con Noticias → Publicar activado; dos managers, uno con Publicidad y otro sin ella; un editor que no puede borrar. Todo sin crear roles nuevos. La ficha del usuario muestra con colores qué viene del rol y qué es ajuste propio.
 
 ### Delegación
 
@@ -60,7 +60,26 @@ Las reglas que hacen segura la delegación:
 2. **Gestionar usuarios es un permiso** (Sistema → Editar todo en Usuarios). El Owner decide a quién se lo da.
 3. **Nadie se modifica a sí mismo** el rol ni los permisos.
 4. **El Owner es intocable** para todos los demás. Solo él transfiere la titularidad, con confirmación por email.
-5. **Todo cambio de permisos queda registrado:** quién, a quién, qué cambió y cuándo. Lo ven el Owner y los administradores en "Registro de cambios".
+5. **Todo cambio de permisos queda registrado:** quién, a quién, qué cambió y cuándo (ver Registro de actividad, abajo).
+
+### Registro de actividad
+
+Todo cambio en el panel queda registrado, no solo los de permisos:
+
+| Dato | Ejemplo |
+|---|---|
+| **Quién** | Luper Orellano (Periodista) |
+| **Qué** | Editó la nota "Obras de vivienda en Cerro Norte…": cambió título y bajada |
+| **Antes / después** | el valor anterior y el nuevo de cada campo cambiado |
+| **Cuándo** | 14/10/2026 09:42 (hora de Montevideo) |
+| **Desde dónde** | IP y dispositivo (celular, computadora) |
+
+Se registran: crear, editar, enviar a revisión, aprobar, devolver, publicar, despublicar, programar y borrar en todas las áreas (notas, entrevistas, grilla, películas, funciones, anuncios, ajustes, páginas), además de altas, bajas, cambios de permisos, ingresos al panel e intentos fallidos.
+
+- **Dónde se ve:** "Registro de actividad" en Sistema, con filtros por persona, área, acción y fechas, y exportación a CSV. Cada nota, película o anuncio muestra además su propio historial.
+- **Quién lo ve:** quien tenga Sistema → Ver. Nadie lo puede editar ni borrar desde el panel, ni el Owner.
+- **Volver atrás:** desde el historial de un contenido se puede restaurar una versión anterior; la restauración también queda registrada.
+- **Conservación:** 2 años; después se archiva en R2.
 
 ### Cómo se aplica
 
@@ -147,7 +166,8 @@ Cada anuncio muestra impresiones y clics totales, por ubicación y por día, y s
 |---|---|
 | Roles editables, grilla de permisos, ajustes por usuario, restricción por sección, delegación y registro de cambios | 14–20 h |
 | Invitaciones, sincronización con Cloudflare Access, sesiones visibles | 6–8 h |
+| Registro de actividad de todo el panel con antes/después, filtros, CSV, historial por contenido y restauración | 6–9 h |
 | Ubicaciones, segmentación por sección, peso, aviso propio, métricas por ubicación y CSV | 6–9 h |
-| **Total** | **26–37 h** |
+| **Total** | **32–46 h** |
 
-El total del proyecto pasa a **264–371 h**.
+El total del proyecto pasa a **270–380 h**.

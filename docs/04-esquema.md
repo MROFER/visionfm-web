@@ -39,17 +39,21 @@ Acceso: solo `admin` crea, edita y borra usuarios; `editor` puede cambiar `publi
 | `permisos`* | JSON | por área (radio, noticias, cinevision, institucional, publicidad, sistema) y acción (ver, crear, editarPropio, editarTodo, publicar, aprobar, borrar) |
 | `deFabrica` | checkbox | los de fábrica se pueden editar pero no borrar |
 
-## registroCambios
+## registroActividad
 
-Solo lectura. Lo escriben los hooks: cambios de permisos, roles, altas y bajas de usuarios, transferencias de titularidad, borrados de contenido.
+Solo lectura para todos, incluido el Owner. Lo escribe un hook global `afterChange` / `afterDelete` en todas las colecciones y fichas, más los eventos de login. Registra crear, editar, cambios de estado editorial, publicar, despublicar, borrar, restaurar versión, altas, bajas, cambios de permisos, ingresos e intentos fallidos. Se conserva 2 años y después se archiva en R2.
 
 | Campo | Tipo |
 |---|---|
 | `quien`* | relación → `usuarios` |
 | `accion`* | texto |
-| `objetivo` | texto (colección e id) |
-| `antes` / `despues` | JSON |
+| `objetivo` | texto (colección, id y título) |
+| `campos` | texto múltiple (campos cambiados) |
+| `antes` / `despues` | JSON (solo campos cambiados) |
+| `ip` / `dispositivo` | texto |
 | `fecha`* | fecha y hora |
+
+Índices: `(quien, fecha)`, `(objetivo, fecha)`, `fecha`.
 
 ## medios (upload)
 
