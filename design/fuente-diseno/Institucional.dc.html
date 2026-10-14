@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Visión 96.5 FM — Institucional</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&amp;family=Public+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#13161D}a:hover{color:#A3330A}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', system-ui, sans-serif; color: #13161D; background: #FFFFFF; min-height: 100%;">
+<div style="background: #13161D; color: #FFFFFF;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 24px; min-height: 44px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; font-size: 13px;">
+<span style="color: #C9CCD3;">Lunes 12 de octubre de 2026 · Fray Bentos</span>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;">
+<span style="display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; background: #FF7A45;"></span><span style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #FF9A6E;">Al aire</span><span style="font-weight: 600;">Visión Temprana · Idilia Rodríguez</span></span>
+<a href="tel:099318578" style="color: #C9CCD3; text-decoration: none;">Llamá a la radio: <strong style="color: #FFFFFF;">099 318 578</strong></a>
+</div>
+</div>
+</div>
+
+<header style="border-bottom: 3px solid #13161D; position: relative; z-index: 20; background: #FFFFFF;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<a href="Main.dc.html" style="text-decoration: none; color: #13161D; display: flex; align-items: baseline; gap: 10px;">
+<span style="font-family: 'Newsreader', serif; font-weight: 700; font-size: 44px; letter-spacing: -0.03em; line-height: 1;">Visión</span>
+<span style="font-weight: 800; font-size: 13px; letter-spacing: 0.12em; color: {{accent}};">96.5 FM</span>
+</a>
+<nav aria-label="Principal" style="display: flex; flex-wrap: wrap; gap: 0 28px;">
+<sc-for list="{{ menu }}" as="g" hint-placeholder-count="4">
+<div style="position: relative;">
+<button type="button" onClick="{{ g.toggle }}" aria-expanded="{{ g.expanded }}" style="display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #13161D; font: 800 14px 'Public Sans', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: {{ g.line }};">{{ g.label }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+<sc-if value="{{ g.open }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; top: 100%; left: -18px; z-index: 30; min-width: 260px; background: #FFFFFF; border: 2px solid #13161D; display: flex; flex-direction: column;">
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+<a href="{{ it.href }}" style="padding: 13px 18px; border-bottom: 1px solid #D9D7D2; font-weight: 700; font-size: 15px; text-decoration: none;">{{ it.label }}</a>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</nav>
+<div style="display: flex; gap: 8px;">
+<button type="button" onClick="{{ toggle }}" style="display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 0; background: {{accent}}; color: #FFFFFF; font: 800 12px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">
+<span style="width: 8px; height: 8px; background: #FFFFFF;"></span>{{ liveLabel }}</button>
+</div>
+</div>
+</header>
+
+<aside aria-label="Publicidad" style="max-width: 1240px; margin: 0 auto; padding: 28px 24px 0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #545862;">Publicidad</span>
+<div style="width: 970px; max-width: 100%; height: 90px; box-sizing: border-box; background: #ECEAE5; border: 1px dashed #A9A59C; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 13px; font-weight: 700; text-align: center;">[ANUNCIO] · 970 × 90 · rotativo</div>
+<div aria-hidden="true" style="display: flex; gap: 6px;"><span style="width: 8px; height: 8px; background: #13161D;"></span><span style="width: 8px; height: 8px; background: #C9C5BC;"></span><span style="width: 8px; height: 8px; background: #C9C5BC;"></span></div>
+</aside>
+
+<main style="max-width: 1240px; margin: 0 auto; padding: 36px 24px 80px;">
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: {{accent}};">Institucional</span>
+<h1 style="margin: 10px 0 20px; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 64px; letter-spacing: -0.02em; line-height: 1;">Radio, noticias y cine en Fray Bentos</h1>
+<nav aria-label="Secciones institucionales" style="display: flex; flex-wrap: wrap; gap: 0 28px; border-top: 3px solid #13161D; border-bottom: 1px solid #D9D7D2; margin-bottom: 48px;">
+<a href="#nosotros" style="padding: 14px 0; font-weight: 800; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Quiénes somos</a>
+<a href="#equipo" style="padding: 14px 0; font-weight: 800; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Equipo</a>
+<a href="#ser-parte" style="padding: 14px 0; font-weight: 800; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Ser parte</a>
+<a href="#publicidad" style="padding: 14px 0; font-weight: 800; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Publicidad</a>
+<a href="#contacto" style="padding: 14px 0; font-weight: 800; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;">Contacto</a>
+</nav>
+
+<section id="nosotros" style="display: flex; flex-wrap: wrap; gap: 48px; padding-bottom: 40px;">
+<div style="flex: 1 1 320px; max-width: 760px; display: flex; flex-direction: column; gap: 14px;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 40px; line-height: 1;">Quiénes somos</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.65; color: #3B3F48;">Visión es un medio de Fray Bentos que reúne una radio, el 96.5 FM; una redacción de noticias locales; y Cinevisión, el cine que funciona en el mismo edificio.</p>
+<p style="margin: 0; font-size: 18px; line-height: 1.65; color: #3B3F48;">[MISIÓN O TEXTO INSTITUCIONAL: qué busca Visión y para quién trabaja.]</p>
+</div>
+</section>
+
+<section aria-label="Nuestra historia" style="margin-top: 8px; background: #13161D; color: #FFFFFF; padding: 48px 40px 56px;">
+<h2 style="margin: 0 0 40px; font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #FF9A6E;">Nuestra historia</h2>
+<div style="position: relative;">
+<span aria-hidden="true" style="position: absolute; top: 10px; left: 11px; right: 0; height: 2px; background: linear-gradient(90deg, #3A3F4B 0%, #3A3F4B 70%, #FF7A45 100%);"></span>
+<ol style="position: relative; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px;">
+<li style="position: relative; display: flex; flex-direction: column; gap: 10px; padding-top: 40px;">
+<span aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; background: #13161D; border: 3px solid #FF7A45;"></span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.02em; color: #FF9A6E;">2005</span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 20px;">Nace Visión FM</span>
+<span style="font-size: 15px; line-height: 1.55; color: #C9CCD3;">Idilia Rodríguez y Walter Sburlati fundan la primera Visión FM.</span>
+</li>
+<li style="position: relative; display: flex; flex-direction: column; gap: 10px; padding-top: 40px;">
+<span aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; background: #13161D; border: 3px solid #FF7A45;"></span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.02em; color: #FF9A6E;">2022</span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 20px;">Nueva etapa</span>
+<span style="font-size: 15px; line-height: 1.55; color: #C9CCD3;">Antonella y Germán Sburlati compran la radio.</span>
+</li>
+<li style="position: relative; display: flex; flex-direction: column; gap: 10px; padding-top: 40px;">
+<span aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; background: #13161D; border: 3px solid #FF7A45;"></span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.02em; color: #FF9A6E;">2023</span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 20px;">El regreso</span>
+<span style="font-size: 15px; line-height: 1.55; color: #C9CCD3;">Antonella asume la dirección general e Idilia vuelve a la conducción de Visión Temprana.</span>
+</li>
+<li style="position: relative; display: flex; flex-direction: column; gap: 10px; padding-top: 40px;">
+<span aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; background: #FF7A45; box-shadow: 0 0 0 6px rgba(255,122,69,0.25);"></span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 56px; line-height: 1; letter-spacing: -0.02em; color: #FFFFFF;">Hoy</span>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 20px;">Radio, noticias y cine</span>
+<span style="font-size: 15px; line-height: 1.55; color: #C9CCD3;">Visión reúne el 96.5 FM, la redacción de noticias y Cinevisión en un mismo edificio.</span>
+</li>
+</ol>
+</div>
+</section>
+
+<section id="equipo" style="padding: 64px 0 56px; border-bottom: 1px solid #D9D7D2;">
+<h2 style="margin: 0 0 8px; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 40px; line-height: 1;">Equipo</h2>
+<div style="display: flex; flex-direction: column; gap: 40px; margin-top: 24px;">
+<div>
+<h3 style="margin: 0 0 16px; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Dirección</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 32px;">
+<sc-for list="{{ leads }}" as="p" hint-placeholder-count="2">
+<div style="flex: 1 1 260px; max-width: 380px; display: flex; flex-direction: column; gap: 12px;">
+<div style="aspect-ratio: 4 / 5; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 14px; font-weight: 600;">[FOTO]</div>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.01em;">{{ p.name }}</span>
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}};">{{ p.role }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div>
+<h3 style="margin: 0 0 16px; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Producción general</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 32px;">
+<sc-for list="{{ prod }}" as="q" hint-placeholder-count="1">
+<div style="flex: 1 1 260px; max-width: 380px; display: flex; flex-direction: column; gap: 12px;">
+<div style="aspect-ratio: 4 / 5; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 14px; font-weight: 600;">[FOTO]</div>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 30px; line-height: 1.1; letter-spacing: -0.01em;">{{ q.name }}</span>
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}};">{{ q.role }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+<h3 style="margin: 40px 0 16px; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Conducción</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 28px;">
+<sc-for list="{{ hosts }}" as="h" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<div style="aspect-ratio: 1 / 1; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 13px; font-weight: 600;">[FOTO]</div>
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 19px;">{{ h.name }}</span>
+<span style="font-size: 14px; color: #545862;">{{ h.role }}</span>
+</div>
+</sc-for>
+</div>
+<h3 style="margin: 40px 0 16px; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Columnistas y colaboradores</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+<sc-for list="{{ cols }}" as="c" hint-placeholder-count="4">
+<div style="display: flex; gap: 14px; align-items: center; padding: 16px; border: 2px solid #13161D;">
+<div style="width: 72px; height: 72px; flex-shrink: 0; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 11px; font-weight: 600;">[FOTO]</div>
+<span style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}};">{{ c.topic }}</span><span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 19px;">{{ c.name }}</span><span style="font-size: 13px; color: #545862;">Columna {{ c.freq }}</span></span>
+</div>
+</sc-for>
+</div>
+<h3 style="margin: 40px 0 16px; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Equipo técnico</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 32px;">
+<sc-for list="{{ tech }}" as="t" hint-placeholder-count="4">
+<div style="display: flex; gap: 14px; align-items: center; padding: 14px 0; border-top: 1px solid #D9D7D2;">
+<div style="width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 10px; font-weight: 600;">[FOTO]</div>
+<span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-weight: 700; font-size: 16px;">{{ t.name }}</span><span style="font-size: 13px; color: #545862;">{{ t.role }}</span></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="ser-parte" style="padding: 56px 0; border-bottom: 1px solid #D9D7D2; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between;">
+<div style="flex: 1 1 480px; display: flex; flex-direction: column; gap: 12px;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 40px; line-height: 1;">Ser parte</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.65; color: #3B3F48;">[CÓMO SUMARSE A VISIÓN: columnistas, colaboradores, pasantías, propuestas de programas.]</p>
+</div>
+<a href="Sumarse.dc.html" style="display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; background: #13161D; color: #FFFFFF; text-decoration: none; font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Quiero sumarme →</a>
+</section>
+
+<section id="publicidad" style="padding: 56px 0; border-bottom: 1px solid #D9D7D2;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 28px;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 40px; line-height: 1;">Publicidad</h2>
+<p style="margin: 0; font-size: 18px; color: #3B3F48;">Tu marca en la radio, en el sitio y en el cine.</p>
+</div>
+<a href="Tarifas.dc.html" style="display: flex; align-items: center; min-height: 52px; padding: 0 24px; background: {{accent}}; color: #FFFFFF; text-decoration: none; font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Pedir tarifas →</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+<div style="border: 2px solid #13161D; padding: 24px; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}};">Radio</span><span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 24px;">Spots y auspicios</span><span style="font-size: 15px; line-height: 1.55; color: #3B3F48;">[DETALLE: tandas, menciones, auspicio de programas.]</span></div>
+<div style="border: 2px solid #13161D; padding: 24px; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}};">Web</span><span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 24px;">Banners en el sitio</span><span style="font-size: 15px; line-height: 1.55; color: #3B3F48;">Espacio rotativo en todas las páginas: 970 × 90 y 728 × 90 en computadora, 320 × 100 en celular.</span></div>
+<div style="border: 2px solid #13161D; padding: 24px; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: {{accent}};">Cine</span><span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 24px;">Cinevisión</span><span style="font-size: 15px; line-height: 1.55; color: #3B3F48;">[A CONFIRMAR: avisos en pantalla antes de cada función.]</span></div>
+</div>
+</section>
+
+<section id="contacto" style="padding-top: 56px; display: flex; flex-wrap: wrap; gap: 48px;">
+<div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 14px;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 40px; line-height: 1;">Contacto</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #545862;">Para noticias, avisos, publicidad o salir al aire.</p>
+<span style="font-size: 16px; font-weight: 700;">[DIRECCIÓN], Fray Bentos, Río Negro</span>
+<div style="display: flex; gap: 10px; padding: 6px 0;"><a href="#" aria-label="Instagram de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #13161D; color: #13161D; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></a><a href="https://www.facebook.com/VisionFMFrayBentos/" aria-label="Facebook de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #13161D; color: #13161D; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14c3 0 5 1.5 5 4.5"></path></svg></a><a href="https://wa.me/59899318578" aria-label="WhatsApp de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #13161D; color: #13161D; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.5-4A8 8 0 1 1 8 18.5z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"></path></svg></a></div>
+</div>
+<form style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 16px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">Nombre<input type="text" style="min-height: 48px; padding: 0 12px; border: 0; border-bottom: 2px solid #13161D; border-radius: 0; background: #F3F2EF; font: 400 16px 'Public Sans', sans-serif;"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">Email<input type="email" style="min-height: 48px; padding: 0 12px; border: 0; border-bottom: 2px solid #13161D; border-radius: 0; background: #F3F2EF; font: 400 16px 'Public Sans', sans-serif;"></label>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">Motivo<select style="min-height: 48px; padding: 0 12px; border: 0; border-bottom: 2px solid #13161D; border-radius: 0; background: #F3F2EF; font: 400 16px 'Public Sans', sans-serif;"><option>Noticia o aviso</option><option>Publicidad</option><option>Ser parte</option><option>Cinevisión</option><option>Otro</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">Mensaje<textarea rows="4" style="padding: 12px; border: 0; border-bottom: 2px solid #13161D; border-radius: 0; background: #F3F2EF; font: 400 16px 'Public Sans', sans-serif; resize: vertical;"></textarea></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-weight: 800; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;">Adjuntar archivo <span style="font-weight: 400; letter-spacing: 0; text-transform: none; color: #545862;">(opcional)</span><span style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 12px; border: 2px dashed #A9A59C; background: #F3F2EF; font: 400 15px 'Public Sans', sans-serif; letter-spacing: 0; text-transform: none; color: #3B3F48;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.5l-8.5 8.5a5 5 0 0 1-7-7L14 5.5a3.5 3.5 0 0 1 5 5L10.5 19a2 2 0 0 1-3-3l8-8"></path></svg><span>Elegí un archivo: foto, audio, video o documento · hasta [X] MB</span><input type="file" style="position: absolute; width: 1px; height: 1px; opacity: 0;"></span></label>
+<button type="submit" style="align-self: flex-start; min-height: 48px; padding: 0 24px; border: 0; border-radius: 0; background: #13161D; color: #FFFFFF; font: 800 13px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase;">Enviar mensaje →</button>
+</form>
+</section>
+</main>
+
+<footer style="background: #13161D; color: #C9CCD3;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 28px; display: flex; flex-direction: column; gap: 40px;">
+<div style="display: flex; flex-wrap: wrap; gap: 48px;">
+<div style="flex: 2 1 300px; display: flex; flex-direction: column; gap: 16px;">
+<span style="display: flex; align-items: baseline; gap: 10px; color: #FFFFFF;"><span style="font-family: 'Newsreader', serif; font-weight: 700; font-size: 40px; line-height: 1;">Visión</span><span style="font-weight: 800; font-size: 13px; letter-spacing: 0.12em; color: #FF9A6E;">96.5 FM</span></span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; max-width: 340px;">La radio de Fray Bentos desde 2005. Noticias locales, cultura y compañía, en el 96.5 FM y online.</p>
+</div>
+<nav aria-label="La radio" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">La radio</h2>
+<a href="Main.dc.html#programacion" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Programación</a>
+<a href="Entrevistas.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Entrevistas</a>
+</nav>
+<nav aria-label="Cinevisión" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Cinevisión</h2>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Cartelera</a>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Estrenos</a>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Entradas</a>
+</nav>
+<nav aria-label="Noticias" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Noticias</h2>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Locales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Nacionales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Policiales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Deportes</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Cultura</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Opinión</a>
+</nav>
+<div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Institucional</h2>
+<a href="Main.dc.html#nosotros" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Quiénes somos</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Ser parte</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Publicidad</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Contacto</a>
+<span style="padding: 6px 0; font-size: 15px;">Fray Bentos, Río Negro, Uruguay</span>
+<div style="display: flex; gap: 10px; padding: 6px 0;"><a href="#" aria-label="Instagram de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></a><a href="https://www.facebook.com/VisionFMFrayBentos/" aria-label="Facebook de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14c3 0 5 1.5 5 4.5"></path></svg></a><a href="https://wa.me/59899318578" aria-label="WhatsApp de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.5-4A8 8 0 1 1 8 18.5z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"></path></svg></a></div>
+</div>
+</div>
+<div style="border-top: 1px solid #2C313C; padding-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 13px; color: #9EA3AE;">
+<span>© 2026 Visión 96.5 FM. Todos los derechos reservados.</span>
+<nav aria-label="Legal" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;">
+<a href="#" style="color: #9EA3AE;">Aviso legal</a>
+<a href="#" style="color: #9EA3AE;">Privacidad</a>
+<a href="#" style="color: #9EA3AE;">Cookies</a>
+<a href="#" style="color: #9EA3AE;">Condiciones de uso</a>
+<a href="#publicidad" style="color: #9EA3AE;">Publicidad</a>
+<span>Desarrollado por <a href="#" style="color: #FFFFFF; font-weight: 600;">Labs Fray Bentos</a></span>
+</nav>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C03A0B","options":["#C03A0B","#1D4ED8","#0F766E","#7C2D92"]},"$preview":{"width":1440,"height":4830}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { playing: false }; }
+  navVals() {
+    const B = 'Main.dc.html';
+    const cur = 'inst';
+    const accent = this.props.accent ?? '#C03A0B';
+    const open = this.state.menu || '';
+    const groups = [
+      { key: 'radio', label: 'Radio', items: [['En vivo', B + '#inicio'], ['Programación', 'Programacion.dc.html'], ['Entrevistas', 'Entrevistas.dc.html'], ['Conductores', 'Programacion.dc.html#conductores']] },
+      { key: 'noticias', label: 'Noticias', items: [['Últimas noticias', 'Noticias.dc.html'], ['Locales', 'Noticias.dc.html'], ['Nacionales', 'Noticias.dc.html'], ['Policiales', 'Noticias.dc.html'], ['Deportes', 'Noticias.dc.html'], ['Cultura', 'Noticias.dc.html'], ['Opinión', 'Noticias.dc.html']] },
+      { key: 'cine', label: 'Cinevisión', items: [['Cartelera', 'Cinevision.dc.html#cartelera'], ['Estrenos', 'Cinevision.dc.html#estrenos'], ['Entradas y precios', 'Cinevision.dc.html#entradas'], ['Cómo llegar', 'Cinevision.dc.html#entradas']] },
+      { key: 'inst', label: 'Institucional', items: [['Quiénes somos', 'Institucional.dc.html#nosotros'], ['Equipo', 'Institucional.dc.html#equipo'], ['Ser parte', 'Institucional.dc.html#ser-parte'], ['Publicidad', 'Institucional.dc.html#publicidad'], ['Contacto', 'Institucional.dc.html#contacto']] }
+    ];
+    return {
+      menu: groups.map((g) => ({
+        label: g.label,
+        open: open === g.key,
+        expanded: open === g.key ? 'true' : 'false',
+        line: g.key === cur ? 'inset 0 -3px 0 ' + accent : 'none',
+        toggle: () => this.setState({ menu: open === g.key ? '' : g.key }),
+        items: g.items.map((it) => ({ label: it[0], href: it[1] }))
+      })),
+      liveLabel: this.state.playing ? 'Pausar' : 'Escuchar en vivo',
+      toggle: () => this.setState({ playing: !this.state.playing }),
+      searchOpen: !!this.state.search,
+      searchExpanded: this.state.search ? 'true' : 'false',
+      toggleSearch: () => this.setState({ search: !this.state.search })
+    };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#C03A0B';
+
+    const hosts = [
+      { name: 'Idilia Rodríguez', role: 'Producción y conducción' },
+      { name: 'Luper Orellano', role: 'Conducción' },
+      { name: 'Mariana Ferreyra', role: 'Conducción' },
+      { name: 'Meylin Cóceres', role: 'Conducción' },
+      { name: 'Antonio Albarracín', role: 'Conducción' },
+      { name: 'Paolo Piazzolli', role: 'Conducción' }
+    ];
+
+    const pageVals = {
+      hosts: hosts.slice(1),
+      tech: [1, 2, 3, 4].map(() => ({ name: '[NOMBRE]', role: '[ROL TÉCNICO]' })),
+      cols: [
+        { topic: 'Política', name: '[NOMBRE]', freq: '[SEMANAL / MENSUAL]' },
+        { topic: 'Arte y cultura', name: '[NOMBRE]', freq: '[SEMANAL / MENSUAL]' },
+        { topic: 'Cine', name: '[NOMBRE]', freq: '[SEMANAL / MENSUAL]' },
+        { topic: 'Historia local', name: '[NOMBRE]', freq: '[SEMANAL / MENSUAL]' }
+      ],
+      leads: [
+        { name: 'Antonella Sburlati', role: 'Dirección general' },
+        { name: 'Germán Sburlati', role: 'Gestión comercial y administrativa' }
+      ],
+      prod: [
+        { name: 'Idilia Rodríguez', role: 'Producción general y línea editorial' }
+      ]
+    };
+    return {
+      ...this.navVals(),
+      accent: accent,
+      ...pageVals
+    };
+  }
+}
+</script>
+</body>
+</html>

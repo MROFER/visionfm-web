@@ -1,0 +1,254 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Cinevision.dc.html": {
+      "expand": "fill",
+      "h": 2760,
+      "is_interactive": true,
+      "title": "Cinevisión · Escritorio",
+      "w": 1440,
+      "x": 6080,
+      "y": 0
+    },
+    "Contacto.dc.html": {
+      "expand": "fill",
+      "h": 1550,
+      "is_interactive": true,
+      "title": "Contacto · Escritorio",
+      "w": 1440,
+      "x": 13680,
+      "y": 0
+    },
+    "Entrevistas.dc.html": {
+      "expand": "fill",
+      "h": 2400,
+      "is_interactive": true,
+      "title": "Entrevistas · Escritorio",
+      "w": 1440,
+      "x": 9120,
+      "y": 0
+    },
+    "Institucional.dc.html": {
+      "expand": "fill",
+      "h": 4830,
+      "is_interactive": true,
+      "title": "Institucional · Escritorio",
+      "w": 1440,
+      "x": 7600,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 3640,
+      "is_interactive": true,
+      "title": "Inicio · Escritorio",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Mobile-Cinevision.dc.html": {
+      "h": 2660,
+      "is_interactive": true,
+      "title": "Cinevisión · Celular",
+      "w": 390,
+      "x": 2350,
+      "y": 4420
+    },
+    "Mobile-Contacto.dc.html": {
+      "h": 1930,
+      "is_interactive": true,
+      "title": "Contacto · Celular",
+      "w": 390,
+      "x": 4700,
+      "y": 4420
+    },
+    "Mobile-EnVivo.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "title": "En vivo · Celular",
+      "w": 390,
+      "x": 470,
+      "y": 4420
+    },
+    "Mobile-Entrevistas.dc.html": {
+      "h": 2620,
+      "is_interactive": true,
+      "title": "Entrevistas · Celular",
+      "w": 390,
+      "x": 3290,
+      "y": 4420
+    },
+    "Mobile-Inicio.dc.html": {
+      "h": 4750,
+      "is_interactive": true,
+      "title": "Inicio · Celular",
+      "w": 390,
+      "x": 0,
+      "y": 4420
+    },
+    "Mobile-Institucional.dc.html": {
+      "h": 6060,
+      "is_interactive": true,
+      "title": "Institucional · Celular",
+      "w": 390,
+      "x": 2820,
+      "y": 4420
+    },
+    "Mobile-Nota.dc.html": {
+      "h": 2590,
+      "is_interactive": true,
+      "title": "Nota · Celular",
+      "w": 390,
+      "x": 1410,
+      "y": 4420
+    },
+    "Mobile-Noticias.dc.html": {
+      "h": 3030,
+      "is_interactive": true,
+      "title": "Noticias · Celular",
+      "w": 390,
+      "x": 940,
+      "y": 4420
+    },
+    "Mobile-Pelicula.dc.html": {
+      "h": 2990,
+      "is_interactive": true,
+      "title": "Película (ficha) · Celular",
+      "w": 390,
+      "x": 5170,
+      "y": 4420
+    },
+    "Mobile-Programacion.dc.html": {
+      "h": 2780,
+      "is_interactive": true,
+      "title": "Programación · Celular",
+      "w": 390,
+      "x": 1880,
+      "y": 4420
+    },
+    "Mobile-Sumarse.dc.html": {
+      "h": 2670,
+      "is_interactive": true,
+      "title": "Quiero sumarme · Celular",
+      "w": 390,
+      "x": 3760,
+      "y": 4420
+    },
+    "Mobile-Tarifas.dc.html": {
+      "h": 2780,
+      "is_interactive": true,
+      "title": "Pedir tarifas · Celular",
+      "w": 390,
+      "x": 4230,
+      "y": 4420
+    },
+    "Nota.dc.html": {
+      "expand": "fill",
+      "h": 2500,
+      "is_interactive": true,
+      "title": "Nota · Escritorio",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Noticias.dc.html": {
+      "expand": "fill",
+      "h": 2700,
+      "is_interactive": true,
+      "title": "Noticias · Escritorio",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Pelicula.dc.html": {
+      "expand": "fill",
+      "h": 2620,
+      "is_interactive": true,
+      "title": "Película (ficha) · Escritorio",
+      "w": 1440,
+      "x": 15200,
+      "y": 0
+    },
+    "Programacion.dc.html": {
+      "expand": "fill",
+      "h": 2190,
+      "is_interactive": true,
+      "title": "Programación · Escritorio",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Sumarse.dc.html": {
+      "expand": "fill",
+      "h": 1890,
+      "is_interactive": true,
+      "title": "Quiero sumarme · Escritorio",
+      "w": 1440,
+      "x": 10640,
+      "y": 0
+    },
+    "Tarifas.dc.html": {
+      "expand": "fill",
+      "h": 1840,
+      "is_interactive": true,
+      "title": "Pedir tarifas · Escritorio",
+      "w": 1440,
+      "x": 12160,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-12T15:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "celular": {
+      "kind": "title1",
+      "maxW": 1800,
+      "text": "Celular",
+      "w": 240,
+      "x": 0,
+      "y": 4120
+    },
+    "titulo": {
+      "kind": "title1",
+      "maxW": 8000,
+      "text": "Visión 96.5 FM — Propuesta de rediseño · Labs Fray Bentos",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Noticias.dc.html",
+    "Nota.dc.html",
+    "Programacion.dc.html",
+    "Cinevision.dc.html",
+    "Institucional.dc.html",
+    "Entrevistas.dc.html",
+    "Sumarse.dc.html",
+    "Tarifas.dc.html",
+    "Contacto.dc.html",
+    "Pelicula.dc.html",
+    "Mobile-Inicio.dc.html",
+    "Mobile-EnVivo.dc.html",
+    "Mobile-Noticias.dc.html",
+    "Mobile-Nota.dc.html",
+    "Mobile-Programacion.dc.html",
+    "Mobile-Cinevision.dc.html",
+    "Mobile-Institucional.dc.html",
+    "Mobile-Entrevistas.dc.html",
+    "Mobile-Sumarse.dc.html",
+    "Mobile-Tarifas.dc.html",
+    "Mobile-Contacto.dc.html",
+    "Mobile-Pelicula.dc.html"
+  ],
+  "pages": [],
+  "title": "Visión 96.5 FM — Rediseño web y mobile"
+}

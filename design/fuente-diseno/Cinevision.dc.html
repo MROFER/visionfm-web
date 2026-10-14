@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Visión 96.5 FM — Cinevisión</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Libre+Franklin:wght@500;600;700;800&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&amp;family=Public+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#13161D}a:hover{color:#A3330A}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', system-ui, sans-serif; color: #13161D; background: #FFFFFF; min-height: 100%;">
+<div style="background: #13161D; color: #FFFFFF;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 24px; min-height: 44px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; font-size: 13px;">
+<span style="color: #C9CCD3;">Lunes 12 de octubre de 2026 · Fray Bentos</span>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;">
+<span style="display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; background: #FF7A45;"></span><span style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #FF9A6E;">Al aire</span><span style="font-weight: 600;">Visión Temprana · Idilia Rodríguez</span></span>
+<a href="tel:099318578" style="color: #C9CCD3; text-decoration: none;">Llamá a la radio: <strong style="color: #FFFFFF;">099 318 578</strong></a>
+</div>
+</div>
+</div>
+
+<header style="border-bottom: 3px solid #13161D; position: relative; z-index: 20; background: #FFFFFF;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<a href="Main.dc.html" style="text-decoration: none; color: #13161D; display: flex; align-items: baseline; gap: 10px;">
+<span style="font-family: 'Newsreader', serif; font-weight: 700; font-size: 44px; letter-spacing: -0.03em; line-height: 1;">Visión</span>
+<span style="font-weight: 800; font-size: 13px; letter-spacing: 0.12em; color: {{accent}};">96.5 FM</span>
+</a>
+<nav aria-label="Principal" style="display: flex; flex-wrap: wrap; gap: 0 28px;">
+<sc-for list="{{ menu }}" as="g" hint-placeholder-count="4">
+<div style="position: relative;">
+<button type="button" onClick="{{ g.toggle }}" aria-expanded="{{ g.expanded }}" style="display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #13161D; font: 800 14px 'Public Sans', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: {{ g.line }};">{{ g.label }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+<sc-if value="{{ g.open }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; top: 100%; left: -18px; z-index: 30; min-width: 260px; background: #FFFFFF; border: 2px solid #13161D; display: flex; flex-direction: column;">
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+<a href="{{ it.href }}" style="padding: 13px 18px; border-bottom: 1px solid #D9D7D2; font-weight: 700; font-size: 15px; text-decoration: none;">{{ it.label }}</a>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</nav>
+<div style="display: flex; gap: 8px;">
+<button type="button" onClick="{{ toggle }}" style="display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 0; background: {{accent}}; color: #FFFFFF; font: 800 12px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">
+<span style="width: 8px; height: 8px; background: #FFFFFF;"></span>{{ liveLabel }}</button>
+</div>
+</div>
+</header>
+
+<section aria-roledescription="carrusel" aria-label="Cinevisión" style="position: relative; overflow: hidden; height: 640px; background: {{ carCur.bg }}; color: #3B3F48;">
+<div role="group" aria-roledescription="imagen" aria-label="{{ carCur.aria }}" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding-bottom: 50px; text-align: center;">
+<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#7A7E88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path></svg>
+<span style="font-size: 15px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #545862;">{{ carCur.label }}</span>
+<span style="font-size: 13px; color: #6B6F78;">1440 × 640 px</span>
+</div>
+<button type="button" onClick="{{ carPrev }}" aria-label="Imagen anterior" style="position: absolute; left: 32px; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; border: 0; background: rgba(19,22,29,0.55); color: #FFFFFF; font-size: 24px; cursor: pointer;">‹</button>
+<button type="button" onClick="{{ carNext }}" aria-label="Imagen siguiente" style="position: absolute; right: 32px; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; border: 0; background: rgba(19,22,29,0.55); color: #FFFFFF; font-size: 24px; cursor: pointer;">›</button>
+<nav aria-label="Imágenes del carrusel" style="position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center; align-items: center; gap: 12px;"><sc-for list="{{ carFrames }}" as="f" hint-placeholder-count="5"><button type="button" onClick="{{ f.go }}" aria-label="{{ f.aria }}" aria-current="{{ f.current }}" style="width: 42px; height: 30px; padding: 2px; box-sizing: border-box; border: 0; border-radius: 1px; background: #1C1D21; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; opacity: {{ f.opacity }}; transform: {{ f.scale }}; box-shadow: {{ f.ring }}; transition: transform 0.2s, opacity 0.2s;"><span aria-hidden="true" style="display: flex; justify-content: space-around; padding: 0 2px;"><span style="width: 4px; height: 3px; border-radius: 1px; background: #D9D7D2;"></span><span style="width: 4px; height: 3px; border-radius: 1px; background: #D9D7D2;"></span><span style="width: 4px; height: 3px; border-radius: 1px; background: #D9D7D2;"></span></span><span style="flex: 1; margin: 2px 0; background: {{ f.win }};"></span><span aria-hidden="true" style="display: flex; justify-content: space-around; padding: 0 2px;"><span style="width: 4px; height: 3px; border-radius: 1px; background: #D9D7D2;"></span><span style="width: 4px; height: 3px; border-radius: 1px; background: #D9D7D2;"></span><span style="width: 4px; height: 3px; border-radius: 1px; background: #D9D7D2;"></span></span></button></sc-for></nav>
+</section>
+
+<main style="max-width: 1240px; margin: 0 auto; padding: 40px 24px 80px;">
+<section id="cartelera">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; padding-bottom: 12px; border-bottom: 3px solid #13161D;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 44px; line-height: 1;">Cartelera</h2>
+<span style="font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">Del 09/10 al 11/10</span>
+</div>
+<nav aria-label="Días de función" style="display: flex; flex-wrap: wrap; gap: 0 28px; border-bottom: 1px solid #D9D7D2; margin-bottom: 32px;">
+<sc-for list="{{ days }}" as="d" hint-placeholder-count="4">
+<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="padding: 14px 0; min-height: 48px; border: 0; border-radius: 0; background: transparent; color: #13161D; font: {{ d.weight }} 14px 'Public Sans', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: {{ d.line }};">{{ d.label }}</button>
+</sc-for>
+</nav>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px;">
+<sc-for list="{{ films }}" as="f" hint-placeholder-count="4">
+<a href="Pelicula.dc.html" aria-label="{{ f.title }}" style="display: flex; aspect-ratio: 2 / 3; background: #E6E3DC; align-items: center; justify-content: center; color: #545862; font-weight: 600; text-decoration: none;">[AFICHE]</a>
+</sc-for>
+</div>
+</section>
+
+<section id="estrenos" style="padding-top: 64px;">
+<h2 style="margin: 0 0 24px; padding-bottom: 12px; border-bottom: 3px solid #13161D; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 36px; line-height: 1;">Próximos estrenos</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px;">
+<sc-for list="{{ soon }}" as="f" hint-placeholder-count="5">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="aspect-ratio: 2 / 3; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 13px; font-weight: 600;">[AFICHE]</div>
+<span style="font-size: 14px; font-weight: 800; letter-spacing: 0.04em; color: {{accent}};">{{ f.date }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section id="entradas" style="padding-top: 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px;">
+<div style="display: flex; flex-direction: column; gap: 14px; padding-top: 14px; border-top: 3px solid #13161D;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 30px;">Entradas y precios</h2>
+<dl style="margin: 0; display: flex; flex-direction: column;">
+<div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #D9D7D2;"><dt>General</dt><dd style="margin: 0; font-weight: 800;">[PRECIO]</dd></div>
+<div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #D9D7D2;"><dt>[PROMOCIÓN / DESCUENTO]</dt><dd style="margin: 0; font-weight: 800;">[PRECIO]</dd></div>
+</dl>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #3B3F48;">[CÓMO SE COMPRAN LAS ENTRADAS: boletería, reserva por teléfono, etc.]</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; padding-top: 14px; border-top: 3px solid #13161D;">
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 30px;">Cómo llegar</h2>
+<div style="height: 200px; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-weight: 600;">[MAPA]</div>
+<p style="margin: 0; font-size: 15px;">[DIRECCIÓN], Fray Bentos · <a href="tel:099318578" style="font-weight: 700;">099 318 578</a></p>
+</div>
+</section>
+</main>
+
+<footer style="background: #13161D; color: #C9CCD3;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 28px; display: flex; flex-direction: column; gap: 40px;">
+<div style="display: flex; flex-wrap: wrap; gap: 48px;">
+<div style="flex: 2 1 300px; display: flex; flex-direction: column; gap: 16px;">
+<span style="display: flex; align-items: baseline; gap: 10px; color: #FFFFFF;"><span style="font-family: 'Newsreader', serif; font-weight: 700; font-size: 40px; line-height: 1;">Visión</span><span style="font-weight: 800; font-size: 13px; letter-spacing: 0.12em; color: #FF9A6E;">96.5 FM</span></span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; max-width: 340px;">La radio de Fray Bentos desde 2005. Noticias locales, cultura y compañía, en el 96.5 FM y online.</p>
+</div>
+<nav aria-label="La radio" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">La radio</h2>
+<a href="Main.dc.html#programacion" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Programación</a>
+<a href="Entrevistas.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Entrevistas</a>
+</nav>
+<nav aria-label="Cinevisión" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Cinevisión</h2>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Cartelera</a>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Estrenos</a>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Entradas</a>
+</nav>
+<nav aria-label="Noticias" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Noticias</h2>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Locales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Nacionales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Policiales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Deportes</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Cultura</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Opinión</a>
+</nav>
+<div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Institucional</h2>
+<a href="Main.dc.html#nosotros" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Quiénes somos</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Ser parte</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Publicidad</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Contacto</a>
+<span style="padding: 6px 0; font-size: 15px;">Fray Bentos, Río Negro, Uruguay</span>
+<div style="display: flex; gap: 10px; padding: 6px 0;"><a href="#" aria-label="Instagram de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></a><a href="https://www.facebook.com/VisionFMFrayBentos/" aria-label="Facebook de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14c3 0 5 1.5 5 4.5"></path></svg></a><a href="https://wa.me/59899318578" aria-label="WhatsApp de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.5-4A8 8 0 1 1 8 18.5z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"></path></svg></a></div>
+</div>
+</div>
+<div style="border-top: 1px solid #2C313C; padding-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 13px; color: #9EA3AE;">
+<span>© 2026 Visión 96.5 FM. Todos los derechos reservados.</span>
+<nav aria-label="Legal" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;">
+<a href="#" style="color: #9EA3AE;">Aviso legal</a>
+<a href="#" style="color: #9EA3AE;">Privacidad</a>
+<a href="#" style="color: #9EA3AE;">Cookies</a>
+<a href="#" style="color: #9EA3AE;">Condiciones de uso</a>
+<a href="Institucional.dc.html#publicidad" style="color: #9EA3AE;">Publicidad</a>
+<span>Desarrollado por <a href="#" style="color: #FFFFFF; font-weight: 600;">Labs Fray Bentos</a></span>
+</nav>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C03A0B","options":["#C03A0B","#1D4ED8","#0F766E","#7C2D92"]},"$preview":{"width":1440,"height":2760}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { playing: false }; }
+  navVals() {
+    const B = 'Main.dc.html';
+    const cur = 'cine';
+    const accent = this.props.accent ?? '#C03A0B';
+    const open = this.state.menu || '';
+    const groups = [
+      { key: 'radio', label: 'Radio', items: [['En vivo', B + '#inicio'], ['Programación', 'Programacion.dc.html'], ['Entrevistas', 'Entrevistas.dc.html'], ['Conductores', 'Programacion.dc.html#conductores']] },
+      { key: 'noticias', label: 'Noticias', items: [['Últimas noticias', 'Noticias.dc.html'], ['Locales', 'Noticias.dc.html'], ['Nacionales', 'Noticias.dc.html'], ['Policiales', 'Noticias.dc.html'], ['Deportes', 'Noticias.dc.html'], ['Cultura', 'Noticias.dc.html'], ['Opinión', 'Noticias.dc.html']] },
+      { key: 'cine', label: 'Cinevisión', items: [['Cartelera', 'Cinevision.dc.html#cartelera'], ['Estrenos', 'Cinevision.dc.html#estrenos'], ['Entradas y precios', 'Cinevision.dc.html#entradas'], ['Cómo llegar', 'Cinevision.dc.html#entradas']] },
+      { key: 'inst', label: 'Institucional', items: [['Quiénes somos', 'Institucional.dc.html#nosotros'], ['Equipo', 'Institucional.dc.html#equipo'], ['Ser parte', 'Institucional.dc.html#ser-parte'], ['Publicidad', 'Institucional.dc.html#publicidad'], ['Contacto', 'Institucional.dc.html#contacto']] }
+    ];
+    return {
+      menu: groups.map((g) => ({
+        label: g.label,
+        open: open === g.key,
+        expanded: open === g.key ? 'true' : 'false',
+        line: g.key === cur ? 'inset 0 -3px 0 ' + accent : 'none',
+        toggle: () => this.setState({ menu: open === g.key ? '' : g.key }),
+        items: g.items.map((it) => ({ label: it[0], href: it[1] }))
+      })),
+      liveLabel: this.state.playing ? 'Pausar' : 'Escuchar en vivo',
+      toggle: () => this.setState({ playing: !this.state.playing }),
+      searchOpen: !!this.state.search,
+      searchExpanded: this.state.search ? 'true' : 'false',
+      toggleSearch: () => this.setState({ search: !this.state.search })
+    };
+  }
+  carVals() {
+    const slides = [
+      { label: 'Imagen principal', bg: '#D4D2CD' },
+      { label: 'Imagen 2', bg: '#CBC9C3' },
+      { label: 'Imagen 3', bg: '#D4D2CD' },
+      { label: 'Imagen 4', bg: '#CBC9C3' },
+      { label: 'Imagen 5', bg: '#D4D2CD' }
+    ];
+    const n = slides.length;
+    const i = this.state.slide || 0;
+    const go = (k) => this.setState({ slide: (k + n) % n });
+    return {
+      carCur: { bg: slides[i].bg, label: slides[i].label, aria: (i + 1) + ' de ' + n + ': ' + slides[i].label },
+      carPrev: () => go(i - 1),
+      carNext: () => go(i + 1),
+      carFrames: slides.map((s, k) => ({
+        win: k === i ? '#E8E6E1' : '#6E6A62',
+        opacity: k === i ? '1' : '0.75',
+        scale: k === i ? 'scale(1.15)' : 'scale(1)',
+        ring: k === i ? '0 0 0 1px #FFFFFF, 0 2px 6px rgba(0,0,0,0.35)' : '0 1px 3px rgba(0,0,0,0.3)',
+        current: k === i ? 'true' : 'false',
+        aria: 'Ver imagen ' + (k + 1) + ' de ' + n,
+        go: () => go(k)
+      }))
+    };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#C03A0B';
+
+    const hosts = [
+      { name: 'Idilia Rodríguez', role: 'Producción y conducción' },
+      { name: 'Luper Orellano', role: 'Conducción' },
+      { name: 'Mariana Ferreyra', role: 'Conducción' },
+      { name: 'Meylin Cóceres', role: 'Conducción' },
+      { name: 'Antonio Albarracín', role: 'Conducción' },
+      { name: 'Paolo Piazzolli', role: 'Conducción' }
+    ];
+
+    const sel = this.state.cday || 'Todos';
+    const all = [
+      { title: '[PELÍCULA DE ESTRENO]', meta: '[GÉNERO] · [DURACIÓN] · [CALIFICACIÓN]', isNew: true, shows: [['Vie 09', '[HORA]'], ['Sáb 10', '[HORA]'], ['Dom 11', '[HORA]']] },
+      { title: '[PELÍCULA]', meta: '[GÉNERO] · [DURACIÓN] · [CALIFICACIÓN]', isNew: false, shows: [['Vie 09', '[HORA]'], ['Sáb 10', '[HORA]']] },
+      { title: '[PELÍCULA]', meta: '[GÉNERO] · [DURACIÓN] · [CALIFICACIÓN]', isNew: false, shows: [['Sáb 10', '[HORA]'], ['Dom 11', '[HORA]']] },
+      { title: '[PELÍCULA]', meta: '[GÉNERO] · [DURACIÓN] · [CALIFICACIÓN]', isNew: false, shows: [['Dom 11', '[HORA]']] }
+    ];
+    const films = all.map((f) => ({ title: f.title, meta: f.meta, isNew: f.isNew, shows: f.shows.filter((s) => sel === 'Todos' || s[0] === sel).map((s) => ({ day: s[0], time: s[1] })) })).filter((f) => f.shows.length > 0);
+    const pageVals = {
+      films: films,
+      soon: [1, 2, 3, 4, 5].map(() => ({ title: '[PELÍCULA]', date: 'Estreno: [FECHA]' })),
+      days: ['Todos', 'Vie 09', 'Sáb 10', 'Dom 11'].map((d) => ({ label: d, on: sel === d ? 'true' : 'false', weight: sel === d ? '800' : '600', line: sel === d ? 'inset 0 -3px 0 ' + accent : 'none', pick: () => this.setState({ cday: d }) }))
+    };
+    return {
+      ...this.navVals(),
+      accent: accent,
+      ...pageVals,
+      ...this.carVals()
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Visión 96.5 FM — Entrevistas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800&amp;family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&amp;family=Public+Sans:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#13161D}a:hover{color:#A3330A}
+</style>
+</helmet>
+<div style="font-family: 'Public Sans', system-ui, sans-serif; color: #13161D; background: #FFFFFF; min-height: 100%;">
+<div style="background: #13161D; color: #FFFFFF;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 24px; min-height: 44px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; font-size: 13px;">
+<span style="color: #C9CCD3;">Lunes 12 de octubre de 2026 · Fray Bentos</span>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;">
+<span style="display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; background: #FF7A45;"></span><span style="font-weight: 800; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #FF9A6E;">Al aire</span><span style="font-weight: 600;">Visión Temprana · Idilia Rodríguez</span></span>
+<a href="tel:099318578" style="color: #C9CCD3; text-decoration: none;">Llamá a la radio: <strong style="color: #FFFFFF;">099 318 578</strong></a>
+</div>
+</div>
+</div>
+
+<header style="border-bottom: 3px solid #13161D; position: relative; z-index: 20; background: #FFFFFF;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<a href="Main.dc.html" style="text-decoration: none; color: #13161D; display: flex; align-items: baseline; gap: 10px;">
+<span style="font-family: 'Newsreader', serif; font-weight: 700; font-size: 44px; letter-spacing: -0.03em; line-height: 1;">Visión</span>
+<span style="font-weight: 800; font-size: 13px; letter-spacing: 0.12em; color: {{accent}};">96.5 FM</span>
+</a>
+<nav aria-label="Principal" style="display: flex; flex-wrap: wrap; gap: 0 28px;">
+<sc-for list="{{ menu }}" as="g" hint-placeholder-count="4">
+<div style="position: relative;">
+<button type="button" onClick="{{ g.toggle }}" aria-expanded="{{ g.expanded }}" style="display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #13161D; font: 800 14px 'Public Sans', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: {{ g.line }};">{{ g.label }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+<sc-if value="{{ g.open }}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; top: 100%; left: -18px; z-index: 30; min-width: 260px; background: #FFFFFF; border: 2px solid #13161D; display: flex; flex-direction: column;">
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+<a href="{{ it.href }}" style="padding: 13px 18px; border-bottom: 1px solid #D9D7D2; font-weight: 700; font-size: 15px; text-decoration: none;">{{ it.label }}</a>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</nav>
+<div style="display: flex; gap: 8px;">
+<button type="button" onClick="{{ toggle }}" style="display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 18px; border: 0; border-radius: 0; background: {{accent}}; color: #FFFFFF; font: 800 12px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">
+<span style="width: 8px; height: 8px; background: #FFFFFF;"></span>{{ liveLabel }}</button>
+</div>
+</div>
+</header>
+
+<aside aria-label="Publicidad" style="max-width: 1240px; margin: 0 auto; padding: 28px 24px 0; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+<span style="font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #545862;">Publicidad</span>
+<div style="width: 970px; max-width: 100%; height: 90px; box-sizing: border-box; background: #ECEAE5; border: 1px dashed #A9A59C; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 13px; font-weight: 700; text-align: center;">[ANUNCIO] · 970 × 90 · rotativo</div>
+<div aria-hidden="true" style="display: flex; gap: 6px;"><span style="width: 8px; height: 8px; background: #13161D;"></span><span style="width: 8px; height: 8px; background: #C9C5BC;"></span><span style="width: 8px; height: 8px; background: #C9C5BC;"></span></div>
+</aside>
+
+<main style="max-width: 1240px; margin: 0 auto; padding: 36px 24px 80px;">
+<div style="display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 20px; border-bottom: 3px solid #13161D;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: {{accent}};">Radio · Escuchá de nuevo</span>
+<h1 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 64px; letter-spacing: -0.02em; line-height: 1;">Entrevistas</h1>
+<p style="margin: 0; font-size: 17px; color: #3B3F48;">Las voces de Fray Bentos que pasaron por el 96.5.</p>
+</div>
+<form role="search" style="flex: 0 1 440px; display: flex;">
+<label style="flex: 1; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 14px; border: 2px solid #13161D; border-right: 0;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.5" y1="15.5" x2="21" y2="21"></line></svg>
+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Buscar entrevistas</span>
+<input type="search" placeholder="Buscar por nombre o tema…" style="flex: 1; min-width: 0; border: 0; background: transparent; font: 400 17px 'Public Sans', sans-serif;">
+</label>
+<button type="submit" style="min-height: 52px; padding: 0 20px; border: 0; border-radius: 0; background: #13161D; color: #FFFFFF; font: 800 12px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase;">Buscar</button>
+</form>
+</div>
+
+<nav aria-label="Programas" style="display: flex; flex-wrap: wrap; gap: 0 28px; border-bottom: 1px solid #D9D7D2; margin-bottom: 32px;">
+<sc-for list="{{ progs }}" as="g" hint-placeholder-count="4">
+<button type="button" onClick="{{ g.pick }}" aria-pressed="{{ g.on }}" style="padding: 14px 0; min-height: 48px; border: 0; border-radius: 0; background: transparent; color: #13161D; font: {{ g.weight }} 14px 'Public Sans', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: {{ g.line }};">{{ g.label }}</button>
+</sc-for>
+</nav>
+
+<article style="background: #13161D; color: #FFFFFF; display: flex; flex-wrap: wrap; gap: 32px; padding: 32px; margin-bottom: 40px;">
+<div style="flex: 0 0 300px; aspect-ratio: 1 / 1; background: #2C313C; display: flex; align-items: center; justify-content: center; color: #C9CCD3; font-weight: 600;">[FOTO DEL ENTREVISTADO]</div>
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px;">
+<span style="font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #FF9A6E;">Destacada · [FECHA]</span>
+<h2 style="margin: 0; font-family: 'Libre Franklin', sans-serif; font-weight: 800; font-size: 40px; line-height: 1.08;">[ENTREVISTADO/A]: [TEMA DE LA ENTREVISTA]</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #E4E5E8; max-width: 620px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+<span style="font-size: 14px; color: #C9CCD3;">En [PROGRAMA] · [DURACIÓN]</span>
+<div style="display: flex; align-items: center; gap: 16px; margin-top: auto; padding-top: 8px;">
+<button type="button" onClick="{{ playFeat }}" aria-label="{{ featLabel }}" style="width: 64px; height: 64px; flex-shrink: 0; border: 0; border-radius: 50%; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+<sc-if value="{{ featOn }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="5" x2="8" y2="19"></line><line x1="16" y1="5" x2="16" y2="19"></line></svg></sc-if>
+<sc-if value="{{ featOff }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="7 4 20 12 7 20 7 4"></polygon></svg></sc-if>
+</button>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+<div style="height: 4px; background: #2C313C;"><div style="width: {{ featProgress }}; height: 4px; background: #FF7A45;"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #9EA3AE; font-variant-numeric: tabular-nums;"><span>{{ featTime }}</span><span>[DURACIÓN]</span></div>
+</div>
+</div>
+</div>
+</article>
+
+<h2 style="margin: 0; padding-bottom: 10px; border-bottom: 3px solid #13161D; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Todas las entrevistas</h2>
+<ol style="margin: 0; padding: 0; list-style: none;">
+<sc-for list="{{ items }}" as="e" hint-placeholder-count="8">
+<li style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 18px 0; border-bottom: 1px solid #D9D7D2;">
+<button type="button" onClick="{{ e.play }}" aria-label="{{ e.aria }}" style="width: 48px; height: 48px; flex-shrink: 0; border: {{ e.border }}; border-radius: 50%; background: {{ e.bg }}; color: {{ e.fg }}; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+<sc-if value="{{ e.on }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="5" x2="8" y2="19"></line><line x1="16" y1="5" x2="16" y2="19"></line></svg></sc-if>
+<sc-if value="{{ e.off }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="7 4 20 12 7 20 7 4"></polygon></svg></sc-if>
+</button>
+<div style="width: 64px; height: 64px; flex-shrink: 0; background: #E6E3DC; display: flex; align-items: center; justify-content: center; color: #545862; font-size: 10px; font-weight: 600;">[FOTO]</div>
+<span style="flex: 1; min-width: 260px; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: 'Libre Franklin', sans-serif; font-weight: 700; font-size: 21px; line-height: 1.2;">{{ e.title }}</span>
+<span style="font-size: 14px; color: #545862;">En {{ e.prog }}</span>
+</span>
+<span style="width: 110px; font-size: 14px; color: #545862;">{{ e.date }}</span>
+<span style="width: 70px; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right;">{{ e.dur }}</span>
+</li>
+</sc-for>
+</ol>
+
+<nav aria-label="Paginación" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; padding-top: 40px;">
+<button type="button" onClick="{{ prev }}" style="min-height: 48px; padding: 0 18px; border: 2px solid #13161D; border-radius: 0; background: #FFFFFF; color: #13161D; font: 800 12px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; opacity: {{ prevOpacity }};">← Anterior</button>
+<sc-for list="{{ pages }}" as="p" hint-placeholder-count="5">
+<button type="button" onClick="{{ p.go }}" aria-current="{{ p.current }}" style="min-width: 48px; height: 48px; padding: 0 8px; border: {{ p.border }}; border-radius: 0; background: {{ p.bg }}; color: {{ p.fg }}; font: 800 15px 'Public Sans', sans-serif; cursor: pointer;">{{ p.label }}</button>
+</sc-for>
+<button type="button" onClick="{{ next }}" style="min-height: 48px; padding: 0 18px; border: 0; border-radius: 0; background: #13161D; color: #FFFFFF; font: 800 12px 'Public Sans', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; opacity: {{ nextOpacity }};">Siguiente →</button>
+</nav>
+</main>
+
+<footer style="background: #13161D; color: #C9CCD3;">
+<div style="max-width: 1240px; margin: 0 auto; padding: 56px 24px 28px; display: flex; flex-direction: column; gap: 40px;">
+<div style="display: flex; flex-wrap: wrap; gap: 48px;">
+<div style="flex: 2 1 300px; display: flex; flex-direction: column; gap: 16px;">
+<span style="display: flex; align-items: baseline; gap: 10px; color: #FFFFFF;"><span style="font-family: 'Newsreader', serif; font-weight: 700; font-size: 40px; line-height: 1;">Visión</span><span style="font-weight: 800; font-size: 13px; letter-spacing: 0.12em; color: #FF9A6E;">96.5 FM</span></span>
+<p style="margin: 0; font-size: 15px; line-height: 1.6; max-width: 340px;">La radio de Fray Bentos desde 2005. Noticias locales, cultura y compañía, en el 96.5 FM y online.</p>
+</div>
+<nav aria-label="La radio" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">La radio</h2>
+<a href="Main.dc.html#programacion" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Programación</a>
+<a href="Entrevistas.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Entrevistas</a>
+</nav>
+<nav aria-label="Cinevisión" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Cinevisión</h2>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Cartelera</a>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Estrenos</a>
+<a href="Main.dc.html#cine" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Entradas</a>
+</nav>
+<nav aria-label="Noticias" style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Noticias</h2>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Locales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Nacionales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Policiales</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Deportes</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Cultura</a>
+<a href="Noticias.dc.html" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Opinión</a>
+</nav>
+<div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px;">
+<h2 style="margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #FFFFFF;">Institucional</h2>
+<a href="Main.dc.html#nosotros" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Quiénes somos</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Ser parte</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Publicidad</a>
+<a href="Main.dc.html#contacto" style="color: #C9CCD3; text-decoration: none; padding: 6px 0; font-size: 15px;">Contacto</a>
+<span style="padding: 6px 0; font-size: 15px;">Fray Bentos, Río Negro, Uruguay</span>
+<div style="display: flex; gap: 10px; padding: 6px 0;"><a href="#" aria-label="Instagram de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></a><a href="https://www.facebook.com/VisionFMFrayBentos/" aria-label="Facebook de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14c3 0 5 1.5 5 4.5"></path></svg></a><a href="https://wa.me/59899318578" aria-label="WhatsApp de Visión" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #3A3F4B; color: #FFFFFF; display: flex; align-items: center; justify-content: center; text-decoration: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.5-4A8 8 0 1 1 8 18.5z"></path><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5"></path></svg></a></div>
+</div>
+</div>
+<div style="border-top: 1px solid #2C313C; padding-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 13px; color: #9EA3AE;">
+<span>© 2026 Visión 96.5 FM. Todos los derechos reservados.</span>
+<nav aria-label="Legal" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;">
+<a href="#" style="color: #9EA3AE;">Aviso legal</a>
+<a href="#" style="color: #9EA3AE;">Privacidad</a>
+<a href="#" style="color: #9EA3AE;">Cookies</a>
+<a href="#" style="color: #9EA3AE;">Condiciones de uso</a>
+<a href="Institucional.dc.html#publicidad" style="color: #9EA3AE;">Publicidad</a>
+<span>Desarrollado por <a href="#" style="color: #FFFFFF; font-weight: 600;">Labs Fray Bentos</a></span>
+</nav>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C03A0B","options":["#C03A0B","#1D4ED8","#0F766E","#7C2D92"]},"totalPages":{"editor":"int","default":8,"min":2,"max":200},"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { playing: false, prog: 'Todos', page: 1, ep: null }; }
+  navVals() {
+    const B = 'Main.dc.html';
+    const cur = 'radio';
+    const accent = this.props.accent ?? '#C03A0B';
+    const open = this.state.menu || '';
+    const groups = [
+      { key: 'radio', label: 'Radio', items: [['En vivo', B + '#inicio'], ['Programación', 'Programacion.dc.html'], ['Entrevistas', 'Entrevistas.dc.html'], ['Conductores', 'Programacion.dc.html#conductores']] },
+      { key: 'noticias', label: 'Noticias', items: [['Últimas noticias', 'Noticias.dc.html'], ['Locales', 'Noticias.dc.html'], ['Nacionales', 'Noticias.dc.html'], ['Policiales', 'Noticias.dc.html'], ['Deportes', 'Noticias.dc.html'], ['Cultura', 'Noticias.dc.html'], ['Opinión', 'Noticias.dc.html']] },
+      { key: 'cine', label: 'Cinevisión', items: [['Cartelera', 'Cinevision.dc.html#cartelera'], ['Estrenos', 'Cinevision.dc.html#estrenos'], ['Entradas y precios', 'Cinevision.dc.html#entradas'], ['Cómo llegar', 'Cinevision.dc.html#entradas']] },
+      { key: 'inst', label: 'Institucional', items: [['Quiénes somos', 'Institucional.dc.html#nosotros'], ['Equipo', 'Institucional.dc.html#equipo'], ['Ser parte', 'Institucional.dc.html#ser-parte'], ['Publicidad', 'Institucional.dc.html#publicidad'], ['Contacto', 'Institucional.dc.html#contacto']] }
+    ];
+    return {
+      menu: groups.map((g) => ({
+        label: g.label,
+        open: open === g.key,
+        expanded: open === g.key ? 'true' : 'false',
+        line: g.key === cur ? 'inset 0 -3px 0 ' + accent : 'none',
+        toggle: () => this.setState({ menu: open === g.key ? '' : g.key }),
+        items: g.items.map((it) => ({ label: it[0], href: it[1] }))
+      })),
+      liveLabel: this.state.playing ? 'Pausar' : 'Escuchar en vivo',
+      toggle: () => this.setState({ playing: !this.state.playing }),
+      searchOpen: !!this.state.search,
+      searchExpanded: this.state.search ? 'true' : 'false',
+      toggleSearch: () => this.setState({ search: !this.state.search })
+    };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#C03A0B';
+
+    const progNames = ['Todos', 'Visión Temprana', '[PROGRAMA]', '[PROGRAMA 2]'];
+    const prog = this.state.prog || 'Todos';
+    const playing = this.state.ep;
+    const total = Math.max(2, this.props.totalPages ?? 8);
+    const page = Math.min(this.state.page || 1, total);
+    const go = (n) => this.setState({ page: Math.max(1, Math.min(total, n)) });
+    const progOf = (i) => i % 3 === 0 ? 'Visión Temprana' : (i % 3 === 1 ? '[PROGRAMA]' : '[PROGRAMA 2]');
+    const raw = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => ({ id: page * 100 + i, title: '[ENTREVISTADO/A]: [TEMA DE LA ENTREVISTA]', prog: progOf(i), date: '[FECHA]', dur: '[MM:SS]' }));
+    const items = raw.filter((e) => prog === 'Todos' || e.prog === prog).map((e) => {
+      const on = playing === e.id;
+      return Object.assign({}, e, { on: on, off: !on, aria: (on ? 'Pausar ' : 'Escuchar ') + 'entrevista', border: on ? '0' : '2px solid #13161D', bg: on ? accent : '#FFFFFF', fg: on ? '#FFFFFF' : '#13161D', play: () => this.setState({ ep: on ? null : e.id }) });
+    });
+    const nums = [];
+    const add = (n) => { if (n >= 1 && n <= total && nums.indexOf(n) < 0) nums.push(n); };
+    add(1); add(page - 1); add(page); add(page + 1); add(total);
+    nums.sort((x, y) => x - y);
+    const pages = [];
+    nums.forEach((n, i) => {
+      if (i > 0 && n - nums[i - 1] > 1) pages.push({ label: '…', go: null, current: 'false', border: '0', bg: 'transparent', fg: '#545862' });
+      const cur = n === page;
+      pages.push({ label: String(n), go: () => go(n), current: cur ? 'page' : 'false', border: '2px solid #13161D', bg: cur ? '#13161D' : '#FFFFFF', fg: cur ? '#FFFFFF' : '#13161D' });
+    });
+    const featOn = playing === 'feat';
+    const pageVals = {
+      progs: progNames.map((n) => ({ label: n, on: prog === n ? 'true' : 'false', weight: prog === n ? '800' : '600', line: prog === n ? 'inset 0 -3px 0 ' + accent : 'none', pick: () => this.setState({ prog: n, page: 1 }) })),
+      items: items,
+      pages: pages,
+      prev: () => go(page - 1),
+      next: () => go(page + 1),
+      prevOpacity: page === 1 ? '0.35' : '1',
+      nextOpacity: page === total ? '0.35' : '1',
+      featOn: featOn,
+      featOff: !featOn,
+      featLabel: featOn ? 'Pausar entrevista destacada' : 'Escuchar entrevista destacada',
+      featProgress: featOn ? '18%' : '0%',
+      featTime: featOn ? '02:41' : '00:00',
+      playFeat: () => this.setState({ ep: featOn ? null : 'feat' })
+    };
+    return {
+      ...this.navVals(),
+      accent: accent,
+      ...pageVals
+    };
+  }
+}
+</script>
+</body>
+</html>
