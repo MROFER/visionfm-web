@@ -27,7 +27,7 @@ El sitio se construye primero en cuentas de la agencia, con un dominio provisori
 |---|---|---|---|
 | Local | `localhost:3000` | cualquiera | Postgres en Docker + `pnpm seed` |
 | Staging | `staging.visionfm.<dominio-agencia>`, después `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
-| Demo (antes del contrato) | `visionfm.<dominio-agencia>` | `main` | propia; `noindex` y detrás de Access |
+| Demo (antes del contrato) | `visionfm.<dominio-agencia>` | `main` | propia, con datos reales del sitio público actual; `noindex` y detrás de Access para no competir en Google con el sitio actual |
 | Producción | `visionfm.com.uy` | `main` | producción, en cuentas de la radio |
 
 Staging va detrás de Cloudflare Access completo (no es público) y con `noindex`.

@@ -116,5 +116,6 @@ Se releyeron los siete documentos juntos, después de sumar permisos, auditoría
 
 ## 9. Preguntas que quedan
 
-1. ¿Qué dominio de la agencia usamos para la demo?
-2. ¿La demo se muestra a la radio con datos de ejemplo o con contenido real copiado de su sitio actual?
+1. ¿Qué dominio usamos para la demo? GitHub Pages no sirve: solo publica páginas estáticas y el sitio necesita servidor y base de datos. Ver recomendación en el hilo.
+
+**Respondido:** la demo muestra datos reales, tomados del sitio público actual de la radio (notas por la API pública del WordPress, grilla y cartelera cargadas a mano). Como ese contenido ya está en `visionfm.com.uy`, la demo va con `noindex` y detrás de Access: si Google la indexara, la vería como copia y podría perjudicar al sitio actual de la radio.

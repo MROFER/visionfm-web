@@ -139,6 +139,7 @@ Reuniones, revisiones de diseño, ajustes de la radio y pruebas en dispositivos 
 | Dominio provisorio y VPS de la agencia | agencia | 0 |
 | Cuentas de la radio y acceso a su dominio | radio, al firmar | 6 |
 | URL HTTPS del stream | proveedor del stream | 3 |
-| Contenido real (grilla, cartelera, precios, fotos, legales, kit) | radio | 5 (antes del lanzamiento) |
+| Contenido real para la demo: lo que ya está publicado en el sitio y redes de la radio | agencia lo carga | 4–5 |
+| Contenido que no está publicado (precios, legales, kit, fotos nuevas) | radio, al firmar | 6 |
 | Imagen principal del carrusel | Labs Fray Bentos | 2 |
 | WordPress actual: alcanza con su API pública; usuario solo si faltan datos | radio (opcional) | 4 |
