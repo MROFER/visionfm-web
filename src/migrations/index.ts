@@ -3,6 +3,7 @@ import * as migration_20261014_050446_permisos_etapa_1 from './20261014_050446_p
 import * as migration_20261014_050853_registro_actividad from './20261014_050853_registro_actividad';
 import * as migration_20261014_051806_colecciones from './20261014_051806_colecciones';
 import * as migration_20261014_160520_almacenamiento_r2 from './20261014_160520_almacenamiento_r2';
+import * as migration_20261014_161825_tareas_publicidad from './20261014_161825_tareas_publicidad';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261014_160520_almacenamiento_r2.up,
     down: migration_20261014_160520_almacenamiento_r2.down,
-    name: '20261014_160520_almacenamiento_r2'
+    name: '20261014_160520_almacenamiento_r2',
+  },
+  {
+    up: migration_20261014_161825_tareas_publicidad.up,
+    down: migration_20261014_161825_tareas_publicidad.down,
+    name: '20261014_161825_tareas_publicidad'
   },
 ];
