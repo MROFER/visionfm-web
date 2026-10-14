@@ -26,6 +26,7 @@ async function crear(datos: Partial<Usuario> & { email: string }, como: Usuario)
 beforeAll(async () => {
   payload = await getPayload({ config })
   await payload.delete({ collection: 'usuarios', where: { id: { exists: true } }, overrideAccess: true })
+  await payload.delete({ collection: 'secciones', where: { id: { exists: true } }, overrideAccess: true })
 
   owner = await payload.create({
     collection: 'usuarios',

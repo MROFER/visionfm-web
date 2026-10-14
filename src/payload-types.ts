@@ -70,6 +70,7 @@ export interface Config {
     usuarios: Usuario;
     medios: Medio;
     secciones: Seccione;
+    registroActividad: RegistroActividad;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     usuarios: UsuariosSelect<false> | UsuariosSelect<true>;
     medios: MediosSelect<false> | MediosSelect<true>;
     secciones: SeccionesSelect<false> | SeccionesSelect<true>;
+    registroActividad: RegistroActividadSelect<false> | RegistroActividadSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -206,6 +208,52 @@ export interface Medio {
   focalY?: number | null;
 }
 /**
+ * Todo cambio del panel: quién, qué, antes y después, cuándo y desde dónde. Nadie lo puede editar ni borrar.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registroActividad".
+ */
+export interface RegistroActividad {
+  id: number;
+  fecha: string;
+  quien?: (number | null) | Usuario;
+  accion: 'crear' | 'editar' | 'borrar' | 'cambiar-permisos' | 'ingresar' | 'salir';
+  resumen?: string | null;
+  coleccion?: string | null;
+  documentoId?: string | null;
+  campos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  antes?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  despues?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  ip?: string | null;
+  dispositivo?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -240,6 +288,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'secciones';
         value: number | Seccione;
+      } | null)
+    | ({
+        relationTo: 'registroActividad';
+        value: number | RegistroActividad;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -343,6 +395,25 @@ export interface SeccionesSelect<T extends boolean = true> {
   slug?: T;
   descripcion?: T;
   orden?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "registroActividad_select".
+ */
+export interface RegistroActividadSelect<T extends boolean = true> {
+  fecha?: T;
+  quien?: T;
+  accion?: T;
+  resumen?: T;
+  coleccion?: T;
+  documentoId?: T;
+  campos?: T;
+  antes?: T;
+  despues?: T;
+  ip?: T;
+  dispositivo?: T;
   updatedAt?: T;
   createdAt?: T;
 }
