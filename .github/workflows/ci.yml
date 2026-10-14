@@ -75,8 +75,9 @@ jobs:
           file: docker/Dockerfile
           # En los PR solo se comprueba que construye; en staging y main se publica para que Coolify la descargue
           push: ${{ github.event_name == 'push' }}
+          # En un PR, ref_name es "3/merge", que no es un tag válido
           tags: |
-            ghcr.io/mrofer/visionfm-web:${{ github.ref_name }}
+            ghcr.io/mrofer/visionfm-web:${{ github.event_name == 'push' && github.ref_name || 'pr' }}
             ghcr.io/mrofer/visionfm-web:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
