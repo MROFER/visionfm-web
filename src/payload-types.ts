@@ -124,12 +124,14 @@ export interface Config {
     cinevision: Cinevision;
     institucional: Institucional;
     ajustes: Ajuste;
+    'payload-jobs-stats': PayloadJobsStat;
   };
   globalsSelect: {
     portada: PortadaSelect<false> | PortadaSelect<true>;
     cinevision: CinevisionSelect<false> | CinevisionSelect<true>;
     institucional: InstitucionalSelect<false> | InstitucionalSelect<true>;
     ajustes: AjustesSelect<false> | AjustesSelect<true>;
+    'payload-jobs-stats': PayloadJobsStatsSelect<false> | PayloadJobsStatsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -138,6 +140,8 @@ export interface Config {
   user: Usuario;
   jobs: {
     tasks: {
+      avisoVencimientoAnuncios: TaskAvisoVencimientoAnuncios;
+      reporteMensualAnunciantes: TaskReporteMensualAnunciantes;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -816,7 +820,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug: 'inline' | 'avisoVencimientoAnuncios' | 'reporteMensualAnunciantes' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -849,10 +853,19 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?: ('inline' | 'avisoVencimientoAnuncios' | 'reporteMensualAnunciantes' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
+  meta?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1416,6 +1429,7 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  meta?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1601,6 +1615,24 @@ export interface Ajuste {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs-stats".
+ */
+export interface PayloadJobsStat {
+  id: number;
+  stats?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "portada_select".
  */
 export interface PortadaSelect<T extends boolean = true> {
@@ -1710,6 +1742,16 @@ export interface AjustesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs-stats_select".
+ */
+export interface PayloadJobsStatsSelect<T extends boolean = true> {
+  stats?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -1717,6 +1759,28 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskAvisoVencimientoAnuncios".
+ */
+export interface TaskAvisoVencimientoAnuncios {
+  input?: unknown;
+  output: {
+    anuncios?: number | null;
+    avisados?: number | null;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskReporteMensualAnunciantes".
+ */
+export interface TaskReporteMensualAnunciantes {
+  input?: unknown;
+  output: {
+    anunciantes?: number | null;
+    enviados?: number | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
