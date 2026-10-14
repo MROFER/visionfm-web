@@ -117,6 +117,13 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 - Con permiso: el cambio sale al guardar y la nota muestra "Actualizado {fecha}".
 - Sin permiso: el cambio queda como borrador pendiente. La versión publicada sigue en el sitio hasta que un editor apruebe la corrección.
 
+**Avisos dentro del panel** (los ve todo el que entra, sin depender del email)
+- **Inicio del panel:** cada usuario ve primero lo que tiene pendiente según su rol. Editor: notas para revisar (con autor y hace cuánto esperan) y mensajes nuevos de formularios. Periodista: sus notas devueltas con el comentario, y las que están en revisión.
+- **Contador en el menú:** "Noticias · Para revisar (3)" para editores y "Mis notas · Devueltas (1)" para periodistas. Se actualiza solo cada 30 s.
+- **Aviso al entrar:** si hay notas esperando hace más de 2 h, el editor ve un aviso destacado arriba del panel.
+
+**Email** (complementario): para quien no tiene el panel abierto. Cada usuario elige en su perfil si lo recibe: al instante, un resumen cada hora o nunca. Por defecto: al instante.
+
 **Al publicar** (cualquier camino): se refrescan la nota, Inicio, la sección, Noticias y el RSS, se borran esas URL de la caché de Cloudflare y se avisa a Bing por IndexNow. En menos de 10 s está en línea. Quedan registrados quién aprobó y quién publicó.
 
 ### P3 · El editor arma la portada

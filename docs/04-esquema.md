@@ -22,7 +22,8 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 | `rol`* | select | admin · editor · periodista · cinevision |
 | `equipo` | relación → `equipo` | para firmar notas con la ficha pública |
 | `publicaSinRevision` | checkbox | solo para `periodista`; por defecto **no**. Lo cambian `editor` y `admin` |
-| `recibeAvisosRevision` | checkbox | solo para `editor` y `admin`; recibe email cuando hay una nota para revisar |
+| `recibeAvisosRevision` | checkbox | solo para `editor` y `admin`; ve y recibe avisos de notas para revisar |
+| `avisosEmail` | select | al-instante · resumen-por-hora · nunca (por defecto, al instante) |
 
 Acceso: solo `admin` crea, edita y borra usuarios; `editor` puede cambiar `publicaSinRevision` de los periodistas. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
 
@@ -80,7 +81,7 @@ Acceso: escribe `admin`.
 Índices: `(seccion, fechaPublicacion desc)`, `estadoEditorial`, `slug`, búsqueda de texto completo en español con `unaccent` sobre `titulo + bajada + cuerpo`.
 Acceso: `periodista` crea y edita las suyas; publica solo si tiene `publicaSinRevision`, si no, la envía a revisión. `editor` y `admin` editan, aprueban, devuelven y publican todas.
 Regla en el servidor (hook `beforeChange`): un periodista sin permiso no puede guardar `_status: published` ni `estadoEditorial: publicada|aprobada`; si edita una nota publicada, su cambio queda como borrador pendiente y la versión publicada sigue en línea hasta que un editor apruebe.
-Avisos por email: al pasar a `en-revision` → editores con `recibeAvisosRevision`; al pasar a `devuelta` o `publicada` → el autor.
+Avisos: dentro del panel, el inicio y el menú muestran contadores calculados en vivo (notas `en-revision` para editores, `devuelta` para el autor, mensajes `nuevo`); no hace falta una tabla de notificaciones. Por email, según `avisosEmail` de cada usuario: al pasar a `en-revision` → editores con `recibeAvisosRevision`; al pasar a `devuelta` o `publicada` → el autor.
 Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS y purgar Cloudflare. Si cambia sección o slug → crear redirección 301.
 
 ## entrevistas ✎

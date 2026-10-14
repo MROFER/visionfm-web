@@ -24,7 +24,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 |---|---|
 | Colecciones y fichas del esquema (`docs/04-esquema.md`) con validaciones | todas visibles en el panel, migraciones versionadas |
 | Roles y permisos por colección y campo | cada rol ve y edita solo lo suyo (test por rol) |
-| Flujo editorial: estados, permiso "Publica sin revisión", lista "Para revisar", devolver con comentario, avisos por email | un periodista sin permiso no puede publicar ni por API; el editor aprueba, programa o devuelve |
+| Flujo editorial: estados, permiso "Publica sin revisión", lista "Para revisar", devolver con comentario, pendientes en el inicio del panel, contadores en el menú y avisos por email según preferencia | un periodista sin permiso no puede publicar ni por API; el editor aprueba, programa o devuelve |
 | Excepciones de grilla | un partido cargado reemplaza "Al aire" en su horario |
 | Prueba del panel en celular con un periodista real | sube una nota con foto desde el teléfono sin ayuda |
 | Panel en español con logo y colores de la radio | |
