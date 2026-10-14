@@ -9,7 +9,7 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 - `*` = obligatorio. `✎` = con borradores y versiones.
 - Imágenes y archivos: relación a `medios` o `archivos`, guardados en Cloudflare R2.
 
-**Roles:** `admin`, `editor`, `periodista`, `cinevision`.
+**Permisos:** roles editables con permisos por área y acción, más ajustes por usuario y delegación. El modelo completo está en `07-permisos-y-publicidad.md`; donde abajo dice "Acceso", se refiere a los roles de fábrica.
 
 ---
 
@@ -19,13 +19,37 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 |---|---|---|
 | `nombre`* | texto | |
 | `email`* | email | único, login |
-| `rol`* | select | admin · editor · periodista · cinevision |
+| `rol`* | relación → `roles` | Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial o uno creado |
+| `ajustesPermisos` | JSON | permisos que suman o quitan sobre el rol (área × acción) |
+| `seccionesPermitidas` | relación múltiple → `secciones` | vacío = todas |
+| `activo`* | checkbox | desactivar cierra sesiones y quita el acceso en Cloudflare Access |
+| `esOwner` | checkbox | solo uno; no editable desde el panel salvo por transferencia |
 | `equipo` | relación → `equipo` | para firmar notas con la ficha pública |
 | `publicaSinRevision` | checkbox | solo para `periodista`; por defecto **no**. Lo cambian `editor` y `admin` |
 | `recibeAvisosRevision` | checkbox | solo para `editor` y `admin`; ve y recibe avisos de notas para revisar |
 | `avisosEmail` | select | al-instante · resumen-por-hora · nunca (por defecto, al instante) |
 
 Acceso: solo `admin` crea, edita y borra usuarios; `editor` puede cambiar `publicaSinRevision` de los periodistas. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
+
+## roles
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| `nombre`* | texto | único |
+| `permisos`* | JSON | por área (radio, noticias, cinevision, institucional, publicidad, sistema) y acción (ver, crear, editarPropio, editarTodo, publicar, aprobar, borrar) |
+| `deFabrica` | checkbox | los de fábrica se pueden editar pero no borrar |
+
+## registroCambios
+
+Solo lectura. Lo escriben los hooks: cambios de permisos, roles, altas y bajas de usuarios, transferencias de titularidad, borrados de contenido.
+
+| Campo | Tipo |
+|---|---|
+| `quien`* | relación → `usuarios` |
+| `accion`* | texto |
+| `objetivo` | texto (colección e id) |
+| `antes` / `despues` | JSON |
+| `fecha`* | fecha y hora |
 
 ## medios (upload)
 
@@ -189,11 +213,14 @@ Acceso: `cinevision`, `admin`. Vista de panel propia: grilla semanal con "Copiar
 | `imagenWeb`* | relación → `medios` | 970×90 exacto |
 | `imagenMovil`* | relación → `medios` | 320×100 exacto |
 | `link` | URL | |
+| `ubicaciones`* | multiselect | inicio · radio-en-vivo · radio-programacion · radio-entrevistas · noticias-listado · noticias-seccion · noticias-nota · institucional · institucional-formularios |
+| `secciones` | relación múltiple → `secciones` | limita Sección y Nota a esas secciones; vacío = todas |
 | `desde`* / `hasta`* | fecha | vigencia |
-| `orden` | número | orden de rotación |
+| `peso` | número | 1 por defecto; peso relativo en la rotación de cada ubicación |
 | `activo` | checkbox | |
-| `impresiones` | número | solo lectura; se suma desde el sitio en lotes |
-| `clics` | número | solo lectura; se suma en el link de salida `/a/{id}` |
+| `impresiones` / `clics` | número | totales, solo lectura |
+
+Las métricas por ubicación y por día van en una tabla aparte (`anunciosMetricas`: anuncio, ubicación, fecha, impresiones, clics) para poder exportarlas a CSV. Si una ubicación no tiene anuncios vigentes, se muestra el aviso propio de la radio configurado en `ajustes`.
 
 Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el navegador.
 

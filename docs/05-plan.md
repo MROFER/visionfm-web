@@ -1,6 +1,6 @@
 # Plan de implementación · Visión 96.5 FM
 
-Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total quedó en 238–334 h: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración.
+Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total quedó en 264–371 h: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 26–37 h (ver `07-permisos-y-publicidad.md`).
 
 **Antes de empezar:** instalar la app de Claude en GitHub para `MROFER/visionfm-web`, elegir proveedor de VPS y conseguir acceso al Cloudflare de la radio. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
 
@@ -18,12 +18,13 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `staging.visionfm.com.uy` responde detrás de Access |
 | Cloudflare: DNS de staging, R2, Access, reglas de WAF | panel pide código antes del login |
 
-## Fase 1 · Contenido y panel · 48–65 h
+## Fase 1 · Contenido y panel · 68–93 h
 
 | Tarea | Listo cuando |
 |---|---|
 | Colecciones y fichas del esquema (`docs/04-esquema.md`) con validaciones | todas visibles en el panel, migraciones versionadas |
-| Roles y permisos por colección y campo | cada rol ve y edita solo lo suyo (test por rol) |
+| Gestor de permisos: roles editables, grilla área × acción, ajustes por usuario, secciones permitidas, reglas de delegación y registro de cambios | nadie puede dar permisos que no tiene; test por rol y por acción, también por API |
+| Usuarios por invitación, sincronización con Cloudflare Access, sesiones visibles, desactivación | un usuario desactivado no pasa Access ni conserva sesiones |
 | Flujo editorial: estados, permiso "Publica sin revisión", lista "Para revisar", devolver con comentario, pendientes en el inicio del panel, contadores en el menú y avisos por email según preferencia | un periodista sin permiso no puede publicar ni por API; el editor aprueba, programa o devuelve |
 | Excepciones de grilla | un partido cargado reemplaza "Al aire" en su horario |
 | Prueba del panel en celular con un periodista real | sube una nota con foto desde el teléfono sin ayuda |
@@ -51,7 +52,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Responsive entre 768 y 1024 px | sin saltos ni scroll horizontal |
 | **Hito:** las 12 páginas en staging con datos de ejemplo, revisadas con Labs Fray Bentos | |
 
-## Fase 3 · Funciones interactivas · 40–55 h
+## Fase 3 · Funciones interactivas · 46–64 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -60,6 +61,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Entrevistas con el mismo motor (pausa el vivo) | |
 | "Al aire" y "A continuación" con `/api/grilla` y hora de Montevideo | tests de bordes: medianoche, fin de semana, sin programa |
 | Carrusel de Cinevisión con negativos, flechas, swipe y autoavance | |
+| Publicidad por ubicaciones con segmentación por sección, peso, aviso propio de relleno y métricas por ubicación exportables | un mismo anuncio rota en las ubicaciones elegidas y en ninguna otra |
 | Filtro por día en cartelera y pestañas de funciones | |
 | Tráiler y mapa que cargan al tocar | |
 | Buscador de Noticias y Entrevistas con Postgres | |

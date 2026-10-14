@@ -7,6 +7,7 @@
 | [03-flujos.md](03-flujos.md) | Mapa del sitio y recorridos del público y del panel, con estados de error y vacíos |
 | [04-esquema.md](04-esquema.md) | Colecciones, campos, validaciones, índices y permisos |
 | [05-plan.md](05-plan.md) | Fases, tareas, horas y criterios de "listo" |
+| [07-permisos-y-publicidad.md](07-permisos-y-publicidad.md) | Gestor de permisos y delegación, alta e ingreso de usuarios, publicidad por ubicaciones |
 | [06-revision.md](06-revision.md) | Revisión completa de la arquitectura: hallazgos, gravedad y dónde quedó resuelto cada uno |
 | Diseño UI/UX | `design/` (entrega de Labs Fray Bentos; empezar por `design/LEEME.md`) |
 | Arquitectura | https://claude.ai/artifact/DvXeaBXMuTGAo5H9G9mhXn |

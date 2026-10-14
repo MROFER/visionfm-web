@@ -83,7 +83,7 @@ Elementos globales en todas las páginas: barra superior (fecha, "Al aire", tel�
 
 ### P2 · Subir y publicar una nota
 
-Subir y publicar son dos pasos distintos. Quién puede publicar sin revisión lo decide el editor, periodista por periodista, con el permiso **Publica sin revisión** (por defecto, apagado).
+Subir y publicar son dos pasos distintos. Quién puede publicar sin revisión lo decide el editor, periodista por periodista, con el permiso **Noticias → Publicar** (por defecto, el rol Periodista no lo tiene).
 
 ```
 borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar──▶ publicada
@@ -144,8 +144,11 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 3. Publica: se refrescan Entrevistas e Inicio.
 
 ### P6 · Cargar un anuncio
-1. Anuncios → "Crear nuevo". Sube la imagen de 970×90 y la de 320×100 (el panel valida las medidas), el link y las fechas de vigencia.
-2. Fuera de vigencia, el anuncio deja de rotar solo.
+1. Anuncios → "Crear nuevo". Sube la imagen de 970×90 y la de 320×100 (el panel valida las medidas) y el link.
+2. Marca en qué ubicaciones aparece (o "Todas", "Todo Radio", "Todo Noticias") y, para Sección y Nota, en qué secciones.
+3. Elige fechas de vigencia y peso en la rotación.
+4. El mismo anuncio rota en todas las ubicaciones elegidas, sin duplicarlo. Fuera de vigencia deja de rotar solo.
+5. Ubicaciones muestra qué anuncios rotan hoy en cada espacio; si uno queda vacío, sale el aviso propio de la radio.
 
 ### P7 · Responder mensajes
 1. Mensajes muestra los envíos de los tres formularios, filtrables por tipo y estado.
@@ -159,9 +162,15 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 1. Excepciones de grilla → "Crear nueva": fecha, horario y el programa o el título (ej. "Fútbol: Laureles vs. Anglo").
 2. Ese día y en ese horario, "Al aire" y "A continuación" muestran la excepción en lugar del programa habitual.
 
-### P10 · Gestionar periodistas
-1. El editor abre Usuarios → un periodista.
-2. Activa o desactiva **Publica sin revisión**. El cambio aplica desde la siguiente nota.
+### P10 · Crear un usuario y darle permisos
+1. Quien tiene permiso de gestionar usuarios abre Usuarios → "Invitar".
+2. Carga nombre, email y rol; si hace falta, ajustes propios (por ejemplo, Noticias → Publicar para que publique sin revisión) y secciones permitidas. Solo puede asignar permisos que él mismo tiene.
+3. La persona recibe una invitación por email, elige su contraseña y entra (ver `07-permisos-y-publicidad.md`).
+4. Para quitar el acceso, se desactiva el usuario: se cierran sus sesiones y sale de Cloudflare Access al instante.
+
+### P12 · Editar un rol
+1. Owner o administrador abre Roles → un rol.
+2. Marca o desmarca casillas en la grilla de áreas × acciones. El cambio aplica a todos los usuarios con ese rol en su siguiente acción, y queda en el registro de cambios.
 
 ### P11 · Ver el rendimiento de un anuncio
 1. Anuncios → un anuncio: impresiones y clics acumulados, para pasarle el dato al anunciante.
