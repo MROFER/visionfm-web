@@ -173,7 +173,8 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 2. Marca o desmarca casillas en la grilla de áreas × acciones. El cambio aplica a todos los usuarios con ese rol en su siguiente acción, y queda en el registro de cambios.
 
 ### P11 · Ver el rendimiento de un anuncio
-1. Anuncios → un anuncio: impresiones y clics acumulados, para pasarle el dato al anunciante.
+1. Anuncios → un anuncio: impresiones y clics acumulados, por ubicación y por día.
+2. El primer día de cada mes, cada anunciante con email de reporte recibe un PDF con impresiones y clics del mes anterior. Desde el panel también se descarga a mano.
 
 ---
 

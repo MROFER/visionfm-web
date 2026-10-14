@@ -92,13 +92,29 @@ Se releyeron los siete documentos juntos, después de sumar permisos, auditoría
 - Esquema: el campo `publicaSinRevision` se eliminó (es Noticias → Publicar); cada colección dice qué área la controla en lugar de `admin` / `editor`; la colección `roles` es de solo lectura en la etapa 1.
 - Flujos y plan: "Publica sin revisión" pasa a Noticias → Publicar; fase 0 sube a 22–34 h.
 
-## 8. Preguntas abiertas para la radio
+## 8. Preguntas abiertas: respuestas (2026-10-14)
 
-1. ¿Qué periodistas publican sin revisión desde el primer día? (por defecto, ninguno)
-2. ¿Quiénes son editores y reciben el aviso de notas para revisar?
-3. ¿A nombre de quién están hoy el dominio y la cuenta de Cloudflare? ¿Se pueden pasar a una cuenta de la radio?
-4. ¿El dominio tiene email propio (`@visionfm.com.uy`)?
-5. ¿Hay transmisiones especiales recurrentes que reemplacen la grilla?
-6. ¿Los anunciantes reciben hoy algún reporte?
-7. ¿La radio tiene un gestor de contraseñas? ¿Quién será el usuario de emergencia?
-8. ¿Quién recibe las alertas de caída del sitio y del stream, y quién responde de noche y los fines de semana?
+**Cómo se trabaja:** la agencia construye y prueba el sitio en cuentas propias (dominio provisorio, Cloudflare, VPS, GitHub, R2 y email). Con el producto funcionando se presenta la propuesta a la radio; si firma, se traspasa todo a cuentas de la radio y se conecta `visionfm.com.uy` (fase 6 del plan).
+
+| # | Pregunta | Respuesta |
+|---|---|---|
+| 1 | ¿Qué periodistas publican sin revisión desde el primer día? | Ninguno. Se habilita después, por persona. |
+| 2 | ¿Quiénes son editores y reciben el aviso de notas para revisar? | Ninguno por ahora; se define con la radio. |
+| 3 | ¿A nombre de quién están el dominio y Cloudflare? | Hoy no hay cuentas: se arma en cuentas de la agencia y se traspasa a la radio al firmar. |
+| 4 | ¿El dominio tiene email propio? | No, y no se sabe si lo tendrá. No hace falta: los avisos salen de `avisos@visionfm.com.uy` con un servicio de envío que solo pide registros DNS, sin casillas. Durante la demo salen del dominio de la agencia. |
+| 5 | ¿Hay transmisiones especiales recurrentes? | Decisión comercial, se verá. Las excepciones de grilla ya cubren las puntuales. |
+| 6 | ¿Los anunciantes reciben algún reporte? | Hoy no. Se suma un reporte mensual por anunciante (ver plan, fase 1). |
+| 7 | ¿Gestor de contraseñas y usuario de emergencia? | Hoy no hay. Recomendación abajo. |
+| 8 | ¿Quién recibe las alertas y responde fuera de horario? | No definido. Recomendación abajo. |
+
+**Usuario de emergencia (recomendación).** El sitio es de la radio, así que el **Owner** es alguien de la radio (el dueño) y el usuario de emergencia también: un segundo Administrador de la radio (director o productor general) con otro email. La agencia tiene su propio usuario Administrador mientras dure el contrato, nunca el de Owner, y se desactiva si el contrato termina. En el traspaso, la agencia crea un gestor de contraseñas gratis para la radio (Bitwarden) con las claves de todas las cuentas y se lo entrega al dueño.
+
+**Alertas (recomendación).** Se reparten según quién puede arreglar cada cosa:
+- **Sitio caído o con errores:** la agencia, que es quien puede arreglarlo. Los tiempos de respuesta de noche y fin de semana se fijan en el abono.
+- **Stream caído:** el productor general y la agencia. Casi siempre es un problema del estudio (codificador, internet) o del proveedor del stream, que la agencia no puede resolver.
+- **El dueño** recibe un resumen semanal, no alertas de madrugada.
+
+## 9. Preguntas que quedan
+
+1. ¿Qué dominio de la agencia usamos para la demo?
+2. ¿La demo se muestra a la radio con datos de ejemplo o con contenido real copiado de su sitio actual?

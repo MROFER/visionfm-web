@@ -21,11 +21,14 @@ Las versiones exactas se fijan al crear el repo: Next será la última que Paylo
 
 ## 2. Entornos
 
+El sitio se construye primero en cuentas de la agencia, con un dominio provisorio (`visionfm.<dominio-agencia>`). Si la radio firma, se traspasa a cuentas de la radio y producción pasa a `visionfm.com.uy`. Por eso nada de la radio va fijo en el código: dominio, cuentas, buckets y remitente salen de variables de entorno.
+
 | Entorno | URL | Rama | Base de datos |
 |---|---|---|---|
 | Local | `localhost:3000` | cualquiera | Postgres en Docker + `pnpm seed` |
-| Staging | `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
-| Producción | `visionfm.com.uy` | `main` | producción |
+| Staging | `staging.visionfm.<dominio-agencia>`, después `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
+| Demo (antes del contrato) | `visionfm.<dominio-agencia>` | `main` | propia; `noindex` y detrás de Access |
+| Producción | `visionfm.com.uy` | `main` | producción, en cuentas de la radio |
 
 Staging va detrás de Cloudflare Access completo (no es público) y con `noindex`.
 
@@ -113,5 +116,6 @@ Resumen; el detalle está en la página de arquitectura.
 ## 9. Pendiente de confirmar
 
 - URL HTTPS del stream (hoy `emisiones.com.uy:8157`).
-- Proveedor de VPS y de email transaccional.
-- Acceso a la cuenta de Cloudflare de la radio.
+- Proveedor de VPS y de email transaccional (uno que solo pida registros DNS, porque la radio no tiene casillas propias).
+- Dominio de la agencia para la demo.
+- Cuentas de la radio (Cloudflare, VPS, GitHub, R2, envío de email) al firmar el contrato.

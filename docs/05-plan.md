@@ -1,8 +1,8 @@
 # Plan de implementación · Visión 96.5 FM
 
-Seis fases en orden. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 269–380 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas).
+Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dominio provisorio, para presentarle a la radio un producto que funciona; la fase 6 traspasa todo a la radio si firma el contrato. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 280–397 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas). Las respuestas de la radio sumaron el reporte mensual a anunciantes (3–5 h) y la fase 6 de traspaso.
 
-**Antes de empezar:** instalar la app de Claude en GitHub para `MROFER/visionfm-web`, elegir proveedor de VPS y conseguir acceso al Cloudflare de la radio. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
+**Antes de empezar:** elegir el dominio provisorio de la agencia y el proveedor de VPS. Sin el VPS se puede avanzar con las fases 0 a 3 en local.
 
 ---
 
@@ -15,13 +15,13 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Docker Compose para desarrollo y Dockerfile de producción | `docker compose up` levanta todo de cero |
 | Copiar el diseño a `design/` y los documentos a `docs/` | están en el repo |
 | GitHub Actions: lint, tipos, tests, build | CI verde en el primer PR |
-| VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `staging.visionfm.com.uy` responde detrás de Access |
+| VPS con Coolify, staging desde la rama `staging`, Postgres y respaldo diario a R2 | `staging.visionfm.<dominio-agencia>` responde detrás de Access |
 | Cloudflare: DNS de staging, R2, Access, reglas de WAF | panel pide código antes del login |
 | API de Payload en `/cms-api` detrás de Access, GraphQL apagado y validación del JWT de Access en el servidor | `curl` a `/cms-api/usuarios/login` sin Access devuelve 403 |
 | Tres buckets de R2 (público, privado, auditoría con bloqueo de objetos) y copia de respaldos fuera de Cloudflare | se restaura la base y los medios desde la copia externa |
 | Panel de Coolify detrás de Access; SPF, DKIM y DMARC del email remitente | un email de prueba llega a Gmail sin ir a spam |
 
-## Fase 1 · Contenido y panel · 66–90 h
+## Fase 1 · Contenido y panel · 69–95 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -38,6 +38,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Hooks de revalidación y purga de Cloudflare | publicar refresca solo las URL afectadas |
 | Vista de grilla de funciones con "Copiar semana anterior" | Cinevisión carga una semana en minutos |
 | Aviso de vencimiento de anuncios 7 días antes (email y panel) | un anuncio que vence en 7 días genera el aviso |
+| Reporte mensual por anunciante (PDF por email y descarga en el panel) | un anunciante de prueba recibe su PDF |
 | Seed con datos de ejemplo realistas | `pnpm seed` deja staging navegable |
 | **Hito:** la radio prueba el panel en staging | |
 
@@ -85,7 +86,7 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Inventario de registros DNS (MX, SPF, DKIM, verificaciones) | ningún registro se pierde en el cambio |
 | Ensayo en staging y revisión con la radio | |
 
-## Fase 5 · Calidad y lanzamiento · 35–52 h
+## Fase 5 · Calidad y demo · 31–46 h
 
 | Tarea | Listo cuando |
 |---|---|
@@ -94,13 +95,26 @@ Seis fases en orden. Cada una termina con algo que la radio puede ver en staging
 | Auditoría de accesibilidad WCAG 2.1 AA | sin errores en axe; navegación con teclado completa |
 | Cabeceras de seguridad, firewall, revisión de permisos | |
 | Monitoreo de disponibilidad, errores y respaldos probados (restaurar uno), con destinatarios de alertas definidos por la radio | |
-| Cuentas a nombre de la radio, usuario de emergencia en su gestor de contraseñas y planilla de cuentas entregada | el usuario de emergencia entra al panel |
 | Capacitación: prensa, Cinevisión y editor (1 h cada uno) + guía corta en PDF | |
-| Producción: carga de contenido real, migración final, cambio de DNS | sitio en `visionfm.com.uy`, viejo apagado |
 | Alta en Search Console, Bing Webmaster Tools y Google News Publisher Center; revisión de "Problemas de seguridad" y pedido de eliminación de URL de spam | sitemaps enviados, sin avisos de seguridad |
 | Imagen Open Graph por nota y por defecto | la vista previa sale en WhatsApp y Facebook |
 | Consentimiento en formularios y borrado automático de mensajes | |
+| **Hito:** demo lista para presentar a la radio | |
+
+## Fase 6 · Traspaso a la radio y lanzamiento · 12–18 h
+
+Solo si la radio firma. El código no cambia: cambian las variables de entorno y las cuentas.
+
+| Tarea | Listo cuando |
+|---|---|
+| Crear las cuentas de la radio (Cloudflare, VPS, GitHub, R2, envío de email) con un email de la radio, y su gestor de contraseñas | el dueño entra a cada cuenta con su clave |
+| Transferir el repo a la organización de GitHub de la radio | CI corre en el repo nuevo |
+| Copiar base y archivos de R2 a las cuentas nuevas; respaldo externo a nombre de la radio | la copia restaura completa en el VPS de la radio |
+| Registros DNS de `visionfm.com.uy`: sitio, staging, Access, SPF, DKIM y DMARC | un aviso del panel llega desde `avisos@visionfm.com.uy` |
+| Usuarios: Owner del dueño, Administrador de emergencia de la radio, Administrador de la agencia | el usuario de emergencia entra al panel |
 | Congelamiento de publicación de 24 h el día del cambio | |
+| Carga de contenido real, migración final del WordPress y cambio de DNS | sitio en `visionfm.com.uy`, viejo apagado |
+| Apagar la demo y borrar los datos de la radio de las cuentas de la agencia | |
 | **Hito:** lanzamiento | |
 
 ## Coordinación y QA · 15–20 h
@@ -122,9 +136,9 @@ Reuniones, revisiones de diseño, ajustes de la radio y pruebas en dispositivos 
 | Necesitamos | De quién | Para la fase |
 |---|---|---|
 | App de Claude instalada en el repo | Maximiliano | 0 |
-| VPS contratado | agencia o radio | 0 |
-| Acceso a Cloudflare de la radio | radio | 0 |
+| Dominio provisorio y VPS de la agencia | agencia | 0 |
+| Cuentas de la radio y acceso a su dominio | radio, al firmar | 6 |
 | URL HTTPS del stream | proveedor del stream | 3 |
 | Contenido real (grilla, cartelera, precios, fotos, legales, kit) | radio | 5 (antes del lanzamiento) |
 | Imagen principal del carrusel | Labs Fray Bentos | 2 |
-| Acceso al WordPress actual (usuario o API) | radio | 4 |
+| WordPress actual: alcanza con su API pública; usuario solo si faltan datos | radio (opcional) | 4 |

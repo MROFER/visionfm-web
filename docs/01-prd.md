@@ -108,6 +108,8 @@ Grilla de programación real, películas y funciones, precios y promociones del 
 - URL bajo las cuatro secciones del menú; `/radio` redirige a `/radio/programacion`.
 - Publicar es el permiso Noticias → Publicar, por persona; por defecto el Periodista y el Colaborador no lo tienen y sus notas pasan por revisión (2026-10-14).
 - Permisos en dos etapas: roles fijos al lanzar, grilla editable y delegación al mes (2026-10-14).
+- Se construye y prueba en cuentas de la agencia; se presenta a la radio y, si firma, se traspasa a cuentas de la radio (2026-10-14).
+- El Owner es alguien de la radio; la agencia tiene un usuario Administrador mientras dure el contrato (2026-10-14).
 - Ramas: cada cambio entra por PR a `staging` y de `staging` a `main` (2026-10-14).
 - La API de Payload vive en `/cms-api`, detrás de Cloudflare Access igual que `/admin` (segunda revisión, 2026-10-14).
 - Revisiones completas de la arquitectura en `06-revision.md` (primera y segunda).

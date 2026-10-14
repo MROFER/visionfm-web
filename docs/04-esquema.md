@@ -214,7 +214,9 @@ Acceso: área Cinevisión. Vista de panel propia: grilla semanal con "Copiar sem
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| `nombre`* | texto | interno (anunciante) |
+| `nombre`* | texto | interno |
+| `anunciante`* | texto | agrupa los anuncios de un mismo cliente para el reporte |
+| `emailReporte` | email | si se completa, recibe el reporte mensual |
 | `imagenWeb`* | relación → `medios` | 970×90 exacto |
 | `imagenMovil`* | relación → `medios` | 320×100 exacto |
 | `link` | URL | |
