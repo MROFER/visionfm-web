@@ -4,12 +4,12 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 
 **Convenciones**
 - Todas las colecciones tienen `id`, `createdAt` y `updatedAt` (los agrega Payload).
-- `slug`: se genera del título, único, solo `a-z 0-9 -`, editable.
+- `slug`: se genera del título, único, solo `a-z 0-9 -` (tildes y ñ se normalizan), editable.
 - Fechas en UTC en la base; el panel y el sitio muestran hora de `America/Montevideo`.
 - `*` = obligatorio. `✎` = con borradores y versiones.
 - Imágenes y archivos: relación a `medios` o `archivos`, guardados en Cloudflare R2.
 
-**Roles:** `admin`, `editor`, `periodista`, `cinevision`.
+**Permisos:** roles editables con permisos por área y acción, más ajustes por usuario y delegación. El modelo completo está en `07-permisos-y-publicidad.md`; donde abajo dice "Acceso", se refiere a los roles de fábrica.
 
 ---
 
@@ -19,10 +19,42 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 |---|---|---|
 | `nombre`* | texto | |
 | `email`* | email | único, login |
-| `rol`* | select | admin · editor · periodista · cinevision |
+| `rol`* | relación → `roles` | Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial o uno creado |
+| `ajustesPermisos` | JSON | permisos que suman o quitan sobre el rol (área × acción). En la etapa 1 solo se usa Noticias → Publicar |
+| `seccionesPermitidas` | relación múltiple → `secciones` | vacío = todas |
+| `activo`* | checkbox | desactivar cierra sesiones y quita el acceso en Cloudflare Access |
+| `esOwner` | checkbox | solo uno; no editable desde el panel salvo por transferencia |
 | `equipo` | relación → `equipo` | para firmar notas con la ficha pública |
+| `recibeAvisosRevision` | checkbox | solo para quien tiene Noticias → Aprobar; recibe avisos de notas para revisar |
+| `avisosEmail` | select | al-instante · resumen-por-hora · nunca (por defecto, al instante) |
 
-Acceso: solo `admin` crea, edita y borra. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
+Acceso: Owner y Administrador (Sistema) invitan, editan y desactivan usuarios; Owner, Administrador, Manager y Editor pueden dar o quitar Noticias → Publicar a periodistas y colaboradores. Los usuarios no se borran, se desactivan, para que el registro conserve el autor. Cada usuario edita su nombre y contraseña. Bloqueo tras 5 intentos fallidos por 10 min.
+
+## roles
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| `nombre`* | texto | único |
+| `permisos`* | JSON | por área (radio, noticias, cinevision, institucional, publicidad, sistema) y acción (ver, crear, editarPropio, editarTodo, publicar, aprobar, borrar) |
+| `deFabrica` | checkbox | los de fábrica se pueden editar pero no borrar |
+
+En la etapa 1 los 8 roles de fábrica están fijos en código y esta colección solo se lee; en la etapa 2 se editan desde la grilla del panel.
+
+## registroActividad
+
+Solo lectura para todos, incluido el Owner. Lo escribe un hook global `afterChange` / `afterDelete` en todas las colecciones y fichas, más los eventos de login. Registra crear, editar, cambios de estado editorial, publicar, despublicar, borrar, restaurar versión, altas, bajas, cambios de permisos, ingresos e intentos fallidos. Se conserva 2 años y después se archiva en R2.
+
+| Campo | Tipo |
+|---|---|
+| `quien`* | relación → `usuarios` |
+| `accion`* | texto |
+| `objetivo` | texto (colección, id y título) |
+| `campos` | texto múltiple (campos cambiados) |
+| `antes` / `despues` | JSON (solo campos cambiados) |
+| `ip` / `dispositivo` | texto |
+| `fecha`* | fecha y hora |
+
+Índices: `(quien, fecha)`, `(objetivo, fecha)`, `fecha`.
 
 ## medios (upload)
 
@@ -32,7 +64,7 @@ Acceso: solo `admin` crea, edita y borra. Cada usuario edita su nombre y contras
 | `alt`* | texto | texto alternativo, máx. 160 caracteres |
 | `credito` | texto | fotógrafo o fuente |
 
-Acceso: lectura pública; crea cualquier rol; borra `admin` y `editor`.
+Acceso: lectura pública; crea cualquier usuario con Crear en alguna área; borra quien tiene Borrar en Noticias o Sistema.
 
 ## archivos (upload)
 
@@ -52,7 +84,7 @@ Audios de entrevistas, adjuntos y PDF. Separado de `medios` para no generar tama
 | `descripcion` | textarea | meta description de la sección |
 | `orden`* | número | orden en la tira y el menú |
 
-Acceso: escribe `admin`.
+Acceso: área Noticias (Editar todo).
 
 ## noticias ✎
 
@@ -67,11 +99,18 @@ Acceso: escribe `admin`.
 | `seccion`* | relación → `secciones` | |
 | `autor`* | relación → `usuarios` | por defecto, quien crea |
 | `fechaPublicacion`* | fecha y hora | por defecto, al publicar; si es futura, la nota se programa |
+| `fechaActualizacion` | fecha y hora | se completa al corregir una nota publicada; se muestra "Actualizado …" |
+| `estadoEditorial`* | select | borrador · en-revision · devuelta · aprobada · publicada (ver flujo P2) |
+| `comentarioEditor` | textarea | motivo al devolver una nota; visible para el autor |
+| `aprobadoPor` | relación → `usuarios` | se completa al aprobar |
+| `publicadoPor` | relación → `usuarios` | se completa al publicar |
 | `destacada` | checkbox | candidata a destacada en Noticias |
 | `seo` | grupo | `titulo`, `descripcion`, `imagen` (opcionales; caen a título, bajada y foto) |
 
-Índices: `(seccion, fechaPublicacion desc)`, `slug`, búsqueda de texto completo en español sobre `titulo + bajada + cuerpo`.
-Acceso: `periodista` crea y edita las suyas y publica; `editor` y `admin` todo.
+Índices: `(seccion, fechaPublicacion desc)`, `estadoEditorial`, `slug`, búsqueda de texto completo en español con `unaccent` sobre `titulo + bajada + cuerpo`.
+Acceso: área Noticias, limitada a `seccionesPermitidas`. Con Crear y Editar lo propio se cargan y editan las propias; con Publicar se publica o programa, si no, se envía a revisión; con Aprobar se aprueba o devuelve; con Editar todo se editan las de otros.
+Regla en el servidor (hook `beforeChange`): un periodista sin permiso no puede guardar `_status: published` ni `estadoEditorial: publicada|aprobada`; si edita una nota publicada, su cambio queda como borrador pendiente y la versión publicada sigue en línea hasta que un editor apruebe.
+Avisos: dentro del panel, el inicio y el menú muestran contadores calculados en vivo (notas `en-revision` para editores, `devuelta` para el autor, mensajes `nuevo`); no hace falta una tabla de notificaciones. Por email, según `avisosEmail` de cada usuario: al pasar a `en-revision` → editores con `recibeAvisosRevision`; al pasar a `devuelta` o `publicada` → el autor.
 Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS y purgar Cloudflare. Si cambia sección o slug → crear redirección 301.
 
 ## entrevistas ✎
@@ -83,14 +122,14 @@ Hooks: al publicar o cambiar → revalidar nota, sección, `/noticias`, `/`, RSS
 | `slug`* | slug | |
 | `programa`* | relación → `programas` | |
 | `fecha`* | fecha | |
-| `audio`* | relación → `archivos` | MP3/M4A, máx. 100 MB |
+| `audio`* | relación → `archivos` | MP3/M4A, máx. 90 MB (límite de subida de Cloudflare: 100 MB) |
 | `duracion` | número (segundos) | se calcula del archivo |
 | `foto` | relación → `medios` | |
 | `resumen` | textarea | para SEO y buscador |
 | `destacada` | checkbox | |
 
 Índices: `fecha desc`, `programa`, búsqueda de texto sobre `entrevistado + tema + resumen`.
-Acceso: `periodista`, `editor`, `admin`.
+Acceso: área Radio (Periodista y Editor pueden crear).
 
 ## programas
 
@@ -105,8 +144,22 @@ Acceso: `periodista`, `editor`, `admin`.
 | `activo` | checkbox | por defecto sí |
 
 Validación: el panel avisa si dos programas activos se superponen en día y horario. Un horario que cruza la medianoche se carga como dos filas.
-Acceso: `editor`, `admin`.
+Acceso: área Radio.
 API pública: `GET /api/grilla` devuelve la grilla semanal compacta (pocos KB) para calcular "Al aire" y "A continuación" en el navegador; se cachea en Cloudflare y se purga al guardar.
+
+## excepcionesGrilla
+
+Partidos, feriados o coberturas especiales que reemplazan la grilla habitual.
+
+| Campo | Tipo | Notas |
+|---|---|---|
+| `fecha`* | fecha | |
+| `inicio`* / `fin`* | hora | |
+| `programa` | relación → `programas` | o bien `titulo` |
+| `titulo` | texto | ej. "Fútbol: Laureles vs. Anglo" |
+| `conduccion` | texto | |
+
+Acceso: área Radio. `/api/grilla` incluye las excepciones de los próximos 7 días y el cálculo de "Al aire" las aplica antes que la grilla.
 
 ## equipo
 
@@ -120,7 +173,7 @@ API pública: `GET /api/grilla` devuelve la grilla semanal compacta (pocos KB) p
 | `redes` | array | `red` (select), `url` |
 | `orden`* | número | orden dentro del grupo |
 
-Acceso: `editor`, `admin`.
+Acceso: área Radio.
 
 ## peliculas ✎
 
@@ -142,7 +195,7 @@ Acceso: `editor`, `admin`.
 | `esEstreno` | checkbox | etiqueta "Estreno" |
 | `fechaEstreno` | fecha | si es futura, va a "Próximos estrenos" |
 
-Acceso: `cinevision`, `admin`.
+Acceso: área Cinevisión.
 
 ## funciones
 
@@ -155,21 +208,28 @@ Acceso: `cinevision`, `admin`.
 
 Índices: `(fechaHora)`, `(pelicula, fechaHora)`.
 Las funciones con `fechaHora` pasada no se consultan en el sitio. Se conservan 90 días y después se borran solas.
-Acceso: `cinevision`, `admin`. Vista de panel propia: grilla semanal con "Copiar semana anterior".
+Acceso: área Cinevisión. Vista de panel propia: grilla semanal con "Copiar semana anterior".
 
 ## anuncios
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| `nombre`* | texto | interno (anunciante) |
+| `nombre`* | texto | interno |
+| `anunciante`* | texto | agrupa los anuncios de un mismo cliente para el reporte |
+| `emailReporte` | email | si se completa, recibe el reporte mensual |
 | `imagenWeb`* | relación → `medios` | 970×90 exacto |
 | `imagenMovil`* | relación → `medios` | 320×100 exacto |
 | `link` | URL | |
+| `ubicaciones`* | multiselect | inicio · radio-en-vivo · radio-programacion · radio-entrevistas · noticias-listado · noticias-seccion · noticias-nota · institucional · institucional-formularios |
+| `secciones` | relación múltiple → `secciones` | limita Sección y Nota a esas secciones; vacío = todas |
 | `desde`* / `hasta`* | fecha | vigencia |
-| `orden` | número | orden de rotación |
+| `peso` | número | 1 por defecto; peso relativo en la rotación de cada ubicación |
 | `activo` | checkbox | |
+| `impresiones` / `clics` | número | totales, solo lectura |
 
-Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el navegador.
+Las métricas por ubicación y por día van en una tabla aparte (`anunciosMetricas`: anuncio, ubicación, fecha, impresiones, clics) para poder exportarlas a CSV. Si una ubicación no tiene anuncios vigentes, se muestra el aviso propio de la radio configurado en `ajustes`.
+
+Acceso: área Publicidad. El sitio pide los anuncios vigentes; rotan en el navegador. Una tarea diaria avisa 7 días antes de que un anuncio venza.
 
 ## mensajes
 
@@ -183,10 +243,12 @@ Acceso: `editor`, `admin`. El sitio pide los anuncios vigentes; rotan en el nave
 | `mensaje` | textarea | |
 | `adjunto` | relación → `archivos` (privado) | máx. 10 MB |
 | `estado`* | select | nuevo · leído · respondido |
+| `consentimiento`* | checkbox + fecha | aceptación de la política de privacidad (Ley 18.331) |
 
 Creación: solo por `POST /api/formularios/{tipo}` con Turnstile válido y límite de 5 envíos por IP por hora.
-Acceso: lectura y edición `editor`, `admin`. Nadie puede crear desde el panel.
+Acceso: área Institucional (Editor y Comercial ven los de su tipo). Nadie puede crear desde el panel.
 Hook: al crear, envía email al destinatario configurado en Ajustes según el tipo.
+Conservación: tarea semanal que borra mensajes y adjuntos de más de 12 meses (24 para `sumarse`).
 
 ## paginas ✎
 
@@ -197,7 +259,7 @@ Hook: al crear, envía email al destinatario configurado en Ajustes según el ti
 | `cuerpo`* | rich text | |
 | `seo` | grupo | |
 
-Uso: textos legales en `/legal/[slug]`. Acceso: `admin`.
+Uso: textos legales en `/legal/[slug]`. Acceso: área Institucional.
 
 ## redirecciones
 
@@ -205,34 +267,52 @@ Uso: textos legales en `/legal/[slug]`. Acceso: `admin`.
 |---|---|---|
 | `desde`* | texto | ruta vieja, única |
 | `hacia`* | texto o relación | ruta nueva o documento |
-| `tipo` | select | 301 · 302 |
+| `tipo` | select | 301 · 302 · 410 (spam y contenido eliminado) |
 
-Se cargan en la migración de WordPress y las crean los hooks de noticias. Acceso: `admin`.
+Se cargan en la migración de WordPress y las crean los hooks de noticias. Acceso: área Sistema.
 
 ---
 
 ## Fichas globales
 
 ### ajustes
-`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas). Acceso: `admin`.
+`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas). Acceso: área Sistema.
 
 ### portada
-`notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: `editor`, `admin`.
+`notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).
 
 ### cinevision
-`carrusel` (array: `imagenWeb` 1440×640, `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: `cinevision`, `admin`.
+`carrusel` (array: `imagenWeb` 1440×640, `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: área Cinevisión.
 
 ### institucional
-`quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: `admin`.
+`quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: área Institucional.
 
 ---
 
 ## Relaciones
 
+```mermaid
+erDiagram
+  ROLES ||--o{ USUARIOS : asigna
+  USUARIOS }o--o{ SECCIONES : "puede escribir en"
+  USUARIOS |o--o| EQUIPO : "firma como"
+  USUARIOS ||--o{ NOTICIAS : "escribe, aprueba, publica"
+  USUARIOS ||--o{ REGISTRO_ACTIVIDAD : genera
+  SECCIONES ||--o{ NOTICIAS : agrupa
+  MEDIOS ||--o{ NOTICIAS : foto
+  PROGRAMAS }o--o{ EQUIPO : "conducido por"
+  PROGRAMAS ||--o{ HORARIOS : "sale al aire"
+  PROGRAMAS ||--o{ EXCEPCIONES_GRILLA : "reemplazado por"
+  PROGRAMAS ||--o{ ENTREVISTAS : "emitida en"
+  ARCHIVOS ||--o{ ENTREVISTAS : audio
+  PELICULAS ||--o{ FUNCIONES : "se proyecta en"
+  MEDIOS ||--o{ PELICULAS : afiche
+  ANUNCIOS }o--o{ SECCIONES : "segmentado por"
+  ANUNCIOS ||--o{ ANUNCIOS_METRICAS : mide
+  MEDIOS ||--o{ ANUNCIOS : imagenes
+  ARCHIVOS |o--o{ MENSAJES : adjunto
 ```
-usuarios ──< noticias >── secciones
-   │            └── medios
-   └── equipo >──< programas ──< entrevistas ── archivos
-peliculas ──< funciones
-anuncios, mensajes, paginas, redirecciones: independientes
-```
+
+Fichas únicas: `portada` → `noticias` y `peliculas`; `cinevision` → `medios`; `institucional` → `archivos` (kit comercial). `paginas` y `redirecciones` no tienen relaciones.
+
+En PostgreSQL, Payload guarda cada colección en su tabla, las relaciones muchos a muchos en tablas `_rels`, los arrays (como `horarios`) en subtablas y las versiones en tablas `_v`.
