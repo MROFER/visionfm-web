@@ -11,3 +11,4 @@
 | [06-revision.md](06-revision.md) | Revisión completa de la arquitectura: hallazgos, gravedad y dónde quedó resuelto cada uno |
 | Diseño UI/UX | `design/` (entrega de Labs Fray Bentos; empezar por `design/LEEME.md`) |
 | Arquitectura | https://claude.ai/artifact/DvXeaBXMuTGAo5H9G9mhXn |
+- [08-guia-cuentas-radio.md](08-guia-cuentas-radio.md): cuentas que la radio crea para el traspaso

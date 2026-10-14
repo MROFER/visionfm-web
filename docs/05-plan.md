@@ -111,7 +111,7 @@ Solo si la radio firma. El código no cambia: cambian las variables de entorno y
 
 | Tarea | Listo cuando |
 |---|---|
-| Crear las cuentas de la radio (Cloudflare, VPS, GitHub, R2, envío de email) con un email de la radio, y su gestor de contraseñas | el dueño entra a cada cuenta con su clave |
+| Crear las cuentas de la radio siguiendo `08-guia-cuentas-radio.md` (email, gestor de contraseñas, dominio, Cloudflare, R2, GitHub, VPS, envío de email, respaldo) | el dueño entra a cada cuenta con su clave |
 | Transferir el repo a la organización de GitHub de la radio | CI corre en el repo nuevo |
 | Copiar base y archivos de R2 a las cuentas nuevas; respaldo externo a nombre de la radio | la copia restaura completa en el VPS de la radio |
 | Registros DNS de `visionfm.com.uy`: sitio, staging, Access, SPF, DKIM y DMARC | un aviso del panel llega desde `avisos@visionfm.com.uy` |
