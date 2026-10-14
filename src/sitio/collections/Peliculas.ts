@@ -2,7 +2,12 @@ import type { CollectionConfig } from 'payload'
 
 import { campoSeo } from '@/base/fields/seo'
 import { campoSlug } from '@/base/fields/slug'
-import { accesoPorArea, lecturaPublicadoOArea, soloPublicaQuienPuede } from '@/base/permisos'
+import {
+  accesoPorArea,
+  lecturaPublicadoOArea,
+  soloPublicaQuienPuede,
+  anotarSiEsBorrador,
+} from '@/base/permisos'
 import { idDeYouTube } from '../lib/youtube'
 
 export const IDIOMAS = [
@@ -28,7 +33,10 @@ export const Peliculas: CollectionConfig = {
     ...accesoPorArea('cinevision'),
     read: lecturaPublicadoOArea('cinevision'),
   },
-  hooks: { beforeChange: [soloPublicaQuienPuede('cinevision')] },
+  hooks: {
+    beforeOperation: [anotarSiEsBorrador],
+    beforeChange: [soloPublicaQuienPuede('cinevision')],
+  },
   fields: [
     { name: 'titulo', label: 'Título', type: 'text', required: true },
     campoSlug('titulo', { unique: true }),

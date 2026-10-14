@@ -6,6 +6,7 @@ import {
   autorPorDefecto,
   lecturaPublicadoOArea,
   soloPublicaQuienPuede,
+  anotarSiEsBorrador,
 } from '@/base/permisos'
 
 // docs/04-esquema.md (entrevistas)
@@ -23,7 +24,10 @@ export const Entrevistas: CollectionConfig = {
     ...accesoPorArea('radio', { campoAutor: 'autor' }),
     read: lecturaPublicadoOArea('radio'),
   },
-  hooks: { beforeChange: [autorPorDefecto(), soloPublicaQuienPuede('radio')] },
+  hooks: {
+    beforeOperation: [anotarSiEsBorrador],
+    beforeChange: [autorPorDefecto(), soloPublicaQuienPuede('radio')],
+  },
   fields: [
     { name: 'entrevistado', type: 'text', required: true },
     { name: 'tema', type: 'text', required: true },
