@@ -36,7 +36,7 @@ Un sitio que trate por igual a las tres partes del medio (radio, redacción y Ci
 - Inicio, Radio (En vivo, Programación, Entrevistas), Noticias (listado, sección, nota), Cinevisión (cartelera, película), Institucional (nosotros, sumarse, publicidad, contacto) y textos legales.
 - Reproductor único y persistente: el vivo y las entrevistas comparten audio, no se corta al navegar, mini reproductor en celular.
 - "Al aire" y "A continuación" en todo el sitio, calculados con la grilla y la hora de Montevideo.
-- Un banner rotativo por página (970×90 / 320×100), nunca en Cinevisión ni en Película.
+- Un banner rotativo por página (970×90 / 320×100); en Cinevisión va debajo de la cartelera y en el celular es de 300×250. Nunca en Película.
 - Buscador interno en Noticias y Entrevistas.
 - Tres formularios con adjunto (contacto, sumarse, tarifas) con protección contra spam.
 

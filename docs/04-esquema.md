@@ -219,6 +219,7 @@ Acceso: área Cinevisión. Vista de panel propia: grilla semanal con "Copiar sem
 | `emailReporte` | email | si se completa, recibe el reporte mensual |
 | `imagenWeb`* | relación → `medios` | 970×90 exacto |
 | `imagenMovil`* | relación → `medios` | 320×100 exacto |
+| `imagenRectangulo` | relación → `medios` | 300×250 exacto; para ubicaciones en el medio de la página (Cinevisión). Si falta, va la de 320×100 |
 | `link` | URL | |
 | `ubicaciones`* | multiselect | inicio · radio-en-vivo · radio-programacion · radio-entrevistas · noticias-listado · noticias-seccion · noticias-nota · institucional · institucional-formularios |
 | `secciones` | relación múltiple → `secciones` | limita Sección y Nota a esas secciones; vacío = todas |
@@ -276,7 +277,7 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 ## Fichas globales
 
 ### ajustes
-`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas; no se publican), `avisoPropio` (`imagenWeb` 970×90, `imagenMovil` 320×100, `link`: el aviso de la radio que ocupa las ubicaciones sin anuncios). Acceso: área Sistema.
+`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas; no se publican), `avisoPropio` (`imagenWeb` 970×90, `imagenMovil` 320×100, `imagenRectangulo` 300×250, `link`: el aviso de la radio que ocupa las ubicaciones sin anuncios). Acceso: área Sistema.
 
 ### portada
 `notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).
