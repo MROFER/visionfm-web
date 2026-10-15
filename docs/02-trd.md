@@ -65,6 +65,7 @@ Payload expone su API REST en `/cms-api/{coleccion}` (se cambia `routes.api` en 
 | `/api/grilla` | GET | grilla semanal compacta para "Al aire" y "A continuación" | Cloudflare, purga al guardar programas |
 | `/api/anuncios?ubicacion=&seccion=` | GET | anuncios vigentes de una ubicación (y sección, si aplica) para rotar | Cloudflare 5 min |
 | `/api/buscar?en=noticias\|entrevistas&q=&pagina=` | GET | búsqueda de texto completo en Postgres; límite por IP en el WAF | Cloudflare 1 min |
+| `/api/entrevistas/{slug}/audio` | GET | audio de una entrevista publicada: lo pide al bucket privado como visitante y redirige a una URL firmada de 1 h (en desarrollo, el archivo del disco) | sin caché |
 | `/api/formularios/{tipo}` | POST | crea un mensaje (multipart con adjunto); valida Turnstile y límite por IP | sin caché |
 | `/api/preview` | GET | activa la vista previa de un borrador con `PREVIEW_SECRET` | sin caché |
 | `/api/revalidar` | POST | uso interno de los hooks | sin caché |

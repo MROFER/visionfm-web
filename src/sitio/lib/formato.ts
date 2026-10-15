@@ -14,6 +14,15 @@ export function duracionAudio(segundos: number) {
   return `${Math.round(segundos / 60)} min`
 }
 
+/** 754 → "12:34"; desde una hora, "1:02:05". */
+export function reloj(segundos: number) {
+  const total = Math.max(0, Math.floor(segundos))
+  const h = Math.floor(total / 3600)
+  const m = Math.floor((total % 3600) / 60)
+  const s = String(total % 60).padStart(2, '0')
+  return h ? `${h}:${String(m).padStart(2, '0')}:${s}` : `${String(m).padStart(2, '0')}:${s}`
+}
+
 const CALIFICACION: Record<Pelicula['calificacion'], string> = {
   atp: 'ATP',
   '7': '+7',

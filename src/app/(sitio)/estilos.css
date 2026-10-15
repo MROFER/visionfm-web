@@ -89,3 +89,24 @@
     @apply w-full border-0 border-t border-linea;
   }
 }
+
+/* Barra de avance de una entrevista: línea de 4 px con un cuadrado para arrastrar */
+.avance::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--color-vivo);
+}
+.avance::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-vivo);
+}
+.avance:disabled::-webkit-slider-thumb {
+  visibility: hidden;
+}
+.avance:disabled::-moz-range-thumb {
+  visibility: hidden;
+}
