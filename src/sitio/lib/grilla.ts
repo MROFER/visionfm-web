@@ -37,3 +37,70 @@ export function choquesCon(horarios: Horario[], otros: ProgramaEnGrilla[]): stri
     .filter((otro) => otro.horarios.some((ho) => horarios.some((h) => seSuperponen(h, ho))))
     .map((otro) => otro.nombre)
 }
+
+// "Al aire" y "A continuación" (design/LEEME.md, sección 8). Uruguay no cambia la hora desde 2015: UTC-3 fijo.
+const DESFASE_MONTEVIDEO = -3 * 60
+const MINUTOS_DIA = 24 * 60
+const MINUTOS_SEMANA = 7 * MINUTOS_DIA
+
+/** Día de la semana y minutos desde la medianoche en Montevideo. */
+export function momentoMontevideo(fecha: Date): { dia: Dia; minutos: number } {
+  const local = new Date(fecha.getTime() + DESFASE_MONTEVIDEO * 60_000)
+  const dia = DIAS[(local.getUTCDay() + 6) % 7]
+  return { dia, minutos: local.getUTCHours() * 60 + local.getUTCMinutes() }
+}
+
+export type Emision<T> = { programa: T; dia: Dia; inicio: string; fin: string }
+
+/** Cada horario de cada programa, día por día, en minutos desde el lunes 00:00. */
+function emisiones<T extends ProgramaEnGrilla>(programas: T[]) {
+  return programas.flatMap((programa) =>
+    programa.horarios.flatMap((h) =>
+      h.dias.map((dia) => {
+        const base = DIAS.indexOf(dia) * MINUTOS_DIA
+        return {
+          programa,
+          dia,
+          inicio: h.inicio,
+          fin: h.fin,
+          desde: base + aMinutos(h.inicio),
+          hasta: base + finEnMinutos(h.fin),
+        }
+      }),
+    ),
+  )
+}
+
+const minutoDeLaSemana = (fecha: Date) => {
+  const { dia, minutos } = momentoMontevideo(fecha)
+  return DIAS.indexOf(dia) * MINUTOS_DIA + minutos
+}
+
+const sinPosicion = <T>({ programa, dia, inicio, fin }: Emision<T> & object): Emision<T> => ({
+  programa,
+  dia,
+  inicio,
+  fin,
+})
+
+/** El programa que suena ahora, o `null` si a esta hora no hay ninguno cargado. */
+export function alAire<T extends ProgramaEnGrilla>(programas: T[], fecha: Date): Emision<T> | null {
+  const ahora = minutoDeLaSemana(fecha)
+  const actual = emisiones(programas).find((e) => e.desde <= ahora && ahora < e.hasta)
+  return actual ? sinPosicion(actual) : null
+}
+
+/** Los próximos programas que empiezan después de ahora, dando la vuelta a la semana si hace falta. */
+export function aContinuacion<T extends ProgramaEnGrilla>(
+  programas: T[],
+  fecha: Date,
+  cantidad: number,
+): Emision<T>[] {
+  const ahora = minutoDeLaSemana(fecha)
+  return emisiones(programas)
+    .map((e) => ({ e, falta: (e.desde - ahora + MINUTOS_SEMANA) % MINUTOS_SEMANA }))
+    .filter(({ falta }) => falta > 0)
+    .sort((a, b) => a.falta - b.falta)
+    .slice(0, cantidad)
+    .map(({ e }) => sinPosicion(e))
+}

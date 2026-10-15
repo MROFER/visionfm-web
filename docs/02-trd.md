@@ -75,9 +75,9 @@ Respuestas de error en JSON: `{ "error": { "codigo": "VALIDACION", "mensaje": "�
 
 ## 5. Caché y revalidación
 
-- Páginas públicas: generación estática con revalidación por etiquetas (`revalidateTag`). Etiquetas: `noticias`, `seccion:{slug}`, `nota:{id}`, `entrevistas`, `programas`, `cartelera`, `pelicula:{id}`, `anuncios`, `ajustes`, `portada`, `grilla` (programas y excepciones), `cinevision`, `institucional`, `pagina:{slug}`.
+- Páginas públicas: se arman en cada pedido que llega al servidor (`dynamic = 'force-dynamic'` en `src/app/(sitio)/layout.tsx`), con los datos guardados en la caché de Next por etiquetas (`unstable_cache` en `src/sitio/datos`) y refrescados con `revalidateTag`. No se generan en el build porque la imagen de Docker se construye sin base de datos. Etiquetas: `noticias`, `seccion:{slug}`, `nota:{id}`, `entrevistas`, `programas`, `cartelera`, `pelicula:{id}`, `anuncios`, `ajustes`, `portada`, `grilla` (programas y excepciones), `cinevision`, `institucional`, `pagina:{slug}`.
 - Cada hook `afterChange` / `afterDelete` revalida sus etiquetas y purga en Cloudflare las URL afectadas.
-- Cloudflare cachea HTML (`Cache-Control: s-maxage=31536000, stale-while-revalidate`) y archivos estáticos. `/admin`, `/cms-api`, `/api/preview`, cualquier respuesta en modo vista previa y POST no se cachean (`Cache-Control: private, no-store`); una regla de Cloudflare saltea la caché si existe la cookie de vista previa.
+- Cloudflare cachea HTML y archivos estáticos. Como Next responde las páginas dinámicas con `Cache-Control: private, no-store`, la regla de caché de Cloudflare para el sitio público fija su propio tiempo en el borde (ignora el encabezado del origen) y la purga al publicar mantiene todo al día. `/admin`, `/cms-api`, `/api/preview`, cualquier respuesta en modo vista previa y POST no se cachean (`Cache-Control: private, no-store`); una regla de Cloudflare saltea la caché si existe la cookie de vista previa.
 - Tareas programadas (cola de Payload + cron de Coolify): publicar notas programadas y aprobadas cada minuto, refrescar la cartelera a medianoche, borrar funciones de más de 90 días y mensajes vencidos cada semana.
 - "Al aire" se recalcula cada minuto en el navegador con `/api/grilla`, que incluye las excepciones de los próximos 7 días.
 - Al publicar una nota: revalidación, purga de Cloudflare e IndexNow.

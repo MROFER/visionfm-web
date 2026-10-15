@@ -22,4 +22,15 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+const conPayload = withPayload(nextConfig, { devBundleServerPackages: false })
+const encabezadosPayload = conPayload.headers
+
+// Payload pide a todas las rutas el esquema de color del navegador (Accept-CH + Critical-CH) para el modo
+// oscuro del panel. En el sitio eso obliga al navegador a repetir el primer pedido y suma un Vary que
+// rompe la caché de Cloudflare, así que queda solo en /admin.
+conPayload.headers = async () =>
+  (encabezadosPayload ? await encabezadosPayload() : []).map((regla) =>
+    regla.source === '/:path*' ? { ...regla, source: '/admin/:path*' } : regla,
+  )
+
+export default conPayload
