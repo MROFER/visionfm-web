@@ -116,7 +116,7 @@ Se releyeron los siete documentos juntos, después de sumar permisos, auditoría
 
 ## 9. Preguntas que quedan
 
-1. ~~¿Qué dominio usamos para la demo?~~ Subdominios de `labs-fraybentos.uy`: `visionfm.labs-fraybentos.uy` y `visionfm-staging.labs-fraybentos.uy` (con guion y no `staging.visionfm…`, porque el certificado gratis de Cloudflare cubre un solo nivel de subdominio). Requiere que los DNS de `labs-fraybentos.uy` estén en Cloudflare (plan gratis).
+1. ~~¿Qué dominio usamos para la demo?~~ Subdominios de `fraybentos.uy`, que es de la agencia: `visionfm-labs.fraybentos.uy` y `visionfm-labs-staging.fraybentos.uy` (con guion y no `visionfm.labs.fraybentos.uy`, porque el certificado gratis de Cloudflare cubre un solo nivel de subdominio; el de dos niveles cuesta unos USD 10 por mes). Requiere que los DNS de `fraybentos.uy` estén en Cloudflare (plan gratis), cuidando los registros que ya usa el dominio.
 
 **Entrevistas:** no se sabe si la radio las publica hoy; probablemente no. La migración de entrevistas queda en espera hasta saberlo. Para la demo, la página Entrevistas lleva 3 o 4 ejemplos marcados como tales, para que se vea funcionando.
 

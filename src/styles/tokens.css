@@ -1,0 +1,45 @@
+/* Tokens del diseño de Labs Fray Bentos (design/LEEME.md, sección 4). Cada color genera sus clases de
+   Tailwind: bg-tinta, text-acento, border-linea… */
+@theme {
+  --color-*: initial;
+  --color-blanco: #ffffff;
+  --color-tinta: #13161d;
+  --color-acento: #c03a0b;
+  --color-acento-hover: #a3330a;
+  --color-vivo: #ff7a45;
+  --color-vivo-claro: #ff9a6e;
+  --color-linea: #d9d7d2;
+  --color-suave: #f3f2ef;
+  --color-sin-foto: #e6e3dc;
+  --color-aviso: #eceae5;
+  --color-aviso-borde: #a9a59c;
+  --color-aviso-punto: #c9c5bc;
+  /* Grises de texto: cuerpo secundario, metadatos y sobre fondo oscuro */
+  --color-texto-2: #3b3f48;
+  --color-meta: #545862;
+  --color-oscuro-1: #c9ccd3;
+  --color-oscuro-2: #9ea3ae;
+  --color-oscuro-borde: #3a3f4b;
+  --color-oscuro-linea: #2c313c;
+  --color-oscuro-caja: #1d212b;
+  /* Carrusel de Cinevisión */
+  --color-carrusel: #d4d2cd;
+  --color-carrusel-2: #cbc9c3;
+  --color-negativo: #1c1d21;
+
+  --font-*: initial;
+  --font-titulos: var(--fuente-titulos), 'Libre Franklin', system-ui, sans-serif;
+  --font-cuerpo: var(--fuente-cuerpo), 'Public Sans', system-ui, sans-serif;
+
+  /* Esquinas rectas en todo; lo redondo se pide con rounded-full */
+  --radius-*: initial;
+
+  /* 1240 px de contenido más 24 px de cada lado */
+  --container-sitio: 1288px;
+
+  --breakpoint-*: initial;
+  /* Diseño mobile hasta 767 px, web desde 1024 px y una transición entre ambos */
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}

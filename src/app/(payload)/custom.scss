@@ -1,0 +1,12 @@
+// Colores de la radio en el panel (design/LEEME.md, sección 4): acento en los botones principales
+:root {
+  --marca-acento: #c03a0b;
+  --marca-acento-oscuro: #9e2f08;
+}
+
+.btn--style-primary:not(.btn--disabled) {
+  --bg-color: var(--marca-acento);
+  --hover-bg: var(--marca-acento-oscuro);
+  --color: #fff;
+  --hover-color: #fff;
+}

@@ -19,8 +19,8 @@ Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las ta
 |---|---|---|
 | `nombre`* | texto | |
 | `email`* | email | único, login |
-| `rol`* | relación → `roles` | Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial o uno creado |
-| `ajustesPermisos` | JSON | permisos que suman o quitan sobre el rol (área × acción). En la etapa 1 solo se usa Noticias → Publicar |
+| `rol`* | select (etapa 1) · relación → `roles` (etapa 2) | Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial; en la etapa 2, también uno creado |
+| `ajusteNoticiasPublicar` + `motivoAjuste` | select + texto | etapa 1: suma o quita Noticias → Publicar sobre el rol (según rol · permitir · quitar), con motivo obligatorio. En la etapa 2 pasa a `ajustesPermisos` (JSON, área × acción) |
 | `seccionesPermitidas` | relación múltiple → `secciones` | vacío = todas |
 | `activo`* | checkbox | desactivar cierra sesiones y quita el acceso en Cloudflare Access |
 | `esOwner` | checkbox | solo uno; no editable desde el panel salvo por transferencia |
@@ -60,7 +60,7 @@ Solo lectura para todos, incluido el Owner. Lo escribe un hook global `afterChan
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| archivo* | imagen | JPG, PNG, WebP, AVIF; máx. 15 MB; se generan tamaños 320, 640, 960, 1280, 1920 en WebP y AVIF |
+| archivo* | imagen | JPG, PNG, WebP, AVIF; máx. 15 MB; el original se guarda en WebP con 2560 px de ancho como máximo; se generan tamaños 320, 640, 960, 1280, 1920 en WebP y AVIF |
 | `alt`* | texto | texto alternativo, máx. 160 caracteres |
 | `credito` | texto | fotógrafo o fuente |
 
@@ -276,7 +276,7 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 ## Fichas globales
 
 ### ajustes
-`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas). Acceso: área Sistema.
+`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas; no se publican), `avisoPropio` (`imagenWeb` 970×90, `imagenMovil` 320×100, `link`: el aviso de la radio que ocupa las ubicaciones sin anuncios). Acceso: área Sistema.
 
 ### portada
 `notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).

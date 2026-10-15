@@ -21,13 +21,13 @@ Las versiones exactas se fijan al crear el repo: Next será la última que Paylo
 
 ## 2. Entornos
 
-El sitio se construye primero en cuentas de la agencia, con un dominio provisorio (`visionfm.labs-fraybentos.uy`). Si la radio firma, se traspasa a cuentas de la radio y producción pasa a `visionfm.com.uy`. Por eso nada de la radio va fijo en el código: dominio, cuentas, buckets y remitente salen de variables de entorno.
+El sitio se construye primero en cuentas de la agencia, con un dominio provisorio (`visionfm-labs.fraybentos.uy`). Si la radio firma, se traspasa a cuentas de la radio y producción pasa a `visionfm.com.uy`. Por eso nada de la radio va fijo en el código: dominio, cuentas, buckets y remitente salen de variables de entorno.
 
 | Entorno | URL | Rama | Base de datos |
 |---|---|---|---|
 | Local | `localhost:3000` | cualquiera | Postgres en Docker + `pnpm seed` |
-| Staging | `visionfm-staging.labs-fraybentos.uy`, después `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
-| Demo (antes del contrato) | `visionfm.labs-fraybentos.uy` | `main` | propia, con datos reales del sitio público actual; `noindex` y detrás de Access para no competir en Google con el sitio actual |
+| Staging | `visionfm-labs-staging.fraybentos.uy`, después `staging.visionfm.com.uy` | `staging` | propia, solo con datos de ejemplo (`pnpm seed`); nunca copia de producción |
+| Demo (antes del contrato) | `visionfm-labs.fraybentos.uy` | `main` | propia, con datos reales del sitio público actual; `noindex` y detrás de Access para no competir en Google con el sitio actual |
 | Producción | `visionfm.com.uy` | `main` | producción, en cuentas de la radio |
 
 Staging va detrás de Cloudflare Access completo (no es público) y con `noindex`.
@@ -44,7 +44,8 @@ Definidas en `.env.example` (sin valores) y cargadas en Coolify. Nunca en el rep
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_URL` | medios públicos (fotos, audios) |
 | `R2_BUCKET_PRIVADO` | adjuntos de formularios y CV; solo con URL firmada |
 | `R2_BUCKET_AUDITORIA` | copia nocturna del registro de actividad, con bloqueo de objetos |
-| `CF_ACCESS_TOKEN`, `CF_ACCESS_APP_ID`, `CF_ACCESS_AUD` | sincronizar usuarios con la lista de Access y validar el JWT de Access en el servidor |
+| `CF_ACCOUNT_ID`, `CF_ACCESS_TOKEN`, `CF_ACCESS_GROUP_ID` | sincronizar los emails de los usuarios activos con el grupo de Access del panel (token con permiso solo de editar Access) |
+| `CF_ACCESS_TEAM_DOMAIN`, `CF_ACCESS_AUD` | validar en el servidor el JWT de Access en `/admin` y `/cms-api` (`equipo.cloudflareaccess.com` y la etiqueta AUD de la aplicación) |
 | `RESPALDO_*` | destino de respaldos fuera de la cuenta de Cloudflare (Backblaze B2 u otro S3) |
 | `CF_ZONE_ID`, `CF_API_TOKEN` | purga de caché de Cloudflare (token con permiso solo de purga) |
 | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | antispam de formularios |
@@ -64,6 +65,7 @@ Payload expone su API REST en `/cms-api/{coleccion}` (se cambia `routes.api` en 
 | `/api/grilla` | GET | grilla semanal compacta para "Al aire" y "A continuación" | Cloudflare, purga al guardar programas |
 | `/api/anuncios?ubicacion=&seccion=` | GET | anuncios vigentes de una ubicación (y sección, si aplica) para rotar | Cloudflare 5 min |
 | `/api/buscar?en=noticias\|entrevistas&q=&pagina=` | GET | búsqueda de texto completo en Postgres; límite por IP en el WAF | Cloudflare 1 min |
+| `/api/entrevistas/{slug}/audio` | GET | audio de una entrevista publicada: lo pide al bucket privado como visitante y redirige a una URL firmada de 1 h (en desarrollo, el archivo del disco) | sin caché |
 | `/api/formularios/{tipo}` | POST | crea un mensaje (multipart con adjunto); valida Turnstile y límite por IP | sin caché |
 | `/api/preview` | GET | activa la vista previa de un borrador con `PREVIEW_SECRET` | sin caché |
 | `/api/revalidar` | POST | uso interno de los hooks | sin caché |
@@ -74,9 +76,9 @@ Respuestas de error en JSON: `{ "error": { "codigo": "VALIDACION", "mensaje": "�
 
 ## 5. Caché y revalidación
 
-- Páginas públicas: generación estática con revalidación por etiquetas (`revalidateTag`). Etiquetas: `noticias`, `seccion:{slug}`, `nota:{id}`, `entrevistas`, `programas`, `cartelera`, `pelicula:{id}`, `anuncios`, `ajustes`, `portada`, `grilla` (programas y excepciones), `cinevision`, `institucional`, `pagina:{slug}`.
+- Páginas públicas: se arman en cada pedido que llega al servidor (`dynamic = 'force-dynamic'` en `src/app/(sitio)/layout.tsx`), con los datos guardados en la caché de Next por etiquetas (`unstable_cache` en `src/sitio/datos`) y refrescados con `revalidateTag`. No se generan en el build porque la imagen de Docker se construye sin base de datos. Etiquetas: `noticias`, `seccion:{slug}`, `nota:{id}`, `entrevistas`, `programas`, `cartelera`, `pelicula:{id}`, `anuncios`, `ajustes`, `portada`, `grilla` (programas y excepciones), `cinevision`, `institucional`, `pagina:{slug}`.
 - Cada hook `afterChange` / `afterDelete` revalida sus etiquetas y purga en Cloudflare las URL afectadas.
-- Cloudflare cachea HTML (`Cache-Control: s-maxage=31536000, stale-while-revalidate`) y archivos estáticos. `/admin`, `/cms-api`, `/api/preview`, cualquier respuesta en modo vista previa y POST no se cachean (`Cache-Control: private, no-store`); una regla de Cloudflare saltea la caché si existe la cookie de vista previa.
+- Cloudflare cachea HTML y archivos estáticos. Como Next responde las páginas dinámicas con `Cache-Control: private, no-store`, la regla de caché de Cloudflare para el sitio público fija su propio tiempo en el borde (ignora el encabezado del origen) y la purga al publicar mantiene todo al día. `/admin`, `/cms-api`, `/api/preview`, cualquier respuesta en modo vista previa y POST no se cachean (`Cache-Control: private, no-store`); una regla de Cloudflare saltea la caché si existe la cookie de vista previa.
 - Tareas programadas (cola de Payload + cron de Coolify): publicar notas programadas y aprobadas cada minuto, refrescar la cartelera a medianoche, borrar funciones de más de 90 días y mensajes vencidos cada semana.
 - "Al aire" se recalcula cada minuto en el navegador con `/api/grilla`, que incluye las excepciones de los próximos 7 días.
 - Al publicar una nota: revalidación, purga de Cloudflare e IndexNow.
@@ -109,7 +111,7 @@ Resumen; el detalle está en la página de arquitectura.
 - Cabeceras: CSP estricta, HSTS, `X-Frame-Options: DENY` fuera del panel.
 - Renovate para dependencias; CI bloquea el merge si fallan los tests.
 - Permisos editoriales validados en el servidor, no solo ocultando botones: un periodista sin permiso no puede publicar ni llamando a la API directo (test por rol).
-- Subidas: límite de 100 MB por petición en el plan gratis de Cloudflare; audios hasta 90 MB, imágenes hasta 15 MB, adjuntos hasta 10 MB.
+- Subidas: límite de 100 MB por petición en el plan gratis de Cloudflare; audios hasta 90 MB, imágenes hasta 15 MB (el original se guarda en WebP, con 2560 px de ancho como máximo), adjuntos hasta 10 MB.
 - Búsqueda en Postgres con `unaccent` y diccionario español.
 - Email transaccional con SPF, DKIM y DMARC en el dominio remitente, para que los avisos no caigan en spam.
 
