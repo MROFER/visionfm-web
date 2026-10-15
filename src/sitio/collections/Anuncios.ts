@@ -2,18 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 import { medidasExactas } from '@/base/fields/medidas'
 import { accesoPorArea } from '@/base/permisos'
+import { descargarReporte } from '../publicidad/tareas'
+import { UBICACIONES } from '../publicidad/ubicaciones'
 
-export const UBICACIONES = [
-  { label: 'Inicio', value: 'inicio' },
-  { label: 'Radio · En vivo', value: 'radio-en-vivo' },
-  { label: 'Radio · Programación', value: 'radio-programacion' },
-  { label: 'Radio · Entrevistas', value: 'radio-entrevistas' },
-  { label: 'Noticias · Listado', value: 'noticias-listado' },
-  { label: 'Noticias · Sección', value: 'noticias-seccion' },
-  { label: 'Noticias · Nota', value: 'noticias-nota' },
-  { label: 'Institucional', value: 'institucional' },
-  { label: 'Institucional · Formularios', value: 'institucional-formularios' },
-]
+export { UBICACIONES }
 
 // docs/04-esquema.md (anuncios) y docs/07-permisos-y-publicidad.md, sección 3.
 // Los anuncios vigentes son públicos: el sitio los pide y rotan en el navegador.
@@ -29,6 +21,7 @@ export const Anuncios: CollectionConfig = {
     ...accesoPorArea('publicidad'),
     read: (args) => accesoPorArea('publicidad').read(args) || { activo: { equals: true } },
   },
+  endpoints: [descargarReporte],
   fields: [
     {
       name: 'nombre',
