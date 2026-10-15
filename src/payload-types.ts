@@ -140,6 +140,7 @@ export interface Config {
   user: Usuario;
   jobs: {
     tasks: {
+      sincronizarAccess: TaskSincronizarAccess;
       avisoVencimientoAnuncios: TaskAvisoVencimientoAnuncios;
       reporteMensualAnunciantes: TaskReporteMensualAnunciantes;
       schedulePublish: TaskSchedulePublish;
@@ -820,7 +821,12 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'avisoVencimientoAnuncios' | 'reporteMensualAnunciantes' | 'schedulePublish';
+        taskSlug:
+          | 'inline'
+          | 'sincronizarAccess'
+          | 'avisoVencimientoAnuncios'
+          | 'reporteMensualAnunciantes'
+          | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -853,7 +859,9 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'avisoVencimientoAnuncios' | 'reporteMensualAnunciantes' | 'schedulePublish') | null;
+  taskSlug?:
+    | ('inline' | 'sincronizarAccess' | 'avisoVencimientoAnuncios' | 'reporteMensualAnunciantes' | 'schedulePublish')
+    | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1759,6 +1767,16 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSincronizarAccess".
+ */
+export interface TaskSincronizarAccess {
+  input?: unknown;
+  output: {
+    emails?: number | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

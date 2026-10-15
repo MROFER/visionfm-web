@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { tareaSincronizarAccess } from './base/acceso/sincronizar'
 import { almacenamientoR2 } from './base/almacenamiento'
 import { conRevalidacion } from './base/cache'
 import { LIMITE_GLOBAL } from './base/lib/limiteSubida'
@@ -119,7 +120,7 @@ export default buildConfig(
         // Corre dentro del mismo proceso, cada minuto, solo en producción (en desarrollo y tests
         // las tareas se disparan a mano).
         jobs: {
-          tasks: tareasPublicidad,
+          tasks: [tareaSincronizarAccess, ...tareasPublicidad],
           autoRun: [{ cron: '* * * * *', queue: 'default' }],
           shouldAutoRun: () => process.env.NODE_ENV === 'production',
           access: {

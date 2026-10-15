@@ -1,5 +1,6 @@
 import { APIError, type CollectionConfig, type FieldAccess, type Where } from 'payload'
 
+import { actualizarListaAccess } from '../acceso/sincronizar'
 import {
   NOMBRES_ROL,
   puedeAsignarRol,
@@ -71,7 +72,7 @@ export const Usuarios: CollectionConfig = {
   hooks: {
     beforeOperation: [exigirClaveSeguraAlRecuperar],
     beforeValidate: [prepararInvitacion, exigirClaveSegura],
-    afterChange: [mandarInvitacion],
+    afterChange: [mandarInvitacion, actualizarListaAccess],
     beforeLogin: [
       ({ user }) => {
         if (user?.activo === false) throw new APIError('Este usuario está desactivado.', 403)
