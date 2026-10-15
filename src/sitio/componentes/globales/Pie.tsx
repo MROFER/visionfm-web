@@ -1,47 +1,9 @@
 import Link from 'next/link'
 
 import type { AjustesSitio } from '../../datos'
-import { LABS_FRAY_BENTOS, LEGALES, linkWhatsapp, type Enlace, type SeccionMenu } from '../../navegacion'
-import { IconoEnlace, IconoFacebook, IconoInstagram, IconoWhatsapp } from '../ui/iconos'
+import { LABS_FRAY_BENTOS, LEGALES, type Enlace, type SeccionMenu } from '../../navegacion'
 import { Logo } from '../ui/Logo'
-
-const NOMBRE_RED: Record<string, string> = {
-  instagram: 'Instagram',
-  facebook: 'Facebook',
-  x: 'X',
-  youtube: 'YouTube',
-  tiktok: 'TikTok',
-  whatsapp: 'WhatsApp',
-}
-
-function Redes({ ajustes, className }: { ajustes: AjustesSitio; className: string }) {
-  const redes = ajustes.redes.filter((r) => r.red !== 'whatsapp')
-  if (ajustes.whatsapp) redes.push({ red: 'whatsapp', url: linkWhatsapp(ajustes.whatsapp) })
-  return (
-    <div className={`gap-2.5 py-1.5 ${className}`}>
-      {redes.map((r) => {
-        const Icono =
-          r.red === 'instagram'
-            ? IconoInstagram
-            : r.red === 'facebook'
-              ? IconoFacebook
-              : r.red === 'whatsapp'
-                ? IconoWhatsapp
-                : IconoEnlace
-        return (
-          <a
-            key={r.red}
-            href={r.url}
-            aria-label={`${NOMBRE_RED[r.red] ?? r.red} de Visión`}
-            className="flex size-11 items-center justify-center rounded-full border-2 border-oscuro-borde text-blanco no-underline hover:border-blanco"
-          >
-            <Icono />
-          </a>
-        )
-      })}
-    </div>
-  )
-}
+import { Redes } from '../ui/Redes'
 
 function Columna({ titulo, enlaces, className = '', children }: { titulo: string; enlaces: Enlace[]; className?: string; children?: React.ReactNode }) {
   return (
