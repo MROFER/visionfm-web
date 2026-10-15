@@ -15,6 +15,8 @@ type EstadoRadio = {
   error: boolean
   alternar: () => void
   alAire: Emision<ProgramaGrilla> | null
+  grilla: ProgramaGrilla[]
+  ahora: Date
 }
 
 const ContextoRadio = createContext<EstadoRadio | null>(null)
@@ -31,18 +33,21 @@ const CADA_MINUTO = 30_000
 export function Radio({
   streamUrl,
   grilla,
+  ahoraInicial,
   children,
 }: {
   streamUrl: string
   grilla: ProgramaGrilla[]
+  /** Hora del servidor al armar la página: el primer render coincide en el servidor y el navegador. */
+  ahoraInicial: number
   children: React.ReactNode
 }) {
   const audio = useRef<HTMLAudioElement>(null)
   const [sonando, setSonando] = useState(false)
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState(false)
-  // El HTML puede venir de la caché: el programa se calcula en el navegador con su reloj
-  const [ahora, setAhora] = useState<Date | null>(null)
+  // El HTML puede venir de la caché: apenas carga, el navegador recalcula con su reloj
+  const [ahora, setAhora] = useState(() => new Date(ahoraInicial))
 
   useEffect(() => {
     const tic = () => setAhora(new Date())
@@ -75,7 +80,7 @@ export function Radio({
 
   return (
     <ContextoRadio.Provider
-      value={{ sonando, cargando, error, alternar, alAire: ahora ? alAire(grilla, ahora) : null }}
+      value={{ sonando, cargando, error, alternar, alAire: alAire(grilla, ahora), grilla, ahora }}
     >
       {children}
       <audio

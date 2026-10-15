@@ -75,3 +75,10 @@ export const IconoEnlace = ({ tamano = 20, className }: Props) => (
     <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
   </svg>
 )
+
+export const IconoBuscar = ({ tamano = 18, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2.25} strokeLinecap="square">
+    <circle cx="10.5" cy="10.5" r="6.5" />
+    <line x1="15.5" y1="15.5" x2="21" y2="21" />
+  </svg>
+)

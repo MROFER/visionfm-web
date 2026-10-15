@@ -1,14 +1,50 @@
+import { CinevisionInicio } from '@/sitio/componentes/inicio/CinevisionInicio'
+import { EntrevistasInicio } from '@/sitio/componentes/inicio/EntrevistasInicio'
+import { HeroEnVivo } from '@/sitio/componentes/inicio/HeroEnVivo'
+import { NoticiasInicio } from '@/sitio/componentes/inicio/NoticiasInicio'
 import { Participa } from '@/sitio/componentes/globales/Participa'
-import { obtenerAjustes } from '@/sitio/datos'
+import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
+import {
+  obtenerAjustes,
+  obtenerCartelera,
+  obtenerPortada,
+  obtenerSecciones,
+  ultimasEntrevistas,
+  ultimasNoticias,
+} from '@/sitio/datos'
+import { hoyEnMontevideo } from '@/sitio/lib/fecha'
 
-// Provisorio: el Inicio completo (hero en vivo, noticias, Cinevisión y entrevistas) llega en el próximo PR
+// Inicio (design/LEEME.md, sección 7): hero en vivo, publicidad, noticias, Cinevisión, entrevistas y Participá
 export default async function Inicio() {
-  const { whatsapp } = await obtenerAjustes()
+  const [ajustes, portada, secciones] = await Promise.all([
+    obtenerAjustes(),
+    obtenerPortada(),
+    obtenerSecciones(),
+  ])
+  const [noticias, cartelera, entrevistas] = await Promise.all([
+    ultimasNoticias(5, portada.notaDestacada),
+    obtenerCartelera(hoyEnMontevideo()),
+    ultimasEntrevistas(4),
+  ])
+
   return (
-    <main className="contenedor py-12 lg:py-16">
-      <h1 className="m-0 font-titulos text-5xl leading-none font-bold">Visión 96.5 FM</h1>
-      <p className="mt-4 mb-12 text-texto-2">Sitio en construcción.</p>
-      <Participa whatsapp={whatsapp} />
+    <main>
+      <HeroEnVivo telefono={ajustes.telefono}>
+        <Publicidad aviso={ajustes.avisoPropio} oscuro />
+      </HeroEnVivo>
+      <div className="contenedor hidden py-8 md:block">
+        <Publicidad aviso={ajustes.avisoPropio} />
+      </div>
+      <NoticiasInicio destacada={noticias.destacada} resto={noticias.resto} secciones={secciones} />
+      <CinevisionInicio
+        cartelera={cartelera}
+        destacadaId={portada.peliculaDestacada}
+        direccion={ajustes.direccion}
+      />
+      <EntrevistasInicio entrevistas={entrevistas} />
+      <div className="contenedor mt-2 mb-8 lg:mt-12 lg:mb-20">
+        <Participa whatsapp={ajustes.whatsapp} />
+      </div>
     </main>
   )
 }
