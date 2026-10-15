@@ -20,7 +20,7 @@ export function Publicidad({
 }) {
   const ancho = anchoWeb === 728 ? 'w-[728px]' : 'w-[970px]'
   const caja = oscuro
-    ? 'border-oscuro-borde bg-[#1d212b] text-oscuro-2'
+    ? 'border-oscuro-borde bg-oscuro-caja text-oscuro-2'
     : 'border-aviso-borde bg-aviso text-meta'
   const vacio = (clase: string) => (
     <Link

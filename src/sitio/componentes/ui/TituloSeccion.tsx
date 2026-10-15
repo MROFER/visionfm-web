@@ -6,6 +6,7 @@ export function TituloSeccion({
   kicker,
   nivel = 'h2',
   tamano = 'grande',
+  id,
   children,
 }: {
   titulo: string
@@ -13,6 +14,7 @@ export function TituloSeccion({
   nivel?: 'h1' | 'h2'
   /** grande: 48 px en web y 34 en celular; enorme: 64 y 38 (Cinevisión del Inicio). */
   tamano?: 'grande' | 'enorme'
+  id?: string
   children?: React.ReactNode
 }) {
   const Etiqueta = nivel
@@ -25,6 +27,7 @@ export function TituloSeccion({
           </span>
         )}
         <Etiqueta
+          id={id}
           className={`m-0 font-titulos leading-none font-bold ${
             tamano === 'enorme'
               ? 'text-[38px] md:text-[64px] md:leading-[0.95] md:tracking-[-0.02em]'

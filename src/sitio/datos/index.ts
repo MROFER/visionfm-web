@@ -5,7 +5,7 @@ import { getPayload, type Where } from 'payload'
 import type { Equipo } from '@/payload-types'
 import { enumerar } from '../lib/texto'
 import { aImagen, aTarjetaNota, aTarjetaPelicula } from './formas'
-import type { ProgramaGrilla } from './tipos'
+import type { ProgramaCompleto, ProgramaGrilla, Voz } from './tipos'
 
 // Lecturas del sitio público con la Local API. Cada una queda en la caché de Next con las etiquetas que
 // los hooks refrescan al guardar (src/sitio/cache/mapa.ts), así la base solo se consulta cuando algo cambia.
@@ -52,18 +52,24 @@ export const obtenerSecciones = unstable_cache(
   { tags: ['noticias'] },
 )
 
+/** Programas activos con conducción armada y horarios; la descripción solo la usa Programación. */
+async function programasActivos() {
+  const p = await payload()
+  const { docs } = await p.find({
+    collection: 'programas',
+    where: { activo: { equals: true } },
+    limit: 200,
+    depth: 1,
+    select: { nombre: true, slug: true, horarios: true, conductores: true, descripcion: true },
+    populate: { equipo: { nombre: true } },
+  })
+  return docs
+}
+
 /** Grilla semanal compacta: viaja con la página y el navegador calcula qué está al aire. */
 export const obtenerGrilla = unstable_cache(
   async (): Promise<ProgramaGrilla[]> => {
-    const p = await payload()
-    const { docs } = await p.find({
-      collection: 'programas',
-      where: { activo: { equals: true } },
-      limit: 200,
-      depth: 1,
-      select: { nombre: true, slug: true, horarios: true, conductores: true },
-      populate: { equipo: { nombre: true } },
-    })
+    const docs = await programasActivos()
     return docs.map((d) => ({
       id: d.id,
       nombre: d.nombre,
@@ -189,6 +195,35 @@ export const ultimasEntrevistas = unstable_cache(
   },
   ['ultimas-entrevistas'],
   { tags: ['entrevistas'] },
+)
+
+export const obtenerProgramacion = unstable_cache(
+  async (): Promise<ProgramaCompleto[]> => {
+    const [grilla, docs] = await Promise.all([obtenerGrilla(), programasActivos()])
+    return grilla.map((g) => ({ ...g, descripcion: docs.find((d) => d.id === g.id)?.descripcion ?? '' }))
+  },
+  ['programacion'],
+  { tags: ['grilla', 'programas'] },
+)
+
+/** "Las voces de Visión": quienes conducen, en el orden que les dio la radio. */
+export const obtenerVoces = unstable_cache(
+  async (): Promise<Voz[]> => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'equipo',
+      where: { grupo: { equals: 'conduccion' } },
+      sort: 'orden',
+      limit: 50,
+      depth: 1,
+      select: { nombre: true, rol: true, foto: true },
+      ...publico,
+    })
+    return docs.map((e) => ({ id: e.id, nombre: e.nombre, rol: e.rol, foto: aImagen(e.foto) }))
+  },
+  ['voces'],
+  // Los cambios en Equipo refrescan la etiqueta de programas (src/sitio/cache/mapa.ts)
+  { tags: ['programas'] },
 )
 
 export const POR_PAGINA = 10

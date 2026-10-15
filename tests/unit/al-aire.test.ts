@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import { aContinuacion, alAire, momentoMontevideo, type ProgramaEnGrilla } from '@/sitio/lib/grilla'
+import {
+  aContinuacion,
+  alAire,
+  momentoMontevideo,
+  programacionDelDia,
+  type ProgramaEnGrilla,
+} from '@/sitio/lib/grilla'
 
 const SEMANA = ['lun', 'mar', 'mie', 'jue', 'vie'] as const
 const grilla: ProgramaEnGrilla[] = [
@@ -59,5 +65,18 @@ describe('aContinuacion', () => {
   it('no repite el que está al aire', () => {
     const siguientes = aContinuacion(grilla, mvd('2026-10-12T07:00'), 1)
     expect(siguientes[0].programa.nombre).toBe('Media mañana')
+  })
+})
+
+describe('programacionDelDia', () => {
+  it('ordena por hora de inicio los programas de ese día', () => {
+    expect(programacionDelDia(grilla, 'vie').map((e) => [e.programa.nombre, e.inicio])).toEqual([
+      ['Mañana', '07:00'],
+      ['Media mañana', '10:00'],
+      ['Trasnoche', '22:00'],
+    ])
+  })
+  it('un día sin programas queda vacío', () => {
+    expect(programacionDelDia(grilla, 'sab')).toEqual([])
   })
 })
