@@ -109,7 +109,7 @@ Resumen; el detalle está en la página de arquitectura.
 - Cabeceras: CSP estricta, HSTS, `X-Frame-Options: DENY` fuera del panel.
 - Renovate para dependencias; CI bloquea el merge si fallan los tests.
 - Permisos editoriales validados en el servidor, no solo ocultando botones: un periodista sin permiso no puede publicar ni llamando a la API directo (test por rol).
-- Subidas: límite de 100 MB por petición en el plan gratis de Cloudflare; audios hasta 90 MB, imágenes hasta 15 MB, adjuntos hasta 10 MB.
+- Subidas: límite de 100 MB por petición en el plan gratis de Cloudflare; audios hasta 90 MB, imágenes hasta 10 MB (el original se guarda en WebP, con 2560 px de ancho como máximo), adjuntos hasta 10 MB.
 - Búsqueda en Postgres con `unaccent` y diccionario español.
 - Email transaccional con SPF, DKIM y DMARC en el dominio remitente, para que los avisos no caigan en spam.
 

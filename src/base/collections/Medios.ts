@@ -15,10 +15,12 @@ export const Medios: CollectionConfig = {
     delete: puedeBorrarArchivos,
   },
   hooks: {
-    beforeOperation: [limitarTamano([{ prefijo: 'image/', maximo: 15 * MB }])],
+    beforeOperation: [limitarTamano([{ prefijo: 'image/', maximo: 10 * MB }])],
   },
   upload: {
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
+    // El original se guarda en WebP y con 2560 px de ancho como máximo: el resto se sirve de los tamaños
+    resizeOptions: { width: 2560, withoutEnlargement: true },
     formatOptions: { format: 'webp', options: { quality: 82 } },
     imageSizes: [320, 640, 960, 1280, 1920].map((ancho) => ({
       name: `w${ancho}`,

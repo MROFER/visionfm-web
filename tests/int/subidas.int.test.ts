@@ -5,7 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { MB } from '@/base/lib/limiteSubida'
 
-// Límites de tamaño por archivo (docs/02-trd.md): imágenes 15 MB, audio 90 MB, documentos 10 MB
+// Límites de tamaño por archivo (docs/02-trd.md): imágenes 10 MB, audio 90 MB, documentos 10 MB
 let payload: Payload
 const creados: { collection: 'medios' | 'archivos'; id: number | string }[] = []
 
@@ -33,12 +33,12 @@ afterAll(async () => {
 })
 
 describe('límite de tamaño de subidas', () => {
-  it('rechaza una imagen de más de 15 MB con un mensaje claro', async () => {
+  it('rechaza una imagen de más de 10 MB con un mensaje claro', async () => {
     await expect(
-      subir('medios', 'image/png', 'grande.png', Buffer.alloc(16 * MB)),
+      subir('medios', 'image/png', 'grande.png', Buffer.alloc(11 * MB)),
     ).rejects.toMatchObject({
       status: 413,
-      message: 'El archivo pesa 16 MB y el máximo para este tipo es 15 MB.',
+      message: 'El archivo pesa 11 MB y el máximo para este tipo es 10 MB.',
     })
   })
 
@@ -47,6 +47,17 @@ describe('límite de tamaño de subidas', () => {
       .png()
       .toBuffer()
     expect((await subir('medios', 'image/png', 'chica.png', png)).filename).toBeTruthy()
+  })
+
+  it('guarda el original en WebP con 2560 px de ancho como máximo', async () => {
+    const png = await sharp({
+      create: { width: 3200, height: 400, channels: 3, background: '#08f' },
+    })
+      .png()
+      .toBuffer()
+    const imagen = await subir('medios', 'image/png', 'ancha.png', png)
+    expect(imagen.width).toBe(2560)
+    expect(imagen.mimeType).toBe('image/webp')
   })
 
   it('un PDF de más de 10 MB no entra, pero un audio de ese tamaño sí', async () => {
