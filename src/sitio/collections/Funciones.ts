@@ -1,6 +1,7 @@
 import type { CollectionConfig, PayloadRequest } from 'payload'
 
 import { accesoPorArea } from '@/base/permisos'
+import { endpointCopiarSemana } from '../cinevision/copiarSemana'
 import { FORMATOS, IDIOMAS } from './Peliculas'
 
 type Datos = { pelicula?: unknown }
@@ -26,7 +27,12 @@ const deLaPelicula =
 export const Funciones: CollectionConfig = {
   slug: 'funciones',
   labels: { singular: 'Función', plural: 'Funciones' },
-  admin: { group: 'Cinevisión', defaultColumns: ['pelicula', 'fechaHora', 'idioma', 'formato'] },
+  admin: {
+    group: 'Cinevisión',
+    defaultColumns: ['pelicula', 'fechaHora', 'idioma', 'formato'],
+    components: { beforeListTable: ['@/sitio/admin/GrillaFunciones#GrillaFunciones'] },
+  },
+  endpoints: [endpointCopiarSemana],
   defaultSort: 'fechaHora',
   access: accesoPorArea('cinevision', { lecturaPublica: true }),
   indexes: [{ fields: ['pelicula', 'fechaHora'] }],
