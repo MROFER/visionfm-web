@@ -53,6 +53,17 @@ export const Anuncios: CollectionConfig = {
       required: true,
       validate: medidasExactas(320, 100),
     },
+    {
+      name: 'imagenRectangulo',
+      label: 'Imagen celular en el medio de la página (300×250)',
+      type: 'upload',
+      relationTo: 'medios',
+      validate: medidasExactas(300, 250),
+      admin: {
+        description:
+          'Para las ubicaciones que van entre secciones, como Cinevisión. Si falta, va la de 320×100.',
+      },
+    },
     { name: 'link', type: 'text' },
     { name: 'ubicaciones', type: 'select', hasMany: true, required: true, options: UBICACIONES },
     {

@@ -147,13 +147,13 @@ Son los espacios que tiene el diseño: uno por página, siempre en la zona de pr
 | Noticias · Listado | Arriba de la destacada |
 | Noticias · Sección | Arriba del listado de la sección (se puede elegir qué secciones) |
 | Noticias · Nota | Arriba del título (se puede elegir notas de qué secciones) |
-| Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos" |
+| Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos"; en el celular, 300×250 |
 | Institucional | Arriba del contenido |
 | Institucional · Sumarse, Publicidad, Contacto | Arriba del formulario |
 
 ### Al cargar un anuncio
 
-1. **Creatividad:** imagen 970×90 (escritorio) e imagen 320×100 (celular), con validación de medidas, y link de destino.
+1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (celular, para Cinevisión y otras ubicaciones en el medio de la página), con validación de medidas, y link de destino.
 2. **Dónde:** casillas con las ubicaciones. Atajos: "Todas", "Todo Radio", "Todo Noticias". En Sección y Nota, además, qué secciones (por ejemplo, solo Deportes).
 3. **Cuándo:** fecha de inicio y fin.
 4. **Peso:** cuántas veces sale en la rotación comparado con los otros anuncios de la misma ubicación (1 = normal, 2 = el doble).

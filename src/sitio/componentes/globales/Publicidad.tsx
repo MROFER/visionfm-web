@@ -5,7 +5,7 @@ import { Foto } from '../ui/Foto'
 
 /**
  * Espacio de publicidad (970×90 en web, 320×100 en celular), uno por página. En Cinevisión va debajo de
- * la cartelera y en la página de cada película no hay.
+ * la cartelera, en 300×250 en el celular, y en la página de cada película no hay.
  * Por ahora muestra el aviso propio de la radio de los Ajustes; la rotación de anuncios con métricas
  * llega en la fase 3. Sin aviso propio cargado, invita a anunciar.
  */
@@ -13,11 +13,14 @@ export function Publicidad({
   aviso,
   oscuro = false,
   anchoWeb = 970,
+  rectangulo = false,
 }: {
   aviso: AjustesSitio['avisoPropio']
   oscuro?: boolean
   /** 970×90 en las portadas; 728×90 dentro de una nota. */
   anchoWeb?: 970 | 728
+  /** En el celular, 300×250 en vez de la tira de 320×100: para los avisos en el medio de la página. */
+  rectangulo?: boolean
 }) {
   const ancho = anchoWeb === 728 ? 'w-[728px]' : 'w-[970px]'
   const caja = oscuro
@@ -39,12 +42,16 @@ export function Publicidad({
         Publicidad
       </span>
       <div className="md:hidden">
-        {aviso.movil ? (
+        {rectangulo && aviso.rectangulo ? (
+          <Link href={aviso.link} className="block">
+            <Foto imagen={aviso.rectangulo} sizes="300px" className="h-[250px] w-[300px] max-w-full" />
+          </Link>
+        ) : aviso.movil ? (
           <Link href={aviso.link} className="block">
             <Foto imagen={aviso.movil} sizes="320px" className="h-[100px] w-[320px] max-w-full" />
           </Link>
         ) : (
-          vacio('h-[100px] w-[320px] max-w-full')
+          vacio(rectangulo ? 'h-[250px] w-[300px] max-w-full' : 'h-[100px] w-[320px] max-w-full')
         )}
       </div>
       <div className="hidden w-full justify-center md:flex">

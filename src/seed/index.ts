@@ -330,7 +330,10 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
             imagenWeb: (await imagen(`${a.anunciante} 970×90`, 970, 90, a.anunciante, a.color)).id,
             imagenMovil: (await imagen(`${a.anunciante} 320×100`, 320, 100, a.anunciante, a.color))
               .id,
-            ubicaciones: i === 0 ? ['inicio', 'noticias-nota'] : ['inicio', 'radio-en-vivo'],
+            imagenRectangulo: (
+              await imagen(`${a.anunciante} 300×250`, 300, 250, a.anunciante, a.color)
+            ).id,
+            ubicaciones: i === 0 ? ['inicio', 'noticias-nota'] : ['inicio', 'radio-en-vivo', 'cinevision'],
             desde: mediodiaUTC(sumarDias(dia, -60)),
             hasta: mediodiaUTC(sumarDias(dia, i === 0 ? 7 : 90)),
             peso: i === 0 ? 2 : 1,

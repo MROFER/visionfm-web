@@ -26,6 +26,7 @@ export const obtenerAjustes = unstable_cache(
       avisoPropio: {
         web: aImagen(a.avisoPropio?.imagenWeb),
         movil: aImagen(a.avisoPropio?.imagenMovil),
+        rectangulo: aImagen(a.avisoPropio?.imagenRectangulo),
         link: a.avisoPropio?.link || '/institucional/publicidad',
       },
     }

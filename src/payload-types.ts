@@ -567,6 +567,10 @@ export interface Anuncio {
   emailReporte?: string | null;
   imagenWeb: number | Medio;
   imagenMovil: number | Medio;
+  /**
+   * Para las ubicaciones que van entre secciones, como Cinevisión. Si falta, va la de 320×100.
+   */
+  imagenRectangulo?: (number | null) | Medio;
   link?: string | null;
   ubicaciones: (
     | 'inicio'
@@ -1178,6 +1182,7 @@ export interface AnunciosSelect<T extends boolean = true> {
   emailReporte?: T;
   imagenWeb?: T;
   imagenMovil?: T;
+  imagenRectangulo?: T;
   link?: T;
   ubicaciones?: T;
   secciones?: T;
@@ -1618,6 +1623,10 @@ export interface Ajuste {
   avisoPropio?: {
     imagenWeb?: (number | null) | Medio;
     imagenMovil?: (number | null) | Medio;
+    /**
+     * Para los avisos que van entre secciones, como en Cinevisión. Si falta, va la de 320×100.
+     */
+    imagenRectangulo?: (number | null) | Medio;
     link?: string | null;
   };
   updatedAt?: string | null;
@@ -1744,6 +1753,7 @@ export interface AjustesSelect<T extends boolean = true> {
     | {
         imagenWeb?: T;
         imagenMovil?: T;
+        imagenRectangulo?: T;
         link?: T;
       };
   updatedAt?: T;

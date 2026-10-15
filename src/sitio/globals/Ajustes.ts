@@ -62,6 +62,16 @@ export const Ajustes: GlobalConfig = {
           type: 'upload',
           relationTo: 'medios',
         },
+        {
+          name: 'imagenRectangulo',
+          label: 'Imagen celular en el medio de la página (300×250)',
+          type: 'upload',
+          relationTo: 'medios',
+          admin: {
+            description:
+              'Para los avisos que van entre secciones, como en Cinevisión. Si falta, va la de 320×100.',
+          },
+        },
         { name: 'link', type: 'text', defaultValue: '/institucional/publicidad' },
       ],
     },
