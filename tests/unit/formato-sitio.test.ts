@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { diasDeFunciones, fechaCorta, fechaLarga, hoyEnMontevideo } from '@/sitio/lib/fecha'
-import { duracionAudio, duracionPelicula } from '@/sitio/lib/formato'
+import { duracionAudio, duracionPelicula, reloj } from '@/sitio/lib/formato'
 
 // 2026-10-16 es viernes
 const f = (dia: string, hora = '20:00') => new Date(`2026-10-${dia}T${hora}:00-03:00`).toISOString()
@@ -41,5 +41,15 @@ describe('duraciones', () => {
   })
   it('audios en minutos', () => {
     expect(duracionAudio(1440)).toBe('24 min')
+  })
+})
+
+describe('reloj', () => {
+  it('minutos y segundos con dos cifras', () => {
+    expect(reloj(0)).toBe('00:00')
+    expect(reloj(754.8)).toBe('12:34')
+  })
+  it('desde una hora suma las horas', () => {
+    expect(reloj(3725)).toBe('1:02:05')
   })
 })

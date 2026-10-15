@@ -4,7 +4,7 @@ import { getPayload, type Where } from 'payload'
 
 import type { Equipo } from '@/payload-types'
 import { enumerar } from '../lib/texto'
-import { aImagen, aTarjetaNota, aTarjetaPelicula } from './formas'
+import { aImagen, aTarjetaEntrevista, aTarjetaNota, aTarjetaPelicula } from './formas'
 import type { ProgramaCompleto, ProgramaGrilla, Voz } from './tipos'
 
 // Lecturas del sitio público con la Local API. Cada una queda en la caché de Next con las etiquetas que
@@ -173,28 +173,73 @@ export const obtenerCartelera = unstable_cache(
 )
 
 export const ultimasEntrevistas = unstable_cache(
-  async (cantidad: number) => {
+  async (cantidad: number) => (await listarEntrevistas({ pagina: 1, cantidad })).entrevistas,
+  ['ultimas-entrevistas'],
+  { tags: ['entrevistas'] },
+)
+
+export const ENTREVISTAS_POR_PAGINA = 8
+
+/** Archivo de entrevistas, de un programa o de todos. `q` busca en el nombre y el tema. */
+export const listarEntrevistas = unstable_cache(
+  async ({
+    pagina,
+    cantidad = ENTREVISTAS_POR_PAGINA,
+    programa,
+    q,
+    excluir,
+  }: {
+    pagina: number
+    cantidad?: number
+    programa?: string
+    q?: string
+    excluir?: number | null
+  }) => {
     const p = await payload()
-    const { docs } = await p.find({
+    const condiciones: Where[] = []
+    if (programa) condiciones.push({ 'programa.slug': { equals: programa } })
+    if (excluir) condiciones.push({ id: { not_equals: excluir } })
+    if (q) condiciones.push({ or: [{ entrevistado: { like: q } }, { tema: { like: q } }] })
+    const r = await p.find({
       collection: 'entrevistas',
       sort: '-fecha',
       limit: cantidad,
+      page: pagina,
       depth: 1,
-      populate: { programas: { nombre: true } },
+      where: condiciones.length ? { and: condiciones } : undefined,
+      populate: { programas: { nombre: true, slug: true } },
       ...publico,
     })
-    return docs.map((e) => ({
-      id: e.id,
-      slug: e.slug,
-      entrevistado: e.entrevistado,
-      tema: e.tema,
-      fecha: e.fecha,
-      duracion: e.duracion ?? null,
-      programa: typeof e.programa === 'object' ? e.programa.nombre : '',
-    }))
+    return {
+      entrevistas: r.docs.map(aTarjetaEntrevista),
+      pagina: r.page ?? pagina,
+      paginas: Math.max(r.totalPages, 1),
+      total: r.totalDocs,
+    }
   },
-  ['ultimas-entrevistas'],
-  { tags: ['entrevistas'] },
+  ['listar-entrevistas'],
+  // El nombre del programa viene de Programas
+  { tags: ['entrevistas', 'programas'] },
+)
+
+/** La destacada: la última marcada como destacada, o la última publicada. */
+export const entrevistaDestacada = unstable_cache(
+  async (programa?: string) => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'entrevistas',
+      sort: ['-destacada', '-fecha'],
+      limit: 1,
+      depth: 1,
+      where: programa ? { 'programa.slug': { equals: programa } } : undefined,
+      populate: { programas: { nombre: true, slug: true } },
+      ...publico,
+    })
+    return docs[0] ? aTarjetaEntrevista(docs[0]) : null
+  },
+  ['entrevista-destacada'],
+  // El nombre del programa viene de Programas
+  { tags: ['entrevistas', 'programas'] },
 )
 
 export const obtenerProgramacion = unstable_cache(

@@ -1,4 +1,4 @@
-import type { Medio, Noticia, Pelicula } from '@/payload-types'
+import type { Entrevista, Medio, Noticia, Pelicula } from '@/payload-types'
 
 // Lo que viaja a los componentes: solo los campos que muestran, sin el documento entero de Payload.
 
@@ -66,5 +66,35 @@ export function aTarjetaPelicula(p: Pelicula): TarjetaPelicula {
     sinopsis: p.sinopsis,
     esEstreno: Boolean(p.esEstreno),
     afiche: aImagen(p.afiche),
+  }
+}
+
+export type TarjetaEntrevista = {
+  id: number
+  slug: string
+  entrevistado: string
+  tema: string
+  resumen: string
+  fecha: string
+  /** Segundos, o null si el panel todavía no la calculó. */
+  duracion: number | null
+  programa: { nombre: string; slug: string } | null
+  foto: Imagen | null
+  /** Ruta pública del audio, o null si la entrevista no tiene. */
+  audio: string | null
+}
+
+export function aTarjetaEntrevista(e: Entrevista): TarjetaEntrevista {
+  return {
+    id: e.id,
+    slug: e.slug,
+    entrevistado: e.entrevistado,
+    tema: e.tema,
+    resumen: e.resumen ?? '',
+    fecha: e.fecha,
+    duracion: e.duracion ?? null,
+    programa: typeof e.programa === 'object' && e.programa ? { nombre: e.programa.nombre, slug: e.programa.slug } : null,
+    foto: aImagen(e.foto),
+    audio: e.audio ? `/api/entrevistas/${encodeURIComponent(e.slug)}/audio` : null,
   }
 }

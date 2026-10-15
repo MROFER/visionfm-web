@@ -1,26 +1,14 @@
 import Link from 'next/link'
 
+import type { TarjetaEntrevista } from '../../datos/formas'
 import { fechaDia } from '../../lib/fecha'
 import { duracionAudio } from '../../lib/formato'
+import { BotonEntrevista } from '../radio/BotonEntrevista'
 import { Buscador } from '../ui/Buscador'
-import { IconoPlay } from '../ui/iconos'
 import { TituloSeccion } from '../ui/TituloSeccion'
 
-type Entrevista = {
-  id: number
-  slug: string
-  entrevistado: string
-  tema: string
-  fecha: string
-  duracion: number | null
-  programa: string
-}
-
-/**
- * Últimas entrevistas con buscador. El play lleva por ahora a la entrevista en su página: la
- * reproducción con el mismo motor de la radio llega en la fase 3.
- */
-export function EntrevistasInicio({ entrevistas }: { entrevistas: Entrevista[] }) {
+/** Últimas entrevistas con buscador. El play las pasa con el mismo audio de la radio. */
+export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevista[] }) {
   return (
     <section id="radio" className="contenedor pt-6 pb-6 lg:border-b lg:border-linea lg:pt-12 lg:pb-10">
       <TituloSeccion titulo="Entrevistas" kicker="Escuchá de nuevo">
@@ -51,13 +39,11 @@ export function EntrevistasInicio({ entrevistas }: { entrevistas: Entrevista[] }
                 key={e.id}
                 className="flex items-center gap-3.5 border-b border-linea py-3.5 lg:flex-wrap lg:gap-x-6 lg:gap-y-3 lg:py-[18px]"
               >
-                <Link
-                  href={href}
-                  aria-label={`Escuchar la entrevista a ${e.entrevistado}`}
+                <BotonEntrevista
+                  entrevista={e}
+                  tamano={14}
                   className="flex size-11 shrink-0 items-center justify-center border-2 border-tinta bg-blanco hover:bg-tinta hover:text-blanco lg:size-12"
-                >
-                  <IconoPlay tamano={14} />
-                </Link>
+                />
                 <span className="flex min-w-0 flex-col gap-[3px] lg:contents">
                   <span className="text-xs font-bold text-meta lg:w-40 lg:text-[13px]">{fechaDia(e.fecha)}</span>
                   <Link
@@ -67,7 +53,7 @@ export function EntrevistasInicio({ entrevistas }: { entrevistas: Entrevista[] }
                     {e.entrevistado}: {e.tema}
                   </Link>
                   <span className="text-xs text-meta lg:text-[13px]">
-                    En {e.programa}
+                    {e.programa ? `En ${e.programa.nombre}` : 'Visión 96.5 FM'}
                     {e.duracion ? ` · ${duracionAudio(e.duracion)}` : ''}
                   </span>
                 </span>
