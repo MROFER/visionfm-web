@@ -8,6 +8,7 @@ import { Pie } from '@/sitio/componentes/globales/Pie'
 import { MiniReproductor } from '@/sitio/componentes/reproductor/MiniReproductor'
 import { Radio } from '@/sitio/componentes/reproductor/Radio'
 import { obtenerAjustes, obtenerGrilla, obtenerSecciones } from '@/sitio/datos'
+import { marcaDeTiempo } from '@/sitio/lib/fecha'
 import { menuPrincipal } from '@/sitio/navegacion'
 
 import './estilos.css'
@@ -50,7 +51,7 @@ export default async function SitioLayout({ children }: { children: React.ReactN
   return (
     <html lang="es-UY" className={`${titulos.variable} ${cuerpo.variable}`}>
       <body>
-        <Radio streamUrl={ajustes.streamUrl} grilla={grilla}>
+        <Radio streamUrl={ajustes.streamUrl} grilla={grilla} ahoraInicial={marcaDeTiempo()}>
           <a
             href="#contenido"
             className="etiqueta sr-only bg-tinta p-3 text-blanco focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50"
