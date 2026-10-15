@@ -44,7 +44,8 @@ Definidas en `.env.example` (sin valores) y cargadas en Coolify. Nunca en el rep
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_URL` | medios públicos (fotos, audios) |
 | `R2_BUCKET_PRIVADO` | adjuntos de formularios y CV; solo con URL firmada |
 | `R2_BUCKET_AUDITORIA` | copia nocturna del registro de actividad, con bloqueo de objetos |
-| `CF_ACCESS_TOKEN`, `CF_ACCESS_APP_ID`, `CF_ACCESS_AUD` | sincronizar usuarios con la lista de Access y validar el JWT de Access en el servidor |
+| `CF_ACCOUNT_ID`, `CF_ACCESS_TOKEN`, `CF_ACCESS_GROUP_ID` | sincronizar los emails de los usuarios activos con el grupo de Access del panel (token con permiso solo de editar Access) |
+| `CF_ACCESS_TEAM_DOMAIN`, `CF_ACCESS_AUD` | validar en el servidor el JWT de Access en `/admin` y `/cms-api` (`equipo.cloudflareaccess.com` y la etiqueta AUD de la aplicación) |
 | `RESPALDO_*` | destino de respaldos fuera de la cuenta de Cloudflare (Backblaze B2 u otro S3) |
 | `CF_ZONE_ID`, `CF_API_TOKEN` | purga de caché de Cloudflare (token con permiso solo de purga) |
 | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | antispam de formularios |
