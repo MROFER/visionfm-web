@@ -23,6 +23,8 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { GrillaFunciones as GrillaFunciones_b70a58718b2b32c0ce8178b962e6bd21 } from '@/sitio/admin/GrillaFunciones'
 import { ReenviarInvitacion as ReenviarInvitacion_513e173976849075225103fcb47a4c7c } from '@/base/admin/ReenviarInvitacion'
+import { Icono as Icono_8538064caaf122a8936d7a1bebceba12 } from '@/sitio/admin/Marca'
+import { Logo as Logo_8538064caaf122a8936d7a1bebceba12 } from '@/sitio/admin/Marca'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
@@ -53,6 +55,8 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/sitio/admin/GrillaFunciones#GrillaFunciones": GrillaFunciones_b70a58718b2b32c0ce8178b962e6bd21,
   "@/base/admin/ReenviarInvitacion#ReenviarInvitacion": ReenviarInvitacion_513e173976849075225103fcb47a4c7c,
+  "@/sitio/admin/Marca#Icono": Icono_8538064caaf122a8936d7a1bebceba12,
+  "@/sitio/admin/Marca#Logo": Logo_8538064caaf122a8936d7a1bebceba12,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }
