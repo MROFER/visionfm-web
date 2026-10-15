@@ -60,7 +60,7 @@ Solo lectura para todos, incluido el Owner. Lo escribe un hook global `afterChan
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| archivo* | imagen | JPG, PNG, WebP, AVIF; máx. 10 MB; el original se guarda en WebP con 2560 px de ancho como máximo; se generan tamaños 320, 640, 960, 1280, 1920 en WebP y AVIF |
+| archivo* | imagen | JPG, PNG, WebP, AVIF; máx. 15 MB; el original se guarda en WebP con 2560 px de ancho como máximo; se generan tamaños 320, 640, 960, 1280, 1920 en WebP y AVIF |
 | `alt`* | texto | texto alternativo, máx. 160 caracteres |
 | `credito` | texto | fotógrafo o fuente |
 

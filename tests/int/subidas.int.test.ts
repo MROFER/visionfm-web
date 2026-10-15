@@ -5,7 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { MB } from '@/base/lib/limiteSubida'
 
-// Límites de tamaño por archivo (docs/02-trd.md): imágenes 10 MB, audio 90 MB, documentos 10 MB
+// Límites de tamaño por archivo (docs/02-trd.md): imágenes 15 MB, audio 90 MB, documentos 10 MB
 let payload: Payload
 const creados: { collection: 'medios' | 'archivos'; id: number | string }[] = []
 
@@ -33,12 +33,12 @@ afterAll(async () => {
 })
 
 describe('límite de tamaño de subidas', () => {
-  it('rechaza una imagen de más de 10 MB con un mensaje claro', async () => {
+  it('rechaza una imagen de más de 15 MB con un mensaje claro', async () => {
     await expect(
-      subir('medios', 'image/png', 'grande.png', Buffer.alloc(11 * MB)),
+      subir('medios', 'image/png', 'grande.png', Buffer.alloc(16 * MB)),
     ).rejects.toMatchObject({
       status: 413,
-      message: 'El archivo pesa 11 MB y el máximo para este tipo es 10 MB.',
+      message: 'El archivo pesa 16 MB y el máximo para este tipo es 15 MB.',
     })
   })
 

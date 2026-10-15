@@ -15,7 +15,7 @@ export const Medios: CollectionConfig = {
     delete: puedeBorrarArchivos,
   },
   hooks: {
-    beforeOperation: [limitarTamano([{ prefijo: 'image/', maximo: 10 * MB }])],
+    beforeOperation: [limitarTamano([{ prefijo: 'image/', maximo: 15 * MB }])],
   },
   upload: {
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
