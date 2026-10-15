@@ -46,3 +46,46 @@
     overflow: hidden;
   }
 }
+
+/* Cuerpo de la nota, que sale del editor del panel (Lexical) */
+@layer components {
+  .cuerpo-nota {
+    @apply flex flex-col gap-5 text-lg leading-[1.65] md:gap-6 md:text-[19px];
+  }
+  .cuerpo-nota > div {
+    @apply contents;
+  }
+  .cuerpo-nota :where(p, ul, ol, h2, h3, h4, blockquote, figure) {
+    @apply m-0;
+  }
+  .cuerpo-nota :where(h2, h3, h4) {
+    @apply font-titulos leading-[1.2] font-bold;
+  }
+  .cuerpo-nota h2 {
+    @apply text-2xl md:text-[28px];
+  }
+  .cuerpo-nota :where(h3, h4) {
+    @apply text-xl md:text-[22px];
+  }
+  .cuerpo-nota :where(ul, ol) {
+    @apply flex flex-col gap-2 pl-6;
+  }
+  .cuerpo-nota ul {
+    @apply list-disc;
+  }
+  .cuerpo-nota ol {
+    @apply list-decimal;
+  }
+  .cuerpo-nota a {
+    @apply font-semibold text-acento hover:text-acento-hover;
+  }
+  .cuerpo-nota blockquote {
+    @apply my-1 border-t-[3px] border-tinta pt-3.5 font-titulos text-[25px] leading-[1.25] font-semibold md:my-2 md:pt-4 md:text-3xl;
+  }
+  .cuerpo-nota img {
+    @apply h-auto max-w-full;
+  }
+  .cuerpo-nota hr {
+    @apply w-full border-0 border-t border-linea;
+  }
+}
