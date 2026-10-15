@@ -4,6 +4,7 @@ import * as migration_20261014_050853_registro_actividad from './20261014_050853
 import * as migration_20261014_051806_colecciones from './20261014_051806_colecciones';
 import * as migration_20261014_160520_almacenamiento_r2 from './20261014_160520_almacenamiento_r2';
 import * as migration_20261014_161825_tareas_publicidad from './20261014_161825_tareas_publicidad';
+import * as migration_20261015_020800_sincronizar_access from './20261015_020800_sincronizar_access';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261014_161825_tareas_publicidad.up,
     down: migration_20261014_161825_tareas_publicidad.down,
-    name: '20261014_161825_tareas_publicidad'
+    name: '20261014_161825_tareas_publicidad',
+  },
+  {
+    up: migration_20261015_020800_sincronizar_access.up,
+    down: migration_20261015_020800_sincronizar_access.down,
+    name: '20261015_020800_sincronizar_access'
   },
 ];
