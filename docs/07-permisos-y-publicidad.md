@@ -136,7 +136,7 @@ Se carga **cada anuncio una sola vez** y se elige **en qué ubicaciones aparece*
 
 ### Ubicaciones
 
-Son los espacios que tiene el diseño: uno por página, siempre en la zona de primer impacto. Cinevisión y Película no tienen.
+Son los espacios que tiene el diseño: uno por página, siempre en la zona de primer impacto. La excepción es Cinevisión, donde el aviso va debajo de la cartelera para no tapar las películas (lo decidió la radio el 15/10/2026). La página de cada película no tiene.
 
 | Ubicación | Dónde aparece |
 |---|---|
@@ -147,6 +147,7 @@ Son los espacios que tiene el diseño: uno por página, siempre en la zona de pr
 | Noticias · Listado | Arriba de la destacada |
 | Noticias · Sección | Arriba del listado de la sección (se puede elegir qué secciones) |
 | Noticias · Nota | Arriba del título (se puede elegir notas de qué secciones) |
+| Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos" |
 | Institucional | Arriba del contenido |
 | Institucional · Sumarse, Publicidad, Contacto | Arriba del formulario |
 

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { CarruselCine } from '@/sitio/componentes/cine/CarruselCine'
 import { CarteleraDias } from '@/sitio/componentes/cine/CarteleraDias'
 import { Precios } from '@/sitio/componentes/cine/Precios'
+import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { obtenerAjustes, obtenerCartelera } from '@/sitio/datos'
 import { obtenerCinevision, proximosEstrenos } from '@/sitio/datos/cinevision'
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 const titulo = 'm-0 font-titulos leading-none font-extrabold'
 
 // Cinevisión (design/LEEME.md, sección 7): carrusel, cartelera por día, próximos estrenos, entradas y
-// cómo llegar. Sin publicidad.
+// cómo llegar. La publicidad va debajo de la cartelera, no arriba: primero se ven las películas.
 export default async function Cinevision() {
   const hoy = hoyEnMontevideo()
   const [cine, cartelera, estrenos, ajustes] = await Promise.all([
@@ -66,6 +67,8 @@ export default async function Cinevision() {
             <p className="text-texto-2">La cartelera de esta semana todavía no está cargada.</p>
           )}
         </section>
+
+        <Publicidad aviso={ajustes.avisoPropio} />
 
         {estrenos.length > 0 && (
           <section id="estrenos" aria-labelledby="titulo-estrenos" className="scroll-mt-4">

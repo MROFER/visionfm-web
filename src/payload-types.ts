@@ -576,6 +576,7 @@ export interface Anuncio {
     | 'noticias-listado'
     | 'noticias-seccion'
     | 'noticias-nota'
+    | 'cinevision'
     | 'institucional'
     | 'institucional-formularios'
   )[];
@@ -610,6 +611,7 @@ export interface AnunciosMetrica {
     | 'noticias-listado'
     | 'noticias-seccion'
     | 'noticias-nota'
+    | 'cinevision'
     | 'institucional'
     | 'institucional-formularios';
   fecha: string;

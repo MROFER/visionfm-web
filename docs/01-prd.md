@@ -86,7 +86,7 @@ A los 3 meses del lanzamiento, comparado con el sitio actual:
 
 ## 7. Reglas acordadas con el cliente
 
-Vienen del diseño y no se cambian sin consultar (ver LEEME del diseñador, sección 11): el vivo y "Al aire" en todas las páginas, una sola publicidad por página y ninguna en el cine, sin lupa en el header, Nosotros y Contacto dentro de Institucional, la cartelera web solo con afiches, días y no horas en "También en cartelera", y legales a la derecha en el footer.
+Vienen del diseño y no se cambian sin consultar (ver LEEME del diseñador, sección 11): el vivo y "Al aire" en todas las páginas, una sola publicidad por página y ninguna en la página de cada película (en Cinevisión va debajo de la cartelera, decisión de la radio del 15/10/2026), sin lupa en el header, Nosotros y Contacto dentro de Institucional, la cartelera web solo con afiches, días y no horas en "También en cartelera", y legales a la derecha en el footer.
 
 ## 8. Contenido que tiene que aportar la radio
 
