@@ -4,7 +4,8 @@ import type { AjustesSitio } from '../../datos'
 import { Foto } from '../ui/Foto'
 
 /**
- * Espacio de publicidad (970×90 en web, 320×100 en celular), uno por página y nunca en Cinevisión.
+ * Espacio de publicidad (970×90 en web, 320×100 en celular), uno por página. En Cinevisión va debajo de
+ * la cartelera y en la página de cada película no hay.
  * Por ahora muestra el aviso propio de la radio de los Ajustes; la rotación de anuncios con métricas
  * llega en la fase 3. Sin aviso propio cargado, invita a anunciar.
  */
