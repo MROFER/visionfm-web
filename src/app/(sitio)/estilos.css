@@ -29,3 +29,20 @@
     @apply text-xs font-extrabold tracking-[0.1em] uppercase;
   }
 }
+
+/* Barras del reproductor en vivo mientras suena */
+@keyframes ecualizador {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Con el reproductor a pantalla completa abierto, la página de atrás no se desplaza */
+@media (width < 1024px) {
+  html:has(.pantalla-completa) {
+    overflow: hidden;
+  }
+}

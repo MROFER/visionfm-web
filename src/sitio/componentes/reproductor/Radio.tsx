@@ -14,6 +14,9 @@ type EstadoRadio = {
   cargando: boolean
   error: boolean
   alternar: () => void
+  /** De 0 a 1. Los celulares con iOS no dejan cambiarlo desde la página: ahí manda el botón del equipo. */
+  volumen: number
+  cambiarVolumen: (diferencia: number) => void
   alAire: Emision<ProgramaGrilla> | null
   grilla: ProgramaGrilla[]
   ahora: Date
@@ -46,6 +49,7 @@ export function Radio({
   const [sonando, setSonando] = useState(false)
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState(false)
+  const [volumen, setVolumen] = useState(1)
   // El HTML puede venir de la caché: apenas carga, el navegador recalcula con su reloj
   const [ahora, setAhora] = useState(() => new Date(ahoraInicial))
 
@@ -78,9 +82,27 @@ export function Radio({
     })
   }, [streamUrl])
 
+  const cambiarVolumen = useCallback((diferencia: number) => {
+    const a = audio.current
+    if (!a) return
+    const nuevo = Math.min(1, Math.max(0, Math.round((a.volume + diferencia) * 10) / 10))
+    a.volume = nuevo
+    setVolumen(nuevo)
+  }, [])
+
   return (
     <ContextoRadio.Provider
-      value={{ sonando, cargando, error, alternar, alAire: alAire(grilla, ahora), grilla, ahora }}
+      value={{
+        sonando,
+        cargando,
+        error,
+        alternar,
+        volumen,
+        cambiarVolumen,
+        alAire: alAire(grilla, ahora),
+        grilla,
+        ahora,
+      }}
     >
       {children}
       <audio

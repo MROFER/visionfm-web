@@ -104,3 +104,11 @@ export function aContinuacion<T extends ProgramaEnGrilla>(
     .slice(0, cantidad)
     .map(({ e }) => sinPosicion(e))
 }
+
+/** Lo que sale al aire un día, de la mañana a la noche. */
+export function programacionDelDia<T extends ProgramaEnGrilla>(programas: T[], dia: Dia): Emision<T>[] {
+  return emisiones(programas)
+    .filter((e) => e.dia === dia)
+    .sort((a, b) => a.desde - b.desde)
+    .map(sinPosicion)
+}

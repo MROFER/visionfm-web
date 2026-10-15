@@ -82,3 +82,23 @@ export const IconoBuscar = ({ tamano = 18, className }: Props) => (
     <line x1="15.5" y1="15.5" x2="21" y2="21" />
   </svg>
 )
+
+export const IconoVolver = ({ tamano = 20, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 6 9 12 15 18" />
+  </svg>
+)
+
+export const IconoVolumenMenos = ({ tamano = 20, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round">
+    <polygon points="4 9 8 9 13 5 13 19 8 15 4 15 4 9" />
+  </svg>
+)
+
+export const IconoVolumenMas = ({ tamano = 20, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="3 9 7 9 12 5 12 19 7 15 3 15 3 9" />
+    <path d="M16 9a4 4 0 0 1 0 6" />
+    <path d="M19 6a8 8 0 0 1 0 12" />
+  </svg>
+)
