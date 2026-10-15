@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 
 import { almacenamientoR2 } from './base/almacenamiento'
 import { conRevalidacion } from './base/cache'
+import { LIMITE_GLOBAL } from './base/lib/limiteSubida'
 import { tienePermiso, type UsuarioConPermisos } from './base/permisos'
 import { Archivos } from './base/collections/Archivos'
 import { Medios } from './base/collections/Medios'
@@ -55,6 +56,11 @@ export default buildConfig(
         routes: {
           admin: '/admin',
           api: '/cms-api',
+        },
+        // Tope para cualquier subida; cada colección aplica su propio máximo por tipo
+        upload: {
+          limits: { fileSize: LIMITE_GLOBAL },
+          responseOnLimit: 'El archivo supera el máximo de 90 MB.',
         },
         graphQL: {
           disable: true,

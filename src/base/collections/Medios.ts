@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { limitarTamano, MB } from '../lib/limiteSubida'
 import { puedeBorrarArchivos, puedeSubir } from '../permisos'
 
 // docs/04-esquema.md (medios). En la fase 1, con R2, los tamaños se sirven desde Cloudflare.
@@ -12,6 +13,9 @@ export const Medios: CollectionConfig = {
     create: puedeSubir,
     update: puedeSubir,
     delete: puedeBorrarArchivos,
+  },
+  hooks: {
+    beforeOperation: [limitarTamano([{ prefijo: 'image/', maximo: 15 * MB }])],
   },
   upload: {
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
