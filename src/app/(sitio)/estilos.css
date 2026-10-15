@@ -1,13 +1,31 @@
-/* Provisorio hasta la fase 2, cuando entran los tokens del diseño (design/LEEME.md) */
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #f3f2ef;
-  color: #13161d;
+@import 'tailwindcss';
+@import '../../styles/tokens.css';
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-blanco font-cuerpo text-tinta antialiased;
+    /* El diseño usa el interlineado normal salvo donde lo indica */
+    line-height: normal;
+  }
+  a {
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
+  }
 }
 
-.en-construccion {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 64px 16px;
+@layer components {
+  /* Contenedor del diseño: 1240 px con 24 px a los costados en web y 16 px en celular */
+  .contenedor {
+    @apply mx-auto w-full max-w-sitio px-4 md:px-6;
+  }
+  /* Etiquetas, botones y kickers: mayúsculas, peso 800 y letras separadas */
+  .etiqueta {
+    @apply text-xs font-extrabold tracking-[0.1em] uppercase;
+  }
 }
