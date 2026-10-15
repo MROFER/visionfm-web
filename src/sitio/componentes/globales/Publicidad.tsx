@@ -8,7 +8,17 @@ import { Foto } from '../ui/Foto'
  * Por ahora muestra el aviso propio de la radio de los Ajustes; la rotación de anuncios con métricas
  * llega en la fase 3. Sin aviso propio cargado, invita a anunciar.
  */
-export function Publicidad({ aviso, oscuro = false }: { aviso: AjustesSitio['avisoPropio']; oscuro?: boolean }) {
+export function Publicidad({
+  aviso,
+  oscuro = false,
+  anchoWeb = 970,
+}: {
+  aviso: AjustesSitio['avisoPropio']
+  oscuro?: boolean
+  /** 970×90 en las portadas; 728×90 dentro de una nota. */
+  anchoWeb?: 970 | 728
+}) {
+  const ancho = anchoWeb === 728 ? 'w-[728px]' : 'w-[970px]'
   const caja = oscuro
     ? 'border-oscuro-borde bg-[#1d212b] text-oscuro-2'
     : 'border-aviso-borde bg-aviso text-meta'
@@ -38,11 +48,11 @@ export function Publicidad({ aviso, oscuro = false }: { aviso: AjustesSitio['avi
       </div>
       <div className="hidden w-full justify-center md:flex">
         {aviso.web ? (
-          <Link href={aviso.link} className="block w-[970px] max-w-full">
-            <Foto imagen={aviso.web} sizes="970px" className="h-auto w-full" />
+          <Link href={aviso.link} className={`block max-w-full ${ancho}`}>
+            <Foto imagen={aviso.web} sizes={`${anchoWeb}px`} className="h-auto w-full" />
           </Link>
         ) : (
-          vacio('h-[90px] w-[970px] max-w-full')
+          vacio(`h-[90px] max-w-full ${ancho}`)
         )}
       </div>
     </aside>

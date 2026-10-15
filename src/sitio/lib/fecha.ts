@@ -27,6 +27,12 @@ export function fechaDia(iso: string) {
   return `${p.day} de ${p.month}`
 }
 
+/** "11 de octubre de 2026" */
+export function fechaCompleta(iso: string) {
+  const p = partes(new Date(iso), { day: 'numeric', month: 'long', year: 'numeric' })
+  return `${p.day} de ${p.month} de ${p.year}`
+}
+
 /** "09/10" */
 export function fechaNumerica(iso: string) {
   const p = partes(new Date(iso), { day: '2-digit', month: '2-digit' })

@@ -61,3 +61,23 @@ export function NotaChica({ nota }: { nota: Nota }) {
     </article>
   )
 }
+
+/** Fila del archivo: en web, foto 160×110 a la izquierda; en el celular, cuadrada a la derecha. */
+export function NotaFila({ nota }: { nota: Nota }) {
+  return (
+    <article className="flex gap-3.5 border-b border-linea py-4 md:gap-5 md:py-[22px]">
+      <Link href={nota.href} aria-hidden tabIndex={-1} className="order-last block shrink-0 md:order-first">
+        <Foto imagen={nota.foto} sizes="(min-width: 768px) 160px, 96px" className="size-24 md:h-[110px] md:w-40" />
+      </Link>
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5 md:gap-2">
+        <Seccion nota={nota} chica />
+        <h3 className="m-0 font-titulos text-[19px] leading-[1.22] font-semibold md:text-[22px] md:leading-[1.2]">
+          <Link href={nota.href} className="no-underline hover:text-acento-hover">
+            {nota.titulo}
+          </Link>
+        </h3>
+        {nota.fecha && <span className="text-xs text-meta md:text-[13px]">{fechaCorta(nota.fecha)}</span>}
+      </div>
+    </article>
+  )
+}

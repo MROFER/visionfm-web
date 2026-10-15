@@ -1,6 +1,6 @@
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
-import { getPayload } from 'payload'
+import { getPayload, type Where } from 'payload'
 
 import type { Equipo } from '@/payload-types'
 import { enumerar } from '../lib/texto'
@@ -189,4 +189,123 @@ export const ultimasEntrevistas = unstable_cache(
   },
   ['ultimas-entrevistas'],
   { tags: ['entrevistas'] },
+)
+
+export const POR_PAGINA = 10
+
+/**
+ * Archivo de Noticias, de una sección o de todas, paginado. `q` filtra por título o bajada; la búsqueda
+ * de texto completo llega en la fase 3.
+ */
+export const listarNoticias = unstable_cache(
+  async ({
+    seccion,
+    pagina,
+    q,
+    excluir,
+  }: {
+    seccion?: string
+    pagina: number
+    q?: string
+    excluir?: number | null
+  }) => {
+    const p = await payload()
+    const condiciones: Where[] = []
+    if (seccion) condiciones.push({ 'seccion.slug': { equals: seccion } })
+    if (excluir) condiciones.push({ id: { not_equals: excluir } })
+    if (q) condiciones.push({ or: [{ titulo: { like: q } }, { bajada: { like: q } }] })
+    const r = await p.find({
+      collection: 'noticias',
+      sort: '-fechaPublicacion',
+      limit: POR_PAGINA,
+      page: pagina,
+      depth: 1,
+      where: condiciones.length ? { and: condiciones } : undefined,
+      ...publico,
+    })
+    return {
+      notas: r.docs.map(aTarjetaNota),
+      pagina: r.page ?? pagina,
+      paginas: Math.max(r.totalPages, 1),
+      total: r.totalDocs,
+    }
+  },
+  ['listar-noticias'],
+  { tags: ['noticias'] },
+)
+
+/** Destacada de una sección: la última marcada como destacada, o la última publicada. */
+export const destacadaDeSeccion = unstable_cache(
+  async (seccion: string) => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'noticias',
+      sort: ['-destacada', '-fechaPublicacion'],
+      limit: 1,
+      depth: 1,
+      where: { 'seccion.slug': { equals: seccion } },
+      ...publico,
+    })
+    return docs[0] ? aTarjetaNota(docs[0]) : null
+  },
+  ['destacada-seccion'],
+  { tags: ['noticias'] },
+)
+
+export const obtenerNota = unstable_cache(
+  async (seccion: string, slug: string) => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'noticias',
+      limit: 1,
+      depth: 1,
+      where: { and: [{ slug: { equals: slug } }, { 'seccion.slug': { equals: seccion } }] },
+      ...publico,
+    })
+    const n = docs[0]
+    if (!n) return null
+    // Los usuarios no son públicos: de quien escribió solo sale el nombre de su ficha del equipo
+    const autorId = n.autor && typeof n.autor === 'object' ? n.autor.id : n.autor
+    const autor = autorId
+      ? await p
+          .findByID({ collection: 'usuarios', id: autorId, depth: 1, select: { equipo: true } })
+          .catch(() => null)
+      : null
+    const firma = autor?.equipo && typeof autor.equipo === 'object' ? autor.equipo.nombre : null
+    const foto = typeof n.foto === 'object' ? n.foto : null
+    return {
+      ...aTarjetaNota(n),
+      cuerpo: n.cuerpo,
+      epigrafe: n.epigrafe ?? '',
+      credito: foto?.credito ?? '',
+      firma: firma || 'Redacción Visión',
+      seo: {
+        titulo: n.seo?.titulo || n.titulo,
+        descripcion: n.seo?.descripcion || n.bajada,
+        imagen: aImagen(n.seo?.imagen) ?? aImagen(n.foto),
+      },
+    }
+  },
+  ['nota'],
+  { tags: ['noticias'] },
+)
+
+export type NotaCompleta = NonNullable<Awaited<ReturnType<typeof obtenerNota>>>
+
+/** "Seguí leyendo": las últimas de la misma sección y, si no alcanzan, las últimas de las demás. */
+export const notasRelacionadas = unstable_cache(
+  async (id: number, seccion: string, cantidad: number) => {
+    const misma = await listarNoticias({ seccion, pagina: 1, excluir: id })
+    const notas = misma.notas.slice(0, cantidad)
+    if (notas.length < cantidad) {
+      const otras = await listarNoticias({ pagina: 1, excluir: id })
+      for (const n of otras.notas) {
+        if (notas.length >= cantidad) break
+        if (!notas.some((m) => m.id === n.id)) notas.push(n)
+      }
+    }
+    return notas
+  },
+  ['notas-relacionadas'],
+  { tags: ['noticias'] },
 )
