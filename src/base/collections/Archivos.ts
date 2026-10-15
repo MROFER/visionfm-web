@@ -30,6 +30,10 @@ export const Archivos: CollectionConfig = {
       'audio/mp4',
       'audio/x-m4a',
       'video/mp4',
+      // Fotos que llegan como adjunto de los formularios
+      'image/jpeg',
+      'image/png',
+      'image/webp',
       'application/pdf',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
