@@ -45,11 +45,20 @@ export default buildConfig(
       {
         admin: {
           user: Usuarios.slug,
+          // Sin Gravatar: no mandamos los emails del equipo (ni su hash) a un servicio externo
+          avatar: 'default',
           importMap: {
             baseDir: path.resolve(dirname),
           },
           meta: {
             titleSuffix: ' · Visión 96.5 FM',
+            icons: [{ rel: 'icon', type: 'image/svg+xml', url: '/marca/icono.svg' }],
+          },
+          components: {
+            graphics: {
+              Logo: '@/sitio/admin/Marca#Logo',
+              Icon: '@/sitio/admin/Marca#Icono',
+            },
           },
         },
         // La API de Payload vive en /cms-api, detrás de Cloudflare Access igual que /admin.
