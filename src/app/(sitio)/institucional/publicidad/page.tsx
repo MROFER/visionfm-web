@@ -37,6 +37,8 @@ export default async function PedirTarifas() {
           />
           {inst.hayKitComercial && (
             <>
+              {/* Descarga de un archivo, no una página: va con <a> (la regla se confunde por la ruta [...ruta]) */}
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
               <a
                 href="/api/kit-comercial"
                 className="etiqueta flex min-h-12 items-center justify-center border-2 border-tinta px-4 text-center no-underline hover:bg-tinta hover:text-blanco md:hidden"
@@ -47,6 +49,7 @@ export default async function PedirTarifas() {
                 <span className="text-[11px] font-extrabold tracking-[0.1em] text-vivo-claro uppercase">¿Lo necesitás ya?</span>
                 <span className="font-titulos text-[22px] leading-tight font-extrabold">Descargá el kit comercial</span>
                 <span className="text-sm text-oscuro-1">PDF con formatos y tarifas vigentes.</span>
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a
                   href="/api/kit-comercial"
                   className="etiqueta mt-2 flex min-h-12 items-center self-start border-2 border-blanco px-4 text-blanco no-underline hover:bg-blanco hover:text-tinta"
