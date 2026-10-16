@@ -3,7 +3,9 @@ import { unstable_cache } from 'next/cache'
 import { getPayload, type Where } from 'payload'
 
 import type { Equipo } from '@/payload-types'
+import type { ExcepcionEnGrilla } from '../lib/grilla'
 import { enumerar } from '../lib/texto'
+import { diaEnMontevideo, sumarDias } from '../publicidad/fechas'
 import { aImagen, aTarjetaEntrevista, aTarjetaNota, aTarjetaPelicula } from './formas'
 import type { ProgramaCompleto, ProgramaGrilla, Voz } from './tipos'
 
@@ -86,6 +88,47 @@ export const obtenerGrilla = unstable_cache(
   ['grilla'],
   { tags: ['grilla', 'programas'] },
 )
+
+const excepcionesDesde = unstable_cache(
+  async (hoy: string): Promise<ExcepcionEnGrilla[]> => {
+    const p = await payload()
+    // Margen de un día a cada lado: el panel puede guardar la fecha a otra hora según la zona del navegador
+    const { docs } = await p.find({
+      collection: 'excepcionesGrilla',
+      where: {
+        and: [
+          { fecha: { greater_than_equal: `${sumarDias(hoy, -1)}T00:00:00.000Z` } },
+          { fecha: { less_than_equal: `${sumarDias(hoy, 8)}T23:59:59.999Z` } },
+        ],
+      },
+      sort: 'fecha',
+      limit: 200,
+      depth: 1,
+      overrideAccess: false,
+      populate: { programas: { nombre: true } },
+    })
+    const ultimo = sumarDias(hoy, 7)
+    return docs
+      .map((e) => {
+        const programa = typeof e.programa === 'object' && e.programa !== null ? e.programa : null
+        return {
+          id: e.id,
+          fecha: diaEnMontevideo(e.fecha),
+          inicio: e.inicio,
+          fin: e.fin,
+          programa: programa?.id ?? (typeof e.programa === 'number' ? e.programa : null),
+          titulo: e.titulo || programa?.nombre || '',
+          conduccion: e.conduccion ?? '',
+        }
+      })
+      .filter((e) => e.fecha >= hoy && e.fecha <= ultimo)
+  },
+  ['excepciones-grilla'],
+  { tags: ['grilla'] },
+)
+
+/** Los cambios de grilla de hoy y los siete días que siguen (docs/04-esquema.md, excepcionesGrilla). */
+export const obtenerExcepciones = (hoy = diaEnMontevideo(new Date())) => excepcionesDesde(hoy)
 
 // Lo público se lee con las reglas de acceso de un visitante (sin usuario): solo lo publicado.
 const publico = { overrideAccess: false } as const

@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
-import { alAire, type Emision } from '../../lib/grilla'
+import { alAire, type Emision, type ExcepcionEnGrilla } from '../../lib/grilla'
 import type { ProgramaGrilla } from '../../datos/tipos'
 
 // Un solo audio para todo el sitio (design/LEEME.md, sección 8). Vive en el layout, que no se vuelve a
@@ -41,6 +41,8 @@ type EstadoRadio = {
   cambiarVolumen: (diferencia: number) => void
   alAire: Emision<ProgramaGrilla> | null
   grilla: ProgramaGrilla[]
+  /** Cambios de grilla de hoy y la semana que viene. */
+  excepciones: ExcepcionEnGrilla[]
   ahora: Date
 }
 
@@ -54,15 +56,19 @@ export function useRadio() {
 
 /** Cada cuánto se recalcula qué programa está al aire. */
 const CADA_MINUTO = 30_000
+/** Cada cuánto se vuelve a pedir la grilla, por si cargaron un cambio con la página abierta. */
+const CADA_DIEZ_MINUTOS = 10 * 60_000
 
 export function Radio({
   streamUrl,
-  grilla,
+  grilla: grillaInicial,
+  excepciones: excepcionesIniciales,
   ahoraInicial,
   children,
 }: {
   streamUrl: string
   grilla: ProgramaGrilla[]
+  excepciones: ExcepcionEnGrilla[]
   /** Hora del servidor al armar la página: el primer render coincide en el servidor y el navegador. */
   ahoraInicial: number
   children: React.ReactNode
@@ -77,6 +83,36 @@ export function Radio({
   const [volumen, setVolumen] = useState(1)
   // El HTML puede venir de la caché: apenas carga, el navegador recalcula con su reloj
   const [ahora, setAhora] = useState(() => new Date(ahoraInicial))
+  const [{ grilla, excepciones }, setGrilla] = useState({
+    grilla: grillaInicial,
+    excepciones: excepcionesIniciales,
+  })
+
+  // La grilla del HTML también puede venir de la caché: /api/grilla trae las excepciones al día
+  useEffect(() => {
+    const control = new AbortController()
+    const pedir = () =>
+      fetch('/api/grilla', { signal: control.signal })
+        .then((r) =>
+          r.ok
+            ? (r.json() as Promise<{
+                programas: ProgramaGrilla[]
+                excepciones: ExcepcionEnGrilla[]
+              }>)
+            : null,
+        )
+        .then(
+          (datos) =>
+            datos && setGrilla({ grilla: datos.programas, excepciones: datos.excepciones }),
+        )
+        .catch(() => null)
+    pedir()
+    const intervalo = setInterval(pedir, CADA_DIEZ_MINUTOS)
+    return () => {
+      control.abort()
+      clearInterval(intervalo)
+    }
+  }, [])
 
   useEffect(() => {
     const tic = () => setAhora(new Date())
@@ -174,8 +210,9 @@ export function Radio({
         buscar,
         volumen,
         cambiarVolumen,
-        alAire: alAire(grilla, ahora),
+        alAire: alAire(grilla, ahora, excepciones),
         grilla,
+        excepciones,
         ahora,
       }}
     >
