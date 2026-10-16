@@ -10,7 +10,7 @@ Guía para levantar `visionfm-labs.fraybentos.uy` en un servidor gratis de Oracl
 
 1. Entrar a <https://www.oracle.com/cloud/free/> y tocar **Start for free**.
 2. Usar un email de la agencia (no uno personal ni de la radio).
-3. **Home region: Brazil East (São Paulo).** Es la más cercana a Uruguay y no se puede cambiar después.
+3. **Home region: Chile Central (Santiago).** Es la de la cuenta de la agencia y no se puede cambiar después.
 4. Piden una tarjeta solo para verificar identidad; no cobran mientras se use lo gratis.
 5. Al entrar, activar la verificación en dos pasos (Profile → My profile → Multi-factor authentication).
 
