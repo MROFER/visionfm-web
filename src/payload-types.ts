@@ -219,6 +219,7 @@ export interface Noticia {
     descripcion?: string | null;
     imagen?: (number | null) | Medio;
   };
+  textoBusqueda?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -414,6 +415,7 @@ export interface Entrevista {
    * Quien la cargó.
    */
   autor?: (number | null) | Usuario;
+  textoBusqueda?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1027,6 +1029,7 @@ export interface NoticiasSelect<T extends boolean = true> {
         descripcion?: T;
         imagen?: T;
       };
+  textoBusqueda?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1059,6 +1062,7 @@ export interface EntrevistasSelect<T extends boolean = true> {
   resumen?: T;
   destacada?: T;
   autor?: T;
+  textoBusqueda?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

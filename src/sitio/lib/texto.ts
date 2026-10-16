@@ -17,5 +17,17 @@ export function palabrasDeLexical(cuerpo: { root?: NodoTexto } | null | undefine
   return total
 }
 
+const SALTO = new Set(['paragraph', 'heading', 'listitem', 'quote', 'linebreak', 'tablecell'])
+
+/** Todo el texto de un cuerpo de Lexical, con un salto de línea entre párrafos, títulos e ítems. */
+export function textoDeLexical(cuerpo: { root?: NodoTexto } | null | undefined) {
+  const recorrer = (nodo: NodoTexto & { type?: unknown }): string => {
+    const propio = typeof nodo.text === 'string' ? nodo.text : ''
+    const hijos = Array.isArray(nodo.children) ? nodo.children.map(recorrer).join('') : ''
+    return propio + hijos + (SALTO.has(String(nodo.type)) ? '\n' : '')
+  }
+  return cuerpo?.root ? recorrer(cuerpo.root).replace(/\n+/g, '\n').trim() : ''
+}
+
 /** Minutos de lectura a unas 200 palabras por minuto; nunca menos de 1. */
 export const minutosDeLectura = (palabras: number) => Math.max(1, Math.round(palabras / 200))

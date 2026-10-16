@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { campoSlug } from '@/base/fields/slug'
+import { campoBusqueda } from '@/sitio/busqueda/campo'
 import {
   accesoPorArea,
   autorPorDefecto,
@@ -69,5 +70,6 @@ export const Entrevistas: CollectionConfig = {
       relationTo: 'usuarios',
       admin: { position: 'sidebar', readOnly: true, description: 'Quien la cargó.' },
     },
+    campoBusqueda(['entrevistado', 'tema', 'resumen']),
   ],
 }
