@@ -1,7 +1,7 @@
 import config from '@payload-config'
 import { getPayload, type Payload, type PayloadRequest } from 'payload'
 import sharp from 'sharp'
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
 // Fuera de Next no hay caché de datos: la lectura va directo a la base
 vi.mock('next/cache', () => ({
@@ -84,6 +84,15 @@ beforeAll(async () => {
   imagenes = { imagenWeb: (await imagen(970, 90)).id, imagenMovil: (await imagen(320, 100)).id }
   deportes = (await payload.create({ collection: 'secciones', data: { nombre: 'Deportes', slug: 'rotacion-deportes', orden: 90 } })).id
   await payload.create({ collection: 'secciones', data: { nombre: 'Política', slug: 'rotacion-politica', orden: 91 } })
+})
+
+// Los anuncios apuntan a las imágenes: sin borrarlos, los otros tests no pueden vaciar Medios
+afterAll(async () => {
+  for (const c of ['anunciosMetricas', 'anuncios', 'medios'] as const) {
+    await payload.delete({ collection: c, where: { id: { exists: true } }, overrideAccess: true })
+  }
+  await payload.delete({ collection: 'secciones', where: { slug: { like: 'rotacion-' } }, overrideAccess: true })
+  await payload.delete({ collection: 'usuarios', where: { email: { like: 'csv-' } }, overrideAccess: true })
 })
 
 beforeEach(async () => {
