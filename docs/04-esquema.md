@@ -72,7 +72,7 @@ Audios de entrevistas, adjuntos y PDF. Separado de `medios` para no generar tama
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| archivo* | archivo | MP3, M4A, PDF, DOC/DOCX, MP4; máx. según uso |
+| archivo* | archivo | MP3, M4A, PDF, DOC/DOCX, MP4, y JPG/PNG/WebP para las fotos que llegan por los formularios; máx. según uso |
 | `privado` | checkbox | adjuntos de formularios: no públicos, se descargan con URL firmada |
 
 ## secciones
@@ -248,7 +248,7 @@ Acceso: área Publicidad. El sitio pide los anuncios vigentes; rotan en el naveg
 
 Creación: solo por `POST /api/formularios/{tipo}` con Turnstile válido y límite de 5 envíos por IP por hora.
 Acceso: área Institucional (Editor y Comercial ven los de su tipo). Nadie puede crear desde el panel.
-Hook: al crear, envía email al destinatario configurado en Ajustes según el tipo.
+Aviso: la misma ruta, al crear, envía un email al destinatario configurado en Ajustes según el tipo (o al email general si no hay uno), con el email del visitante como respuesta.
 Conservación: tarea semanal que borra mensajes y adjuntos de más de 12 meses (24 para `sumarse`).
 
 ## paginas ✎
