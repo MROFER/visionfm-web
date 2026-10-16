@@ -86,7 +86,7 @@ Respuestas de error en JSON: `{ "error": { "codigo": "VALIDACION", "mensaje": "�
 
 ## 6. Manejo de errores y observabilidad
 
-- `error.tsx` por sección y `not-found.tsx` global con el diseño del sitio; página 500 estática servida por Cloudflare si la app no responde.
+- `error.tsx` y `not-found.tsx` del sitio con su diseño (cualquier ruta inexistente cae en `(sitio)/[...ruta]` para mostrar la 404 con encabezado y pie), y `global-error.tsx` si falla el layout entero. Página 500 estática en `public/errores/500.html`, sin dependencias, que Cloudflare sirve si la app no responde (Custom Pages › errores 5xx y 521/522/523/524 apuntan a esa URL).
 - Logs estructurados en JSON a stdout; Coolify los guarda 14 días.
 - Errores del servidor y del navegador a Sentry (plan gratis) o GlitchTip autoalojado.
 - Monitoreo externo de disponibilidad del sitio y del stream cada 5 min (avisa a la radio y a la agencia) (Uptime Kuma en el VPS o UptimeRobot), con alerta por email.

@@ -19,6 +19,13 @@ import { imagenDeEjemplo, silencioMp3 } from './imagenes'
 const COLORES = ['#0f766e', '#7c3aed', '#be123c', '#0369a1', '#4d7c0f', '#b45309']
 
 /** Lexical: un párrafo por texto. */
+const LEGALES_EJEMPLO = [
+  { titulo: 'Aviso legal', slug: 'aviso-legal' },
+  { titulo: 'Política de privacidad', slug: 'privacidad' },
+  { titulo: 'Política de cookies', slug: 'cookies' },
+  { titulo: 'Condiciones de uso', slug: 'condiciones-de-uso' },
+]
+
 export function parrafos(textos: string[]): Noticia['cuerpo'] {
   return {
     root: {
@@ -389,6 +396,23 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
           ...m,
           estado: 'nuevo',
           consentimiento: { aceptado: true, fecha: hoy.toISOString() },
+        },
+      }),
+    )
+  }
+
+  // Textos legales de ejemplo: los reales los aporta la radio (docs/06-revision.md)
+  for (const legal of LEGALES_EJEMPLO) {
+    await buscarOCrear('paginas', { slug: { equals: legal.slug } }, () =>
+      payload.create({
+        collection: 'paginas',
+        data: {
+          ...legal,
+          cuerpo: parrafos([
+            'Texto de ejemplo. La radio carga el texto definitivo en Institucional › Páginas.',
+            'Para consultas sobre este tema, escribinos desde la página de contacto.',
+          ]),
+          _status: 'published',
         },
       }),
     )
