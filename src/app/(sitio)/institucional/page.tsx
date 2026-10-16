@@ -126,7 +126,7 @@ export default async function Institucional() {
               Pedir tarifas →
             </Boton>
           </div>
-          <ul className="m-0 flex list-none flex-col gap-3 p-0 md:grid md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))] md:gap-6">
+          <ul className="m-0 flex list-none flex-col gap-3 p-0 md:grid md:grid-cols-3 md:gap-4 lg:gap-6">
             {PRODUCTOS.map((p) => (
               <li key={p.tipo} className="flex flex-col gap-1 border-2 border-tinta p-4 md:gap-2.5 md:p-6">
                 <span className="text-[10px] font-extrabold tracking-[0.1em] text-acento uppercase md:text-[11px]">{p.tipo}</span>
