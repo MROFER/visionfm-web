@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { medidasExactas } from '@/base/fields/medidas'
 import { accesoPorArea } from '@/base/permisos'
-import { descargarReporte } from '../publicidad/tareas'
+import { descargarMetricas, descargarReporte } from '../publicidad/tareas'
 import { UBICACIONES } from '../publicidad/ubicaciones'
 
 export { UBICACIONES }
@@ -21,7 +21,7 @@ export const Anuncios: CollectionConfig = {
     ...accesoPorArea('publicidad'),
     read: (args) => accesoPorArea('publicidad').read(args) || { activo: { equals: true } },
   },
-  endpoints: [descargarReporte],
+  endpoints: [descargarReporte, descargarMetricas],
   fields: [
     {
       name: 'nombre',
@@ -116,6 +116,14 @@ export const Anuncios: CollectionConfig = {
       type: 'number',
       defaultValue: 0,
       admin: { position: 'sidebar', readOnly: true },
+    },
+    {
+      name: 'descargarMetricas',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: { Field: '@/sitio/admin/DescargarMetricas#DescargarMetricas' },
+      },
     },
   ],
 }

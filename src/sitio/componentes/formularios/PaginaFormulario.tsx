@@ -28,7 +28,7 @@ export function PaginaFormulario({
   return (
     <main className="pb-10 md:pb-20">
       <div className="contenedor pt-4 md:pt-7">
-        <Publicidad aviso={ajustes.avisoPropio} />
+        <Publicidad ubicacion="institucional-formularios" aviso={ajustes.avisoPropio} />
       </div>
       <div className="contenedor">
         {miga ? (
