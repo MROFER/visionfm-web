@@ -10,7 +10,7 @@ Guía para levantar `visionfm-labs.fraybentos.uy` en un servidor gratis de Oracl
 
 1. Entrar a <https://www.oracle.com/cloud/free/> y tocar **Start for free**.
 2. Usar un email de la agencia (no uno personal ni de la radio).
-3. **Home region: Chile Central (Santiago).** Es la de la cuenta de la agencia y no se puede cambiar después.
+3. **Home region:** Brazil East (São Paulo) o Chile Central (Santiago), las más cercanas a Uruguay. No se puede cambiar después; si una no tiene máquinas ARM libres, la otra puede tenerlas.
 4. Piden una tarjeta solo para verificar identidad; no cobran mientras se use lo gratis.
 5. Al entrar, activar la verificación en dos pasos (Profile → My profile → Multi-factor authentication).
 
@@ -24,7 +24,7 @@ En el menú: **Compute → Instances → Create instance**.
 |---|---|
 | Name | `visionfm-demo` |
 | Image | **Canonical Ubuntu 24.04** (la versión para ARM, *aarch64*) |
-| Shape | **Ampere → VM.Standard.A1.Flex**, 4 OCPU y 24 GB de memoria (el máximo gratis) |
+| Shape | **Ampere → VM.Standard.A1.Flex**, 2 OCPU y 12 GB de memoria (el máximo gratis desde agosto de 2026) |
 | Networking | dejar la red que crea por defecto, con IP pública |
 | SSH keys | **Generate a key pair for me** → bajar la clave privada y guardarla en la computadora |
 | Boot volume | 100 GB |
