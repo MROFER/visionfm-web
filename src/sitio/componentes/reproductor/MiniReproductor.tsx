@@ -8,7 +8,7 @@ import { useRadio } from './Radio'
 
 /** Barra fija abajo en el celular mientras suena la radio o una entrevista (design/LEEME.md, sección 6). */
 export function MiniReproductor() {
-  const { sonando, alternar, entrevista, reproducirEntrevista } = useRadio()
+  const { sonando, reconectando, alternar, entrevista, reproducirEntrevista } = useRadio()
   const conEntrevista = entrevista?.sonando
   if (!sonando && !conEntrevista) return null
   return (
@@ -16,7 +16,7 @@ export function MiniReproductor() {
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="flex items-center gap-1.5 text-[10px] font-extrabold tracking-[0.1em] text-vivo-claro uppercase">
           <span aria-hidden className="size-1.5 bg-vivo" />
-          {conEntrevista ? 'Entrevista' : 'Al aire · 96.5 FM'}
+          {conEntrevista ? 'Entrevista' : reconectando ? 'Reconectando…' : 'Al aire · 96.5 FM'}
         </span>
         {conEntrevista ? (
           <Link href="/radio/entrevistas" className="truncate text-[15px] font-bold text-blanco no-underline">
