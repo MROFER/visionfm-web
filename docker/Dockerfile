@@ -23,6 +23,8 @@ RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# Fotos y archivos en disco cuando no hay R2 (la demo): Coolify monta un volumen en cada carpeta
+RUN mkdir -p medios archivos && chown nextjs:nodejs medios archivos
 USER nextjs
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s \
