@@ -16,11 +16,11 @@ export const Cinevision: GlobalConfig = {
       fields: [
         {
           name: 'imagenWeb',
-          label: 'Imagen escritorio (1440×640)',
+          label: 'Imagen escritorio (2480×768)',
           type: 'upload',
           relationTo: 'medios',
           required: true,
-          validate: medidasExactas(1440, 640),
+          validate: medidasExactas(2480, 768),
         },
         {
           name: 'imagenMovil',

@@ -283,7 +283,7 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 `notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).
 
 ### cinevision
-`carrusel` (array: `imagenWeb` 1440×640, `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: área Cinevisión.
+`carrusel` (array: `imagenWeb` 2480×768 (se muestra a 1240×384 como máximo, el doble para pantallas retina), `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: área Cinevisión.
 
 ### institucional
 `quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: área Institucional.
