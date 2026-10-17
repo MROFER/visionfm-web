@@ -9,9 +9,10 @@ import type { DiapositivaCine } from '../../datos/cinevision'
 const AUTOAVANCE = 7000
 
 /**
- * Carrusel a todo el ancho de Cinevisión (design/LEEME.md, secciones 7 y 8): flechas en web, negativos
- * de película como indicadores y deslizar con el dedo (scroll-snap). Avanza solo hasta que alguien lo
- * toca, y nunca si el sistema pide menos movimiento.
+ * Carrusel de Cinevisión (design/LEEME.md, secciones 7 y 8): a todo el ancho en el celular y, en web,
+ * dentro de los márgenes del contenedor y más bajo que en el diseño (1240×384 como máximo), para que
+ * entre entero en una notebook. Flechas en web, negativos de película como indicadores y deslizar con
+ * el dedo (scroll-snap). Avanza solo hasta que alguien lo toca, y nunca si el sistema pide menos movimiento.
  */
 export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[] }) {
   const pista = useRef<HTMLDivElement>(null)
@@ -48,76 +49,78 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
     <section
       aria-roledescription="carrusel"
       aria-label="Cinevisión"
-      className="relative bg-carrusel"
+      className="md:mx-auto md:max-w-sitio md:px-6 md:pt-3"
       onPointerDown={() => setQuieto(true)}
       onFocusCapture={() => setQuieto(true)}
       onMouseEnter={() => setEncima(true)}
       onMouseLeave={() => setEncima(false)}
     >
-      <div
-        ref={pista}
-        onScroll={(e) => {
-          const el = e.currentTarget
-          setActual(Math.round(el.scrollLeft / el.clientWidth))
-        }}
-        className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {diapositivas.map((d, i) => {
-          const imagen = (
-            <picture>
-              <source
-                media="(min-width: 768px)"
-                srcSet={d.web.tamanos.map((t) => `${t.url} ${t.ancho}w`).join(', ') || d.web.url}
-                sizes="100vw"
-              />
-              <img
-                src={d.movil.url}
-                srcSet={d.movil.tamanos.map((t) => `${t.url} ${t.ancho}w`).join(', ') || undefined}
-                sizes="100vw"
-                alt={d.alt}
-                width={390}
-                height={240}
-                loading={i === 0 ? 'eager' : 'lazy'}
-                fetchPriority={i === 0 ? 'high' : undefined}
-                className="aspect-[390/240] w-full object-cover md:aspect-[1440/640] md:max-h-[640px]"
-              />
-            </picture>
-          )
-          return (
-            <div
-              key={i}
-              role="group"
-              aria-roledescription="imagen"
-              aria-label={`${i + 1} de ${total}`}
-              aria-hidden={i !== actual}
-              className="w-full shrink-0 snap-start"
-            >
-              {d.link ? (
-                <Link href={d.link} tabIndex={i === actual ? 0 : -1} className="block">
-                  {imagen}
-                </Link>
-              ) : (
-                imagen
-              )}
-            </div>
-          )
-        })}
-      </div>
+      <div className="relative bg-carrusel">
+        <div
+          ref={pista}
+          onScroll={(e) => {
+            const el = e.currentTarget
+            setActual(Math.round(el.scrollLeft / el.clientWidth))
+          }}
+          className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {diapositivas.map((d, i) => {
+            const imagen = (
+              <picture>
+                <source
+                  media="(min-width: 768px)"
+                  srcSet={d.web.tamanos.map((t) => `${t.url} ${t.ancho}w`).join(', ') || d.web.url}
+                  sizes="(min-width: 1288px) 1240px, calc(100vw - 48px)"
+                />
+                <img
+                  src={d.movil.url}
+                  srcSet={d.movil.tamanos.map((t) => `${t.url} ${t.ancho}w`).join(', ') || undefined}
+                  sizes="100vw"
+                  alt={d.alt}
+                  width={390}
+                  height={240}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : undefined}
+                  className="aspect-[390/240] w-full object-cover md:aspect-[1240/384] md:max-h-[384px]"
+                />
+              </picture>
+            )
+            return (
+              <div
+                key={i}
+                role="group"
+                aria-roledescription="imagen"
+                aria-label={`${i + 1} de ${total}`}
+                aria-hidden={i !== actual}
+                className="w-full shrink-0 snap-start"
+              >
+                {d.link ? (
+                  <Link href={d.link} tabIndex={i === actual ? 0 : -1} className="block">
+                    {imagen}
+                  </Link>
+                ) : (
+                  imagen
+                )}
+              </div>
+            )
+          })}
+        </div>
 
-      {total > 1 && (
-        <>
-          <Flecha lado="izquierda" onClick={() => tocar(actual - 1)} />
-          <Flecha lado="derecha" onClick={() => tocar(actual + 1)} />
-          <nav
-            aria-label="Imágenes del carrusel"
-            className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-2 md:bottom-6 md:gap-3"
-          >
-            {diapositivas.map((d, i) => (
-              <Negativo key={i} activo={i === actual} etiqueta={`Imagen ${i + 1}: ${d.alt}`} onClick={() => tocar(i)} />
-            ))}
-          </nav>
-        </>
-      )}
+        {total > 1 && (
+          <>
+            <Flecha lado="izquierda" onClick={() => tocar(actual - 1)} />
+            <Flecha lado="derecha" onClick={() => tocar(actual + 1)} />
+            <nav
+              aria-label="Imágenes del carrusel"
+              className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-2 md:bottom-6 md:gap-3"
+            >
+              {diapositivas.map((d, i) => (
+                <Negativo key={i} activo={i === actual} etiqueta={`Imagen ${i + 1}: ${d.alt}`} onClick={() => tocar(i)} />
+              ))}
+            </nav>
+          </>
+        )}
+      </div>
     </section>
   )
 }
