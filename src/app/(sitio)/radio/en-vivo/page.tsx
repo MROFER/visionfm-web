@@ -18,12 +18,12 @@ export default async function EnVivo() {
     <main>
       <div className="lg:hidden">
         <ReproductorPantalla>
-          <Publicidad aviso={ajustes.avisoPropio} oscuro />
+          <Publicidad ubicacion="radio-en-vivo" aviso={ajustes.avisoPropio} oscuro />
         </ReproductorPantalla>
       </div>
       <div className="hidden lg:block">
         <HeroEnVivo telefono={ajustes.telefono}>
-          <Publicidad aviso={ajustes.avisoPropio} oscuro />
+          <Publicidad ubicacion="radio-en-vivo" aviso={ajustes.avisoPropio} oscuro />
         </HeroEnVivo>
       </div>
     </main>

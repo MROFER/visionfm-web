@@ -7,7 +7,7 @@ import { Encabezado } from '@/sitio/componentes/globales/Encabezado'
 import { Pie } from '@/sitio/componentes/globales/Pie'
 import { MiniReproductor } from '@/sitio/componentes/reproductor/MiniReproductor'
 import { Radio } from '@/sitio/componentes/reproductor/Radio'
-import { obtenerAjustes, obtenerGrilla, obtenerSecciones } from '@/sitio/datos'
+import { obtenerAjustes, obtenerExcepciones, obtenerGrilla, obtenerSecciones } from '@/sitio/datos'
 import { OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { marcaDeTiempo } from '@/sitio/lib/fecha'
 import { menuPrincipal } from '@/sitio/navegacion'
@@ -48,15 +48,21 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: '#13161d' }
 
 export default async function SitioLayout({ children }: { children: React.ReactNode }) {
-  const [ajustes, secciones, grilla] = await Promise.all([
+  const [ajustes, secciones, grilla, excepciones] = await Promise.all([
     obtenerAjustes(),
     obtenerSecciones(),
     obtenerGrilla(),
+    obtenerExcepciones(),
   ])
   return (
     <html lang="es-UY" className={`${titulos.variable} ${cuerpo.variable}`}>
       <body>
-        <Radio streamUrl={ajustes.streamUrl} grilla={grilla} ahoraInicial={marcaDeTiempo()}>
+        <Radio
+          streamUrl={ajustes.streamUrl}
+          grilla={grilla}
+          excepciones={excepciones}
+          ahoraInicial={marcaDeTiempo()}
+        >
           <a
             href="#contenido"
             className="etiqueta sr-only bg-tinta p-3 text-blanco focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50"

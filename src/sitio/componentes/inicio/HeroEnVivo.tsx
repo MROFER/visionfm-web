@@ -29,9 +29,9 @@ function avance(inicio: string, fin: string, minutos: number) {
  * continuación". En el celular muestra dos programas y debajo la publicidad, que llega como `children`.
  */
 export function HeroEnVivo({ telefono, children }: { telefono: string; children?: React.ReactNode }) {
-  const { alAire, grilla, ahora } = useRadio()
+  const { alAire, grilla, excepciones, ahora } = useRadio()
   const { dia: hoy, minutos } = momentoMontevideo(ahora)
-  const siguientes = aContinuacion(grilla, ahora, 4)
+  const siguientes = aContinuacion(grilla, ahora, 4, excepciones)
   const fechaCabecera = new Intl.DateTimeFormat('es-UY', {
     timeZone: 'America/Montevideo',
     weekday: 'long',
@@ -107,7 +107,7 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
             <ol className="m-0 list-none p-0">
               {siguientes.map((e, i) => (
                 <li
-                  key={`${e.programa.slug}-${e.dia}-${e.inicio}`}
+                  key={`${e.programa.id}-${e.fecha}-${e.inicio}`}
                   className={`flex gap-3.5 border-b border-oscuro-linea py-3.5 md:gap-4 md:py-4 ${
                     i > 0 ? 'md:opacity-80' : ''
                   } ${i > 1 ? 'max-md:hidden' : ''}`}

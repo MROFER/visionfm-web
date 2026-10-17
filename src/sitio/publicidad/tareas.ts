@@ -3,7 +3,7 @@ import type { Endpoint, Payload, TaskConfig } from 'payload'
 import { slugify } from '@/base/lib/slug'
 import { tienePermiso, type UsuarioConPermisos } from '@/base/permisos'
 import { diaEnMontevideo, mediodiaUTC, mesAnterior, mesDe, sumarDias } from './fechas'
-import { type Metrica, pdfReporte, resumirMetricas } from './reporte'
+import { csvMetricas, type Metrica, pdfReporte, resumirMetricas } from './reporte'
 import { anunciosPorVencer, DIAS_DE_AVISO, textoAvisoVencimiento } from './vencimientos'
 
 // Tareas programadas de publicidad (docs/03-flujos.md, P6 y P11).
@@ -180,6 +180,36 @@ export const descargarReporte: Endpoint = {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${nombre}"`,
+        'Cache-Control': 'no-store',
+      },
+    })
+  },
+}
+
+/** GET /cms-api/anuncios/{id}/metricas: impresiones y clics del anuncio por día y ubicación, en CSV. */
+export const descargarMetricas: Endpoint = {
+  path: '/:id/metricas',
+  method: 'get',
+  handler: async (req) => {
+    if (!tienePermiso(req.user as unknown as UsuarioConPermisos, 'publicidad', 'ver')) {
+      return Response.json({ error: 'Sin permiso.' }, { status: 403 })
+    }
+    const id = Number(req.routeParams?.id)
+    const anuncio = Number.isInteger(id)
+      ? await req.payload.findByID({ collection: 'anuncios', id, depth: 0 }).catch(() => null)
+      : null
+    if (!anuncio) return Response.json({ error: 'No existe ese anuncio.' }, { status: 404 })
+    const { docs } = await req.payload.find({
+      collection: 'anunciosMetricas',
+      where: { anuncio: { equals: id } },
+      limit: 0,
+      depth: 0,
+      pagination: false,
+    })
+    return new Response(csvMetricas(docs as Metrica[]), {
+      headers: {
+        'Content-Type': 'text/csv; charset=utf-8',
+        'Content-Disposition': `attachment; filename="metricas-${slugify(anuncio.nombre) || id}.csv"`,
         'Cache-Control': 'no-store',
       },
     })
