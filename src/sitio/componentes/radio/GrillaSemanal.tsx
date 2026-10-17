@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import type { ProgramaCompleto } from '../../datos/tipos'
-import { DIAS, momentoMontevideo, programacionDelDia, type Dia } from '../../lib/grilla'
+import { DIAS, momentoMontevideo, programacionDelDia, proximaSemana, type Dia } from '../../lib/grilla'
 import { useRadio } from '../reproductor/Radio'
 
 const NOMBRES: Record<Dia, [string, string]> = {
@@ -18,13 +18,13 @@ const NOMBRES: Record<Dia, [string, string]> = {
 
 /**
  * Pestañas por día y la grilla de ese día, con "Al aire" en el programa que suena. Arranca en el día de
- * hoy en Montevideo.
+ * hoy en Montevideo; cada pestaña es la próxima fecha de ese día, con sus cambios de grilla.
  */
 export function GrillaSemanal({ programas }: { programas: ProgramaCompleto[] }) {
-  const { ahora, alAire } = useRadio()
+  const { ahora, alAire, excepciones } = useRadio()
   const [elegido, setElegido] = useState<Dia | null>(null)
   const dia = elegido ?? momentoMontevideo(ahora).dia
-  const emisiones = programacionDelDia(programas, dia)
+  const emisiones = programacionDelDia(programas, proximaSemana(ahora)[dia], excepciones)
 
   return (
     <div>
@@ -58,7 +58,7 @@ export function GrillaSemanal({ programas }: { programas: ProgramaCompleto[] }) 
               const suena =
                 alAire !== null &&
                 alAire.programa.id === e.programa.id &&
-                alAire.dia === e.dia &&
+                alAire.fecha === e.fecha &&
                 alAire.inicio === e.inicio
               return (
                 <li
@@ -72,6 +72,11 @@ export function GrillaSemanal({ programas }: { programas: ProgramaCompleto[] }) 
                     {suena && (
                       <span className="text-[10px] font-extrabold tracking-[0.1em] text-acento uppercase md:text-[11px]">
                         Al aire
+                      </span>
+                    )}
+                    {e.especial && !suena && (
+                      <span className="text-[10px] font-extrabold tracking-[0.1em] text-meta uppercase md:text-[11px]">
+                        Especial
                       </span>
                     )}
                   </span>
