@@ -409,6 +409,7 @@ export const obtenerNota = unstable_cache(
     return {
       ...aTarjetaNota(n),
       cuerpo: n.cuerpo,
+      actualizada: n.fechaActualizacion ?? null,
       epigrafe: n.epigrafe ?? '',
       credito: foto?.credito ?? '',
       firma: firma || 'Redacción Visión',

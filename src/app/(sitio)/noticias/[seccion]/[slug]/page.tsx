@@ -5,12 +5,14 @@ import { notFound } from 'next/navigation'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { Compartir } from '@/sitio/componentes/noticias/Compartir'
+import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
 import { notasRelacionadas, obtenerAjustes, obtenerNota } from '@/sitio/datos'
-import { imagenParaCompartir, OPEN_GRAPH } from '@/sitio/lib/compartir'
+import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaCompleta } from '@/sitio/lib/fecha'
 import { minutosDeLectura, palabrasDeLexical } from '@/sitio/lib/texto'
+import { articulo, migas } from '@/sitio/seo/estructurados'
 
 type Parametros = { params: Promise<{ seccion: string; slug: string }> }
 
@@ -29,6 +31,7 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
       title: nota.seo.titulo,
       description: nota.seo.descripcion,
       publishedTime: nota.fecha ?? undefined,
+      modifiedTime: nota.actualizada ?? undefined,
       images: imagenParaCompartir(nota.seo.imagen),
     },
   }
@@ -42,9 +45,19 @@ export default async function Nota({ params }: Parametros) {
   const relacionadas = await notasRelacionadas(nota.id, seccion, 3)
   const minutos = minutosDeLectura(palabrasDeLexical(nota.cuerpo))
   const pie = [nota.epigrafe, nota.credito && `Foto: ${nota.credito}`].filter(Boolean).join(' · ')
+  const origen = urlDelSitio().origin
+  const datos = [
+    articulo(origen, nota),
+    migas(origen, [
+      { nombre: 'Noticias', ruta: '/noticias' },
+      ...(nota.seccion ? [{ nombre: nota.seccion.nombre, ruta: `/noticias/${nota.seccion.slug}` }] : []),
+      { nombre: nota.titulo },
+    ]),
+  ]
 
   return (
     <main className="pb-10 md:pb-20">
+      <DatosEstructurados nodos={datos} />
       <div className="contenedor pt-4 md:pt-8">
         <nav aria-label="Ruta" className="mb-7 hidden flex-wrap gap-2 text-[13px] text-meta md:flex">
           <Link href="/" className="text-meta">

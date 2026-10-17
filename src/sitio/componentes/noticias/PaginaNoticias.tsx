@@ -12,6 +12,7 @@ import {
 import { Participa } from '../globales/Participa'
 import { Publicidad } from '../globales/Publicidad'
 import { Buscador } from '../ui/Buscador'
+import { Migas } from '../ui/Migas'
 import { Paginacion } from '../ui/Paginacion'
 import { NotaFila } from '../ui/TarjetaNota'
 import { TiraSecciones } from '../ui/TiraSecciones'
@@ -70,6 +71,13 @@ export async function PaginaNoticias({
 
   return (
     <main className="pb-8 md:pb-20">
+      <Migas
+        pasos={
+          actual
+            ? [{ nombre: 'Noticias', ruta: '/noticias' }, { nombre: actual.nombre }]
+            : [{ nombre: 'Noticias' }]
+        }
+      />
       <div className="contenedor pt-4 md:pt-8">
         <Publicidad
           ubicacion={seccion ? 'noticias-seccion' : 'noticias-listado'}

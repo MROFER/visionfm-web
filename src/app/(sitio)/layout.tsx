@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import React from 'react'
 
 import { BarraSuperior } from '@/sitio/componentes/globales/BarraSuperior'
+import { DatosDeLaRadio } from '@/sitio/componentes/globales/DatosDeLaRadio'
 import { Encabezado } from '@/sitio/componentes/globales/Encabezado'
 import { Pie } from '@/sitio/componentes/globales/Pie'
 import { MiniReproductor } from '@/sitio/componentes/reproductor/MiniReproductor'
@@ -73,6 +74,7 @@ export default async function SitioLayout({ children }: { children: React.ReactN
           <Encabezado menu={menuPrincipal(secciones)} telefono={ajustes.telefono} />
           <div id="contenido">{children}</div>
           <Pie ajustes={ajustes} secciones={secciones} />
+          <DatosDeLaRadio ajustes={ajustes} />
           <MiniReproductor />
         </Radio>
       </body>

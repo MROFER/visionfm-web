@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { HeroEnVivo } from '@/sitio/componentes/inicio/HeroEnVivo'
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { ReproductorPantalla } from '@/sitio/componentes/radio/ReproductorPantalla'
+import { Migas } from '@/sitio/componentes/ui/Migas'
 import { obtenerAjustes } from '@/sitio/datos'
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default async function EnVivo() {
   const ajustes = await obtenerAjustes()
   return (
     <main>
+      <Migas pasos={[{ nombre: 'En vivo' }]} />
       <div className="lg:hidden">
         <ReproductorPantalla>
           <Publicidad ubicacion="radio-en-vivo" aviso={ajustes.avisoPropio} oscuro />

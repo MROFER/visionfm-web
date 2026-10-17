@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { EntrevistaDestacada, FilaEntrevista } from '@/sitio/componentes/radio/ListaEntrevistas'
 import { Buscador } from '@/sitio/componentes/ui/Buscador'
+import { Migas } from '@/sitio/componentes/ui/Migas'
 import { Paginacion } from '@/sitio/componentes/ui/Paginacion'
 import { entrevistaDestacada, listarEntrevistas, obtenerAjustes, obtenerGrilla } from '@/sitio/datos'
 
@@ -50,6 +51,7 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
 
   return (
     <main className="pb-10 md:pb-20">
+      <Migas pasos={[{ nombre: 'Entrevistas' }]} />
       <div className="contenedor pt-4 md:pt-8">
         <Publicidad ubicacion="radio-entrevistas" aviso={ajustes.avisoPropio} />
       </div>
