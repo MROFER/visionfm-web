@@ -219,6 +219,12 @@ export interface Noticia {
     descripcion?: string | null;
     imagen?: (number | null) | Medio;
   };
+  wordpress?: {
+    idPost?: number | null;
+    enlace?: string | null;
+    modificada?: string | null;
+    importada?: string | null;
+  };
   textoBusqueda?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -232,6 +238,7 @@ export interface Medio {
   id: number;
   alt: string;
   credito?: string | null;
+  origen?: string | null;
   prefix?: string | null;
   _objectKey?: string | null;
   updatedAt: string;
@@ -1037,6 +1044,14 @@ export interface NoticiasSelect<T extends boolean = true> {
         descripcion?: T;
         imagen?: T;
       };
+  wordpress?:
+    | T
+    | {
+        idPost?: T;
+        enlace?: T;
+        modificada?: T;
+        importada?: T;
+      };
   textoBusqueda?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1268,6 +1283,7 @@ export interface PaginasSelect<T extends boolean = true> {
 export interface MediosSelect<T extends boolean = true> {
   alt?: T;
   credito?: T;
+  origen?: T;
   prefix?: T;
   _objectKey?: T;
   updatedAt?: T;

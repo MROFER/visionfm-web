@@ -149,6 +149,23 @@ export const Noticias: CollectionConfig = {
       admin: { position: 'sidebar', description: 'Candidata a destacada.' },
     },
     campoSeo,
+    {
+      // Notas traídas del WordPress viejo: el id permite volver a correr la migración sin duplicar
+      name: 'wordpress',
+      label: 'WordPress',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        condition: (data) => Boolean(data?.wordpress?.idPost),
+      },
+      fields: [
+        { name: 'idPost', label: 'Id del post', type: 'number', unique: true, index: true },
+        { name: 'enlace', label: 'Dirección vieja', type: 'text' },
+        { name: 'modificada', label: 'Última modificación allá', type: 'date' },
+        { name: 'importada', label: 'Importada', type: 'date' },
+      ],
+    },
     campoBusqueda(['titulo', 'bajada', 'cuerpo']),
   ],
 }

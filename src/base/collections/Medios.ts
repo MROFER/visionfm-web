@@ -43,5 +43,13 @@ export const Medios: CollectionConfig = {
   fields: [
     { name: 'alt', label: 'Texto alternativo', type: 'text', required: true, maxLength: 160 },
     { name: 'credito', label: 'Crédito', type: 'text' },
+    {
+      // Imágenes traídas en una migración: la dirección original evita bajarlas dos veces
+      name: 'origen',
+      type: 'text',
+      unique: true,
+      index: true,
+      admin: { readOnly: true, condition: (data) => Boolean(data?.origen) },
+    },
   ],
 }

@@ -1,0 +1,129 @@
+// Lectura del WordPress viejo por su API REST pública, sin usuario (docs/05-plan.md, fase 4)
+
+export interface TerminoWp {
+  id: number
+  name: string
+  slug: string
+  taxonomy: string
+}
+
+export interface MedioWp {
+  id: number
+  source_url: string
+  alt_text?: string
+  caption?: { rendered: string }
+  title?: { rendered: string }
+  mime_type?: string
+}
+
+export interface PostWp {
+  id: number
+  date_gmt: string
+  modified_gmt: string
+  slug: string
+  link: string
+  status: string
+  title: { rendered: string }
+  excerpt: { rendered: string }
+  content: { rendered: string }
+  categories: number[]
+  tags: number[]
+  featured_media: number
+  _embedded?: {
+    'wp:featuredmedia'?: (MedioWp | { code: string })[]
+    'wp:term'?: TerminoWp[][]
+  }
+}
+
+const POR_PAGINA = 100
+
+export interface ClienteWp {
+  /** Recorre todos los posts publicados, del más viejo al más nuevo. */
+  posts(): AsyncGenerator<PostWp>
+  /** Baja un archivo (imagen o audio) del sitio viejo. */
+  archivo(url: string): Promise<{ data: Buffer; tipo: string } | null>
+  /** Todas las URL de los sitemaps, para saber qué direcciones viejas tienen que responder. */
+  sitemap(): Promise<string[]>
+}
+
+async function conReintentos(url: string, intentos = 4): Promise<Response> {
+  let ultimo: unknown
+  for (let i = 0; i < intentos; i++) {
+    try {
+      const respuesta = await fetch(url, {
+        headers: { 'User-Agent': 'visionfm-migracion/1.0', Accept: '*/*' },
+        redirect: 'follow',
+      })
+      // 4xx no se arregla reintentando
+      if (respuesta.ok || (respuesta.status >= 400 && respuesta.status < 500)) return respuesta
+      ultimo = new Error(`${respuesta.status} en ${url}`)
+    } catch (error) {
+      ultimo = error
+    }
+    await new Promise((r) => setTimeout(r, 1000 * 2 ** i))
+  }
+  throw ultimo
+}
+
+const ubicaciones = (xml: string) =>
+  [...xml.matchAll(/<loc>\s*(?:<!\[CDATA\[)?([^<\]]+?)(?:\]\]>)?\s*<\/loc>/g)].map((m) =>
+    m[1].trim().replace(/&amp;/g, '&'),
+  )
+
+export function clienteWordpress(base: string): ClienteWp {
+  const raiz = base.replace(/\/+$/, '')
+  return {
+    async *posts() {
+      for (let pagina = 1; ; pagina++) {
+        const url =
+          `${raiz}/wp-json/wp/v2/posts?status=publish&orderby=id&order=asc` +
+          `&per_page=${POR_PAGINA}&page=${pagina}&_embed=wp:featuredmedia,wp:term`
+        const respuesta = await conReintentos(url)
+        // WordPress responde 400 cuando se pide una página después de la última
+        if (respuesta.status === 400 && pagina > 1) return
+        if (!respuesta.ok)
+          throw new Error(`La API de WordPress respondió ${respuesta.status}: ${url}`)
+        const posts = (await respuesta.json()) as PostWp[]
+        for (const post of posts) yield post
+        const total = Number(respuesta.headers.get('x-wp-totalpages') ?? 0)
+        if (posts.length < POR_PAGINA || (total && pagina >= total)) return
+      }
+    },
+
+    async archivo(url) {
+      const respuesta = await conReintentos(new URL(url, raiz).toString())
+      if (!respuesta.ok) return null
+      const tipo = respuesta.headers.get('content-type')?.split(';')[0].trim() ?? ''
+      return { data: Buffer.from(await respuesta.arrayBuffer()), tipo }
+    },
+
+    async sitemap() {
+      // WordPress trae su propio sitemap; Yoast lo reemplaza por sitemap_index.xml
+      for (const indice of ['/sitemap_index.xml', '/wp-sitemap.xml', '/sitemap.xml']) {
+        const respuesta = await conReintentos(raiz + indice)
+        if (!respuesta.ok) continue
+        const xml = await respuesta.text()
+        if (!xml.includes('<loc>')) continue
+        if (!xml.includes('<sitemapindex')) return ubicaciones(xml)
+        const urls: string[] = []
+        for (const hijo of ubicaciones(xml)) {
+          const parte = await conReintentos(hijo)
+          if (parte.ok) urls.push(...ubicaciones(await parte.text()))
+        }
+        return urls
+      }
+      return []
+    },
+  }
+}
+
+/** Categorías y etiquetas de un post, tal como vienen en `_embed`. */
+export function terminosDe(post: PostWp): TerminoWp[] {
+  return (post._embedded?.['wp:term'] ?? []).flat().filter(Boolean)
+}
+
+/** La imagen destacada, si el post tiene y es pública. */
+export function imagenDestacada(post: PostWp): MedioWp | null {
+  const medio = post._embedded?.['wp:featuredmedia']?.[0]
+  return medio && 'source_url' in medio ? medio : null
+}

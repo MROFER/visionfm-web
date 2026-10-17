@@ -56,3 +56,6 @@ node_modules/
 # Archivos subidos en desarrollo y tests (en staging y producción van a R2)
 /medios/
 /archivos/
+
+# informe de la migración de WordPress (pnpm migrar:wordpress)
+/migracion-informe/
