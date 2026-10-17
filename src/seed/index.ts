@@ -340,7 +340,8 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
             imagenRectangulo: (
               await imagen(`${a.anunciante} 300×250`, 300, 250, a.anunciante, a.color)
             ).id,
-            ubicaciones: i === 0 ? ['inicio', 'noticias-nota'] : ['inicio', 'radio-en-vivo', 'cinevision'],
+            ubicaciones:
+              i === 0 ? ['inicio', 'noticias-nota'] : ['inicio', 'radio-en-vivo', 'cinevision'],
             desde: mediodiaUTC(sumarDias(dia, -60)),
             hasta: mediodiaUTC(sumarDias(dia, i === 0 ? 7 : 90)),
             peso: i === 0 ? 2 : 1,
@@ -435,35 +436,68 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
     })
     cuenta.creados++
   }
+  // Cinevisión: cada parte se completa por separado, así una demo ya cargada suma lo que le falte
   const cinevision = await payload.findGlobal({ slug: 'cinevision', depth: 0 })
+  const cine: Record<string, unknown> = {}
+  if ((cinevision.carrusel?.length ?? 0) < 3) {
+    const enCartel = PELICULAS.filter((p) => p.estreno <= 0).slice(0, 2)
+    const diapositivas = [
+      { titulo: 'Cinevisión', alt: 'Cinevisión, el cine de Fray Bentos', link: '' },
+      ...enCartel.map((p) => ({
+        titulo: p.titulo,
+        alt: `${p.titulo}, en cartelera`,
+        link: `/cinevision/${slugify(p.titulo)}`,
+      })),
+    ]
+    cine.carrusel = await Promise.all(
+      diapositivas.map(async (d, i) => ({
+        imagenWeb: (
+          await imagen(
+            `Carrusel ${d.titulo} 1440×640`,
+            1440,
+            640,
+            d.titulo,
+            COLORES[i % COLORES.length],
+          )
+        ).id,
+        imagenMovil: (
+          await imagen(
+            `Carrusel ${d.titulo} 390×240`,
+            390,
+            240,
+            d.titulo,
+            COLORES[i % COLORES.length],
+          )
+        ).id,
+        alt: d.alt,
+        link: d.link,
+        orden: i + 1,
+      })),
+    )
+  }
   if (!cinevision.precios?.length) {
-    await payload.updateGlobal({
-      slug: 'cinevision',
-      data: {
-        carrusel: [
-          {
-            imagenWeb: (
-              await imagen('Carrusel Cinevisión 1440×640', 1440, 640, 'Cinevisión', '#7c3aed')
-            ).id,
-            imagenMovil: (
-              await imagen('Carrusel Cinevisión 390×240', 390, 240, 'Cinevisión', '#7c3aed')
-            ).id,
-            alt: 'Cinevisión, el cine de Fray Bentos',
-            orden: 1,
-          },
-        ],
-        precios: [
-          { concepto: 'Entrada general', precio: '$ 300' },
-          { concepto: '2D los miércoles', precio: '$ 200' },
-          { concepto: 'Suplemento 3D', precio: '$ 80' },
-        ],
-        promociones: [
-          { titulo: 'Miércoles a mitad de precio', detalle: 'En todas las funciones 2D.' },
-        ],
-        comoSeCompran: 'En la boletería de la sala, desde una hora antes de cada función.',
-        comoLlegar: { direccion: '18 de Julio 1000, Fray Bentos', telefono: '4562 0000' },
-      },
-    })
+    cine.precios = [
+      { concepto: 'Entrada general', precio: '$ 300' },
+      { concepto: 'Menores de 12 y jubilados', precio: '$ 220' },
+      { concepto: '2D los miércoles', precio: '$ 200' },
+      { concepto: 'Suplemento 3D', precio: '$ 80' },
+    ]
+    cine.promociones = [
+      { titulo: 'Miércoles a mitad de precio', detalle: 'En todas las funciones 2D.' },
+    ]
+    cine.comoSeCompran = 'En la boletería de la sala, desde una hora antes de cada función.'
+  }
+  if (!cinevision.comoLlegar?.mapaImagen) {
+    const direccion = cinevision.comoLlegar?.direccion || '18 de Julio 1000, Fray Bentos'
+    cine.comoLlegar = {
+      direccion,
+      telefono: cinevision.comoLlegar?.telefono || '4562 0000',
+      mapaImagen: (await imagen('Mapa de Cinevisión', 1200, 400, 'Mapa', '#4b5563')).id,
+      mapaLink: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(direccion)}`,
+    }
+  }
+  if (Object.keys(cine).length) {
+    await payload.updateGlobal({ slug: 'cinevision', data: cine })
     cuenta.creados++
   }
   const portada = await payload.findGlobal({ slug: 'portada', depth: 0 })
