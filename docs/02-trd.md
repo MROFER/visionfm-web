@@ -53,6 +53,7 @@ Definidas en `.env.example` (sin valores) y cargadas en Coolify. Nunca en el rep
 | `PREVIEW_SECRET` | vista previa de borradores |
 | `CRON_SECRET` | tareas programadas (publicación programada, limpieza, refresco de medianoche) |
 | `INDEXNOW_KEY` | aviso a Bing al publicar |
+| `INDEXAR` | `si` solo en producción después del lanzamiento: habilita la indexación en `robots.txt` y en las páginas; en cualquier otro valor todo va con `noindex` |
 
 La URL del stream no es variable de entorno: vive en la ficha `ajustes` para que la radio pueda cambiarla.
 
@@ -72,6 +73,10 @@ Payload expone su API REST en `/cms-api/{coleccion}` (se cambia `routes.api` en 
 | `/api/revalidar` | POST | uso interno de los hooks | sin caché |
 | `/a/{id}?u={ubicacion}` | GET | link de salida de un anuncio: suma un clic en esa ubicación (no cuenta robots) y redirige; solo a destinos http/https, si no a la portada | sin caché |
 | `/api/anuncios/impresiones` | POST | `{ ubicacion, ids }`: suma una impresión por anuncio visto al menos a la mitad; solo cuenta los que rotan hoy en esa ubicación, hasta 60 por minuto por IP | sin caché |
+| `/robots.txt` | GET | sin `INDEXAR=si` bloquea todo; en producción deja afuera `/admin`, `/cms-api`, `/api/` y `/a/` y apunta al sitemap | sin caché |
+| `/sitemap.xml` | GET | índice de los sitemaps `general`, `noticias`, `google-news` (solo las últimas 48 h, como pide Google News), `entrevistas` y `peliculas`, en `/sitemaps/{nombre}.xml`, con las fotos y afiches | Cloudflare 1 h, purga al publicar |
+| `/rss.xml` | GET | las últimas 30 notas con foto | Cloudflare 1 h, purga al publicar |
+| `/llms.txt` | GET | resumen del sitio en Markdown para asistentes de IA (llmstxt.org): secciones, notas recientes y cartelera | Cloudflare 1 h, purga al publicar |
 
 En el panel, `/cms-api/anuncios/{id}/metricas` baja el CSV de impresiones y clics por día y ubicación (separado por `;`, para Excel); pide permiso de ver Publicidad.
 

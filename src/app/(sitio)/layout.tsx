@@ -11,6 +11,7 @@ import { obtenerAjustes, obtenerExcepciones, obtenerGrilla, obtenerSecciones } f
 import { OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { marcaDeTiempo } from '@/sitio/lib/fecha'
 import { menuPrincipal } from '@/sitio/navegacion'
+import { sePuedeIndexar } from '@/sitio/seo/indexacion'
 
 import './estilos.css'
 
@@ -41,8 +42,9 @@ export const metadata: Metadata = {
   openGraph: OPEN_GRAPH,
   twitter: { card: 'summary_large_image' },
   icons: { icon: '/marca/icono.svg' },
+  alternates: { types: { 'application/rss+xml': '/rss.xml' } },
   // Hasta el lanzamiento, ningún entorno se indexa (docs/02-trd.md, sección 2)
-  robots: { index: false, follow: false },
+  robots: sePuedeIndexar() ? { index: true, follow: true } : { index: false, follow: false },
 }
 
 export const viewport: Viewport = { themeColor: '#13161d' }

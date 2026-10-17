@@ -1,5 +1,15 @@
 import type { MapaDeCache } from '@/base/cache'
 
+/** Lo que cambia cuando se publica, edita o borra una nota, o cambia una sección. */
+const SITEMAPS_DE_NOTAS = [
+  '/rss.xml',
+  '/llms.txt',
+  '/sitemap.xml',
+  '/sitemaps/general.xml',
+  '/sitemaps/noticias.xml',
+  '/sitemaps/google-news.xml',
+]
+
 /**
  * Qué etiquetas y URL refresca cada cambio (docs/02-trd.md, sección 5, y el mapa del sitio en docs/03-flujos.md).
  * Inicio muestra noticias, entrevistas, grilla, cartelera y anuncios, así que casi todo lo refresca.
@@ -8,7 +18,7 @@ export const mapaDeCache: MapaDeCache = {
   colecciones: {
     noticias: async (doc, buscarSlug) => {
       const seccion = await buscarSlug('secciones', doc.seccion)
-      const rutas = ['/', '/noticias', '/rss.xml']
+      const rutas = ['/', '/noticias', ...SITEMAPS_DE_NOTAS]
       if (seccion) rutas.push(`/noticias/${seccion}`, `/noticias/${seccion}/${doc.slug}`)
       const etiquetas = ['noticias', `nota:${doc.id}`]
       if (seccion) etiquetas.push(`seccion:${seccion}`)
@@ -16,12 +26,15 @@ export const mapaDeCache: MapaDeCache = {
     },
     secciones: (doc) => ({
       etiquetas: ['noticias', `seccion:${doc.slug}`],
-      rutas: ['/', '/noticias', `/noticias/${doc.slug}`],
+      rutas: ['/', '/noticias', `/noticias/${doc.slug}`, ...SITEMAPS_DE_NOTAS],
     }),
-    entrevistas: () => ({ etiquetas: ['entrevistas'], rutas: ['/', '/radio/entrevistas'] }),
+    entrevistas: () => ({
+      etiquetas: ['entrevistas'],
+      rutas: ['/', '/radio/entrevistas', '/sitemap.xml', '/sitemaps/entrevistas.xml'],
+    }),
     programas: () => ({
       etiquetas: ['grilla', 'programas'],
-      rutas: ['/', '/radio/en-vivo', '/radio/programacion', '/api/grilla'],
+      rutas: ['/', '/radio/en-vivo', '/radio/programacion', '/api/grilla', '/llms.txt'],
     }),
     excepcionesGrilla: () => ({
       etiquetas: ['grilla'],
@@ -33,7 +46,14 @@ export const mapaDeCache: MapaDeCache = {
     }),
     peliculas: (doc) => ({
       etiquetas: ['cartelera', `pelicula:${doc.id}`],
-      rutas: ['/', '/cinevision', `/cinevision/${doc.slug}`],
+      rutas: [
+        '/',
+        '/cinevision',
+        `/cinevision/${doc.slug}`,
+        '/sitemap.xml',
+        '/sitemaps/peliculas.xml',
+        '/llms.txt',
+      ],
     }),
     funciones: async (doc, buscarSlug) => {
       const pelicula = await buscarSlug('peliculas', doc.pelicula)
@@ -43,11 +63,14 @@ export const mapaDeCache: MapaDeCache = {
           : doc.pelicula
       return {
         etiquetas: ['cartelera', `pelicula:${idPelicula}`],
-        rutas: ['/', '/cinevision', ...(pelicula ? [`/cinevision/${pelicula}`] : [])],
+        rutas: ['/', '/cinevision', '/llms.txt', ...(pelicula ? [`/cinevision/${pelicula}`] : [])],
       }
     },
     anuncios: () => ({ etiquetas: ['anuncios'], rutas: ['/api/anuncios'] }),
-    paginas: (doc) => ({ etiquetas: [`pagina:${doc.slug}`], rutas: [`/legal/${doc.slug}`] }),
+    paginas: (doc) => ({
+      etiquetas: ['paginas', `pagina:${doc.slug}`],
+      rutas: [`/legal/${doc.slug}`, '/sitemaps/general.xml'],
+    }),
     redirecciones: (doc) => ({
       etiquetas: ['redirecciones'],
       rutas: doc.desde ? [String(doc.desde)] : [],
