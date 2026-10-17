@@ -17,6 +17,7 @@ import {
   anotarSiEsBorrador,
   type UsuarioConPermisos,
 } from '@/base/permisos'
+import { campoBusqueda } from '../busqueda/campo'
 import { aplicarFlujoEditorial, avisarCambioDeEstado } from '../hooks/flujo-noticias'
 
 const usuarioDe = (req: { user?: unknown }) => req.user as UsuarioConPermisos | null
@@ -148,5 +149,6 @@ export const Noticias: CollectionConfig = {
       admin: { position: 'sidebar', description: 'Candidata a destacada.' },
     },
     campoSeo,
+    campoBusqueda(['titulo', 'bajada', 'cuerpo']),
   ],
 }

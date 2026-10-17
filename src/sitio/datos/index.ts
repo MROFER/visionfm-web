@@ -3,6 +3,7 @@ import { unstable_cache } from 'next/cache'
 import { getPayload, type Where } from 'payload'
 
 import type { Equipo } from '@/payload-types'
+import { idsQueCoinciden } from '../busqueda/consulta'
 import type { ExcepcionEnGrilla } from '../lib/grilla'
 import { enumerar } from '../lib/texto'
 import { diaEnMontevideo, sumarDias } from '../publicidad/fechas'
@@ -224,7 +225,7 @@ export const ultimasEntrevistas = unstable_cache(
 
 export const ENTREVISTAS_POR_PAGINA = 8
 
-/** Archivo de entrevistas, de un programa o de todos. `q` busca en el nombre y el tema. */
+/** Archivo de entrevistas, de un programa o de todos. `q` busca en el nombre, el tema y el resumen. */
 export const listarEntrevistas = unstable_cache(
   async ({
     pagina,
@@ -243,7 +244,11 @@ export const listarEntrevistas = unstable_cache(
     const condiciones: Where[] = []
     if (programa) condiciones.push({ 'programa.slug': { equals: programa } })
     if (excluir) condiciones.push({ id: { not_equals: excluir } })
-    if (q) condiciones.push({ or: [{ entrevistado: { like: q } }, { tema: { like: q } }] })
+    if (q) {
+      const ids = await idsQueCoinciden(p, 'entrevistas', q)
+      if (!ids.length) return { entrevistas: [], pagina: 1, paginas: 1, total: 0 }
+      condiciones.push({ id: { in: ids } })
+    }
     const r = await p.find({
       collection: 'entrevistas',
       sort: '-fecha',
@@ -318,8 +323,8 @@ export const obtenerVoces = unstable_cache(
 export const POR_PAGINA = 10
 
 /**
- * Archivo de Noticias, de una sección o de todas, paginado. `q` filtra por título o bajada; la búsqueda
- * de texto completo llega en la fase 3.
+ * Archivo de Noticias, de una sección o de todas, paginado. `q` busca en título, bajada y cuerpo, en
+ * español y sin distinguir tildes; los resultados van del más nuevo al más viejo.
  */
 export const listarNoticias = unstable_cache(
   async ({
@@ -337,7 +342,11 @@ export const listarNoticias = unstable_cache(
     const condiciones: Where[] = []
     if (seccion) condiciones.push({ 'seccion.slug': { equals: seccion } })
     if (excluir) condiciones.push({ id: { not_equals: excluir } })
-    if (q) condiciones.push({ or: [{ titulo: { like: q } }, { bajada: { like: q } }] })
+    if (q) {
+      const ids = await idsQueCoinciden(p, 'noticias', q)
+      if (!ids.length) return { notas: [], pagina: 1, paginas: 1, total: 0 }
+      condiciones.push({ id: { in: ids } })
+    }
     const r = await p.find({
       collection: 'noticias',
       sort: '-fechaPublicacion',
