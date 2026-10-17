@@ -52,6 +52,7 @@ node_modules/
 # entorno
 .env.*
 !.env.example
+!.env.demo.example
 
 # Archivos subidos en desarrollo y tests (en staging y producción van a R2)
 /medios/

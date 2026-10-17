@@ -1,0 +1,66 @@
+# La demo en una PC con Docker Desktop, publicada con un túnel de Cloudflare (docs/10-demo-en-pc.md).
+# La PC no compila el sitio: descarga la imagen que publica GitHub Actions.
+#   Levantar:                     docker compose up -d
+#   Datos de ejemplo (una vez):   docker compose run --rm semilla
+#   Actualizar a la última:       docker compose pull && docker compose up -d
+# En la PC va en su propia carpeta, como compose.yml, junto a un .env con las claves (ver .env.demo.example).
+name: visionfm-demo
+
+x-app: &app
+  environment:
+    DATABASE_URL: postgres://visionfm:${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en .env}@db:5432/visionfm
+    PAYLOAD_SECRET: ${PAYLOAD_SECRET:?Falta PAYLOAD_SECRET en .env}
+    NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Falta NEXT_PUBLIC_SITE_URL en .env}
+    # La demo no se indexa nunca
+    INDEXAR: ''
+  volumes:
+    - medios:/app/medios
+    - archivos:/app/archivos
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: visionfm
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Falta POSTGRES_PASSWORD en .env}
+      POSTGRES_DB: visionfm
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U visionfm']
+      interval: 5s
+      retries: 10
+
+  app:
+    <<: *app
+    image: ghcr.io/mrofer/visionfm-web:staging
+    restart: unless-stopped
+    # Solo desde esta PC, para probar en http://localhost:3000. De afuera se entra por el túnel.
+    ports:
+      - '127.0.0.1:3000:3000'
+
+  tunel:
+    image: cloudflare/cloudflared:2025.8.1
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?Falta TUNNEL_TOKEN en .env}
+    depends_on:
+      - app
+
+  semilla:
+    <<: *app
+    build:
+      context: https://github.com/MROFER/visionfm-web.git#staging
+      dockerfile: docker/Dockerfile
+      target: semilla
+    profiles: [semilla]
+
+volumes:
+  pgdata:
+  medios:
+  archivos:
