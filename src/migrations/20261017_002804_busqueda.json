@@ -5341,6 +5341,42 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
+        },
+        "sizes_compartir_url": {
+          "name": "sizes_compartir_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sizes_compartir_width": {
+          "name": "sizes_compartir_width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sizes_compartir_height": {
+          "name": "sizes_compartir_height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sizes_compartir_mime_type": {
+          "name": "sizes_compartir_mime_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sizes_compartir_filesize": {
+          "name": "sizes_compartir_filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sizes_compartir_filename": {
+          "name": "sizes_compartir_filename",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -5454,6 +5490,21 @@
           "columns": [
             {
               "expression": "sizes_w1920_filename",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "medios_sizes_compartir_sizes_compartir_filename_idx": {
+          "name": "medios_sizes_compartir_sizes_compartir_filename_idx",
+          "columns": [
+            {
+              "expression": "sizes_compartir_filename",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -9231,6 +9282,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "359937fb-d0d9-437d-8c66-a139f231282b",
+  "id": "e5711b03-9e6c-489d-aff9-54563b00d326",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

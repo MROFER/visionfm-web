@@ -15,7 +15,7 @@ export function aConsulta(texto: string): string | null {
 
 /**
  * Ids de Noticias o Entrevistas cuyo texto coincide, en español y sin distinguir tildes (índice de la
- * migración 20261016_234700_busqueda). No mira si están publicadas: eso lo resuelve la lectura con
+ * migración 20261017_002804_busqueda). No mira si están publicadas: eso lo resuelve la lectura con
  * permisos de visitante.
  */
 export async function idsQueCoinciden(

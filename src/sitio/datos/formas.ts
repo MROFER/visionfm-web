@@ -9,15 +9,20 @@ export type Imagen = {
   alto: number
   /** Versiones redimensionadas para srcset, de menor a mayor. */
   tamanos: { url: string; ancho: number }[]
+  /** Recorte de 1200×630 en JPEG para la vista previa al compartir (las subidas antes no lo tienen). */
+  compartir?: string
 }
 
 export function aImagen(m: number | Medio | null | undefined): Imagen | null {
   if (!m || typeof m !== 'object' || !m.url) return null
-  const tamanos = Object.values(m.sizes ?? {})
+  const { compartir, ...anchos } = m.sizes ?? {}
+  const tamanos = Object.values(anchos)
     .filter((t): t is { url: string; width: number } => Boolean(t?.url && t.width))
     .map((t) => ({ url: t.url, ancho: t.width }))
     .sort((a, b) => a.ancho - b.ancho)
-  return { url: m.url, alt: m.alt ?? '', ancho: m.width ?? 0, alto: m.height ?? 0, tamanos }
+  const imagen: Imagen = { url: m.url, alt: m.alt ?? '', ancho: m.width ?? 0, alto: m.height ?? 0, tamanos }
+  if (compartir?.url) imagen.compartir = compartir.url
+  return imagen
 }
 
 export type TarjetaNota = {
