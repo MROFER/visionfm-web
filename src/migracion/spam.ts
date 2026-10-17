@@ -8,7 +8,7 @@ const PALABRAS_SPAM =
   /\b(1\s?x\s?bet|1\s?win|casinos?|casino[ -]online|plinko|aviator|slots?|tragamonedas|apuestas? (deportivas|en l[ií]nea|online)|bookmaker|betting|pin[- ]?up|mostbet|melbet|vavada|bet365|betwinner|parimatch|kazino|jackpot|free spins?|giros gratis|bonus sin dep[oó]sito|crypto casino|viagra|cialis|escort|loan|pr[eé]stamos? r[aá]pidos? online)\b/i
 
 // Títulos en alfabetos que la radio no usa: cirílico, árabe, hangul, bengalí, etc.
-const OTRO_ALFABETO = /[Ѐ-ӿ؀-ۿঀ-৿가-힯぀-ヿ฀-๿]/
+const OTRO_ALFABETO = /[\u0400-\u04FF\u0600-\u06FF\u0980-\u09FF\uAC00-\uD7AF\u3040-\u30FF\u0E00-\u0E7F]/
 
 const sinHtml = (html: string) =>
   html
