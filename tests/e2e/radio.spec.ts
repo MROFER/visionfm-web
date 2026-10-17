@@ -3,17 +3,21 @@ import { expect, test, type Page } from '@playwright/test'
 import { silencioMp3 } from '../../src/seed/imagenes'
 
 // La radio no se corta al navegar, se reconecta sola y se ve en la pantalla bloqueada (docs/05-plan.md,
-// fase 3). El stream de los datos de ejemplo no existe: se reemplaza por un MP3 de silencio.
-const STREAM = 'https://stream.ejemplo.uy/**'
+// fase 3). El stream de los Ajustes no existe en la base de pruebas: todo pedido de audio externo se
+// reemplaza por un MP3 de silencio, sea cual sea la URL cargada.
 const audio = silencioMp3(120)
 
 const servirStream = (page: Page, { fallarPrimero = 0 } = {}) => {
   let pedidos = 0
-  return page.route(STREAM, (route) => {
-    pedidos++
-    if (pedidos <= fallarPrimero) return route.abort('connectionreset')
-    return route.fulfill({ status: 200, contentType: 'audio/mpeg', body: audio })
-  })
+  return page.route(
+    (url) => url.protocol === 'https:' && url.hostname !== 'localhost',
+    (route) => {
+      if (route.request().resourceType() !== 'media') return route.continue()
+      pedidos++
+      if (pedidos <= fallarPrimero) return route.abort('connectionreset')
+      return route.fulfill({ status: 200, contentType: 'audio/mpeg', body: audio })
+    },
+  )
 }
 
 const sonando = (page: Page) =>
