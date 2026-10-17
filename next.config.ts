@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   // Imagen de Docker liviana: solo lo que el servidor necesita (docs/02-trd.md)
   output: 'standalone',
   poweredByHeader: false,
+  // La barra final la saca src/proxy.ts después de buscar redirecciones (las URL de WordPress la tenían)
+  skipTrailingSlashRedirect: true,
   turbopack: {
     root: path.resolve(dirname),
   },
