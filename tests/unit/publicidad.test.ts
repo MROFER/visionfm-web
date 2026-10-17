@@ -80,3 +80,67 @@ describe('reporte mensual', () => {
     expect(pdf.getPageCount()).toBe(2)
   })
 })
+
+describe('rotación de anuncios', () => {
+  it('elige según el peso', async () => {
+    const { elegirAnuncio } = await import('@/sitio/publicidad/rotacion')
+    const lista = [
+      { id: 1, peso: 1 },
+      { id: 2, peso: 3 },
+    ]
+    // Total 4: [0, 1) es el primero, [1, 4) el segundo
+    expect(elegirAnuncio(lista, () => 0.2)?.id).toBe(1)
+    expect(elegirAnuncio(lista, () => 0.3)?.id).toBe(2)
+    expect(elegirAnuncio(lista, () => 0.99)?.id).toBe(2)
+    expect(elegirAnuncio([], () => 0.5)).toBeNull()
+    const veces = { 1: 0, 2: 0 }
+    for (let i = 0; i < 4000; i++) veces[elegirAnuncio(lista)!.id as 1 | 2]++
+    expect(veces[2] / veces[1]).toBeGreaterThan(2.5)
+    expect(veces[2] / veces[1]).toBeLessThan(3.5)
+  })
+
+  it('vigencia por día, secciones y robots', async () => {
+    const { esRobot, estaVigente, vaEnSeccion } = await import('@/sitio/publicidad/rotacion')
+    const a = { desde: '2026-10-10T12:00:00.000Z', hasta: '2026-10-16T12:00:00.000Z' }
+    expect(estaVigente(a, '2026-10-10')).toBe(true)
+    expect(estaVigente(a, '2026-10-16')).toBe(true)
+    expect(estaVigente(a, '2026-10-17')).toBe(false)
+    expect(estaVigente({ ...a, activo: false }, '2026-10-12')).toBe(false)
+
+    expect(vaEnSeccion(['deportes'], 'noticias-nota', 'deportes')).toBe(true)
+    expect(vaEnSeccion(['deportes'], 'noticias-nota', 'politica')).toBe(false)
+    expect(vaEnSeccion([], 'noticias-seccion', 'politica')).toBe(true)
+    // Fuera de Noticias las secciones no cuentan
+    expect(vaEnSeccion(['deportes'], 'inicio', 'politica')).toBe(true)
+
+    expect(esRobot('Mozilla/5.0 (iPhone) Safari/604.1')).toBe(false)
+    expect(esRobot('Googlebot/2.1')).toBe(true)
+    expect(esRobot('WhatsApp/2.23')).toBe(true)
+    expect(esRobot(null)).toBe(true)
+  })
+
+  it('tope de impresiones por conexión', async () => {
+    const { reiniciarLimiteImpresiones, superaLimiteImpresiones } = await import('@/sitio/publicidad/limite')
+    reiniciarLimiteImpresiones()
+    const t = 1_000_000
+    expect(superaLimiteImpresiones('ip', 59, t)).toBe(false)
+    expect(superaLimiteImpresiones('ip', 2, t)).toBe(true)
+    expect(superaLimiteImpresiones('ip', 1, t)).toBe(false)
+    expect(superaLimiteImpresiones('ip', 1, t + 61_000)).toBe(false)
+  })
+
+  it('CSV de métricas para Excel', async () => {
+    const { csvMetricas } = await import('@/sitio/publicidad/reporte')
+    const csv = csvMetricas([
+      { anuncio: 1, ubicacion: 'inicio', fecha: '2026-10-02T12:00:00.000Z', impresiones: 100, clics: 3 },
+      { anuncio: 1, ubicacion: 'cinevision', fecha: '2026-10-01T12:00:00.000Z', impresiones: 50, clics: 0 },
+    ])
+    expect(csv.startsWith('﻿')).toBe(true)
+    expect(csv.slice(1).trimEnd().split('\r\n')).toEqual([
+      'Fecha;Ubicación;Impresiones;Clics;CTR',
+      '2026-10-01;Cinevisión;50;0;0 %',
+      '2026-10-02;Inicio;100;3;3 %',
+      'Total;;150;3;2 %',
+    ])
+  })
+})

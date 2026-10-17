@@ -14,8 +14,9 @@ const BARRAS = [14, 26, 34, 20, 30, 12, 24, 36, 18, 28, 16, 22]
  */
 export function ReproductorPantalla({ children }: { children?: React.ReactNode }) {
   const router = useRouter()
-  const { sonando, cargando, reconectando, error, alternar, alAire, grilla, ahora, volumen, cambiarVolumen } = useRadio()
-  const despues = aContinuacion(grilla, ahora, 1)[0]
+  const { sonando, cargando, reconectando, error, alternar, alAire, grilla, excepciones, ahora, volumen, cambiarVolumen } =
+    useRadio()
+  const despues = aContinuacion(grilla, ahora, 1, excepciones)[0]
   const volver = () => (window.history.length > 1 ? router.back() : router.push('/'))
   const circulo = 'flex items-center justify-center rounded-full'
 

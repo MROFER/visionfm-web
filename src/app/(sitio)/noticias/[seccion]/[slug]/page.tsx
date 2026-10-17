@@ -56,7 +56,7 @@ export default async function Nota({ params }: Parametros) {
             </Link>
           )}
         </nav>
-        <Publicidad aviso={ajustes.avisoPropio} anchoWeb={728} />
+        <Publicidad ubicacion="noticias-nota" seccion={seccion} aviso={ajustes.avisoPropio} anchoWeb={728} />
       </div>
 
       <article>

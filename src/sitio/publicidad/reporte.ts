@@ -118,3 +118,31 @@ export async function pdfReporte({
   )
   return pdf.save()
 }
+
+/** Celda de CSV: entre comillas si hace falta, y sin que una planilla la tome como fórmula. */
+const celda = (valor: string | number) => {
+  let texto = String(valor)
+  if (/^[=+\-@]/.test(texto)) texto = `'${texto}`
+  return /[",;\n]/.test(texto) ? `"${texto.replace(/"/g, '""')}"` : texto
+}
+
+/**
+ * CSV con impresiones y clics de un anuncio por día y ubicación, más el total (docs/07, sección 3),
+ * para mandarle al anunciante. Separado por punto y coma, que es lo que abre bien Excel en español.
+ */
+export function csvMetricas(metricas: Metrica[]) {
+  const filas = [...metricas].sort(
+    (a, b) => a.fecha.localeCompare(b.fecha) || nombreUbicacion(a.ubicacion).localeCompare(nombreUbicacion(b.ubicacion), 'es'),
+  )
+  const total = filas.reduce(
+    (t, m) => ({ impresiones: t.impresiones + m.impresiones, clics: t.clics + m.clics }),
+    { impresiones: 0, clics: 0 },
+  )
+  const lineas = [
+    ['Fecha', 'Ubicación', 'Impresiones', 'Clics', 'CTR'],
+    ...filas.map((m) => [m.fecha.slice(0, 10), nombreUbicacion(m.ubicacion), m.impresiones, m.clics, ctr(m.impresiones, m.clics)]),
+    ['Total', '', total.impresiones, total.clics, ctr(total.impresiones, total.clics)],
+  ]
+  // BOM para que Excel reconozca los acentos
+  return '﻿' + lineas.map((l) => l.map(celda).join(';')).join('\r\n') + '\r\n'
+}

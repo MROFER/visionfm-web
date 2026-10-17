@@ -71,7 +71,10 @@ export async function PaginaNoticias({
   return (
     <main className="pb-8 md:pb-20">
       <div className="contenedor pt-4 md:pt-8">
-        <Publicidad aviso={ajustes.avisoPropio} />
+        <Publicidad
+          ubicacion={seccion ? 'noticias-seccion' : 'noticias-listado'}
+          seccion={seccion}
+          aviso={ajustes.avisoPropio} />
       </div>
       <div className="contenedor pt-5 md:pt-9">
         <div className="mb-2 flex flex-col gap-3 md:mb-5 md:flex-row md:flex-wrap md:items-end md:justify-between md:gap-5">
