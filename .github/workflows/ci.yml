@@ -53,6 +53,30 @@ jobs:
             exit 1
           fi
       - run: pnpm build
+      - name: Datos de ejemplo para las pruebas en navegador
+        run: pnpm seed
+      - name: Levantar el sitio armado
+        run: |
+          rm -rf .next/standalone/.next/cache
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
+          ln -s "$PWD/medios" .next/standalone/medios
+          ln -s "$PWD/archivos" .next/standalone/archivos
+          (cd .next/standalone && PORT=3000 nohup node server.js > ../../servidor.log 2>&1 &)
+          for i in $(seq 30); do curl -sf -o /dev/null http://localhost:3000/ && exit 0; sleep 2; done
+          cat servidor.log
+          exit 1
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Pruebas en navegador (la radio no se corta al navegar)
+        run: pnpm test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pruebas-en-navegador
+          path: |
+            test-results
+            servidor.log
+          retention-days: 7
 
   imagen:
     name: Imagen de Docker
