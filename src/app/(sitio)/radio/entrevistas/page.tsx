@@ -51,7 +51,7 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
   return (
     <main className="pb-10 md:pb-20">
       <div className="contenedor pt-4 md:pt-8">
-        <Publicidad aviso={ajustes.avisoPropio} />
+        <Publicidad ubicacion="radio-entrevistas" aviso={ajustes.avisoPropio} />
       </div>
       <div className="contenedor pt-4 md:pt-9">
         <div className="mb-2 flex flex-col gap-3 md:mb-0 md:flex-row md:flex-wrap md:items-end md:justify-between md:gap-6 md:border-b-[3px] md:border-tinta md:pb-5">

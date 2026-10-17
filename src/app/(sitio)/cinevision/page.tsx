@@ -68,7 +68,7 @@ export default async function Cinevision() {
           )}
         </section>
 
-        <Publicidad aviso={ajustes.avisoPropio} rectangulo />
+        <Publicidad ubicacion="cinevision" aviso={ajustes.avisoPropio} rectangulo />
 
         {estrenos.length > 0 && (
           <section id="estrenos" aria-labelledby="titulo-estrenos" className="scroll-mt-4">

@@ -70,8 +70,10 @@ Payload expone su API REST en `/cms-api/{coleccion}` (se cambia `routes.api` en 
 | `/api/kit-comercial` | GET | kit comercial en PDF de Institucional: lo pide al bucket privado como visitante y redirige a una URL firmada de 1 h | sin caché |
 | `/api/preview` | GET | activa la vista previa de un borrador con `PREVIEW_SECRET` | sin caché |
 | `/api/revalidar` | POST | uso interno de los hooks | sin caché |
-| `/a/{id}` | GET | link de salida de un anuncio: suma un clic y redirige | sin caché |
-| `/api/anuncios/impresiones` | POST | suma impresiones en lote desde el navegador | sin caché |
+| `/a/{id}?u={ubicacion}` | GET | link de salida de un anuncio: suma un clic en esa ubicación (no cuenta robots) y redirige; solo a destinos http/https, si no a la portada | sin caché |
+| `/api/anuncios/impresiones` | POST | `{ ubicacion, ids }`: suma una impresión por anuncio visto al menos a la mitad; solo cuenta los que rotan hoy en esa ubicación, hasta 60 por minuto por IP | sin caché |
+
+En el panel, `/cms-api/anuncios/{id}/metricas` baja el CSV de impresiones y clics por día y ubicación (separado por `;`, para Excel); pide permiso de ver Publicidad.
 
 Respuestas de error en JSON: `{ "error": { "codigo": "VALIDACION", "mensaje": "…", "campos": { … } } }` con códigos `VALIDACION` (400), `NO_AUTORIZADO` (401/403), `NO_ENCONTRADO` (404), `DEMASIADOS_ENVIOS` (429), `INTERNO` (500).
 
