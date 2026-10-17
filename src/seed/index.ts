@@ -439,7 +439,20 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
   // Cinevisión: cada parte se completa por separado, así una demo ya cargada suma lo que le falte
   const cinevision = await payload.findGlobal({ slug: 'cinevision', depth: 0 })
   const cine: Record<string, unknown> = {}
-  if ((cinevision.carrusel?.length ?? 0) < 3) {
+  // Las imágenes de ejemplo del carrusel eran de 1440×640: si es todo de ejemplo y quedó con esa
+  // medida, se rehace, porque si no el panel no deja guardar Cinevisión
+  const webs = (cinevision.carrusel ?? []).map((d) => d.imagenWeb as number)
+  const viejas = webs.length
+    ? await payload.count({
+        collection: 'medios',
+        where: {
+          id: { in: webs },
+          credito: { equals: 'Imagen de ejemplo' },
+          width: { not_equals: 2480 },
+        },
+      })
+    : { totalDocs: 0 }
+  if (webs.length < 3 || viejas.totalDocs === webs.length) {
     const enCartel = PELICULAS.filter((p) => p.estreno <= 0).slice(0, 2)
     const diapositivas = [
       { titulo: 'Cinevisión', alt: 'Cinevisión, el cine de Fray Bentos', link: '' },
@@ -453,9 +466,9 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
       diapositivas.map(async (d, i) => ({
         imagenWeb: (
           await imagen(
-            `Carrusel ${d.titulo} 1440×640`,
-            1440,
-            640,
+            `Carrusel ${d.titulo} 2480×768`,
+            2480,
+            768,
             d.titulo,
             COLORES[i % COLORES.length],
           )

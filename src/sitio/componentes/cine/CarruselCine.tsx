@@ -69,7 +69,10 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
               <picture>
                 <source
                   media="(min-width: 768px)"
-                  srcSet={d.web.tamanos.map((t) => `${t.url} ${t.ancho}w`).join(', ') || d.web.url}
+                  // El original (2480 px) también va: los tamaños llegan hasta 1920 y en retina no alcanzan
+                  srcSet={[...d.web.tamanos, { url: d.web.url, ancho: d.web.ancho }]
+                    .map((t) => `${t.url} ${t.ancho}w`)
+                    .join(', ')}
                   sizes="(min-width: 1288px) 1240px, calc(100vw - 48px)"
                 />
                 <img
