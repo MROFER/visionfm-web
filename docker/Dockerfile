@@ -17,6 +17,8 @@ RUN DATABASE_URL=postgres://build:build@localhost:5432/build PAYLOAD_SECRET=buil
 # Datos de ejemplo para la demo, sin compilar el sitio (docs/10-demo-en-pc.md):
 #   docker compose -f compose.demo.yml run --rm semilla
 FROM base AS semilla
+# Fuentes para el texto de las imágenes de ejemplo: sin ellas sale en cuadraditos
+RUN apk add --no-cache font-dejavu
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

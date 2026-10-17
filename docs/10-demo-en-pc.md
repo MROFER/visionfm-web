@@ -69,7 +69,7 @@ La primera vez baja las imágenes y tarda un rato según la conexión. Cuando `a
 Con la demo ya levantada:
 
 ```powershell
-docker compose run --rm semilla --build
+docker compose run --rm --build semilla
 docker compose up -d --force-recreate app
 ```
 

@@ -107,3 +107,12 @@ jobs:
             ghcr.io/mrofer/visionfm-web:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      # La semilla de la demo se construye en la PC (docs/10-demo-en-pc.md); acá solo se comprueba que construye
+      - name: Semilla de la demo
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          target: semilla
+          push: false
+          cache-from: type=gha
