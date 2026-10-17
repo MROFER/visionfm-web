@@ -285,6 +285,14 @@ export interface Medio {
       filesize?: number | null;
       filename?: string | null;
     };
+    compartir?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
   };
 }
 /**
@@ -1313,6 +1321,16 @@ export interface MediosSelect<T extends boolean = true> {
               filename?: T;
             };
         w1920?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        compartir?:
           | T
           | {
               url?: T;

@@ -8,6 +8,7 @@ import { Pie } from '@/sitio/componentes/globales/Pie'
 import { MiniReproductor } from '@/sitio/componentes/reproductor/MiniReproductor'
 import { Radio } from '@/sitio/componentes/reproductor/Radio'
 import { obtenerAjustes, obtenerExcepciones, obtenerGrilla, obtenerSecciones } from '@/sitio/datos'
+import { OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { marcaDeTiempo } from '@/sitio/lib/fecha'
 import { menuPrincipal } from '@/sitio/navegacion'
 
@@ -33,8 +34,12 @@ const cuerpo = localFont({
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
+  // Las imágenes y links de la vista previa al compartir salen con este dominio
+  metadataBase: urlDelSitio(),
   title: { default: 'Visión 96.5 FM', template: '%s · Visión 96.5 FM' },
   description: 'Radio, noticias y Cinevisión desde Fray Bentos.',
+  openGraph: OPEN_GRAPH,
+  twitter: { card: 'summary_large_image' },
   icons: { icon: '/marca/icono.svg' },
   // Hasta el lanzamiento, ningún entorno se indexa (docs/02-trd.md, sección 2)
   robots: { index: false, follow: false },

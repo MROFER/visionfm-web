@@ -7,6 +7,7 @@ import * as migration_20261014_161825_tareas_publicidad from './20261014_161825_
 import * as migration_20261015_020800_sincronizar_access from './20261015_020800_sincronizar_access';
 import * as migration_20261015_163800_cinevision_publicidad from './20261015_163800_cinevision_publicidad';
 import * as migration_20261015_204916_aviso_rectangulo from './20261015_204916_aviso_rectangulo';
+import * as migration_20261017_000159_compartir from './20261017_000159_compartir';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261015_204916_aviso_rectangulo.up,
     down: migration_20261015_204916_aviso_rectangulo.down,
-    name: '20261015_204916_aviso_rectangulo'
+    name: '20261015_204916_aviso_rectangulo',
+  },
+  {
+    up: migration_20261017_000159_compartir.up,
+    down: migration_20261017_000159_compartir.down,
+    name: '20261017_000159_compartir'
   },
 ];
