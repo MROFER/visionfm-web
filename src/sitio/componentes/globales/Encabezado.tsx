@@ -49,9 +49,9 @@ export function Encabezado({ menu, telefono }: { menu: GrupoMenu[]; telefono: st
   return (
     <header className="relative z-20 border-b-[3px] border-tinta bg-blanco">
       {/* Web */}
-      <div className="contenedor hidden items-center justify-between gap-4 py-4 lg:flex">
+      <div className="contenedor hidden items-center justify-between gap-4 py-2 lg:flex">
         <Link href="/" className="text-tinta" aria-label="Visión 96.5 FM, ir al inicio">
-          <Logo tamano={44} />
+          <Logo tamano={40} />
         </Link>
         <nav ref={nav} aria-label="Principal" className="flex gap-7">
           {menu.map((g) => (
@@ -60,7 +60,7 @@ export function Encabezado({ menu, telefono }: { menu: GrupoMenu[]; telefono: st
                 type="button"
                 aria-expanded={desplegado === g.clave}
                 onClick={() => setDesplegado(desplegado === g.clave ? null : g.clave)}
-                className={`flex min-h-12 cursor-pointer items-center gap-1.5 text-sm font-extrabold tracking-[0.08em] uppercase ${
+                className={`flex min-h-12 cursor-pointer items-center gap-1.5 text-[13px] font-extrabold tracking-[0.08em] uppercase ${
                   actual === g.clave ? 'shadow-[inset_0_-3px_0_var(--color-acento)]' : ''
                 }`}
               >
@@ -84,7 +84,7 @@ export function Encabezado({ menu, telefono }: { menu: GrupoMenu[]; telefono: st
             </div>
           ))}
         </nav>
-        <BotonEnVivo variante="header" />
+        <BotonEnVivo variante="header" compacto />
       </div>
 
       {/* Celular y tablet */}
