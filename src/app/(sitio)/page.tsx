@@ -30,10 +30,10 @@ export default async function Inicio() {
   return (
     <main>
       <HeroEnVivo telefono={ajustes.telefono}>
-        <Publicidad aviso={ajustes.avisoPropio} oscuro />
+        <Publicidad ubicacion="inicio" aviso={ajustes.avisoPropio} oscuro />
       </HeroEnVivo>
       <div className="contenedor hidden py-8 md:block">
-        <Publicidad aviso={ajustes.avisoPropio} />
+        <Publicidad ubicacion="inicio" aviso={ajustes.avisoPropio} />
       </div>
       <NoticiasInicio destacada={noticias.destacada} resto={noticias.resto} secciones={secciones} />
       <CinevisionInicio
