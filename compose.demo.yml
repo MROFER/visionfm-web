@@ -44,7 +44,7 @@ services:
       - '127.0.0.1:3000:3000'
 
   tunel:
-    image: cloudflare/cloudflared:2025.8.1
+    image: cloudflare/cloudflared:2026.10.0
     restart: unless-stopped
     command: tunnel --no-autoupdate run
     environment:

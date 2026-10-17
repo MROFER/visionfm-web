@@ -88,4 +88,6 @@ No crea usuarios: la primera cuenta del panel, en `/admin`, es la del Owner y la
 
 `docker compose down -v` **borra la base y los archivos subidos**: solo para empezar de cero.
 
+**Antes de entregarle la demo a la radio:** la primera cuenta del panel (el Owner) la creó la agencia para probar. Hay que borrar todo con `docker compose down -v`, levantarla de nuevo y volver a cargar los datos de ejemplo, así la cuenta Owner real la crea la radio.
+
 Cuando haya servidor, esta PC se apaga y la demo pasa allá con el mismo túnel (se cambia el destino en Cloudflare).
