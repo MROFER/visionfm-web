@@ -35,11 +35,25 @@ export interface PostWp {
   }
 }
 
+/** Un audio subido a la biblioteca de medios: así guarda hoy la radio sus entrevistas. */
+export interface AudioWp {
+  id: number
+  date_gmt: string
+  title: { rendered: string }
+  source_url: string
+  mime_type: string
+  /** El post al que se subió (la nota de la entrevista), o 0. */
+  post: number | null
+  media_details?: { length?: number }
+}
+
 const POR_PAGINA = 100
 
 export interface ClienteWp {
   /** Recorre todos los posts publicados, del más viejo al más nuevo. */
   posts(): AsyncGenerator<PostWp>
+  /** Recorre todos los audios de la biblioteca de medios, del más viejo al más nuevo. */
+  audios(): AsyncGenerator<AudioWp>
   /** Baja un archivo (imagen o audio) del sitio viejo. */
   archivo(url: string): Promise<{ data: Buffer; tipo: string } | null>
   /** Todas las URL de los sitemaps, para saber qué direcciones viejas tienen que responder. */
@@ -70,25 +84,31 @@ const ubicaciones = (xml: string) =>
     m[1].trim().replace(/&amp;/g, '&'),
   )
 
+/** Recorre una colección de la API REST, página por página. */
+async function* paginas<T>(base: string): AsyncGenerator<T> {
+  for (let pagina = 1; ; pagina++) {
+    const url = `${base}&per_page=${POR_PAGINA}&page=${pagina}`
+    const respuesta = await conReintentos(url)
+    // WordPress responde 400 cuando se pide una página después de la última
+    if (respuesta.status === 400 && pagina > 1) return
+    if (!respuesta.ok) throw new Error(`La API de WordPress respondió ${respuesta.status}: ${url}`)
+    const items = (await respuesta.json()) as T[]
+    for (const item of items) yield item
+    const total = Number(respuesta.headers.get('x-wp-totalpages') ?? 0)
+    if (items.length < POR_PAGINA || (total && pagina >= total)) return
+  }
+}
+
 export function clienteWordpress(base: string): ClienteWp {
   const raiz = base.replace(/\/+$/, '')
   return {
-    async *posts() {
-      for (let pagina = 1; ; pagina++) {
-        const url =
-          `${raiz}/wp-json/wp/v2/posts?status=publish&orderby=id&order=asc` +
-          `&per_page=${POR_PAGINA}&page=${pagina}&_embed=wp:featuredmedia,wp:term`
-        const respuesta = await conReintentos(url)
-        // WordPress responde 400 cuando se pide una página después de la última
-        if (respuesta.status === 400 && pagina > 1) return
-        if (!respuesta.ok)
-          throw new Error(`La API de WordPress respondió ${respuesta.status}: ${url}`)
-        const posts = (await respuesta.json()) as PostWp[]
-        for (const post of posts) yield post
-        const total = Number(respuesta.headers.get('x-wp-totalpages') ?? 0)
-        if (posts.length < POR_PAGINA || (total && pagina >= total)) return
-      }
-    },
+    posts: () =>
+      paginas<PostWp>(
+        `${raiz}/wp-json/wp/v2/posts?status=publish&orderby=id&order=asc&_embed=wp:featuredmedia,wp:term`,
+      ),
+
+    audios: () =>
+      paginas<AudioWp>(`${raiz}/wp-json/wp/v2/media?media_type=audio&orderby=id&order=asc`),
 
     async archivo(url) {
       const respuesta = await conReintentos(new URL(url, raiz).toString())

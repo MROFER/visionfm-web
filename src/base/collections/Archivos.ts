@@ -47,5 +47,13 @@ export const Archivos: CollectionConfig = {
       defaultValue: false,
       admin: { position: 'sidebar', description: 'Adjuntos de formularios: no se publican.' },
     },
+    {
+      // Archivos traídos en una migración: la dirección original evita bajarlos dos veces
+      name: 'origen',
+      type: 'text',
+      unique: true,
+      index: true,
+      admin: { readOnly: true, condition: (data) => Boolean(data?.origen) },
+    },
   ],
 }

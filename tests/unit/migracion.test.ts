@@ -10,6 +10,7 @@ import {
   textoPlano,
   tituloDe,
 } from '@/migracion/contenido'
+import { enlacesDeAudios, entrevistadoDe } from '@/migracion/entrevistas'
 import { imagenesDe, prepararHtml, resolverImagenes, textoDelDocumento } from '@/migracion/lexical'
 import { esRutaSpam, limpiarSpam, motivoSpam } from '@/migracion/spam'
 import type { PostWp } from '@/migracion/wordpress'
@@ -184,5 +185,37 @@ describe('HTML a Lexical', () => {
       ['paragraph', undefined],
       ['upload', 2],
     ])
+  })
+
+  it('cambia el reproductor de audio por un enlace a la entrevista', () => {
+    const mp3 = 'https://visionfm.com.uy/wp-content/uploads/2026/10/Pablo-Cresci.mp3'
+    const enlaceDeAudio = enlacesDeAudios([
+      {
+        id: 1,
+        date_gmt: '2026-10-07T10:50:34',
+        title: { rendered: 'Pablo Cresci,' },
+        source_url: mp3,
+        mime_type: 'audio/mpeg',
+        post: 2,
+      },
+    ])
+    const doc = documento(
+      `<figure class="wp-block-audio"><audio controls src="${mp3}"></audio></figure>` +
+        `<p>Escuchala <a href="${mp3}">acá</a>.</p>` +
+        '<audio><source src="https://visionfm.com.uy/otro.mp3"></audio>',
+    )
+    prepararHtml(doc, { enlaceDeAudio })
+    expect(doc.body.innerHTML).toBe(
+      '<p><a href="/radio/entrevistas?q=Pablo%20Cresci">Escuchá la entrevista a Pablo Cresci</a></p>' +
+        '<p>Escuchala <a href="/radio/entrevistas?q=Pablo%20Cresci">acá</a>.</p>',
+    )
+  })
+})
+
+describe('entrevistas', () => {
+  it('limpia el nombre de quien habla', () => {
+    expect(entrevistadoDe('Pablo Cresci,')).toBe('Pablo Cresci')
+    expect(entrevistadoDe('Entrevista a Soledad A&#241;&#243;n')).toBe('Soledad Añón')
+    expect(entrevistadoDe('Columna Demir Pereyra')).toBe('Columna Demir Pereyra')
   })
 })

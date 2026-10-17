@@ -70,6 +70,21 @@ export const Entrevistas: CollectionConfig = {
       relationTo: 'usuarios',
       admin: { position: 'sidebar', readOnly: true, description: 'Quien la cargó.' },
     },
+    {
+      // Entrevistas traídas del WordPress viejo, donde eran audios subidos a una nota
+      name: 'wordpress',
+      label: 'WordPress',
+      type: 'group',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        condition: (data) => Boolean(data?.wordpress?.idMedio),
+      },
+      fields: [
+        { name: 'idMedio', label: 'Id del audio', type: 'number', unique: true, index: true },
+        { name: 'idPost', label: 'Id de la nota', type: 'number' },
+      ],
+    },
     campoBusqueda(['entrevistado', 'tema', 'resumen']),
   ],
 }

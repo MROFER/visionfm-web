@@ -10,6 +10,7 @@ import * as migration_20261015_204916_aviso_rectangulo from './20261015_204916_a
 import * as migration_20261017_000159_compartir from './20261017_000159_compartir';
 import * as migration_20261017_002804_busqueda from './20261017_002804_busqueda';
 import * as migration_20261017_021031_migracion_wordpress from './20261017_021031_migracion_wordpress';
+import * as migration_20261017_022820_migracion_entrevistas from './20261017_022820_migracion_entrevistas';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261017_021031_migracion_wordpress.up,
     down: migration_20261017_021031_migracion_wordpress.down,
-    name: '20261017_021031_migracion_wordpress'
+    name: '20261017_021031_migracion_wordpress',
+  },
+  {
+    up: migration_20261017_022820_migracion_entrevistas.up,
+    down: migration_20261017_022820_migracion_entrevistas.down,
+    name: '20261017_022820_migracion_entrevistas'
   },
 ];

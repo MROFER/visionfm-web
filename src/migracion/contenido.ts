@@ -8,6 +8,9 @@ export const BAJADA_MINIMA = 80
 export const BAJADA_MAXIMA = 280
 export const SLUG_MAXIMO = 90
 
+/** Fecha de WordPress en UTC (`date_gmt` viene sin zona) a ISO. */
+export const fechaWp = (gmt: string) => new Date(`${gmt.replace(/Z?$/, '')}Z`).toISOString()
+
 /** Texto plano de un fragmento HTML de WordPress, con las entidades (&#8220;, &amp;…) resueltas. */
 export function textoPlano(html: string): string {
   const { document } = new JSDOM(`<body>${html}</body>`).window

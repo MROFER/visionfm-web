@@ -40,10 +40,43 @@ const parrafoConEnlace = (documento: Document, href: string, texto: string) => {
  * los videos y otros embebidos como un enlace, las imágenes en su tamaño original y las citas sin
  * párrafos adentro.
  */
-export function prepararHtml(documento: Document) {
+export function prepararHtml(
+  documento: Document,
+  opciones: {
+    /** Adónde lleva un audio del sitio viejo (la entrevista migrada), o `null` para sacarlo. */
+    enlaceDeAudio?: (src: string) => { href: string; texto: string } | null
+  } = {},
+) {
   for (const e of [...documento.querySelectorAll(QUITAR)]) e.remove()
 
-  for (const iframe of [...documento.querySelectorAll('iframe, embed, object, video, audio')]) {
+  // Las entrevistas eran un reproductor de WordPress con el MP3 subido a la nota: queda un enlace a la
+  // entrevista en el sitio nuevo
+  const audios = [...documento.querySelectorAll('audio')]
+  const enlacesMp3 = [...documento.querySelectorAll('a[href]')].filter((a) =>
+    /\.(mp3|m4a)(\?|$)/i.test(a.getAttribute('href') ?? ''),
+  )
+  for (const elemento of [...audios, ...enlacesMp3]) {
+    if (!elemento.isConnected) continue
+    const src = (
+      elemento.getAttribute('src') ??
+      elemento.querySelector('source')?.getAttribute('src') ??
+      elemento.querySelector('a')?.getAttribute('href') ??
+      elemento.getAttribute('href') ??
+      ''
+    ).split('?')[0]
+    const destino = src ? opciones.enlaceDeAudio?.(src) : null
+    if (elemento.tagName === 'A') {
+      // Un enlace al MP3 dentro del texto pasa a llevar a la entrevista; sin ella queda el texto solo
+      if (destino) elemento.setAttribute('href', destino.href)
+      else elemento.replaceWith(documento.createTextNode(elemento.textContent ?? ''))
+      continue
+    }
+    const contenedor = elemento.closest('figure, .wp-block-audio') ?? elemento
+    if (destino) contenedor.replaceWith(parrafoConEnlace(documento, destino.href, destino.texto))
+    else contenedor.remove()
+  }
+
+  for (const iframe of [...documento.querySelectorAll('iframe, embed, object, video')]) {
     const crudo = iframe.getAttribute('src') ?? iframe.getAttribute('data') ?? ''
     const src = crudo.startsWith('//') ? `https:${crudo}` : crudo
     const contenedor = iframe.closest('figure') ?? iframe

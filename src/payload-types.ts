@@ -430,6 +430,10 @@ export interface Entrevista {
    * Quien la cargó.
    */
   autor?: (number | null) | Usuario;
+  wordpress?: {
+    idMedio?: number | null;
+    idPost?: number | null;
+  };
   textoBusqueda?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -473,6 +477,7 @@ export interface Archivo {
    * Adjuntos de formularios: no se publican.
    */
   privado?: boolean | null;
+  origen?: string | null;
   prefix?: string | null;
   _objectKey?: string | null;
   updatedAt: string;
@@ -1085,6 +1090,12 @@ export interface EntrevistasSelect<T extends boolean = true> {
   resumen?: T;
   destacada?: T;
   autor?: T;
+  wordpress?:
+    | T
+    | {
+        idMedio?: T;
+        idPost?: T;
+      };
   textoBusqueda?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1369,6 +1380,7 @@ export interface MediosSelect<T extends boolean = true> {
 export interface ArchivosSelect<T extends boolean = true> {
   descripcion?: T;
   privado?: T;
+  origen?: T;
   prefix?: T;
   _objectKey?: T;
   updatedAt?: T;
