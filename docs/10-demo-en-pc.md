@@ -15,6 +15,13 @@ Mientras no haya servidor, la demo corre en una PC con Windows y Docker Desktop.
 | Disco | unos 10 GB libres |
 | Docker Desktop | <https://www.docker.com/products/docker-desktop/>; en la instalación dejar marcado **Use WSL 2** |
 
+Para que Docker no se coma toda la memoria de la PC, antes de abrir Docker Desktop por primera vez pegar esto en PowerShell (le pone un tope de 5 GB; la demo usa bastante menos):
+
+```powershell
+Set-Content "$env:USERPROFILE\.wslconfig" "[wsl2]`r`nmemory=5GB" -Encoding ascii
+wsl --shutdown
+```
+
 En Docker Desktop, **Settings → General → Start Docker Desktop when you sign in**, así la demo vuelve sola si la PC se reinicia. En Windows, **Configuración → Sistema → Inicio/apagado y suspensión → Suspender: Nunca** (enchufada), porque con la PC suspendida la demo se cae.
 
 ## 1. Túnel de Cloudflare
