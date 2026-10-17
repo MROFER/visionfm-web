@@ -1,7 +1,7 @@
 # La demo en una PC con Docker Desktop, publicada con un túnel de Cloudflare (docs/10-demo-en-pc.md).
 # La PC no compila el sitio: descarga la imagen que publica GitHub Actions.
 #   Levantar:                     docker compose up -d
-#   Datos de ejemplo (una vez):   docker compose run --rm semilla
+#   Datos de ejemplo:             docker compose run --rm semilla --build && docker compose up -d --force-recreate app
 #   Actualizar a la última:       docker compose pull && docker compose up -d
 # En la PC va en su propia carpeta, como compose.yml, junto a un .env con las claves (ver .env.demo.example).
 name: visionfm-demo

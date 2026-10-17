@@ -69,10 +69,13 @@ La primera vez baja las imágenes y tarda un rato según la conexión. Cuando `a
 Con la demo ya levantada:
 
 ```powershell
-docker compose run --rm semilla
+docker compose run --rm semilla --build
+docker compose up -d --force-recreate app
 ```
 
-La primera vez prepara las herramientas que hacen falta, sin compilar el sitio, y tarda varios minutos en una PC lenta. Termina con `Datos de ejemplo: … creados`. Si se corre de nuevo no duplica nada.
+La primera vez prepara las herramientas que hacen falta, sin compilar el sitio, y tarda varios minutos en una PC lenta. Termina con `Datos de ejemplo: … creados`. Si se corre de nuevo no duplica nada y solo suma lo que falte. `--build` hace que tome la última versión de staging.
+
+El segundo comando reinicia el sitio: el sitio guarda en memoria lo que lee de la base y la semilla no lo renueva, así que sin reiniciar se siguen viendo los datos de antes.
 
 No crea usuarios: la primera cuenta del panel, en `/admin`, es la del Owner y la crea la radio.
 
