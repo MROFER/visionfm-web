@@ -18,7 +18,8 @@
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "test:int": "vitest run --project int",
     "test:e2e": "playwright test",
-    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/run.ts"
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/run.ts",
+    "migrar:wordpress": "cross-env NODE_OPTIONS=--no-deprecation payload run src/migracion/run.ts --"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.90.2",
@@ -41,12 +42,14 @@
   "devDependencies": {
     "@playwright/test": "1.56.1",
     "@tailwindcss/postcss": "4.3.3",
+    "@types/jsdom": "21.1.7",
     "@types/node": "22.19.9",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "dotenv": "16.4.7",
     "eslint": "9.39.1",
     "eslint-config-next": "16.3.8",
+    "jsdom": "26.1.0",
     "prettier": "3.6.2",
     "tailwindcss": "4.3.3",
     "typescript": "5.7.3",
