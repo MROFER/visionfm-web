@@ -22,12 +22,22 @@ export const Medios: CollectionConfig = {
     // El original se guarda en WebP y con 2560 px de ancho como máximo: el resto se sirve de los tamaños
     resizeOptions: { width: 2560, withoutEnlargement: true },
     formatOptions: { format: 'webp', options: { quality: 82 } },
-    imageSizes: [320, 640, 960, 1280, 1920].map((ancho) => ({
-      name: `w${ancho}`,
-      width: ancho,
-      withoutEnlargement: true,
-      formatOptions: { format: 'webp' as const, options: { quality: 80 } },
-    })),
+    imageSizes: [
+      ...[320, 640, 960, 1280, 1920].map((ancho) => ({
+        name: `w${ancho}`,
+        width: ancho,
+        withoutEnlargement: true,
+        formatOptions: { format: 'webp' as const, options: { quality: 80 } },
+      })),
+      // Vista previa al compartir: recortada a 1200×630 desde el punto focal y en JPEG, que WhatsApp
+      // muestra siempre (con WebP a veces no)
+      {
+        name: 'compartir',
+        width: 1200,
+        height: 630,
+        formatOptions: { format: 'jpeg', options: { quality: 82 } },
+      },
+    ],
     focalPoint: true,
   },
   fields: [

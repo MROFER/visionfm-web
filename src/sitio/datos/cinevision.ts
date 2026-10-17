@@ -91,6 +91,7 @@ export const obtenerPelicula = unstable_cache(
       seo: {
         titulo: d.seo?.titulo || d.titulo,
         descripcion: d.seo?.descripcion || d.sinopsis.slice(0, 160),
+        imagen: aImagen(d.seo?.imagen) ?? aImagen(d.afiche),
       },
     }
   },

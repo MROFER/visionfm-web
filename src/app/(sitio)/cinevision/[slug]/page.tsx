@@ -9,18 +9,28 @@ import { Foto } from '@/sitio/componentes/ui/Foto'
 import { obtenerCartelera } from '@/sitio/datos'
 import { obtenerCinevision, obtenerPelicula, type PeliculaCompleta } from '@/sitio/datos/cinevision'
 import { versiones } from '@/sitio/lib/cine'
+import { imagenParaCompartir, OPEN_GRAPH } from '@/sitio/lib/compartir'
 import { fechaDia, fechaNumerica, hoyEnMontevideo } from '@/sitio/lib/fecha'
 import { calificacion, duracionPelicula } from '@/sitio/lib/formato'
 
 type Parametros = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Parametros): Promise<Metadata> {
-  const pelicula = await obtenerPelicula((await params).slug)
+  const { slug } = await params
+  const pelicula = await obtenerPelicula(slug)
   if (!pelicula) return {}
   return {
     title: pelicula.seo.titulo,
     description: pelicula.seo.descripcion,
-    openGraph: { type: 'video.movie', title: pelicula.seo.titulo, description: pelicula.seo.descripcion },
+    alternates: { canonical: `/cinevision/${slug}` },
+    openGraph: {
+      ...OPEN_GRAPH,
+      type: 'video.movie',
+      url: `/cinevision/${slug}`,
+      title: pelicula.seo.titulo,
+      description: pelicula.seo.descripcion,
+      images: imagenParaCompartir(pelicula.seo.imagen, { recortar: false }),
+    },
   }
 }
 

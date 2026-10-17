@@ -33,10 +33,14 @@ async function vaciar() {
     slug: 'cinevision',
     data: { carrusel: [], precios: [], comoLlegar: { mapaImagen: null } },
   })
-  await payload.updateGlobal({
-    slug: 'ajustes',
-    data: { avisoPropio: { imagenWeb: null, imagenMovil: null } },
-  })
+  // En una base nueva los Ajustes todavía no pasan la validación: solo se tocan si tienen imágenes
+  const { avisoPropio } = await payload.findGlobal({ slug: 'ajustes', depth: 0 })
+  if (avisoPropio?.imagenWeb || avisoPropio?.imagenMovil || avisoPropio?.imagenRectangulo) {
+    await payload.updateGlobal({
+      slug: 'ajustes',
+      data: { avisoPropio: { imagenWeb: null, imagenMovil: null, imagenRectangulo: null } },
+    })
+  }
   await payload.updateGlobal({ slug: 'institucional', data: { hitos: [], kitComercial: null } })
   for (const collection of COLECCIONES) {
     await payload.delete({ collection, where: { id: { exists: true } }, overrideAccess: true })

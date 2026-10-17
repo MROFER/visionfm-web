@@ -8,6 +8,7 @@ import { Compartir } from '@/sitio/componentes/noticias/Compartir'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
 import { notasRelacionadas, obtenerAjustes, obtenerNota } from '@/sitio/datos'
+import { imagenParaCompartir, OPEN_GRAPH } from '@/sitio/lib/compartir'
 import { fechaCompleta } from '@/sitio/lib/fecha'
 import { minutosDeLectura, palabrasDeLexical } from '@/sitio/lib/texto'
 
@@ -20,11 +21,15 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
   return {
     title: nota.seo.titulo,
     description: nota.seo.descripcion,
+    alternates: { canonical: `/noticias/${seccion}/${slug}` },
     openGraph: {
+      ...OPEN_GRAPH,
       type: 'article',
+      url: `/noticias/${seccion}/${slug}`,
       title: nota.seo.titulo,
       description: nota.seo.descripcion,
       publishedTime: nota.fecha ?? undefined,
+      images: imagenParaCompartir(nota.seo.imagen),
     },
   }
 }
