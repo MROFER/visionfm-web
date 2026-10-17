@@ -31,7 +31,7 @@ Para levantar todo como en producción: `docker compose up --build`.
 | `src/sitio` | lo propio de la radio |
 | `src/migrations` | migraciones de Postgres versionadas |
 | `src/seed` | datos de ejemplo para `pnpm seed` |
-| `src/migracion` | migración de las notas del WordPress viejo (`pnpm migrar:wordpress`) |
+| `src/migracion` | migración de las notas y entrevistas del WordPress viejo (`pnpm migrar:wordpress`) |
 
 ## Comandos
 
@@ -40,7 +40,7 @@ Para levantar todo como en producción: `docker compose up --build`.
 | `pnpm lint` · `pnpm typecheck` · `pnpm test` | lo mismo que corre el CI |
 | `pnpm migrate:create nombre` | nueva migración después de cambiar colecciones |
 | `pnpm seed` | carga datos de ejemplo; solo en local, staging y la demo, y no duplica si se corre de nuevo. No crea usuarios: la primera cuenta del panel queda como Owner |
-| `pnpm migrar:wordpress` | trae las notas del WordPress viejo sin spam y arma las redirecciones; se puede repetir sin duplicar. `--seco` solo informa, `--limite=20` prueba con pocas, `--seccion=locales` elige la sección por defecto. Deja el informe en `migracion-informe/`; lo que se corrige a mano va en `src/migracion/revision.ts` |
+| `pnpm migrar:wordpress` | trae las notas del WordPress viejo sin spam, cada audio como entrevista, y arma las redirecciones; se puede repetir sin duplicar. `--seco` solo informa, `--limite=20` prueba con pocas, `--seccion=locales` elige la sección por defecto y `--programa=slug` el programa de las entrevistas subidas fuera de la grilla. Deja el informe en `migracion-informe/`; lo que se corrige a mano va en `src/migracion/revision.ts` |
 | `pnpm generate:types` | actualiza `src/payload-types.ts` |
 | `pnpm generate:importmap` | después de sumar componentes propios al panel |
 

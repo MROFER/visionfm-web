@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom'
 import type { Payload } from 'payload'
 import sharp from 'sharp'
 
-import { bajadaDe, recortar, rutaDe, slugDe, textoPlano, tituloDe } from './contenido'
+import { bajadaDe, fechaWp, recortar, rutaDe, slugDe, textoPlano, tituloDe } from './contenido'
 import { aLexical, imagenesDe, prepararHtml, resolverImagenes, textoDelDocumento } from './lexical'
 import { REVISION, SECCION_DE_CATEGORIA } from './revision'
 import { esRutaSpam, limpiarSpam, motivoSpam } from './spam'
@@ -40,6 +40,8 @@ export interface OpcionesImportar {
   /** Solo informa: no baja imágenes ni escribe en la base. */
   seco?: boolean
   limite?: number
+  /** Adónde llevan los reproductores de audio de las notas (las entrevistas migradas). */
+  enlaceDeAudio?: (src: string) => { href: string; texto: string } | null
   registrar?: (mensaje: string) => void
 }
 
@@ -47,8 +49,6 @@ const TIPOS_IMAGEN = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
 const ORIGEN_SIN_FOTO = 'visionfm:sin-foto'
 // Una nota editada en el panel después de importada no se pisa con lo que tenga el WordPress viejo
 const MARGEN_EDICION_MS = 60_000
-
-const fechaWp = (gmt: string) => new Date(`${gmt.replace(/Z?$/, '')}Z`).toISOString()
 
 /**
  * Trae las notas del WordPress viejo (docs/05-plan.md, fase 4). Cada nota se identifica por el id de
@@ -222,7 +222,7 @@ export async function importarNotas(payload: Payload, opciones: OpcionesImportar
 
     const { document } = new JSDOM(`<body>${post.content.rendered}</body>`).window
     const limpieza = limpiarSpam(document)
-    prepararHtml(document)
+    prepararHtml(document, { enlaceDeAudio: opciones.enlaceDeAudio })
     const texto = textoDelDocumento(document)
     const avisos: string[] = []
     if (limpieza.enlaces) fila.enlacesSpam = limpieza.enlaces

@@ -3,8 +3,10 @@ import { getPayload, type Payload } from 'payload'
 import sharp from 'sharp'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
+import { silencioMp3 } from '@/seed/imagenes'
+import { enlacesDeAudios, importarEntrevistas } from '@/migracion/entrevistas'
 import { importarNotas } from '@/migracion/importar'
-import type { ClienteWp, PostWp } from '@/migracion/wordpress'
+import type { AudioWp, ClienteWp, PostWp } from '@/migracion/wordpress'
 
 // La migración de WordPress con un sitio viejo simulado: importa, filtra el spam y se puede repetir
 let payload: Payload
@@ -36,14 +38,41 @@ function postDe(id: number, cambios: Partial<PostWp> = {}): PostWp {
 
 let posts: PostWp[] = []
 const bajadas: string[] = []
+const MP3 = `${BASE}/wp-content/uploads/migracion-pablo-cresci.mp3`
+
+// Dos entrevistas: una subida a la 900001 a las 04:20 de Montevideo, con el programa de prueba al aire,
+// y otra suelta a la noche, que cae en el programa por defecto
+const audios: AudioWp[] = [
+  {
+    id: 900101,
+    date_gmt: '2025-03-03T07:20:00',
+    title: { rendered: 'Pablo Cresci,' },
+    source_url: MP3,
+    mime_type: 'audio/mpeg',
+    post: 900001,
+    media_details: { length: 312.4 },
+  },
+  {
+    id: 900102,
+    date_gmt: '2025-03-04T02:00:00',
+    title: { rendered: 'Entrevista a Pablo Cresci' },
+    source_url: `${BASE}/wp-content/uploads/migracion-pablo-cresci-2.mp3`,
+    mime_type: 'audio/mpeg',
+    post: 0,
+  },
+]
 
 const cliente: ClienteWp = {
   async *posts() {
     yield* posts
   },
+  async *audios() {
+    yield* audios
+  },
   async archivo(url) {
     bajadas.push(url)
     if (url.includes('rota')) return null
+    if (url.endsWith('.mp3')) return { data: silencioMp3(2), tipo: 'audio/mpeg' }
     const data = await sharp({
       create: { width: 40, height: 30, channels: 3, background: '#0f766e' },
     })
@@ -81,7 +110,8 @@ function sitioViejo() {
           `<p>${largo}</p>` +
           `<p><img src="${BASE}/wp-content/uploads/migracion-texto-300x200.jpg"></p>` +
           '<div style="display:none"><a href="https://casino.example">casino online</a></div>' +
-          '<figure><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe></figure>',
+          '<figure><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe></figure>' +
+          `<audio class="wp-audio-shortcode" controls><source src="${MP3}?_=1" type="audio/mpeg"><a href="${MP3}">${MP3}</a></audio>`,
       },
     }),
     postDe(900002, {
@@ -103,6 +133,12 @@ function sitioViejo() {
 }
 
 async function limpiar() {
+  await payload.delete({
+    collection: 'entrevistas',
+    where: { 'wordpress.idMedio': { in: audios.map((a) => a.id) } },
+  })
+  await payload.delete({ collection: 'archivos', where: { origen: ORIGENES } })
+  await payload.delete({ collection: 'programas', where: { slug: { like: 'migracion-' } } })
   await payload.delete({ collection: 'noticias', where: { 'wordpress.idPost': { in: IDS } } })
   await payload.delete({
     collection: 'redirecciones',
@@ -119,7 +155,14 @@ async function limpiar() {
   })
 }
 
-const importar = () => importarNotas(payload, { cliente, seccionPorDefecto: 'locales' })
+const importar = () =>
+  importarNotas(payload, {
+    cliente,
+    seccionPorDefecto: 'locales',
+    enlaceDeAudio: enlacesDeAudios(audios),
+  })
+const migrarEntrevistas = () =>
+  importarEntrevistas(payload, { cliente, audios, programaPorDefecto: 'migracion-noche' })
 
 beforeAll(async () => {
   payload = await getPayload({ config })
@@ -133,6 +176,19 @@ beforeAll(async () => {
       await payload.create({ collection: 'secciones', data: { nombre, slug, orden: 90 } })
   }
   await limpiar()
+  for (const [nombre, inicio, fin] of [
+    ['Migración madrugada', '04:10', '04:50'],
+    ['Migración noche', '04:50', '05:05'],
+  ]) {
+    await payload.create({
+      collection: 'programas',
+      data: {
+        nombre,
+        slug: nombre === 'Migración noche' ? 'migracion-noche' : 'migracion-madrugada',
+        horarios: [{ dias: ['lun', 'mar', 'mie', 'jue', 'vie', 'sab', 'dom'], inicio, fin }],
+      },
+    })
+  }
   sitioViejo()
 })
 
@@ -165,7 +221,7 @@ describe('migración de WordPress', () => {
     expect(conFoto.epigrafe).toBe('Foto: Intendencia')
     expect(typeof conFoto.foto === 'object' && conFoto.foto?.alt).toBe('Las obras')
     const tipos = conFoto.cuerpo.root.children.map((n) => n.type)
-    expect(tipos).toEqual(['paragraph', 'upload', 'paragraph'])
+    expect(tipos).toEqual(['paragraph', 'upload', 'paragraph', 'paragraph'])
     expect(JSON.stringify(conFoto.cuerpo)).not.toContain('casino')
     expect(JSON.stringify(conFoto.cuerpo)).toContain('youtube.com/watch?v=dQw4w9WgXcQ')
 
@@ -257,5 +313,44 @@ describe('migración de WordPress', () => {
     expect(corregida.fechaActualizacion).toBe('2025-03-05T09:00:00.000Z')
     // El slug no cambia aunque cambie el título: la URL nueva sigue siendo la misma
     expect(corregida.slug).toBe('migracion-nota-900001')
+  })
+
+  it('cada audio pasa a ser una entrevista, y la nota lleva a ella', async () => {
+    const { resumen, filas } = await migrarEntrevistas()
+    expect(resumen).toMatchObject({ creada: 2, error: 0 })
+    expect(filas.map((f) => f.programa)).toEqual(['migracion-madrugada', 'migracion-noche'])
+
+    const { docs } = await payload.find({
+      collection: 'entrevistas',
+      where: { 'wordpress.idMedio': { in: audios.map((a) => a.id) } },
+      sort: 'wordpress.idMedio',
+      depth: 1,
+    })
+    const [conNota, suelta] = docs
+    expect(conNota.entrevistado).toBe('Pablo Cresci')
+    expect(conNota.slug).toBe('pablo-cresci-2025-03-03')
+    expect(conNota.tema).toBe('Corregida 900001')
+    expect(conNota.duracion).toBe(312)
+    expect(conNota.resumen).toBe(largo)
+    expect(conNota._status).toBe('published')
+    expect(typeof conNota.audio === 'object' && conNota.audio?.mimeType).toBe('audio/mpeg')
+    expect(conNota.foto).toBeTruthy()
+    expect(suelta.entrevistado).toBe('Pablo Cresci')
+    expect(suelta.slug).toBe('pablo-cresci-2025-03-04')
+    expect(suelta.tema).toBe('Pablo Cresci')
+
+    const {
+      docs: [nota],
+    } = await payload.find({
+      collection: 'noticias',
+      where: { 'wordpress.idPost': { equals: 900001 } },
+    })
+    expect(JSON.stringify(nota.cuerpo)).toContain('/radio/entrevistas?q=Pablo%20Cresci')
+    expect(JSON.stringify(nota.cuerpo)).not.toContain('.mp3')
+
+    // Una segunda corrida no vuelve a bajar ni a crear nada
+    const antes = bajadas.length
+    expect((await migrarEntrevistas()).resumen).toMatchObject({ 'sin-cambios': 2, creada: 0 })
+    expect(bajadas.length).toBe(antes)
   })
 })
