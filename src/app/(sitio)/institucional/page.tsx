@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { EquipoRadio } from '@/sitio/componentes/institucional/EquipoRadio'
 import { Historia } from '@/sitio/componentes/institucional/Historia'
+import { Migas } from '@/sitio/componentes/ui/Migas'
 import { Redes } from '@/sitio/componentes/ui/Redes'
 import { obtenerAjustes } from '@/sitio/datos'
 import { obtenerEquipo, obtenerInstitucional } from '@/sitio/datos/institucional'
@@ -43,6 +44,7 @@ export default async function Institucional() {
 
   return (
     <main className="pb-8 md:pb-20">
+      <Migas pasos={[{ nombre: 'Institucional' }]} />
       <div className="contenedor pt-4 md:pt-7">
         <Publicidad ubicacion="institucional" aviso={ajustes.avisoPropio} />
       </div>

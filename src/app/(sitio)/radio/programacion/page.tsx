@@ -5,6 +5,7 @@ import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { BandaAlAire } from '@/sitio/componentes/radio/BandaAlAire'
 import { GrillaSemanal } from '@/sitio/componentes/radio/GrillaSemanal'
 import { Foto } from '@/sitio/componentes/ui/Foto'
+import { Migas } from '@/sitio/componentes/ui/Migas'
 import { TituloSeccion } from '@/sitio/componentes/ui/TituloSeccion'
 import { obtenerAjustes, obtenerProgramacion, obtenerVoces } from '@/sitio/datos'
 
@@ -23,6 +24,7 @@ export default async function Programacion() {
 
   return (
     <main className="pb-10 md:pb-20">
+      <Migas pasos={[{ nombre: 'Programación' }]} />
       <div className="contenedor pt-4 md:pt-8">
         <Publicidad ubicacion="radio-programacion" aviso={ajustes.avisoPropio} />
       </div>

@@ -5,12 +5,15 @@ import { CarruselCine } from '@/sitio/componentes/cine/CarruselCine'
 import { CarteleraDias } from '@/sitio/componentes/cine/CarteleraDias'
 import { Precios } from '@/sitio/componentes/cine/Precios'
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
+import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { obtenerAjustes, obtenerCartelera } from '@/sitio/datos'
 import { obtenerCinevision, proximosEstrenos } from '@/sitio/datos/cinevision'
 import { diasConFunciones } from '@/sitio/lib/cine'
+import { urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaNumerica, hoyEnMontevideo } from '@/sitio/lib/fecha'
 import { telefonoParaLink } from '@/sitio/navegacion'
+import { cine as nodoCine, migas } from '@/sitio/seo/estructurados'
 
 export const metadata: Metadata = {
   title: 'Cinevisión',
@@ -33,9 +36,15 @@ export default async function Cinevision() {
   const rango = fechas.length ? `${fechaNumerica(fechas[0])} al ${fechaNumerica(fechas.at(-1)!)}` : ''
   const direccion = cine.comoLlegar.direccion || ajustes.direccion
   const telefono = cine.comoLlegar.telefono || ajustes.telefono
+  const origen = urlDelSitio().origin
+  const datos = [
+    nodoCine(origen, { ...cine.comoLlegar, direccion, telefono }),
+    migas(origen, [{ nombre: 'Cinevisión' }]),
+  ]
 
   return (
     <main className="pb-8 md:pb-20">
+      <DatosEstructurados nodos={datos} />
       <h1 className="sr-only">Cinevisión</h1>
       <CarruselCine diapositivas={cine.carrusel} />
 

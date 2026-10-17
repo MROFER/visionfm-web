@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { Migas } from '@/sitio/componentes/ui/Migas'
 import { obtenerPagina } from '@/sitio/datos/paginas'
 import { fechaCompleta } from '@/sitio/lib/fecha'
 import { LEGALES } from '@/sitio/navegacion'
@@ -25,6 +26,7 @@ export default async function Legal({ params }: Parametros) {
 
   return (
     <main className="pb-10 md:pb-20">
+      <Migas pasos={[{ nombre: pagina.titulo }]} />
       <div className="contenedor flex flex-col gap-8 pt-6 md:grid md:grid-cols-[minmax(0,1fr)_260px] md:gap-x-14 md:pt-12 lg:grid-cols-[minmax(0,1fr)_300px]">
         <article className="min-w-0">
           <span className="text-[11px] font-extrabold tracking-[0.12em] text-acento uppercase md:text-xs">Legal</span>

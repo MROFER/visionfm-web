@@ -5,13 +5,15 @@ import { notFound } from 'next/navigation'
 import { FuncionesDias } from '@/sitio/componentes/cine/FuncionesDias'
 import { Precios } from '@/sitio/componentes/cine/Precios'
 import { Trailer } from '@/sitio/componentes/cine/Trailer'
+import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
-import { obtenerCartelera } from '@/sitio/datos'
+import { obtenerAjustes, obtenerCartelera } from '@/sitio/datos'
 import { obtenerCinevision, obtenerPelicula, type PeliculaCompleta } from '@/sitio/datos/cinevision'
 import { versiones } from '@/sitio/lib/cine'
-import { imagenParaCompartir, OPEN_GRAPH } from '@/sitio/lib/compartir'
+import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaDia, fechaNumerica, hoyEnMontevideo } from '@/sitio/lib/fecha'
 import { calificacion, duracionPelicula } from '@/sitio/lib/formato'
+import { cine as nodoCine, migas, pelicula as nodosPelicula } from '@/sitio/seo/estructurados'
 
 type Parametros = { params: Promise<{ slug: string }> }
 
@@ -42,10 +44,11 @@ const titulo2 = 'm-0 border-b-[3px] border-tinta pb-2 font-titulos text-[26px] l
 export default async function Pelicula({ params }: Parametros) {
   const { slug } = await params
   const hoy = hoyEnMontevideo()
-  const [pelicula, cartelera, cine] = await Promise.all([
+  const [pelicula, cartelera, cine, ajustes] = await Promise.all([
     obtenerPelicula(slug),
     obtenerCartelera(hoy),
     obtenerCinevision(),
+    obtenerAjustes(),
   ])
   if (!pelicula) notFound()
 
@@ -55,9 +58,23 @@ export default async function Pelicula({ params }: Parametros) {
   const otras = cartelera.filter((p) => p.id !== pelicula.id).slice(0, 4)
   const proximoEstreno = pelicula.fechaEstreno && pelicula.fechaEstreno.slice(0, 10) > hoy ? pelicula.fechaEstreno : null
   const tieneFicha = Object.values(pelicula.creditos).some(Boolean) || pelicula.anio
+  const origen = urlDelSitio().origin
+  const datos = [
+    ...nodosPelicula(origen, pelicula, funciones),
+    nodoCine(origen, {
+      ...cine.comoLlegar,
+      direccion: cine.comoLlegar.direccion || ajustes.direccion,
+      telefono: cine.comoLlegar.telefono || ajustes.telefono,
+    }),
+    migas(origen, [
+      { nombre: 'Cinevisión', ruta: '/cinevision' },
+      { nombre: pelicula.titulo },
+    ]),
+  ]
 
   return (
     <main className="pb-8 lg:pb-20">
+      <DatosEstructurados nodos={datos} />
       <nav aria-label="Ruta" className="contenedor py-3 text-[13px] lg:py-[18px]">
         <Link href="/cinevision#cartelera" className="font-bold text-meta no-underline lg:hidden">
           ‹ Cartelera
