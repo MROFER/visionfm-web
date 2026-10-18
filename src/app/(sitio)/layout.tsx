@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   description: 'Radio, noticias y Cinevisión desde Fray Bentos.',
   openGraph: OPEN_GRAPH,
   twitter: { card: 'summary_large_image' },
-  icons: { icon: '/marca/icono.svg' },
+  icons: { icon: [{ url: '/favicon.ico', sizes: 'any' }], apple: '/marca/icono-180.png' },
   alternates: { types: { 'application/rss+xml': '/rss.xml' } },
   // Hasta el lanzamiento, ningún entorno se indexa (docs/02-trd.md, sección 2)
   robots: sePuedeIndexar() ? { index: true, follow: true } : { index: false, follow: false },
