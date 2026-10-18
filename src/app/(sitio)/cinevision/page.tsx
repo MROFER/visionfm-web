@@ -23,7 +23,8 @@ export const metadata: Metadata = {
 const titulo = 'm-0 font-titulos leading-none font-extrabold'
 
 // Cinevisión (design/LEEME.md, sección 7): carrusel, cartelera por día, próximos estrenos, entradas y
-// cómo llegar. La publicidad va debajo de la cartelera, no arriba: primero se ven las películas.
+// cómo llegar. La publicidad va debajo de la cartelera y, solo en web, también entre el carrusel y la
+// cartelera (con su propia ubicación, para venderla aparte).
 export default async function Cinevision() {
   const hoy = hoyEnMontevideo()
   const [cine, cartelera, estrenos, ajustes] = await Promise.all([
@@ -49,6 +50,10 @@ export default async function Cinevision() {
       <CarruselCine diapositivas={cine.carrusel} />
 
       <div className="contenedor flex flex-col gap-8 pt-6 md:gap-16 md:pt-10">
+        <div className="hidden md:block">
+          <Publicidad ubicacion="cinevision-arriba" aviso={ajustes.avisoPropio} />
+        </div>
+
         <section id="cartelera" aria-labelledby="titulo-cartelera" className="scroll-mt-4">
           <div className="flex flex-wrap items-baseline justify-between gap-4 border-b-[3px] border-tinta pb-2 md:items-end md:pb-3">
             <h2 id="titulo-cartelera" className={`${titulo} text-[30px] md:text-[44px]`}>
