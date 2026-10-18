@@ -79,6 +79,16 @@ El segundo comando reinicia el sitio: el sitio guarda en memoria lo que lee de l
 
 No crea usuarios: la primera cuenta del panel, en `/admin`, es la del Owner y la crea la radio.
 
+## Enlace de la radio en vivo
+
+Los botones de "Escuchar en vivo" tocan el enlace que está en el panel: `/admin` → **Sistema → Ajustes generales → URL del stream**. La semilla deja uno de ejemplo que no suena; hay que cambiarlo por el de la radio:
+
+```
+https://emisiones.com.uy:8157/vision
+```
+
+Al guardar, el sitio lo toma solo, sin reiniciar. Si un día cambia, el enlace nuevo tiene que ser el audio directo (que suene solo al abrirlo en el navegador) y empezar con `https://`.
+
 ## Uso diario
 
 | Para | En `C:\visionfm-demo` |
