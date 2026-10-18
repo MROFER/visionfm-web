@@ -8,6 +8,7 @@ export const UBICACIONES = [
   { label: 'Noticias · Sección', value: 'noticias-seccion' },
   { label: 'Noticias · Nota', value: 'noticias-nota' },
   { label: 'Cinevisión', value: 'cinevision' },
+  { label: 'Cinevisión · Arriba (solo web)', value: 'cinevision-arriba' },
   { label: 'Institucional', value: 'institucional' },
   { label: 'Institucional · Formularios', value: 'institucional-formularios' },
 ]

@@ -11,6 +11,7 @@ import * as migration_20261017_000159_compartir from './20261017_000159_comparti
 import * as migration_20261017_002804_busqueda from './20261017_002804_busqueda';
 import * as migration_20261017_021031_migracion_wordpress from './20261017_021031_migracion_wordpress';
 import * as migration_20261017_022820_migracion_entrevistas from './20261017_022820_migracion_entrevistas';
+import * as migration_20261018_195921_cinevision_arriba from './20261018_195921_cinevision_arriba';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261017_022820_migracion_entrevistas.up,
     down: migration_20261017_022820_migracion_entrevistas.down,
-    name: '20261017_022820_migracion_entrevistas'
+    name: '20261017_022820_migracion_entrevistas',
+  },
+  {
+    up: migration_20261018_195921_cinevision_arriba.up,
+    down: migration_20261018_195921_cinevision_arriba.down,
+    name: '20261018_195921_cinevision_arriba'
   },
 ];

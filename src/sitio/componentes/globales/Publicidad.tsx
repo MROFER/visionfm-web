@@ -19,7 +19,8 @@ type Pieza = {
 
 /**
  * Espacio de publicidad (970×90 en web, 320×100 en celular), uno por página. En Cinevisión va debajo de
- * la cartelera, en 300×250 en el celular, y en la página de cada película no hay.
+ * la cartelera, en 300×250 en el celular, y en web hay otro entre el carrusel y la cartelera. En la
+ * página de cada película no hay.
  *
  * Al cargar pide los anuncios que rotan hoy en su ubicación (`/api/anuncios`) y elige uno según el peso
  * (docs/07-permisos-y-publicidad.md, sección 3). Cuenta una impresión cuando el aviso se ve al menos a
