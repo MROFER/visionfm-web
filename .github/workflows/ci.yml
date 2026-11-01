@@ -12,7 +12,8 @@ concurrency:
 jobs:
   verificar:
     name: Lint, tipos, tests y build
-    runs-on: ubuntu-latest
+    # Fijo en 24.04: ubuntu-latest pasó a 26.04 y Playwright 1.56 no instala Chromium ahí
+    runs-on: ubuntu-24.04
     services:
       postgres:
         image: postgres:16-alpine
