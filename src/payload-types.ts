@@ -332,7 +332,9 @@ export interface Usuario {
   /**
    * Se pueden asignar: Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial. Owner solo por transferencia.
    */
-  rol: 'owner' | 'administrador' | 'manager' | 'editor' | 'periodista' | 'colaborador' | 'cinevision' | 'comercial';
+  rol?:
+    | ('owner' | 'administrador' | 'manager' | 'editor' | 'periodista' | 'colaborador' | 'cinevision' | 'comercial')
+    | null;
   /**
    * Ajuste propio sobre el rol. Exige un motivo.
    */
