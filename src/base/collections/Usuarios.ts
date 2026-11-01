@@ -1,4 +1,4 @@
-import { APIError, type CollectionConfig, type FieldAccess, type Where } from 'payload'
+import { APIError, type CollectionConfig, type Condition, type FieldAccess, type Where } from 'payload'
 
 import { actualizarListaAccess } from '../acceso/sincronizar'
 import {
@@ -25,6 +25,13 @@ const gestionaUsuarios = (user: unknown) => tienePermiso(yo(user), 'sistema', 'e
 /** Solo quien gestiona usuarios, y nunca sobre sí mismo (regla 3 de delegación). */
 const soloGestionSobreOtros: FieldAccess = ({ req, id }) =>
   gestionaUsuarios(req.user) && String(req.user?.id) !== String(id)
+
+/**
+ * Para los campos de rol y permisos: no se muestran en la pantalla del primer usuario. Ahí no hay
+ * sesión, ese usuario sale Owner igual (beforeChange) y, sin permisos, las listas de Secciones y
+ * Equipo se quedan en "Cargando..." para siempre.
+ */
+const conSesion: Condition = (_, __, { user }) => Boolean(user)
 
 /** Campos que puede cambiar quien solo tiene Noticias → Aprobar, sobre periodistas y colaboradores. */
 const CAMPOS_EDITORIALES = ['ajusteNoticiasPublicar', 'motivoAjuste', 'updatedAt'] as const
@@ -154,6 +161,7 @@ export const Usuarios: CollectionConfig = {
       options: ROLES.map((rol) => ({ label: NOMBRES_ROL[rol], value: rol })),
       access: { update: soloGestionSobreOtros },
       admin: {
+        condition: conSesion,
         description: `Se pueden asignar: ${ROLES_ASIGNABLES.map((r) => NOMBRES_ROL[r]).join(', ')}. Owner solo por transferencia.`,
       },
     },
@@ -172,7 +180,7 @@ export const Usuarios: CollectionConfig = {
           String(req.user?.id) !== String(id) &&
           (gestionaUsuarios(req.user) || tienePermiso(yo(req.user), 'noticias', 'aprobar')),
       },
-      admin: { description: 'Ajuste propio sobre el rol. Exige un motivo.' },
+      admin: { condition: conSesion, description: 'Ajuste propio sobre el rol. Exige un motivo.' },
     },
     {
       name: 'motivoAjuste',
@@ -190,7 +198,7 @@ export const Usuarios: CollectionConfig = {
       relationTo: 'secciones',
       hasMany: true,
       access: { update: soloGestionSobreOtros },
-      admin: { description: 'Vacío = todas las secciones.' },
+      admin: { condition: conSesion, description: 'Vacío = todas las secciones.' },
     },
     {
       name: 'equipo',
@@ -198,7 +206,7 @@ export const Usuarios: CollectionConfig = {
       type: 'relationship',
       relationTo: 'equipo',
       access: { update: soloGestionSobreOtros },
-      admin: { description: 'Ficha pública del equipo con la que firma sus notas.' },
+      admin: { condition: conSesion, description: 'Ficha pública del equipo con la que firma sus notas.' },
     },
     {
       name: 'activo',
@@ -207,6 +215,7 @@ export const Usuarios: CollectionConfig = {
       access: { update: soloGestionSobreOtros },
       admin: {
         position: 'sidebar',
+        condition: conSesion,
         description: 'Desactivar impide entrar al panel. Los usuarios no se borran.',
       },
     },
@@ -225,7 +234,7 @@ export const Usuarios: CollectionConfig = {
       type: 'checkbox',
       defaultValue: false,
       access: { create: () => false, update: () => false },
-      admin: { position: 'sidebar', readOnly: true },
+      admin: { position: 'sidebar', readOnly: true, condition: conSesion },
     },
     {
       name: 'recibeAvisosRevision',
