@@ -27,9 +27,10 @@ const soloGestionSobreOtros: FieldAccess = ({ req, id }) =>
   gestionaUsuarios(req.user) && String(req.user?.id) !== String(id)
 
 /**
- * Para los campos de rol y permisos: no se muestran en la pantalla del primer usuario. Ahí no hay
- * sesión, ese usuario sale Owner igual (beforeChange) y, sin permisos, las listas de Secciones y
- * Equipo se quedan en "Cargando..." para siempre.
+ * Para los campos de permisos: no se muestran en la pantalla del primer usuario. Ahí no hay sesión,
+ * ese usuario sale Owner igual (beforeChange) y, sin permisos, las listas de Secciones y Equipo se
+ * quedan en "Cargando..." para siempre. Rol no lleva la condición porque Payload haría la columna
+ * opcional; ahí muestra Owner.
  */
 const conSesion: Condition = (_, __, { user }) => Boolean(user)
 
@@ -157,11 +158,11 @@ export const Usuarios: CollectionConfig = {
       name: 'rol',
       type: 'select',
       required: true,
-      defaultValue: 'periodista',
+      // En la pantalla del primer usuario (sin sesión) muestra Owner, que es como sale igual
+      defaultValue: ({ user }) => (user ? 'periodista' : 'owner'),
       options: ROLES.map((rol) => ({ label: NOMBRES_ROL[rol], value: rol })),
       access: { update: soloGestionSobreOtros },
       admin: {
-        condition: conSesion,
         description: `Se pueden asignar: ${ROLES_ASIGNABLES.map((r) => NOMBRES_ROL[r]).join(', ')}. Owner solo por transferencia.`,
       },
     },
