@@ -16,6 +16,15 @@ for (const [nombre, ancho] of [
       'href',
       '/institucional/publicidad',
     )
+    await expect(pie.getByRole('link', { name: 'Cómo llegar' })).toHaveCount(0)
+
+    // Noticias: en el celular, tres secciones y el resto con "+ Ver más"; en web, todas
+    const opinion = pie.getByRole('link', { name: 'Opinión' })
+    if (nombre === 'celular') {
+      await expect(opinion).toBeHidden()
+      await pie.getByRole('button', { name: '+ Ver más' }).click()
+    }
+    await expect(opinion).toBeVisible()
 
     // Las otras redes dependen de lo cargado en el panel; el WhatsApp sale del número de la radio
     await expect(pie.getByRole('link', { name: 'WhatsApp de Visión' })).toHaveAttribute(
