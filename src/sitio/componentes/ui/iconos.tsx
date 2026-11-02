@@ -28,12 +28,10 @@ export const IconoFlechaAbajo = ({ tamano = 12, className }: Props) => (
   </svg>
 )
 
-export const IconoCalendario = ({ tamano = 16, className }: Props) => (
-  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="square">
-    <rect x="3" y="5" width="18" height="16" />
-    <line x1="3" y1="10" x2="21" y2="10" />
-    <line x1="8" y1="3" x2="8" y2="7" />
-    <line x1="16" y1="3" x2="16" y2="7" />
+/** Embudo de los filtros. */
+export const IconoFiltro = ({ tamano = 16, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinejoin="round">
+    <polygon points="3 4 21 4 14 12.5 14 19 10 21 10 12.5 3 4" />
   </svg>
 )
 
