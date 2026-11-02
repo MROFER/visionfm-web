@@ -221,3 +221,24 @@
     animation-delay: 0s !important;
   }
 }
+
+/* "Hay más a la derecha" en las cintas que se deslizan con el dedo: late suave, sin moverse de lugar */
+.latido {
+  animation: latido 1.8s ease-in-out infinite;
+}
+@keyframes latido {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .latido {
+    animation: none;
+  }
+}
