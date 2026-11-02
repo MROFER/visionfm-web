@@ -111,7 +111,12 @@ export function Encabezado({ menu, telefono }: { menu: GrupoMenu[]; telefono: st
           <FechaHoy anio={false} /> · Fray Bentos
         </span>
         {menuAbierto && (
-          <nav id="menu-movil" aria-label="Principal" className="flex flex-col border-t-[3px] border-tinta">
+          <nav
+            id="menu-movil"
+            aria-label="Principal"
+            // El encabezado es fijo: el menú abierto se desplaza adentro si no entra en la pantalla
+            className="flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain border-t-[3px] border-tinta"
+          >
             {menu.map((g) => {
               const abierto = grupoAbierto === g.clave
               return (
