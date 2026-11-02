@@ -4,6 +4,8 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    /* Los links a #secciones no quedan tapados por el encabezado fijo */
+    scroll-padding-top: 7rem;
   }
   body {
     @apply bg-blanco font-cuerpo text-tinta antialiased;
