@@ -1,5 +1,8 @@
 import sharp from 'sharp'
 
+/** Colores de las imágenes de ejemplo, uno tras otro. */
+export const COLORES = ['#0f766e', '#7c3aed', '#be123c', '#0369a1', '#4d7c0f', '#b45309']
+
 const escapar = (texto: string) =>
   texto.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 

@@ -3,6 +3,8 @@
 #   Levantar:                     docker compose up -d
 #   Datos de ejemplo:             docker compose run --rm --build semilla
 #   y después, para verlos:       docker compose up -d --force-recreate app
+#   Solo la programación:         docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/cargar-grilla.ts
+#   (y también reiniciar app)
 #   Actualizar a la última:       docker compose pull && docker compose up -d
 # En la PC va en su propia carpeta, como compose.yml, junto a un .env con las claves (ver .env.demo.example).
 name: visionfm-demo
