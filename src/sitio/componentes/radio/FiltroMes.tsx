@@ -7,20 +7,20 @@ import { IconoFiltro } from '../ui/iconos'
 export type OpcionMes = { valor: string; etiqueta: string; href: string }
 
 /**
- * Filtro por mes de Entrevistas: un botón con el embudo (en web dice "Filtrar") que abre la lista
- * nativa de meses con entrevistas. Con un mes elegido se marca en naranja; el título de la lista
- * dice cuál es.
+ * Filtro por mes de Entrevistas: el embudo (en web, con "Filtrar") del mismo tamaño que el título de la
+ * lista, que abre la lista nativa de meses con entrevistas. Con un mes elegido queda en naranja; el
+ * título de la lista dice cuál es. El área para tocarlo es más grande que el dibujo, sin agrandar la fila.
  */
 export function FiltroMes({ opciones, actual }: { opciones: OpcionMes[]; actual: string }) {
   const router = useRouter()
   const activo = actual !== ''
   return (
     <div
-      className={`relative flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-2 border-2 px-2.5 text-xs font-extrabold tracking-[0.1em] uppercase focus-within:outline-3 focus-within:outline-acento md:text-[13px] ${
-        activo ? 'border-acento bg-acento text-blanco' : 'border-tinta text-tinta hover:text-acento'
+      className={`relative -my-3 -mr-3 flex shrink-0 items-center gap-1.5 px-3 py-3 text-xs leading-4 font-extrabold tracking-[0.1em] uppercase focus-within:outline-3 focus-within:outline-acento md:text-[13px] ${
+        activo ? 'text-acento' : 'text-tinta hover:text-acento'
       }`}
     >
-      <IconoFiltro />
+      <IconoFiltro tamano={13} />
       <span aria-hidden className="hidden md:inline">
         Filtrar
       </span>
