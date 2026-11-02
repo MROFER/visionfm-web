@@ -125,6 +125,29 @@ test('si otra app pausa el vivo (un audio de WhatsApp), al volver a la página s
   await sonando(page)
 })
 
+test('cuando el celular devuelve el audio después de otra app, se engancha de nuevo al vivo', async ({
+  page,
+}) => {
+  let pedidos = 0
+  page.on('request', (r) => {
+    if (r.resourceType() === 'media' && !r.url().includes('localhost')) pedidos++
+  })
+  await servirStream(page)
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
+  await sonando(page)
+  const antes = pedidos
+  // La página queda escondida: el sistema pausa la radio y, al terminar el otro audio, la retoma
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => true })
+    const a = document.querySelector('audio')!
+    a.pause()
+    void a.play()
+  })
+  await expect.poll(() => pedidos).toBeGreaterThan(antes)
+  await sonando(page)
+})
+
 test('si el vivo queda mudo sin avisar, se reconecta solo', async ({ page }) => {
   await servirStream(page)
   await page.goto('/')
