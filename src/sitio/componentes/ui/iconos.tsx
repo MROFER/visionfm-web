@@ -28,6 +28,14 @@ export const IconoFlechaAbajo = ({ tamano = 12, className }: Props) => (
   </svg>
 )
 
+/** Ruedita de "conectando": gira sola, salvo que la persona pidió menos movimiento. */
+export const IconoCargando = ({ tamano = 16, className = '' }: Props) => (
+  <svg {...base(tamano)} className={`motion-safe:animate-spin ${className}`} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round">
+    <circle cx="12" cy="12" r="9" opacity={0.3} />
+    <path d="M21 12a9 9 0 0 0-9-9" />
+  </svg>
+)
+
 export const IconoMenu = ({ tamano = 20, className }: Props) => (
   <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="square">
     <line x1="4" y1="7" x2="20" y2="7" />

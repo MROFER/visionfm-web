@@ -88,6 +88,18 @@ test('si la primera conexión queda colgada, prueba otra y arranca', async ({ pa
   await sonando(page, 10_000)
 })
 
+test('mientras conecta, el botón lo dice y muestra la ruedita', async ({ page }) => {
+  await servirStream(page, { colgarPrimero: true })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
+  await expect(page.getByRole('button', { name: 'Conectando…' }).first()).toHaveAttribute(
+    'aria-busy',
+    'true',
+  )
+  await sonando(page, 10_000)
+  await expect(page.getByRole('button', { name: 'Pausar', exact: true }).first()).toBeVisible()
+})
+
 test('una entrevista baja el vivo y, al terminar, el vivo vuelve solo', async ({ page }) => {
   await servirStream(page)
   await page.goto('/radio/entrevistas')
