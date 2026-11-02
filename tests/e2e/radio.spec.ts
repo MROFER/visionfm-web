@@ -104,3 +104,20 @@ test('la pantalla bloqueada muestra la radio y deja pausar', async ({ page }) =>
   await page.getByRole('button', { name: 'Pausar' }).first().click()
   await expect.poll(() => page.evaluate(() => navigator.mediaSession.playbackState)).toBe('paused')
 })
+
+test.describe('en el celular', () => {
+  test.use({ viewport: { width: 390, height: 844 } })
+
+  test('el play del encabezado abre la cápsula y lleva al reproductor completo', async ({
+    page,
+  }) => {
+    await servirStream(page)
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Escuchar la radio en vivo' }).click()
+    await sonando(page)
+    await page.getByRole('link', { name: /Abrir el reproductor/ }).click()
+    await page.waitForURL('**/radio/en-vivo')
+    await expect(page.getByRole('button', { name: 'Pausar', exact: true })).toBeVisible()
+    await sonando(page)
+  })
+})
