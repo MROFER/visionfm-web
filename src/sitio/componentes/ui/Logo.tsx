@@ -22,11 +22,11 @@ export function Logo({ tamano, colorFM = 'var(--color-acento)' }: { tamano: numb
 }
 
 /**
- * El logo del celular: "96.5 FM" debajo de "Visión", terminando en el borde de la N. "Visión" queda del
- * mismo tamaño y en el mismo lugar que en el logo de una línea con `tamano` 34.
+ * El logo del encabezado: "96.5 FM" debajo de "Visión", terminando en el borde de la N. "Visión" queda del
+ * mismo tamaño y en el mismo lugar que en el logo de una línea con el mismo `tamano` (34 en el celular).
  */
-export function LogoApilado({ className }: { className?: string }) {
-  const escala = 34 / 44
+export function LogoApilado({ className, tamano = 34 }: { className?: string; tamano?: number }) {
+  const escala = tamano / 44
   return (
     <svg
       viewBox="-1 11 125 47"
