@@ -89,6 +89,17 @@ docker compose run --rm --build -v "${PWD}/importar:/importar" semilla node_modu
 
 Las películas entran como **borradores**: en el panel, **Cinevisión → Películas**, se completa lo que falte (duración, calificación, idiomas, formatos), se publican y se cargan sus funciones. Si se corre de nuevo, las que ya están no se tocan.
 
+## Cambiar solo la programación
+
+Para pasar a la programación de los datos de ejemplo (la grilla real de lunes a viernes) sin tocar notas, cine, publicidad ni nada de lo cargado en el panel. Con la demo levantada:
+
+```powershell
+docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/cargar-grilla.ts
+docker compose up -d --force-recreate app
+```
+
+**Borra todos los programas** y carga los de la grilla. Las entrevistas siguen en su programa si tiene el mismo nombre, o pasan al que les toca en los datos de ejemplo; si alguna queda sin programa, el comando lo avisa y se elige desde el panel. Termina con `Programación: … programas borrados y … cargados.` El segundo comando reinicia el sitio para que muestre la grilla nueva.
+
 ## Enlace de la radio en vivo
 
 Los botones de "Escuchar en vivo" tocan el enlace que está en el panel: `/admin` → **Sistema → Ajustes generales → URL del stream**. La semilla deja uno de ejemplo que no suena; hay que cambiarlo por el de la radio:

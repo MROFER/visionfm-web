@@ -3,6 +3,7 @@ import { getPayload, type CollectionSlug, type Payload } from 'payload'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { sembrar } from '@/seed'
+import { cargarGrilla } from '@/seed/grilla'
 
 // `pnpm seed` deja el sitio navegable y se puede correr más de una vez
 let payload: Payload
@@ -77,5 +78,41 @@ describe('datos de ejemplo', () => {
     const { creados } = await sembrar(payload)
     expect(creados).toBe(0)
     expect((await payload.count({ collection: 'medios' })).totalDocs).toBe(antes)
+  }, 120_000)
+
+  it('cambiar la programación no toca lo demás y las entrevistas siguen con programa', async () => {
+    // Una demo con la grilla vieja: un programa que ya no está, con una entrevista
+    await payload.delete({ collection: 'programas', where: { id: { exists: true } } })
+    const viejo = await payload.create({
+      collection: 'programas',
+      data: {
+        nombre: 'Tarde Deportiva',
+        slug: '',
+        horarios: [{ dias: ['lun'], inicio: '18:00', fin: '20:00' }],
+      },
+    })
+    const { docs } = await payload.find({
+      collection: 'entrevistas',
+      where: { tema: { equals: 'La previa del clásico' } },
+    })
+    await payload.update({
+      collection: 'entrevistas',
+      id: docs[0].id,
+      data: { programa: viejo.id },
+    })
+    const cuantos = async () => ({
+      noticias: (await payload.count({ collection: 'noticias' })).totalDocs,
+      peliculas: (await payload.count({ collection: 'peliculas' })).totalDocs,
+      funciones: (await payload.count({ collection: 'funciones' })).totalDocs,
+      entrevistas: (await payload.count({ collection: 'entrevistas' })).totalDocs,
+    })
+    const antes = await cuantos()
+
+    const resultado = await cargarGrilla(payload)
+
+    expect(resultado).toEqual({ borrados: 1, creados: 22, sinPrograma: 0 })
+    expect(await cuantos()).toEqual(antes)
+    const entrevista = await payload.findByID({ collection: 'entrevistas', id: docs[0].id })
+    expect(entrevista.programa).toMatchObject({ nombre: 'Conectados' })
   }, 120_000)
 })

@@ -78,6 +78,28 @@ export const PROGRAMAS: {
   },
 ]
 
+/** Entrevistas de ejemplo y el programa donde salieron (por nombre, de PROGRAMAS). */
+export const ENTREVISTAS = [
+  {
+    entrevistado: 'Directora del Centro Cultural',
+    tema: 'Los talleres de verano',
+    programa: 'Visión temprana',
+    diasAtras: 1,
+  },
+  {
+    entrevistado: 'Técnico de Laureles',
+    tema: 'La previa del clásico',
+    programa: 'Conectados',
+    diasAtras: 2,
+  },
+  {
+    entrevistado: 'Organizadores de la Feria del Libro',
+    tema: 'Qué trae la edición de este año',
+    programa: 'Agenda Cultural',
+    diasAtras: 5,
+  },
+]
+
 export const NOTICIAS: {
   titulo: string
   seccion: string

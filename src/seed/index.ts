@@ -6,6 +6,7 @@ import { diaEnMontevideo, mediodiaUTC, sumarDias } from '@/sitio/publicidad/fech
 import {
   AJUSTES,
   ANUNCIANTES,
+  ENTREVISTAS,
   EQUIPO,
   HITOS,
   HORARIOS_FUNCIONES,
@@ -14,9 +15,7 @@ import {
   PROGRAMAS,
   SECCIONES,
 } from './datos'
-import { imagenDeEjemplo, silencioMp3 } from './imagenes'
-
-const COLORES = ['#0f766e', '#7c3aed', '#be123c', '#0369a1', '#4d7c0f', '#b45309']
+import { COLORES, imagenDeEjemplo, silencioMp3 } from './imagenes'
 
 /** Lexical: un párrafo por texto. */
 const LEGALES_EJEMPLO = [
@@ -225,27 +224,7 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
       })
     },
   )
-  const entrevistas = [
-    {
-      entrevistado: 'Directora del Centro Cultural',
-      tema: 'Los talleres de verano',
-      programa: 'Visión temprana',
-      diasAtras: 1,
-    },
-    {
-      entrevistado: 'Técnico de Laureles',
-      tema: 'La previa del clásico',
-      programa: 'Conectados',
-      diasAtras: 2,
-    },
-    {
-      entrevistado: 'Organizadores de la Feria del Libro',
-      tema: 'Qué trae la edición de este año',
-      programa: 'Agenda Cultural',
-      diasAtras: 5,
-    },
-  ]
-  for (const e of entrevistas) {
+  for (const e of ENTREVISTAS) {
     if (!programas.has(e.programa)) continue
     await buscarOCrear('entrevistas', { tema: { equals: e.tema } }, () =>
       payload.create({
