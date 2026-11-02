@@ -66,11 +66,15 @@ export async function purgarCloudflare(
   return enviados
 }
 
-/** Revalida las etiquetas de Next. Fuera de un pedido de Next (scripts, tests) no hay caché que revalidar. */
+/**
+ * Vence las etiquetas de Next al instante: con 'max' la primera visita después de guardar todavía
+ * recibía la versión vieja (por ejemplo, la URL del stream anterior). Fuera de un pedido de Next
+ * (scripts, tests) no hay caché que vencer.
+ */
 export function revalidarEtiquetas(etiquetas: string[]) {
   for (const etiqueta of etiquetas) {
     try {
-      revalidateTag(etiqueta, 'max')
+      revalidateTag(etiqueta, { expire: 0 })
     } catch {
       // Sin contexto de Next (por ejemplo, `pnpm seed` o los tests): no hay nada cacheado
     }
