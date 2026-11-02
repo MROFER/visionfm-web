@@ -15,7 +15,6 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
         { etiqueta: 'En vivo', href: '/radio/en-vivo' },
         { etiqueta: 'Programación', href: '/radio/programacion' },
         { etiqueta: 'Entrevistas', href: '/radio/entrevistas' },
-        { etiqueta: 'Conductores', href: '/radio/programacion#conductores' },
       ],
     },
     {
