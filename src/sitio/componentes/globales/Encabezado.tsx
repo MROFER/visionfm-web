@@ -9,7 +9,7 @@ import type { Clima } from '../../datos/clima'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
 import { CabeceraCelular } from '../reproductor/CabeceraCelular'
 import { IconoCerrar, IconoFlechaAbajo, IconoMenu } from '../ui/iconos'
-import { Logo } from '../ui/Logo'
+import { LogoApilado } from '../ui/Logo'
 import { Cinta, type NotaCinta } from './Cinta'
 
 /**
@@ -62,7 +62,7 @@ export function Encabezado({
       {/* Web */}
       <div className="contenedor hidden items-center justify-between gap-4 py-2 lg:flex">
         <Link href="/" className="text-tinta" aria-label="Visión 96.5 FM, ir al inicio">
-          <Logo tamano={40} />
+          <LogoApilado tamano={40} className="block" />
         </Link>
         <nav ref={nav} aria-label="Principal" className="flex gap-7">
           {menu.map((g) => (
