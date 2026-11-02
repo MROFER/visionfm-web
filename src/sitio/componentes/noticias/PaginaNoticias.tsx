@@ -14,7 +14,7 @@ import { Publicidad } from '../globales/Publicidad'
 import { Buscador } from '../ui/Buscador'
 import { Migas } from '../ui/Migas'
 import { Paginacion } from '../ui/Paginacion'
-import { NotaFila } from '../ui/TarjetaNota'
+import { NotaTarjeta } from '../ui/TarjetaNota'
 import { TiraSecciones } from '../ui/TiraSecciones'
 import { NoticiasPortada } from './NoticiasPortada'
 
@@ -122,9 +122,9 @@ export async function PaginaNoticias({
         )}
 
         {archivo.notas.length > 0 ? (
-          <div className="lg:grid lg:grid-cols-2 lg:gap-x-12">
+          <div className="md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-10 md:pt-4 lg:grid-cols-3 lg:gap-x-8">
             {archivo.notas.map((n) => (
-              <NotaFila key={n.id} nota={n} />
+              <NotaTarjeta key={n.id} nota={n} />
             ))}
           </div>
         ) : q ? (
