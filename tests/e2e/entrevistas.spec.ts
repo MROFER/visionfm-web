@@ -20,3 +20,20 @@ test('las pestañas son de programas con entrevistas y se puede filtrar por mes'
   await expect(page.getByRole('heading', { level: 2, name: /^Entrevistas de / })).toBeVisible()
   await expect(page.locator('ol li').first()).toBeVisible()
 })
+
+test('en el celular, el "+" de la cinta de programas se va al llegar al final', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 360, height: 780 })
+  await page.goto('/radio/entrevistas')
+
+  const mas = page.getByRole('button', { name: 'Ver más programas' })
+  await expect(mas).toHaveCSS('opacity', '1')
+
+  const cinta = page.getByRole('navigation', { name: 'Programas' })
+  await cinta.evaluate((el) => el.scrollTo({ left: el.scrollWidth }))
+  await expect(mas).toHaveCSS('opacity', '0')
+
+  await cinta.evaluate((el) => el.scrollTo({ left: 0 }))
+  await expect(mas).toHaveCSS('opacity', '1')
+})
