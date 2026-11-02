@@ -22,7 +22,7 @@ export function ReproductorPantalla({ children }: { children?: React.ReactNode }
 
   return (
     <div className="pantalla-completa fixed inset-0 z-50 flex flex-col gap-6 overflow-y-auto bg-tinta px-5 pt-4 pb-7 text-blanco">
-      {/* Cerrar a la derecha, a mano del pulgar; la flecha hacia abajo acompaña la entrada desde abajo */}
+      {/* Cerrar a la derecha, a mano del pulgar; la flecha hacia arriba: se cierra hacia el encabezado */}
       <div className="flex items-center justify-between">
         <span aria-hidden className="w-11" />
         <span className="flex items-center gap-2 text-xs font-bold tracking-[0.08em] uppercase">
@@ -35,7 +35,7 @@ export function ReproductorPantalla({ children }: { children?: React.ReactNode }
           aria-label="Cerrar el reproductor"
           className="flex size-11 cursor-pointer items-center justify-center rounded-[12px] border border-oscuro-linea"
         >
-          <IconoFlechaAbajo tamano={20} />
+          <IconoFlechaAbajo tamano={20} className="rotate-180" />
         </button>
       </div>
 

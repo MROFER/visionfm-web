@@ -113,15 +113,15 @@
   visibility: hidden;
 }
 
-/* El reproductor a pantalla completa del celular entra subiendo */
+/* El reproductor a pantalla completa del celular baja desde el encabezado, como un menú */
 @media (prefers-reduced-motion: no-preference) {
   .pantalla-completa {
-    animation: subir-pantalla 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: bajar-pantalla 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 }
-@keyframes subir-pantalla {
+@keyframes bajar-pantalla {
   from {
-    transform: translateY(100%);
+    transform: translateY(-100%);
   }
 }
 
