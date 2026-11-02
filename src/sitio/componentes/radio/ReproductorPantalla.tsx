@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { aContinuacion } from '../../lib/grilla'
 import { useRadio } from '../reproductor/Radio'
-import { IconoPausa, IconoPlay, IconoVolumenMas, IconoVolumenMenos, IconoVolver } from '../ui/iconos'
+import { IconoFlechaAbajo, IconoPausa, IconoPlay, IconoVolumenMas, IconoVolumenMenos } from '../ui/iconos'
 
 const BARRAS = [14, 26, 34, 20, 30, 12, 24, 36, 18, 28, 16, 22]
 
@@ -22,20 +22,21 @@ export function ReproductorPantalla({ children }: { children?: React.ReactNode }
 
   return (
     <div className="pantalla-completa fixed inset-0 z-50 flex flex-col gap-6 overflow-y-auto bg-tinta px-5 pt-4 pb-7 text-blanco">
+      {/* Cerrar a la derecha, a mano del pulgar; la flecha hacia abajo acompaña la entrada desde abajo */}
       <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={volver}
-          aria-label="Volver"
-          className="flex size-11 cursor-pointer items-center justify-center rounded-[12px] border border-oscuro-linea"
-        >
-          <IconoVolver />
-        </button>
+        <span aria-hidden className="w-11" />
         <span className="flex items-center gap-2 text-xs font-bold tracking-[0.08em] uppercase">
           <span aria-hidden className="size-2 rounded-full bg-vivo" />
           En vivo
         </span>
-        <span aria-hidden className="w-11" />
+        <button
+          type="button"
+          onClick={volver}
+          aria-label="Cerrar el reproductor"
+          className="flex size-11 cursor-pointer items-center justify-center rounded-[12px] border border-oscuro-linea"
+        >
+          <IconoFlechaAbajo tamano={20} />
+        </button>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-7">
