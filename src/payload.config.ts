@@ -52,7 +52,11 @@ export default buildConfig(
           },
           meta: {
             titleSuffix: ' · Visión 96.5 FM',
-            icons: [{ rel: 'icon', type: 'image/svg+xml', url: '/marca/icono.svg' }],
+            // El mismo favicon que el sitio
+            icons: [
+              { rel: 'icon', url: '/favicon.ico', sizes: 'any' },
+              { rel: 'apple-touch-icon', url: '/marca/icono-180.png' },
+            ],
           },
           components: {
             graphics: {
