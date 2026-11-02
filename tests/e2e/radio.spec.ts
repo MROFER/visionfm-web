@@ -112,6 +112,40 @@ test('una entrevista baja el vivo y, al terminar, el vivo vuelve solo', async ({
   })
 })
 
+test('si otra app pausa el vivo (un audio de WhatsApp), al volver a la página suena solo', async ({
+  page,
+}) => {
+  await servirStream(page)
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
+  await sonando(page)
+  // El sistema pausa el audio sin pasar por los botones del sitio
+  await page.evaluate(() => document.querySelector('audio')!.pause())
+  await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')))
+  await sonando(page)
+})
+
+test('si el vivo queda mudo sin avisar, se reconecta solo', async ({ page }) => {
+  await servirStream(page)
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
+  await sonando(page)
+  // Queda "sonando" pero el audio no avanza, como cuando el celular lo suspende
+  const quieto = await page.evaluate(() => {
+    const a = document.querySelector('audio')!
+    a.playbackRate = 0
+    return a.currentTime
+  })
+  await page.waitForFunction(
+    (t) => {
+      const a = document.querySelector('audio')
+      return !!a && !a.paused && a.playbackRate === 1 && a.currentTime > 0 && a.currentTime !== t
+    },
+    quieto,
+    { timeout: 10_000 },
+  )
+})
+
 test('la pantalla bloqueada muestra la radio y deja pausar', async ({ page }) => {
   await servirStream(page)
   await page.goto('/')
