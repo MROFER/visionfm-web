@@ -79,6 +79,16 @@ El segundo comando reinicia el sitio: el sitio guarda en memoria lo que lee de l
 
 No crea usuarios: la primera cuenta del panel, en `/admin`, es la del Owner y la crea la radio.
 
+## Cargar películas desde una carpeta
+
+Para no cargar película por película: una carpeta `importar` dentro de `C:\visionfm-demo`, con los afiches (JPG) y un `peliculas.json` con los datos de cada una (título, afiche, género, sinopsis, créditos, fecha de estreno si es próxima). Con la demo levantada:
+
+```powershell
+docker compose run --rm --build -v "${PWD}/importar:/importar" semilla node_modules/.bin/payload run src/seed/importar-peliculas.ts
+```
+
+Las películas entran como **borradores**: en el panel, **Cinevisión → Películas**, se completa lo que falte (duración, calificación, idiomas, formatos), se publican y se cargan sus funciones. Si se corre de nuevo, las que ya están no se tocan.
+
 ## Enlace de la radio en vivo
 
 Los botones de "Escuchar en vivo" tocan el enlace que está en el panel: `/admin` → **Sistema → Ajustes generales → URL del stream**. La semilla deja uno de ejemplo que no suena; hay que cambiarlo por el de la radio:
