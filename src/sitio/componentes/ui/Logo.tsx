@@ -1,31 +1,18 @@
 import { FM, V, VISION } from '../../marca'
 
 /**
- * "Visión 96.5 FM" en trazos. El tamaño se da con la altura de la letra de "Visión" en el diseño:
- * 44 px en el header web, 34 en el celular, 40 y 32 en el pie.
+ * El logo de la radio en trazos: "96.5 FM" debajo de "Visión", terminando en el borde de la N. `tamano` es
+ * la altura de la letra de "Visión": 34 en el celular y 40 en web, igual en el encabezado y en el pie.
  */
-export function Logo({ tamano, colorFM = 'var(--color-acento)' }: { tamano: number; colorFM?: string }) {
-  const escala = tamano / 44
-  return (
-    <svg
-      viewBox="0 11 198 35"
-      width={Math.round(198 * escala)}
-      height={Math.round(35 * escala)}
-      role="img"
-      aria-label="Visión 96.5 FM"
-      className="block"
-    >
-      <path fill="currentColor" d={VISION} />
-      <path fill={colorFM} d={FM} />
-    </svg>
-  )
-}
-
-/**
- * El logo del encabezado: "96.5 FM" debajo de "Visión", terminando en el borde de la N. "Visión" queda del
- * mismo tamaño y en el mismo lugar que en el logo de una línea con el mismo `tamano` (34 en el celular).
- */
-export function LogoApilado({ className, tamano = 34 }: { className?: string; tamano?: number }) {
+export function LogoApilado({
+  className,
+  tamano = 34,
+  colorFM = 'var(--color-acento)',
+}: {
+  className?: string
+  tamano?: number
+  colorFM?: string
+}) {
   const escala = tamano / 44
   return (
     <svg
@@ -37,7 +24,7 @@ export function LogoApilado({ className, tamano = 34 }: { className?: string; ta
       className={className}
     >
       <path fill="currentColor" d={VISION} />
-      <path fill="var(--color-acento)" transform="translate(-72.2 13)" d={FM} />
+      <path fill={colorFM} transform="translate(-72.2 13)" d={FM} />
     </svg>
   )
 }
