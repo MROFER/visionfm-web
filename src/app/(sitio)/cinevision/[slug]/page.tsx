@@ -75,26 +75,29 @@ export default async function Pelicula({ params }: Parametros) {
   return (
     <main className="pb-8 lg:pb-20">
       <DatosEstructurados nodos={datos} />
-      <nav aria-label="Ruta" className="contenedor py-3 text-[13px] lg:py-[18px]">
-        <Link href="/cinevision#cartelera" className="font-bold text-meta no-underline lg:hidden">
-          ‹ Cartelera
-        </Link>
-        <span className="hidden flex-wrap gap-1.5 text-meta lg:flex">
-          <Link href="/cinevision" className="text-meta">
-            Cinevisión
-          </Link>
-          <span aria-hidden>›</span>
-          <Link href="/cinevision#cartelera" className="text-meta">
-            Cartelera
-          </Link>
-          <span aria-hidden>›</span>
-          <span aria-current="page" className="font-bold text-tinta">
-            {pelicula.titulo}
-          </span>
-        </span>
-      </nav>
-
-      <Franja pelicula={pelicula} />
+      <Franja
+        pelicula={pelicula}
+        ruta={
+          <nav aria-label="Ruta" className="contenedor pt-4 text-[13px] lg:pt-7">
+            <Link href="/cinevision#cartelera" className="font-bold text-blanco/70 no-underline lg:hidden">
+              ‹ Cartelera
+            </Link>
+            <span className="hidden flex-wrap gap-1.5 text-blanco/60 lg:flex">
+              <Link href="/cinevision" className="text-blanco/60 hover:text-blanco">
+                Cinevisión
+              </Link>
+              <span aria-hidden>›</span>
+              <Link href="/cinevision#cartelera" className="text-blanco/60 hover:text-blanco">
+                Cartelera
+              </Link>
+              <span aria-hidden>›</span>
+              <span aria-current="page" className="font-bold text-blanco">
+                {pelicula.titulo}
+              </span>
+            </span>
+          </nav>
+        }
+      />
 
       <div className="contenedor flex flex-col gap-7 pt-6 lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-x-12 lg:gap-y-14 lg:pt-12">
         <section id="funciones" aria-labelledby="titulo-funciones" className="flex scroll-mt-4 flex-col gap-4 lg:col-start-2 lg:row-start-1">
@@ -184,13 +187,15 @@ export default async function Pelicula({ params }: Parametros) {
 }
 
 /** Franja oscura: afiche, "Estreno", título, original y año, calificación y versiones. */
-function Franja({ pelicula }: { pelicula: PeliculaCompleta }) {
+function Franja({ pelicula, ruta }: { pelicula: PeliculaCompleta; ruta: React.ReactNode }) {
   const idiomas = versiones(pelicula.idiomas, 'idioma')
   const formatos = versiones(pelicula.formatos, 'formato')
   const original = [pelicula.tituloOriginal, pelicula.anio].filter(Boolean).join(' · ')
   return (
     <section aria-labelledby="titulo-pelicula" className="bg-tinta text-blanco">
-      <div className="contenedor flex gap-3.5 py-5 lg:gap-12 lg:py-12">
+      {/* La ruta va sobre la portada oscura, sin una franja aparte */}
+      {ruta}
+      <div className="contenedor flex gap-3.5 pt-3 pb-5 lg:gap-12 lg:pt-7 lg:pb-12">
         <Foto
           imagen={pelicula.afiche}
           prioridad
