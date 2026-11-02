@@ -121,6 +121,8 @@ export function Radio({
   const subirAlSonar = useRef(false)
   // El vivo llegó a sonar en esta conexión: si ahora no avanza, quedó mudo
   const vivoAndando = useRef(false)
+  // El sistema pausó el vivo (un audio de WhatsApp, una llamada) sin que la persona lo pidiera
+  const pausaAjena = useRef(false)
   const reintentos = useRef(0)
   const temporizador = useRef<ReturnType<typeof setTimeout>>(undefined)
   // El HTML puede venir de la caché: apenas carga, el navegador recalcula con su reloj
@@ -192,6 +194,7 @@ export function Radio({
   const cortarVivo = useCallback(
     (a: HTMLAudioElement) => {
       quiereVivo.current = false
+      pausaAjena.current = false
       olvidarReintentos()
       setCargando(false)
       a.pause()
@@ -205,6 +208,7 @@ export function Radio({
   const escucharVivo = useCallback(
     (a: HTMLAudioElement) => {
       quiereVivo.current = true
+      pausaAjena.current = false
       olvidarReintentos()
       arrancar(a, streamUrl, { tipo: 'vivo' })
     },
@@ -264,14 +268,15 @@ export function Radio({
   }, [reconectar])
 
   // Un audio de WhatsApp, una llamada o el sistema pueden pausar el vivo o dejarlo mudo sin que la
-  // persona lo pida, y el navegador no siempre lo avisa. Con la página a la vista, si el vivo debía
-  // sonar y está en pausa o no avanza, se conecta de nuevo desde el vivo.
+  // persona lo pida, y el navegador no siempre lo avisa. Si el vivo suena pero no avanza, se conecta
+  // de nuevo, aunque la página no esté a la vista. Si quedó en pausa, se retoma al volver a la página:
+  // con la página escondida, arrancarlo le cortaría el audio a la otra app.
   useEffect(() => {
     let marca = -1
     const revisar = () => {
       const a = audio.current
-      if (!a || !quiereVivo.current || document.hidden) return void (marca = -1)
-      if (a.paused && a.getAttribute('src') && reintentos.current === 0) {
+      if (!a || !quiereVivo.current) return void (marca = -1)
+      if (a.paused && !document.hidden && a.getAttribute('src') && reintentos.current === 0) {
         marca = -1
         return escucharVivo(a)
       }
@@ -459,9 +464,18 @@ export function Radio({
           vivoAndando.current = false
           esperarVivo()
         }}
-        onPause={() => {
+        onPause={(e) => {
           vivoAndando.current = false
+          // Cambiar de fuente también pausa, pero vuelve a cero; una pausa del sistema es a mitad del vivo
+          if (quiereVivo.current && e.currentTarget.currentTime > 0) pausaAjena.current = true
           setReproduciendo(false)
+        }}
+        onPlay={(e) => {
+          // El celular devuelve el audio al terminar el de la otra app: lo que quedó en memoria ya
+          // es viejo o la conexión se cortó, así que se engancha de nuevo al vivo
+          if (!pausaAjena.current) return
+          pausaAjena.current = false
+          if (quiereVivo.current) escucharVivo(e.currentTarget)
         }}
         onEmptied={() => {
           vivoAndando.current = false
