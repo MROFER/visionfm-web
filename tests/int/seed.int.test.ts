@@ -66,7 +66,7 @@ describe('datos de ejemplo', () => {
       where: { _status: { equals: 'published' } },
     })
     expect(notas.totalDocs).toBe(8)
-    expect((await payload.count({ collection: 'programas' })).totalDocs).toBe(6)
+    expect((await payload.count({ collection: 'programas' })).totalDocs).toBe(22)
     expect((await payload.count({ collection: 'funciones' })).totalDocs).toBe(21)
     const portada = await payload.findGlobal({ slug: 'portada', depth: 0 })
     expect(portada.notaDestacada).toBeTruthy()
