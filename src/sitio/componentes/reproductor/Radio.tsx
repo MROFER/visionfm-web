@@ -71,6 +71,8 @@ const PORTADA = [{ src: '/marca/icono-512.png', sizes: '512x512', type: 'image/p
 const CADA_DIEZ_MINUTOS = 10 * 60_000
 /** Cuánto tarda el vivo en bajar o subir el volumen al dar paso a una entrevista y al volver. */
 const FUNDIDO = 500
+/** Con la página a la vista, cada cuánto se revisa que el vivo avance de verdad. */
+const CONTROL_VIVO = 2000
 
 /**
  * Lleva el volumen del audio de `desde` a `hasta` de a poco. En iPhone el volumen no se puede tocar
@@ -117,6 +119,8 @@ export function Radio({
   // El vivo sonaba cuando se puso una entrevista: al terminar la entrevista, vuelve
   const volverAlVivo = useRef(false)
   const subirAlSonar = useRef(false)
+  // El vivo llegó a sonar en esta conexión: si ahora no avanza, quedó mudo
+  const vivoAndando = useRef(false)
   const reintentos = useRef(0)
   const temporizador = useRef<ReturnType<typeof setTimeout>>(undefined)
   // El HTML puede venir de la caché: apenas carga, el navegador recalcula con su reloj
@@ -258,6 +262,37 @@ export function Radio({
       clearTimeout(temporizador.current)
     }
   }, [reconectar])
+
+  // Un audio de WhatsApp, una llamada o el sistema pueden pausar el vivo o dejarlo mudo sin que la
+  // persona lo pida, y el navegador no siempre lo avisa. Con la página a la vista, si el vivo debía
+  // sonar y está en pausa o no avanza, se conecta de nuevo desde el vivo.
+  useEffect(() => {
+    let marca = -1
+    const revisar = () => {
+      const a = audio.current
+      if (!a || !quiereVivo.current || document.hidden) return void (marca = -1)
+      if (a.paused && a.getAttribute('src') && reintentos.current === 0) {
+        marca = -1
+        return escucharVivo(a)
+      }
+      if (!vivoAndando.current || a.paused) return void (marca = -1)
+      if (a.currentTime === marca) {
+        marca = -1
+        return escucharVivo(a)
+      }
+      marca = a.currentTime
+    }
+    const alVer = () => {
+      marca = -1
+      revisar()
+    }
+    const intervalo = setInterval(revisar, CONTROL_VIVO)
+    document.addEventListener('visibilitychange', alVer)
+    return () => {
+      clearInterval(intervalo)
+      document.removeEventListener('visibilitychange', alVer)
+    }
+  }, [escucharVivo])
 
   const alternar = useCallback(() => {
     const a = audio.current
@@ -414,14 +449,24 @@ export function Radio({
           }
           clearTimeout(temporizador.current)
           reintentos.current = 0
+          vivoAndando.current = quiereVivo.current
           setReconectando(false)
           setReproduciendo(true)
           setCargando(false)
         }}
         onLoadStart={esperarVivo}
-        onWaiting={esperarVivo}
-        onPause={() => setReproduciendo(false)}
-        onEmptied={() => setReproduciendo(false)}
+        onWaiting={() => {
+          vivoAndando.current = false
+          esperarVivo()
+        }}
+        onPause={() => {
+          vivoAndando.current = false
+          setReproduciendo(false)
+        }}
+        onEmptied={() => {
+          vivoAndando.current = false
+          setReproduciendo(false)
+        }}
         onEnded={(e) => {
           setReproduciendo(false)
           // Un vivo no termina: si terminó, el servidor cortó la conexión
