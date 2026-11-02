@@ -8,7 +8,14 @@ import { Encabezado } from '@/sitio/componentes/globales/Encabezado'
 import { Pie } from '@/sitio/componentes/globales/Pie'
 import { MiniReproductor } from '@/sitio/componentes/reproductor/MiniReproductor'
 import { Radio } from '@/sitio/componentes/reproductor/Radio'
-import { obtenerAjustes, obtenerExcepciones, obtenerGrilla, obtenerSecciones } from '@/sitio/datos'
+import {
+  notasParaLaCinta,
+  obtenerAjustes,
+  obtenerExcepciones,
+  obtenerGrilla,
+  obtenerSecciones,
+} from '@/sitio/datos'
+import { obtenerClima } from '@/sitio/datos/clima'
 import { OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { marcaDeTiempo } from '@/sitio/lib/fecha'
 import { menuPrincipal } from '@/sitio/navegacion'
@@ -51,11 +58,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: '#13161d' }
 
 export default async function SitioLayout({ children }: { children: React.ReactNode }) {
-  const [ajustes, secciones, grilla, excepciones] = await Promise.all([
+  const [ajustes, secciones, grilla, excepciones, notasCinta, clima] = await Promise.all([
     obtenerAjustes(),
     obtenerSecciones(),
     obtenerGrilla(),
     obtenerExcepciones(),
+    notasParaLaCinta(2),
+    obtenerClima(),
   ])
   return (
     <html lang="es-UY" className={`${titulos.variable} ${cuerpo.variable}`}>
@@ -75,7 +84,11 @@ export default async function SitioLayout({ children }: { children: React.ReactN
           {/* Barra de estado y navegación quedan fijas arriba al bajar */}
           <div className="sticky top-0 z-40">
             <BarraSuperior telefono={ajustes.telefono} />
-            <Encabezado menu={menuPrincipal(secciones)} telefono={ajustes.telefono} />
+            <Encabezado
+              menu={menuPrincipal(secciones)}
+              telefono={ajustes.telefono}
+              cinta={{ notas: notasCinta, clima }}
+            />
           </div>
           <div id="contenido">{children}</div>
           <Pie ajustes={ajustes} secciones={secciones} />

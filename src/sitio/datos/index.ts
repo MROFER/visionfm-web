@@ -176,6 +176,30 @@ export const ultimasNoticias = unstable_cache(
 )
 
 /**
+ * Las notas que pasan en la cinta del encabezado del celular: la destacada de la portada y las marcadas
+ * como destacadas, las más nuevas primero. Si no hay ninguna marcada, las últimas.
+ */
+export const notasParaLaCinta = unstable_cache(
+  async (cantidad: number) => {
+    const p = await payload()
+    const { notaDestacada } = await obtenerPortada()
+    const destacadas: Where = notaDestacada
+      ? { or: [{ destacada: { equals: true } }, { id: { equals: notaDestacada } }] }
+      : { destacada: { equals: true } }
+    const buscar = (where?: Where) =>
+      p.find({ collection: 'noticias', sort: '-fechaPublicacion', limit: cantidad, depth: 1, where, ...publico })
+    let { docs } = await buscar(destacadas)
+    if (!docs.length) docs = (await buscar()).docs
+    return docs.map((n) => {
+      const { titulo, href } = aTarjetaNota(n)
+      return { titulo, href }
+    })
+  },
+  ['notas-cinta'],
+  { tags: ['noticias', 'portada'] },
+)
+
+/**
  * Películas con funciones desde hoy y durante la semana, con los días en que se dan. La clave incluye
  * el día, así la cartelera cambia sola a la medianoche aunque nadie toque el panel.
  */

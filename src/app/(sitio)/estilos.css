@@ -112,3 +112,112 @@
 .avance:disabled::-moz-range-thumb {
   visibility: hidden;
 }
+
+/* El reproductor a pantalla completa del celular entra subiendo */
+@media (prefers-reduced-motion: no-preference) {
+  .pantalla-completa {
+    animation: subir-pantalla 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+@keyframes subir-pantalla {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/*
+ * Encabezado del celular (CabeceraCelular): play en el medio de la pantalla; al sonar se corre a la
+ * izquierda dentro de una cápsula y el logo pasa al compacto, del tamaño de la hamburguesa (44 px). Un
+ * logo termina de irse antes de que aparezca el otro.
+ */
+.cabecera-celular {
+  position: relative;
+  height: 44px;
+}
+.cabecera-logo {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  display: block;
+  width: 97px;
+  height: 36px;
+}
+.cabecera-celular[data-activo] .cabecera-logo {
+  width: 44px;
+}
+.cabecera-logo-entero {
+  transition: opacity 0.2s ease 0.2s;
+}
+.cabecera-logo-compacto {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.cabecera-celular[data-activo] .cabecera-logo-entero {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.cabecera-celular[data-activo] .cabecera-logo-compacto {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.25s ease 0.2s;
+}
+.cabecera-reproductor {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 22px);
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  transition:
+    left 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 0.45s,
+    height 0.45s,
+    padding 0.45s,
+    border-radius 0.45s,
+    background-color 0.25s;
+}
+.cabecera-celular[data-activo] .cabecera-reproductor {
+  top: -6px;
+  left: 56px;
+  width: calc(100% - 112px);
+  height: 56px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--color-tinta);
+}
+.cabecera-capsula {
+  height: 44px;
+  animation: aparecer 0.3s ease 0.3s both;
+}
+.cabecera-pista[data-sube] {
+  animation: subir-renglon 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.8s forwards;
+}
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes subir-renglon {
+  to {
+    transform: translateY(-18px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cabecera-celular *,
+  .cabecera-celular {
+    transition: none !important;
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+  }
+}

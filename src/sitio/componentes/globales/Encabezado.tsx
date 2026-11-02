@@ -5,16 +5,27 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { grupoActual, telefonoParaLink, type GrupoMenu } from '../../navegacion'
+import type { Clima } from '../../datos/clima'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
+import { CabeceraCelular } from '../reproductor/CabeceraCelular'
 import { IconoCerrar, IconoFlechaAbajo, IconoMenu } from '../ui/iconos'
 import { Logo } from '../ui/Logo'
-import { FechaHoy } from './FechaHoy'
+import { Cinta, type NotaCinta } from './Cinta'
 
 /**
  * Header del sitio (design/LEEME.md, sección 6). Desde 1024 px: menú con desplegables y botón
- * "Escuchar en vivo". Más angosto: play redondo, hamburguesa con grupos en acordeón y la fecha debajo.
+ * "Escuchar en vivo". Más angosto: logo y radio animados (CabeceraCelular), hamburguesa con grupos en
+ * acordeón y, debajo, la cinta con la fecha, las destacadas y el clima.
  */
-export function Encabezado({ menu, telefono }: { menu: GrupoMenu[]; telefono: string }) {
+export function Encabezado({
+  menu,
+  telefono,
+  cinta,
+}: {
+  menu: GrupoMenu[]
+  telefono: string
+  cinta: { notas: NotaCinta[]; clima: Clima | null }
+}) {
   const ruta = usePathname()
   const actual = grupoActual(ruta)
   const [desplegado, setDesplegado] = useState<GrupoMenu['clave'] | null>(null)
@@ -89,27 +100,20 @@ export function Encabezado({ menu, telefono }: { menu: GrupoMenu[]; telefono: st
 
       {/* Celular y tablet */}
       <div className="flex flex-col gap-3 px-4 py-3 md:px-6 lg:hidden">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="text-tinta" aria-label="Visión 96.5 FM, ir al inicio">
-              <Logo tamano={34} />
-            </Link>
-            <BotonEnVivo variante="redondo" />
-          </div>
+        <div className="relative">
+          <CabeceraCelular />
           <button
             type="button"
             aria-label="Menú"
             aria-expanded={menuAbierto}
             aria-controls="menu-movil"
             onClick={() => setMenuAbierto(!menuAbierto)}
-            className="flex size-11 cursor-pointer items-center justify-center bg-tinta text-blanco"
+            className="absolute top-0 right-0 flex size-11 cursor-pointer items-center justify-center bg-tinta text-blanco"
           >
             {menuAbierto ? <IconoCerrar /> : <IconoMenu />}
           </button>
         </div>
-        <span className="text-xs text-meta">
-          <FechaHoy anio={false} /> · Fray Bentos
-        </span>
+        <Cinta notas={cinta.notas} clima={cinta.clima} />
         {menuAbierto && (
           <nav
             id="menu-movil"
