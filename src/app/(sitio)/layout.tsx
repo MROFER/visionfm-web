@@ -83,7 +83,7 @@ export default async function SitioLayout({ children }: { children: React.ReactN
           </a>
           {/* Barra de estado y navegación quedan fijas arriba al bajar */}
           <div className="sticky top-0 z-40">
-            <BarraSuperior telefono={ajustes.telefono} />
+            <BarraSuperior telefono={ajustes.telefono} cinta={{ notas: notasCinta, clima }} />
             <Encabezado
               menu={menuPrincipal(secciones)}
               telefono={ajustes.telefono}

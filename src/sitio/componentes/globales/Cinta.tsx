@@ -12,17 +12,34 @@ export type NotaCinta = { titulo: string; href: string }
 const INTERVALO = 4000
 
 /**
- * La línea de abajo del encabezado en el celular: la fecha, las notas destacadas y el clima, una por vez
- * y subiendo como una cinta. Se frena mientras el dedo o el foco están encima, y con la pestaña oculta.
+ * La fecha, las notas destacadas y el clima, una por vez y subiendo como una cinta: abajo del encabezado
+ * en el celular (clara) y en la barra de arriba en web (oscura). Se frena mientras el dedo, el mouse o el
+ * foco están encima, y con la pestaña oculta.
  */
-export function Cinta({ notas, clima }: { notas: NotaCinta[]; clima: Clima | null }) {
+export function Cinta({
+  notas,
+  clima,
+  oscura = false,
+}: {
+  notas: NotaCinta[]
+  clima: Clima | null
+  oscura?: boolean
+}) {
+  // En web hay lugar para el año, como estaba la fecha antes de la cinta
+  const fecha = (
+    <>
+      <FechaHoy anio={oscura} /> · Fray Bentos
+    </>
+  )
   const items: React.ReactNode[] = [
-    <span key="fecha">
-      <FechaHoy anio={false} /> · Fray Bentos
-    </span>,
+    <span key="fecha">{fecha}</span>,
     ...notas.map((n) => (
-      <Link key={n.href} href={n.href} className="font-semibold text-tinta no-underline">
-        <Etiqueta>Destacada</Etiqueta>
+      <Link
+        key={n.href}
+        href={n.href}
+        className={`font-semibold no-underline ${oscura ? 'text-blanco' : 'text-tinta'}`}
+      >
+        <Etiqueta oscura={oscura}>Destacada</Etiqueta>
         {n.titulo}
       </Link>
     )),
@@ -30,7 +47,7 @@ export function Cinta({ notas, clima }: { notas: NotaCinta[]; clima: Clima | nul
   if (clima) {
     items.push(
       <span key="clima">
-        <Etiqueta>Clima</Etiqueta>
+        <Etiqueta oscura={oscura}>Clima</Etiqueta>
         {clima.temperatura}° · {clima.estado} · Fray Bentos
       </span>,
     )
@@ -60,7 +77,7 @@ export function Cinta({ notas, clima }: { notas: NotaCinta[]; clima: Clima | nul
 
   return (
     <div
-      className="h-[18px] overflow-hidden text-xs leading-[18px] text-meta"
+      className={`h-[18px] overflow-hidden text-xs leading-[18px] ${oscura ? 'text-oscuro-1' : 'text-meta'}`}
       onPointerEnter={() => setQuieta(true)}
       onPointerLeave={() => setQuieta(false)}
       onFocus={() => setQuieta(true)}
@@ -79,7 +96,7 @@ export function Cinta({ notas, clima }: { notas: NotaCinta[]; clima: Clima | nul
         ))}
         {total > 1 && (
           <li aria-hidden className="h-[18px] truncate">
-            <FechaHoy anio={false} /> · Fray Bentos
+            {fecha}
           </li>
         )}
       </ul>
@@ -87,9 +104,11 @@ export function Cinta({ notas, clima }: { notas: NotaCinta[]; clima: Clima | nul
   )
 }
 
-function Etiqueta({ children }: { children: React.ReactNode }) {
+function Etiqueta({ children, oscura }: { children: React.ReactNode; oscura: boolean }) {
   return (
-    <b className="mr-2 text-[10px] font-extrabold tracking-[0.1em] text-acento uppercase">
+    <b
+      className={`mr-2 text-[10px] font-extrabold tracking-[0.1em] uppercase ${oscura ? 'text-vivo-claro' : 'text-acento'}`}
+    >
       {children}
     </b>
   )
