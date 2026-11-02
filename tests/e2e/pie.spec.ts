@@ -17,9 +17,11 @@ for (const [nombre, ancho] of [
       '/institucional/publicidad',
     )
 
-    await expect(pie.getByRole('link', { name: 'Instagram de Visión' })).toBeVisible()
-    await expect(pie.getByRole('link', { name: 'Facebook de Visión' })).toBeVisible()
-    await expect(pie.getByRole('link', { name: 'WhatsApp de Visión' })).toBeVisible()
+    // Las otras redes dependen de lo cargado en el panel; el WhatsApp sale del número de la radio
+    await expect(pie.getByRole('link', { name: 'WhatsApp de Visión' })).toHaveAttribute(
+      'href',
+      /^https:\/\/wa\.me\//,
+    )
 
     const legales = pie.getByRole('navigation', { name: 'Legal' }).getByRole('link')
     await expect(legales).toHaveText(['Aviso legal', 'Privacidad', 'Cookies', 'Condiciones de uso'])
