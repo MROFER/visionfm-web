@@ -72,3 +72,27 @@ export function diasDeFunciones(fechas: string[]) {
 
 /** La hora de este pedido, para que el primer render del servidor y del navegador coincidan. */
 export const marcaDeTiempo = () => Date.now()
+
+// Filtro por mes de las entrevistas: el mes va como "2026-10" en la dirección
+export const esMes = (valor: string) => /^\d{4}-(0[1-9]|1[0-2])$/.test(valor)
+
+/** "2026-10": el mes de una fecha, en hora de Montevideo. */
+export function mesEnMontevideo(iso: string) {
+  const p = partes(new Date(iso), { year: 'numeric', month: '2-digit' })
+  return `${p.year}-${p.month}`
+}
+
+/** "Octubre 2026" */
+export function nombreDelMes(mes: string) {
+  const [anio, numero] = mes.split('-').map(Number)
+  const p = partes(new Date(Date.UTC(anio, numero - 1, 15, 12)), { month: 'long' })
+  return `${mayuscula(p.month)} ${anio}`
+}
+
+/** Desde el primer instante del mes hasta el del siguiente, en hora de Montevideo. */
+export function rangoDelMes(mes: string) {
+  const [anio, numero] = mes.split('-').map(Number)
+  const siguiente = numero === 12 ? `${anio + 1}-01` : `${anio}-${String(numero + 1).padStart(2, '0')}`
+  const inicio = (m: string) => new Date(`${m}-01T00:00:00-03:00`).toISOString()
+  return { desde: inicio(mes), hasta: inicio(siguiente) }
+}

@@ -3,51 +3,97 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
+import { FiltroMes } from '@/sitio/componentes/radio/FiltroMes'
 import { EntrevistaDestacada, FilaEntrevista } from '@/sitio/componentes/radio/ListaEntrevistas'
+import { PestanasProgramas } from '@/sitio/componentes/radio/PestanasProgramas'
 import { Buscador } from '@/sitio/componentes/ui/Buscador'
 import { Migas } from '@/sitio/componentes/ui/Migas'
 import { Paginacion } from '@/sitio/componentes/ui/Paginacion'
-import { entrevistaDestacada, listarEntrevistas, obtenerAjustes, obtenerGrilla } from '@/sitio/datos'
+import {
+  entrevistaDestacada,
+  indiceEntrevistas,
+  listarEntrevistas,
+  obtenerAjustes,
+  obtenerGrilla,
+} from '@/sitio/datos'
+import { esMes, nombreDelMes } from '@/sitio/lib/fecha'
 
 export const metadata: Metadata = {
   title: 'Entrevistas',
   description: 'Las voces de Fray Bentos que pasaron por Visión 96.5 FM, para escuchar de nuevo.',
 }
 
-type Busqueda = Promise<{ pagina?: string | string[]; q?: string | string[]; programa?: string | string[] }>
+type Busqueda = Promise<{
+  pagina?: string | string[]
+  q?: string | string[]
+  programa?: string | string[]
+  mes?: string | string[]
+}>
 
 const uno = (v?: string | string[]) => (Array.isArray(v) ? v[0] : v)
 
 // Entrevistas (design/LEEME.md, sección 7): buscador, pestañas por programa, destacada con reproductor,
-// archivo paginado. Todo suena con el mismo audio de la radio.
+// archivo paginado y filtro por mes. Todo suena con el mismo audio de la radio.
 export default async function Entrevistas({ searchParams }: { searchParams: Busqueda }) {
   const busqueda = await searchParams
   const numero = Number(uno(busqueda.pagina))
   const pagina = Number.isInteger(numero) && numero > 1 ? numero : 1
   const q = uno(busqueda.q)?.trim().slice(0, 100) ?? ''
   const programa = uno(busqueda.programa) || undefined
+  const mesPedido = uno(busqueda.mes)
+  const mes = mesPedido && esMes(mesPedido) ? mesPedido : undefined
 
-  const [ajustes, grilla] = await Promise.all([obtenerAjustes(), obtenerGrilla()])
-  if (programa && !grilla.some((p) => p.slug === programa)) notFound()
-  const destacada = await entrevistaDestacada(programa)
+  const [ajustes, grilla, indice] = await Promise.all([
+    obtenerAjustes(),
+    obtenerGrilla(),
+    indiceEntrevistas(),
+  ])
+  // Pestañas: solo los programas con entrevistas, el de la más reciente primero
+  const conEntrevistas = new Map<string, string>()
+  for (const e of indice) if (e.programa) conEntrevistas.set(e.programa.slug, e.programa.nombre)
+  const elegido = grilla.find((p) => p.slug === programa)
+  if (programa && !elegido && !conEntrevistas.has(programa)) notFound()
+  // Un programa de la grilla todavía sin entrevistas también se puede elegir por la dirección
+  if (programa && elegido && !conEntrevistas.has(programa)) conEntrevistas.set(programa, elegido.nombre)
+  const meses = [...new Set(indice.filter((e) => !programa || e.programa?.slug === programa).map((e) => e.mes))]
+
+  // Con búsqueda o mes elegido no hay destacada: se listan todas las que coinciden
+  const filtrando = Boolean(q || mes)
+  const destacada = filtrando ? null : await entrevistaDestacada(programa)
   const archivo = await listarEntrevistas({
     pagina,
     programa,
     q: q || undefined,
-    excluir: q ? null : destacada?.id,
+    mes,
+    excluir: destacada?.id,
   })
   if (pagina > archivo.paginas) notFound()
 
-  const href = (cambios: { pagina?: number; programa?: string | null }) => {
+  const href = (cambios: { pagina?: number; programa?: string | null; mes?: string | null }) => {
     const params = new URLSearchParams()
-    const prog = cambios.programa === undefined ? programa : cambios.programa
+    const mismoPrograma = cambios.programa === undefined
+    const prog = mismoPrograma ? programa : cambios.programa
     if (prog) params.set('programa', prog)
-    if (q && cambios.programa === undefined) params.set('q', q)
+    if (q && mismoPrograma) params.set('q', q)
+    // Al cambiar de programa el mes se suelta: puede no tener entrevistas de ese programa
+    const m = cambios.mes === undefined ? (mismoPrograma ? mes : undefined) : cambios.mes
+    if (m) params.set('mes', m)
     if (cambios.pagina && cambios.pagina > 1) params.set('pagina', String(cambios.pagina))
     const cadena = params.toString()
     return cadena ? `/radio/entrevistas?${cadena}` : '/radio/entrevistas'
   }
-  const pestanas = [{ nombre: 'Todos', slug: '' }, ...grilla.map((p) => ({ nombre: p.nombre, slug: p.slug }))]
+  const pestanas = [
+    { nombre: 'Todos', href: href({ programa: null }), elegida: !programa },
+    ...[...conEntrevistas].map(([slug, nombre]) => ({
+      nombre,
+      href: href({ programa: slug }),
+      elegida: slug === programa,
+    })),
+  ]
+  const opcionesMes = [
+    { valor: '', etiqueta: 'Todas las fechas', href: href({ mes: null }) },
+    ...meses.map((m) => ({ valor: m, etiqueta: nombreDelMes(m), href: href({ mes: m }) })),
+  ]
 
   return (
     <main className="pb-10 md:pb-20">
@@ -77,37 +123,23 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
           />
         </div>
 
-        <nav
-          aria-label="Programas"
-          className="mb-4 flex gap-5 overflow-x-auto border-b border-linea md:mb-7 md:flex-wrap md:gap-x-7 md:overflow-visible"
-        >
-          {pestanas.map((p) => {
-            const elegida = (programa ?? '') === p.slug
-            return (
-              <Link
-                key={p.slug || 'todos'}
-                href={href({ programa: p.slug || null })}
-                aria-current={elegida ? 'page' : undefined}
-                className={`flex min-h-11 shrink-0 items-center text-xs tracking-[0.08em] uppercase no-underline hover:text-acento md:min-h-12 md:text-sm ${
-                  elegida ? 'font-extrabold shadow-[inset_0_-3px_0_var(--color-acento)]' : 'font-semibold'
-                }`}
-              >
-                {p.nombre}
-              </Link>
-            )
-          })}
-        </nav>
+        <PestanasProgramas pestanas={pestanas} />
 
-        {destacada && pagina === 1 && !q && <EntrevistaDestacada entrevista={destacada} />}
+        {destacada && pagina === 1 && <EntrevistaDestacada entrevista={destacada} />}
 
-        <h2 className="etiqueta m-0 flex items-baseline justify-between gap-4 border-b-[3px] border-tinta pb-2.5 text-xs md:text-[13px]">
-          {q ? `Resultados para “${q}”` : 'Todas las entrevistas'}
-          {archivo.paginas > 1 && (
-            <span className="hidden font-normal tracking-normal text-meta normal-case md:inline">
-              Página {pagina} de {archivo.paginas}
-            </span>
-          )}
-        </h2>
+        <div className="flex items-end justify-between gap-4 border-b-[3px] border-tinta pb-2.5">
+          <h2 className="etiqueta m-0 text-xs md:text-[13px]">
+            {q ? `Resultados para “${q}”` : mes ? `Entrevistas de ${nombreDelMes(mes).toLowerCase()}` : 'Todas las entrevistas'}
+          </h2>
+          <div className="flex items-center gap-4">
+            {archivo.paginas > 1 && (
+              <span className="hidden text-[13px] text-meta md:inline">
+                Página {pagina} de {archivo.paginas}
+              </span>
+            )}
+            {meses.length > 0 && <FiltroMes opciones={opcionesMes} actual={mes ?? ''} />}
+          </div>
+        </div>
         {archivo.entrevistas.length > 0 ? (
           <ol className="m-0 list-none p-0">
             {archivo.entrevistas.map((e) => (
@@ -120,6 +152,13 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
               <>
                 No encontramos entrevistas con “{q}”.{' '}
                 <Link href={href({ programa: programa ?? null })} className="font-semibold">
+                  Ver todas
+                </Link>
+              </>
+            ) : mes ? (
+              <>
+                No hay entrevistas en {nombreDelMes(mes).toLowerCase()}.{' '}
+                <Link href={href({ mes: null })} className="font-semibold">
                   Ver todas
                 </Link>
               </>
