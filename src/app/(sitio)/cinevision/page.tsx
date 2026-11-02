@@ -73,6 +73,7 @@ export default async function Cinevision() {
                 id: p.id,
                 slug: p.slug,
                 titulo: p.titulo,
+                genero: p.genero,
                 afiche: p.afiche,
                 dias: diasConFunciones(p.funciones.map((f) => f.fechaHora)),
               }))}
