@@ -28,6 +28,15 @@ export const IconoFlechaAbajo = ({ tamano = 12, className }: Props) => (
   </svg>
 )
 
+export const IconoCalendario = ({ tamano = 16, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="square">
+    <rect x="3" y="5" width="18" height="16" />
+    <line x1="3" y1="10" x2="21" y2="10" />
+    <line x1="8" y1="3" x2="8" y2="7" />
+    <line x1="16" y1="3" x2="16" y2="7" />
+  </svg>
+)
+
 /** Ruedita de "conectando": gira sola, salvo que la persona pidió menos movimiento. */
 export const IconoCargando = ({ tamano = 16, className = '' }: Props) => (
   <svg {...base(tamano)} className={`motion-safe:animate-spin ${className}`} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round">

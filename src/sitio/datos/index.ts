@@ -6,6 +6,7 @@ import type { Equipo } from '@/payload-types'
 import { idsQueCoinciden } from '../busqueda/consulta'
 import type { ExcepcionEnGrilla } from '../lib/grilla'
 import { enumerar } from '../lib/texto'
+import { mesEnMontevideo, rangoDelMes } from '../lib/fecha'
 import { diaEnMontevideo, sumarDias } from '../publicidad/fechas'
 import { aImagen, aTarjetaEntrevista, aTarjetaNota, aTarjetaPelicula } from './formas'
 import type { ProgramaCompleto, ProgramaGrilla, Voz } from './tipos'
@@ -249,24 +250,33 @@ export const ultimasEntrevistas = unstable_cache(
 
 export const ENTREVISTAS_POR_PAGINA = 8
 
-/** Archivo de entrevistas, de un programa o de todos. `q` busca en el nombre, el tema y el resumen. */
+/**
+ * Archivo de entrevistas, de un programa o de todos. `q` busca en el nombre, el tema y el resumen;
+ * `mes` ("2026-10") deja solo las de ese mes.
+ */
 export const listarEntrevistas = unstable_cache(
   async ({
     pagina,
     cantidad = ENTREVISTAS_POR_PAGINA,
     programa,
     q,
+    mes,
     excluir,
   }: {
     pagina: number
     cantidad?: number
     programa?: string
     q?: string
+    mes?: string
     excluir?: number | null
   }) => {
     const p = await payload()
     const condiciones: Where[] = []
     if (programa) condiciones.push({ 'programa.slug': { equals: programa } })
+    if (mes) {
+      const { desde, hasta } = rangoDelMes(mes)
+      condiciones.push({ fecha: { greater_than_equal: desde } }, { fecha: { less_than: hasta } })
+    }
     if (excluir) condiciones.push({ id: { not_equals: excluir } })
     if (q) {
       const ids = await idsQueCoinciden(p, 'entrevistas', q)
@@ -292,6 +302,34 @@ export const listarEntrevistas = unstable_cache(
   },
   ['listar-entrevistas'],
   // El nombre del programa viene de Programas
+  { tags: ['entrevistas', 'programas'] },
+)
+
+/**
+ * Programa y mes de cada entrevista publicada, de la más nueva a la más vieja: arma las pestañas de
+ * programas (solo los que tienen entrevistas, el más activo primero) y el filtro por mes.
+ */
+export const indiceEntrevistas = unstable_cache(
+  async () => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'entrevistas',
+      sort: '-fecha',
+      pagination: false,
+      depth: 1,
+      select: { fecha: true, programa: true },
+      populate: { programas: { nombre: true, slug: true } },
+      ...publico,
+    })
+    return docs.map((d) => ({
+      mes: mesEnMontevideo(d.fecha),
+      programa:
+        typeof d.programa === 'object' && d.programa?.slug
+          ? { nombre: d.programa.nombre, slug: d.programa.slug }
+          : null,
+    }))
+  },
+  ['indice-entrevistas'],
   { tags: ['entrevistas', 'programas'] },
 )
 
