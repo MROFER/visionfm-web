@@ -88,6 +88,30 @@ test('si la primera conexión queda colgada, prueba otra y arranca', async ({ pa
   await sonando(page, 10_000)
 })
 
+test('una entrevista baja el vivo y, al terminar, el vivo vuelve solo', async ({ page }) => {
+  await servirStream(page)
+  await page.goto('/radio/entrevistas')
+  await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
+  await sonando(page)
+  await page
+    .getByRole('button', { name: /^Escuchar la entrevista a/ })
+    .first()
+    .click()
+  await page.waitForFunction(() => {
+    const a = document.querySelector('audio')
+    return !!a && a.src.includes('/api/entrevistas/') && !a.paused && a.currentTime > 0
+  })
+  // Saltar al final de la entrevista
+  await page.evaluate(() => {
+    const a = document.querySelector('audio')!
+    a.currentTime = Math.max(0, a.duration - 0.3)
+  })
+  await page.waitForFunction(() => {
+    const a = document.querySelector('audio')
+    return !!a && !a.src.includes('/api/entrevistas/') && !a.paused && a.currentTime > 0
+  })
+})
+
 test('la pantalla bloqueada muestra la radio y deja pausar', async ({ page }) => {
   await servirStream(page)
   await page.goto('/')

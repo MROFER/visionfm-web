@@ -69,6 +69,25 @@ const ESPERA_MAXIMA = 5000
 const PORTADA = [{ src: '/marca/icono-512.png', sizes: '512x512', type: 'image/png' }]
 /** Cada cuánto se vuelve a pedir la grilla, por si cargaron un cambio con la página abierta. */
 const CADA_DIEZ_MINUTOS = 10 * 60_000
+/** Cuánto tarda el vivo en bajar o subir el volumen al dar paso a una entrevista y al volver. */
+const FUNDIDO = 500
+
+/**
+ * Lleva el volumen del audio de `desde` a `hasta` de a poco. En iPhone el volumen no se puede tocar
+ * desde la página: ahí el cambio es directo.
+ */
+function fundir(a: HTMLAudioElement, desde: number, hasta: number) {
+  return new Promise<void>((listo) => {
+    const inicio = performance.now()
+    const paso = (t: number) => {
+      const avance = Math.min(1, (t - inicio) / FUNDIDO)
+      a.volume = desde + (hasta - desde) * avance
+      if (avance < 1) requestAnimationFrame(paso)
+      else listo()
+    }
+    requestAnimationFrame(paso)
+  })
+}
 
 export function Radio({
   streamUrl,
@@ -95,6 +114,9 @@ export function Radio({
   const [reconectando, setReconectando] = useState(false)
   // Si la persona quiere escuchar el vivo: un corte de red no es una pausa
   const quiereVivo = useRef(false)
+  // El vivo sonaba cuando se puso una entrevista: al terminar la entrevista, vuelve
+  const volverAlVivo = useRef(false)
+  const subirAlSonar = useRef(false)
   const reintentos = useRef(0)
   const temporizador = useRef<ReturnType<typeof setTimeout>>(undefined)
   // El HTML puede venir de la caché: apenas carga, el navegador recalcula con su reloj
@@ -240,6 +262,7 @@ export function Radio({
   const alternar = useCallback(() => {
     const a = audio.current
     if (!a || !streamUrl) return
+    volverAlVivo.current = false
     if (pista?.tipo === 'vivo' && (!a.paused || quiereVivo.current)) return cortarVivo(a)
     escucharVivo(a)
   }, [streamUrl, pista, cortarVivo, escucharVivo])
@@ -248,6 +271,7 @@ export function Radio({
     (nueva: PistaEntrevista) => {
       const a = audio.current
       if (!a) return
+      const vivoSonando = pista?.tipo === 'vivo' && (!a.paused || quiereVivo.current)
       quiereVivo.current = false
       olvidarReintentos()
       if (pista?.tipo === 'entrevista' && pista.id === nueva.id && a.getAttribute('src')) {
@@ -259,7 +283,14 @@ export function Radio({
         }
         return
       }
-      arrancar(a, nueva.src, { tipo: 'entrevista', ...nueva })
+      if (!vivoSonando) return arrancar(a, nueva.src, { tipo: 'entrevista', ...nueva })
+      // El vivo baja suave, suena la entrevista y, cuando termina, el vivo vuelve solo
+      volverAlVivo.current = true
+      const nivel = a.volume
+      void fundir(a, nivel, 0).then(() => {
+        a.volume = nivel
+        arrancar(a, nueva.src, { tipo: 'entrevista', ...nueva })
+      })
     },
     [pista, arrancar, olvidarReintentos],
   )
@@ -376,7 +407,11 @@ export function Radio({
       <audio
         ref={audio}
         preload="none"
-        onPlaying={() => {
+        onPlaying={(e) => {
+          if (subirAlSonar.current) {
+            subirAlSonar.current = false
+            void fundir(e.currentTarget, 0, volumen)
+          }
           clearTimeout(temporizador.current)
           reintentos.current = 0
           setReconectando(false)
@@ -387,10 +422,16 @@ export function Radio({
         onWaiting={esperarVivo}
         onPause={() => setReproduciendo(false)}
         onEmptied={() => setReproduciendo(false)}
-        onEnded={() => {
+        onEnded={(e) => {
           setReproduciendo(false)
           // Un vivo no termina: si terminó, el servidor cortó la conexión
-          if (quiereVivo.current) reconectar()
+          if (quiereVivo.current) return reconectar()
+          if (volverAlVivo.current && streamUrl) {
+            volverAlVivo.current = false
+            subirAlSonar.current = true
+            e.currentTarget.volume = 0
+            escucharVivo(e.currentTarget)
+          }
         }}
         onTimeUpdate={(e) => setActual(e.currentTarget.currentTime)}
         onDurationChange={(e) => {
