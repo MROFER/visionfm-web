@@ -4,13 +4,13 @@ import { expect, test } from '@playwright/test'
 test('el programa al aire va primero y lo que ya pasó se despliega con un botón', async ({
   page,
 }) => {
-  // Lunes 2 de noviembre de 2026, 13:30 en Montevideo: suena el Mediodía Informativo
+  // Lunes 2 de noviembre de 2026, 13:30 en Montevideo: suena La vida es bella
   await page.clock.setFixedTime(new Date('2026-11-02T16:30:00Z'))
   await page.goto('/radio/programacion')
 
   const lista = page.locator('#grilla-del-dia li')
   const alAire = page.locator('#grilla-del-dia li[aria-current]')
-  await expect(alAire).toContainText('Mediodía Informativo')
+  await expect(alAire).toContainText('La vida es bella')
   await expect(lista.first()).toHaveAttribute('aria-current', 'true')
 
   const pasados = page.getByRole('button', { name: /^Ver lo que ya pasó hoy/ })

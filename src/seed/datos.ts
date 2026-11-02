@@ -1,4 +1,5 @@
-// Contenido de ejemplo para local, staging y la demo. Personas, comercios y hechos son inventados.
+// Contenido de ejemplo para local, staging y la demo. La grilla de lunes a viernes es la real de Visión;
+// el resto (personas, comercios, hechos y la grilla del fin de semana) es inventado.
 
 export const SECCIONES = [
   { nombre: 'Locales', descripcion: 'Lo que pasa en Fray Bentos y en Río Negro.' },
@@ -23,36 +24,47 @@ export const EQUIPO = [
 type Dia = 'lun' | 'mar' | 'mie' | 'jue' | 'vie' | 'sab' | 'dom'
 const SEMANA: Dia[] = ['lun', 'mar', 'mie', 'jue', 'vie']
 
+const deLunesAViernes = (inicio: string, fin: string) => ({ dias: SEMANA, inicio, fin })
+
 export const PROGRAMAS: {
   nombre: string
-  descripcion: string
-  conductores: string[]
+  descripcion?: string
+  conductores?: string[]
   horarios: { dias: Dia[]; inicio: string; fin: string }[]
 }[] = [
+  { nombre: 'La hora bossa', horarios: [deLunesAViernes('00:00', '01:00')] },
+  { nombre: 'Mantras', horarios: [deLunesAViernes('01:00', '02:00')] },
+  { nombre: 'Cuentos', horarios: [deLunesAViernes('02:00', '04:00')] },
+  { nombre: 'Gente que habla', horarios: [deLunesAViernes('04:00', '06:00')] },
+  { nombre: 'Misión de vida', horarios: [deLunesAViernes('06:00', '06:15')] },
+  { nombre: 'Folklore de mujer', horarios: [deLunesAViernes('06:15', '07:30')] },
   {
-    nombre: 'Buen Día Fray Bentos',
-    descripcion: 'Las noticias de la mañana, el clima y la agenda del día.',
-    conductores: ['Carolina Píriz', 'Andrés Cabrera'],
-    horarios: [{ dias: SEMANA, inicio: '07:00', fin: '10:00' }],
+    nombre: 'Bocaditos',
+    horarios: [
+      deLunesAViernes('07:30', '08:00'),
+      deLunesAViernes('12:55', '13:00'),
+      deLunesAViernes('16:00', '16:05'),
+      deLunesAViernes('20:00', '20:05'),
+      deLunesAViernes('22:00', '22:05'),
+    ],
   },
+  { nombre: 'Visión temprana', horarios: [deLunesAViernes('08:00', '10:00')] },
+  { nombre: 'Conectados', horarios: [deLunesAViernes('10:00', '12:00')] },
+  { nombre: 'Anita y las chicas del country', horarios: [deLunesAViernes('12:00', '12:55')] },
+  { nombre: 'La vida es bella', horarios: [deLunesAViernes('13:00', '15:00')] },
+  { nombre: 'Alta magia', horarios: [deLunesAViernes('15:00', '16:00')] },
+  { nombre: 'Mate dulce', horarios: [deLunesAViernes('16:05', '17:00')] },
   {
-    nombre: 'La Mañana de Visión',
-    descripcion: 'Entrevistas, música y la actualidad del departamento.',
-    conductores: ['Valeria Méndez'],
-    horarios: [{ dias: SEMANA, inicio: '10:00', fin: '13:00' }],
+    nombre: 'Sirenas',
+    horarios: [deLunesAViernes('17:00', '17:35'), deLunesAViernes('19:30', '20:00')],
   },
-  {
-    nombre: 'Mediodía Informativo',
-    descripcion: 'El resumen de noticias del mediodía.',
-    conductores: ['Carolina Píriz'],
-    horarios: [{ dias: SEMANA, inicio: '13:00', fin: '14:00' }],
-  },
-  {
-    nombre: 'Tarde Deportiva',
-    descripcion: 'Todo el deporte de Río Negro, con la previa de la fecha.',
-    conductores: ['Diego Olivera'],
-    horarios: [{ dias: SEMANA, inicio: '18:00', fin: '20:00' }],
-  },
+  { nombre: 'Divas', horarios: [deLunesAViernes('17:35', '18:30')] },
+  { nombre: 'El propio reggae', horarios: [deLunesAViernes('18:30', '19:30')] },
+  { nombre: 'Hecho en Uruguay', horarios: [deLunesAViernes('20:05', '21:00')] },
+  { nombre: 'RYB', horarios: [deLunesAViernes('21:00', '22:00')] },
+  { nombre: 'Los propios discos', horarios: [deLunesAViernes('22:05', '23:00')] },
+  { nombre: 'Jazz a la radio', horarios: [deLunesAViernes('23:00', '00:00')] },
+  // Fin de semana: de ejemplo hasta tener la grilla real
   {
     nombre: 'Agenda Cultural',
     descripcion: 'Música, teatro, cine y lo que se viene en la ciudad.',
@@ -62,7 +74,6 @@ export const PROGRAMAS: {
   {
     nombre: 'Clásicos del Domingo',
     descripcion: 'Música para acompañar el domingo.',
-    conductores: [],
     horarios: [{ dias: ['dom'], inicio: '09:00', fin: '13:00' }],
   },
 ]
@@ -157,7 +168,7 @@ export const NOTICIAS: {
     seccion: 'Deportes',
     bajada:
       'El torneo arranca este fin de semana con partidos en el gimnasio municipal y se juega todos los viernes y sábados hasta diciembre.',
-    parrafos: ['Visión transmite los partidos de los viernes en Tarde Deportiva.'],
+    parrafos: ['Visión transmite los partidos de los viernes.'],
     diasAtras: 8,
   },
 ]

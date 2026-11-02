@@ -129,7 +129,7 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
             nombre: p.nombre,
             slug: '',
             descripcion: p.descripcion,
-            conductores: p.conductores.map((n) => equipo.get(n)!).filter(Boolean),
+            conductores: (p.conductores ?? []).map((n) => equipo.get(n)!).filter(Boolean),
             horarios: p.horarios,
             foto: (
               await imagen(`Programa ${p.nombre}`, 1280, 720, p.nombre, COLORES[i % COLORES.length])
@@ -229,13 +229,13 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
     {
       entrevistado: 'Directora del Centro Cultural',
       tema: 'Los talleres de verano',
-      programa: 'La Mañana de Visión',
+      programa: 'Visión temprana',
       diasAtras: 1,
     },
     {
       entrevistado: 'Técnico de Laureles',
       tema: 'La previa del clásico',
-      programa: 'Tarde Deportiva',
+      programa: 'Conectados',
       diasAtras: 2,
     },
     {
