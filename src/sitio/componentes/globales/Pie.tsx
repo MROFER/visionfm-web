@@ -78,7 +78,6 @@ export function Pie({ ajustes, secciones }: { ajustes: AjustesSitio; secciones: 
             className="lg:order-2 lg:flex-[1_1_200px]"
             enlaces={[
               { etiqueta: 'Quiénes somos', href: '/institucional#nosotros' },
-              { etiqueta: 'Equipo', href: '/institucional#equipo' },
               { etiqueta: 'Ser parte', href: '/institucional/sumarse' },
               { etiqueta: 'Contacto', href: '/institucional/contacto' },
             ]}
