@@ -7,24 +7,30 @@ import { silencioMp3 } from '../../src/seed/imagenes'
 // reemplaza por un MP3 de silencio, sea cual sea la URL cargada.
 const audio = silencioMp3(120)
 
-const servirStream = (page: Page, { fallarPrimero = 0 } = {}) => {
+const servirStream = (page: Page, { fallarPrimero = 0, colgarPrimero = false } = {}) => {
   let pedidos = 0
   return page.route(
     (url) => url.protocol === 'https:' && url.hostname !== 'localhost',
     (route) => {
       if (route.request().resourceType() !== 'media') return route.continue()
       pedidos++
+      // El servidor acepta la conexión y nunca manda audio
+      if (colgarPrimero && pedidos === 1) return new Promise<void>(() => {})
       if (pedidos <= fallarPrimero) return route.abort('connectionreset')
       return route.fulfill({ status: 200, contentType: 'audio/mpeg', body: audio })
     },
   )
 }
 
-const sonando = (page: Page) =>
-  page.waitForFunction(() => {
-    const a = document.querySelector('audio')
-    return !!a && !a.paused && a.currentTime > 0
-  })
+const sonando = (page: Page, timeout?: number) =>
+  page.waitForFunction(
+    () => {
+      const a = document.querySelector('audio')
+      return !!a && !a.paused && a.currentTime > 0
+    },
+    undefined,
+    { timeout },
+  )
 
 /** Hace clic en el primer link visible a esa ruta, como lo haría una persona. */
 async function irA(page: Page, href: string) {
@@ -72,6 +78,14 @@ test('si la señal se corta, se reconecta sola', async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
   await sonando(page)
+})
+
+test('si la primera conexión queda colgada, prueba otra y arranca', async ({ page }) => {
+  await servirStream(page, { colgarPrimero: true })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Escuchar en vivo' }).first().click()
+  // Antes esperaba 15 s colgado antes de volver a probar
+  await sonando(page, 10_000)
 })
 
 test('la pantalla bloqueada muestra la radio y deja pausar', async ({ page }) => {
