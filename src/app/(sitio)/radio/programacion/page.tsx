@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
-import { BandaAlAire } from '@/sitio/componentes/radio/BandaAlAire'
 import { GrillaSemanal } from '@/sitio/componentes/radio/GrillaSemanal'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { Migas } from '@/sitio/componentes/ui/Migas'
@@ -14,7 +13,8 @@ export const metadata: Metadata = {
   description: 'Lo que suena en Visión 96.5 FM, día por día, y quiénes lo conducen.',
 }
 
-// Programación (design/LEEME.md, sección 7): banda al aire, pestañas por día y "Las voces de Visión"
+// Programación (design/LEEME.md, sección 7): pestañas por día, con el programa al aire remarcado y
+// primero, y "Las voces de Visión"
 export default async function Programacion() {
   const [ajustes, programas, voces] = await Promise.all([
     obtenerAjustes(),
@@ -29,7 +29,7 @@ export default async function Programacion() {
         <Publicidad ubicacion="radio-programacion" aviso={ajustes.avisoPropio} />
       </div>
       <div className="contenedor pt-4 md:pt-9">
-        <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-end md:justify-between md:gap-6 md:border-b-[3px] md:border-tinta md:pb-5">
+        <div className="flex flex-col gap-4 md:border-b-[3px] md:border-tinta md:pb-5">
           <div className="flex flex-col gap-2 md:gap-2.5">
             <span className="text-[11px] font-extrabold tracking-[0.12em] text-acento uppercase md:text-xs">
               Radio · 96.5 FM
@@ -39,7 +39,6 @@ export default async function Programacion() {
             </h1>
             <p className="m-0 hidden text-[17px] text-texto-2 md:block">Lo que suena en Visión, día por día.</p>
           </div>
-          <BandaAlAire />
         </div>
         <div className="mt-4 md:mt-0">
           <GrillaSemanal programas={programas} />
