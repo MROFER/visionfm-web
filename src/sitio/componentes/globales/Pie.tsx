@@ -60,7 +60,7 @@ export function Pie({ ajustes, secciones }: { ajustes: AjustesSitio; secciones: 
     <footer className="bg-tinta pb-[108px] text-oscuro-1 lg:pb-0">
       <div className="contenedor flex flex-col gap-9 pt-10 lg:gap-12 lg:pt-14 lg:pb-7">
         <div className="flex flex-col gap-9 lg:flex-row lg:gap-12">
-          {/* Celular: el logo con la frase al lado, y las redes centradas debajo */}
+          {/* Celular: el logo con la frase al lado, y las redes debajo */}
           <div className="flex flex-col gap-5 lg:hidden">
             <div className="flex items-center gap-4">
               {logo(34)}
@@ -70,7 +70,7 @@ export function Pie({ ajustes, secciones }: { ajustes: AjustesSitio; secciones: 
                 en Fray Bentos desde 2005.
               </p>
             </div>
-            <Redes ajustes={ajustes} className="flex justify-center" />
+            <Redes ajustes={ajustes} className="flex" />
           </div>
           {/* Web */}
           <div className="hidden flex-col items-start gap-4 lg:flex lg:flex-[2_1_0%]">
