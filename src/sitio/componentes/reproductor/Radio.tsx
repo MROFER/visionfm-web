@@ -61,8 +61,11 @@ export function useRadio() {
 const CADA_MINUTO = 30_000
 /** Esperas entre reintentos cuando se corta el vivo; después del último, se avisa el error. */
 const REINTENTOS = [1000, 2000, 4000, 8000, 15_000, 30_000]
-/** Si el vivo queda cargando más que esto, se da por cortado. */
-const ESPERA_MAXIMA = 15_000
+/**
+ * Si el vivo queda cargando más que esto, se da por cortado y se abre otra conexión. A veces el
+ * servidor del stream deja colgada la primera conexión; una nueva arranca enseguida.
+ */
+const ESPERA_MAXIMA = 5000
 const PORTADA = [{ src: '/marca/icono-512.png', sizes: '512x512', type: 'image/png' }]
 /** Cada cuánto se vuelve a pedir la grilla, por si cargaron un cambio con la página abierta. */
 const CADA_DIEZ_MINUTOS = 10 * 60_000
@@ -212,6 +215,13 @@ export function Radio({
       })
     }, espera)
   }, [streamUrl])
+
+  /** Al conectar o quedarse sin audio: si el vivo no suena en ESPERA_MAXIMA, probar de nuevo. */
+  const esperarVivo = useCallback(() => {
+    if (!quiereVivo.current) return
+    clearTimeout(temporizador.current)
+    temporizador.current = setTimeout(reconectar, ESPERA_MAXIMA)
+  }, [reconectar])
 
   // Cuando vuelve la conexión del equipo, no esperar al próximo reintento
   useEffect(() => {
@@ -373,11 +383,8 @@ export function Radio({
           setReproduciendo(true)
           setCargando(false)
         }}
-        onWaiting={() => {
-          if (!quiereVivo.current) return
-          clearTimeout(temporizador.current)
-          temporizador.current = setTimeout(reconectar, ESPERA_MAXIMA)
-        }}
+        onLoadStart={esperarVivo}
+        onWaiting={esperarVivo}
         onPause={() => setReproduciendo(false)}
         onEmptied={() => setReproduciendo(false)}
         onEnded={() => {
