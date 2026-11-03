@@ -13,7 +13,7 @@ import { diasConFunciones } from '@/sitio/lib/cine'
 import { urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaNumerica, hoyEnMontevideo } from '@/sitio/lib/fecha'
 import { telefonoParaLink } from '@/sitio/navegacion'
-import { cine as nodoCine, migas } from '@/sitio/seo/estructurados'
+import { cine as nodoCine, migas, pelicula as nodosPelicula } from '@/sitio/seo/estructurados'
 
 export const metadata: Metadata = {
   title: 'Cinevisión',
@@ -39,7 +39,9 @@ export default async function Cinevision() {
   const telefono = cine.comoLlegar.telefono || ajustes.telefono
   const origen = urlDelSitio().origin
   const datos = [
-    nodoCine(origen, { ...cine.comoLlegar, direccion, telefono }),
+    nodoCine(origen, { ...cine.comoLlegar, direccion, telefono }, cine.precios),
+    // Cada película con sus funciones de la semana: lo que un asistente necesita para "qué dan hoy"
+    ...cartelera.flatMap((p) => nodosPelicula(origen, p, p.funciones)),
     migas(origen, [{ nombre: 'Cinevisión' }]),
   ]
 
