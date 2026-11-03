@@ -61,11 +61,15 @@ export default async function Pelicula({ params }: Parametros) {
   const origen = urlDelSitio().origin
   const datos = [
     ...nodosPelicula(origen, pelicula, funciones),
-    nodoCine(origen, {
-      ...cine.comoLlegar,
-      direccion: cine.comoLlegar.direccion || ajustes.direccion,
-      telefono: cine.comoLlegar.telefono || ajustes.telefono,
-    }),
+    nodoCine(
+      origen,
+      {
+        ...cine.comoLlegar,
+        direccion: cine.comoLlegar.direccion || ajustes.direccion,
+        telefono: cine.comoLlegar.telefono || ajustes.telefono,
+      },
+      cine.precios,
+    ),
     migas(origen, [
       { nombre: 'Cinevisión', ruta: '/cinevision' },
       { nombre: pelicula.titulo },

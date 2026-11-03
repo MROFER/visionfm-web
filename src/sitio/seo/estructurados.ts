@@ -4,7 +4,8 @@ import { nombreFormato, nombreIdioma } from '../lib/cine'
 import { calificacion } from '../lib/formato'
 
 // Datos estructurados de schema.org en JSON-LD (docs/01-prd.md y docs/06-revision.md): la radio, el sitio,
-// cada nota, cada película con sus funciones, el cine y la ruta de cada página. Funciones puras.
+// la emisión en vivo, los programas de la semana, cada nota, cada película con sus funciones, el cine con
+// sus precios y la ruta de cada página. Funciones puras.
 
 type Nodo = Record<string, unknown>
 
@@ -15,6 +16,7 @@ const url = (origen: string, ruta: string) =>
 
 export const idRadio = (origen: string) => url(origen, '/#radio')
 const idSitio = (origen: string) => url(origen, '/#sitio')
+const idEmision = (origen: string) => url(origen, '/radio/en-vivo#emision')
 const idCine = (origen: string) => url(origen, '/cinevision#cine')
 
 const direccion = (calle: string) =>
@@ -37,12 +39,25 @@ function limpio<T extends Nodo>(nodo: T): T {
   ) as T
 }
 
+const personas = (nombres: string) =>
+  nombres
+    .split(/,|\sy\s/)
+    .map((n) => n.trim())
+    .filter(Boolean)
+    .map((name) => ({ '@type': 'Person', name }))
+
 const imagenes = (origen: string, imagen: Imagen | null) =>
   imagen ? [url(origen, imagen.compartir ?? imagen.url)] : undefined
 
 export function radioYSitio(
   origen: string,
-  a: { telefono: string; email: string; direccion: string; redes: { url: string }[] },
+  a: {
+    telefono: string
+    email: string
+    direccion: string
+    redes: { url: string }[]
+    streamUrl?: string
+  },
 ): Nodo[] {
   return [
     limpio({
@@ -74,7 +89,60 @@ export function radioYSitio(
         'query-input': 'required name=search_term_string',
       },
     },
+    // La emisión en vivo: la 96.5 FM y dónde se escucha por internet (la página y el audio directo)
+    limpio({
+      '@type': 'BroadcastService',
+      '@id': idEmision(origen),
+      name: NOMBRE,
+      url: url(origen, '/radio/en-vivo'),
+      broadcaster: { '@id': idRadio(origen) },
+      broadcastFrequency: {
+        '@type': 'BroadcastFrequencySpecification',
+        broadcastFrequencyValue: 96.5,
+        broadcastSignalModulation: 'FM',
+      },
+      areaServed: 'Fray Bentos, Río Negro, Uruguay',
+      inLanguage: 'es-UY',
+      potentialAction: {
+        '@type': 'ListenAction',
+        target: [
+          url(origen, '/radio/en-vivo'),
+          ...(a.streamUrl?.startsWith('https://') ? [a.streamUrl] : []),
+        ],
+      },
+    }),
   ]
+}
+
+const diaSiguiente = (fecha: string) =>
+  new Date(Date.parse(`${fecha}T12:00:00Z`) + 24 * 60 * 60_000).toISOString().slice(0, 10)
+
+/**
+ * Lo que sale al aire en la semana, un BroadcastEvent por programa y horario, con los cambios de grilla
+ * ya aplicados. Las horas van con el desfase de Montevideo (UTC-3 fijo).
+ */
+export function emisiones(
+  origen: string,
+  lista: {
+    programa: { nombre: string; conduccion: string; descripcion?: string }
+    fecha: string
+    inicio: string
+    fin: string
+  }[],
+): Nodo[] {
+  return lista.map((e) =>
+    limpio({
+      '@type': 'BroadcastEvent',
+      name: e.programa.nombre,
+      description: e.programa.descripcion,
+      startDate: `${e.fecha}T${e.inicio}:00-03:00`,
+      endDate: `${e.fin === '00:00' ? diaSiguiente(e.fecha) : e.fecha}T${e.fin}:00-03:00`,
+      isLiveBroadcast: true,
+      publishedOn: { '@id': idEmision(origen) },
+      performer: personas(e.programa.conduccion),
+      url: url(origen, '/radio/programacion'),
+    }),
+  )
 }
 
 /** Inicio › … › la página actual. La última miga va sin link, como pide Google. */
@@ -134,7 +202,24 @@ export function articulo(
   })
 }
 
-export function cine(origen: string, c: DatosCinevision['comoLlegar']): Nodo {
+/** "$ 300" → 300 en pesos; "U$S 5" → 5 en dólares. Si no hay un número, solo va el texto. */
+function oferta(concepto: string, precio: string): Nodo {
+  const numero = precio.replace(/\.(?=\d{3}\b)/g, '').match(/\d+(?:,\d+)?/)?.[0]
+  if (!numero) return { '@type': 'Offer', name: concepto, description: precio }
+  return {
+    '@type': 'Offer',
+    name: concepto,
+    price: numero.replace(',', '.'),
+    priceCurrency: /u\$s|us\$|usd|d[óo]lar/i.test(precio) ? 'USD' : 'UYU',
+  }
+}
+
+/** El cine, con la lista de precios que carga la radio: cada función lo nombra como su lugar. */
+export function cine(
+  origen: string,
+  c: DatosCinevision['comoLlegar'],
+  precios: DatosCinevision['precios'] = [],
+): Nodo {
   return limpio({
     '@type': 'MovieTheater',
     '@id': idCine(origen),
@@ -144,20 +229,19 @@ export function cine(origen: string, c: DatosCinevision['comoLlegar']): Nodo {
     address: direccion(c.direccion),
     hasMap: c.mapaLink,
     parentOrganization: { '@id': idRadio(origen) },
+    makesOffer: precios.map((p) => oferta(p.concepto, p.precio)),
   })
 }
-
-const personas = (nombres: string) =>
-  nombres
-    .split(/,|\sy\s/)
-    .map((n) => n.trim())
-    .filter(Boolean)
-    .map((name) => ({ '@type': 'Person', name }))
 
 /** La película y una ScreeningEvent por función de la semana, en Cinevisión. */
 export function pelicula(
   origen: string,
-  p: PeliculaCompleta,
+  // En la cartelera llega sin la ficha técnica
+  p: Pick<
+    PeliculaCompleta,
+    'titulo' | 'slug' | 'afiche' | 'sinopsis' | 'genero' | 'duracion' | 'calificacion'
+  > &
+    Partial<Pick<PeliculaCompleta, 'tituloOriginal' | 'anio' | 'creditos'>>,
   funciones: { fechaHora: string; idioma: string; formato: string }[],
 ): Nodo[] {
   const ruta = `/cinevision/${p.slug}`
@@ -174,9 +258,9 @@ export function pelicula(
     duration: p.duracion ? `PT${p.duracion}M` : undefined,
     contentRating: calificacion(p.calificacion),
     dateCreated: p.anio ? String(p.anio) : undefined,
-    director: personas(p.creditos.direccion),
-    actor: personas(p.creditos.reparto),
-    countryOfOrigin: p.creditos.pais ? { '@type': 'Country', name: p.creditos.pais } : undefined,
+    director: personas(p.creditos?.direccion ?? ''),
+    actor: personas(p.creditos?.reparto ?? ''),
+    countryOfOrigin: p.creditos?.pais ? { '@type': 'Country', name: p.creditos.pais } : undefined,
   })
   const eventos = funciones.map((f) =>
     limpio({

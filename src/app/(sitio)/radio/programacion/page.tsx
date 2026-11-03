@@ -5,8 +5,12 @@ import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { GrillaSemanal } from '@/sitio/componentes/radio/GrillaSemanal'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { Migas } from '@/sitio/componentes/ui/Migas'
+import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { TituloSeccion } from '@/sitio/componentes/ui/TituloSeccion'
-import { obtenerAjustes, obtenerProgramacion, obtenerVoces } from '@/sitio/datos'
+import { obtenerAjustes, obtenerExcepciones, obtenerProgramacion, obtenerVoces } from '@/sitio/datos'
+import { urlDelSitio } from '@/sitio/lib/compartir'
+import { programacionDelDia, proximaSemana } from '@/sitio/lib/grilla'
+import { emisiones } from '@/sitio/seo/estructurados'
 
 export const metadata: Metadata = {
   title: 'Programación',
@@ -16,14 +20,20 @@ export const metadata: Metadata = {
 // Programación (design/LEEME.md, sección 7): pestañas por día, con el programa al aire remarcado y
 // primero, y "Las voces de Visión"
 export default async function Programacion() {
-  const [ajustes, programas, voces] = await Promise.all([
+  const [ajustes, programas, voces, excepciones] = await Promise.all([
     obtenerAjustes(),
     obtenerProgramacion(),
     obtenerVoces(),
+    obtenerExcepciones(),
   ])
+  // Lo que sale al aire de hoy a seis días, con los cambios de grilla, para buscadores y asistentes
+  const semana = Object.values(proximaSemana(new Date()))
+    .sort()
+    .flatMap((fecha) => programacionDelDia(programas, fecha, excepciones))
 
   return (
     <main className="pb-10 md:pb-20">
+      <DatosEstructurados nodos={emisiones(urlDelSitio().origin, semana)} />
       <Migas pasos={[{ nombre: 'Programación' }]} />
       <div className="contenedor pt-4 md:pt-8">
         <Publicidad ubicacion="radio-programacion" aviso={ajustes.avisoPropio} />
