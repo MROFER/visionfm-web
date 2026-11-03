@@ -31,3 +31,19 @@ export function textoDeLexical(cuerpo: { root?: NodoTexto } | null | undefined) 
 
 /** Minutos de lectura a unas 200 palabras por minuto; nunca menos de 1. */
 export const minutosDeLectura = (palabras: number) => Math.max(1, Math.round(palabras / 200))
+
+/**
+ * La transcripción de una entrevista en párrafos: se separan con una línea en blanco, y si uno empieza
+ * con "Nombre:" (hasta 40 letras, sin signos de oración), ese nombre es quien habla.
+ */
+export function parrafosDeTranscripcion(texto: string): { quien: string; dice: string }[] {
+  return texto
+    .replace(/\r\n?/g, '\n')
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => {
+      const m = p.match(/^([^:\n.?!¿¡]{1,40}):\s+([\s\S]+)$/)
+      return m ? { quien: m[1].trim(), dice: m[2] } : { quien: '', dice: p }
+    })
+}

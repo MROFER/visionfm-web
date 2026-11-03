@@ -127,7 +127,7 @@ export const peliculasParaSitemap = unstable_cache(
   { tags: ['cartelera'] },
 )
 
-/** Entrevistas no tienen página propia: van el archivo y la pestaña de cada programa que tiene alguna. */
+/** El archivo, la pestaña de cada programa que tiene alguna y la página de cada entrevista. */
 export const entrevistasParaSitemap = unstable_cache(
   async () => {
     const p = await payload()
@@ -137,7 +137,7 @@ export const entrevistasParaSitemap = unstable_cache(
       limit: MAXIMO,
       pagination: false,
       depth: 1,
-      select: { programa: true, fecha: true, updatedAt: true },
+      select: { slug: true, programa: true, fecha: true, updatedAt: true },
       populate: { programas: { slug: true } },
       ...publico,
     })
@@ -151,12 +151,15 @@ export const entrevistasParaSitemap = unstable_cache(
       anotar('', e.updatedAt)
       if (typeof e.programa === 'object' && e.programa) anotar(e.programa.slug, e.updatedAt)
     }
-    return [...ultima].map(([programa, modificada]) => ({
-      ruta: programa
-        ? `/radio/entrevistas?programa=${encodeURIComponent(programa)}`
-        : '/radio/entrevistas',
-      modificada,
-    }))
+    return [
+      ...[...ultima].map(([programa, modificada]) => ({
+        ruta: programa
+          ? `/radio/entrevistas?programa=${encodeURIComponent(programa)}`
+          : '/radio/entrevistas',
+        modificada,
+      })),
+      ...docs.map((e) => ({ ruta: `/radio/entrevistas/${e.slug}`, modificada: e.updatedAt })),
+    ]
   },
   ['seo-entrevistas'],
   { tags: ['entrevistas', 'programas'] },

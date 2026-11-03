@@ -118,6 +118,31 @@ docker compose up -d --force-recreate app
 
 `docker compose down -v`, antes de entregar la demo, también las borra.
 
+## Transcripción de entrevistas con IA
+
+Cada entrevista tiene su página con el audio y lo que se dijo en texto, que es lo que leen los buscadores y los asistentes de IA. El texto lo saca AssemblyAI del audio, en español y separando quién habla: según la página de precios de AssemblyAI en noviembre de 2026, sale entre 15 y 25 centavos de dólar por hora de audio.
+
+La clave la saca la radio en assemblyai.com, con su cuenta, y se pega solo en el `.env` de la demo, nunca por chat ni por mail. En la carpeta de la demo:
+
+```powershell
+Invoke-WebRequest https://raw.githubusercontent.com/MROFER/visionfm-web/staging/compose.demo.yml -OutFile compose.yml
+Add-Content -Encoding ascii .env "ASSEMBLYAI_API_KEY="
+notepad .env
+docker compose up -d
+```
+
+La primera línea trae el `compose.yml` nuevo, que le pasa la clave al sitio. En el Bloc de notas, pegar la clave después de `ASSEMBLYAI_API_KEY=`, guardar y cerrar.
+
+Desde ahí, al subir el audio de una entrevista nueva se transcribe sola en unos minutos y el texto aparece en el panel, en **Radio → Entrevistas**, campo **Transcripción**. Quien más habla queda con el nombre del entrevistado y el resto con el del programa: conviene revisarlo. Guardar de nuevo o publicar no la vuelve a mandar; si se borra el texto y se cambia el audio, sí.
+
+Para las que ya estaban antes de la clave (las de ejemplo o el archivo de WordPress):
+
+```powershell
+docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/transcribir-entrevistas.ts
+```
+
+Dice cuántas mandó y cuántas horas de audio suman. El sitio las transcribe en los minutos siguientes; las que ya tienen texto no se tocan.
+
 ## Enlace de la radio en vivo
 
 Los botones de "Escuchar en vivo" tocan el enlace que está en el panel: `/admin` → **Sistema → Ajustes generales → URL del stream**. La semilla deja uno de ejemplo que no suena; hay que cambiarlo por el de la radio:

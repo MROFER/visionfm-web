@@ -333,6 +333,27 @@ export const indiceEntrevistas = unstable_cache(
   { tags: ['entrevistas', 'programas'] },
 )
 
+/** Una entrevista con su transcripción, para su página. */
+export const obtenerEntrevista = unstable_cache(
+  async (slug: string) => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'entrevistas',
+      where: { slug: { equals: slug } },
+      limit: 1,
+      depth: 1,
+      populate: { programas: { nombre: true, slug: true } },
+      ...publico,
+    })
+    const e = docs[0]
+    if (!e) return null
+    return { ...aTarjetaEntrevista(e), transcripcion: e.transcripcion ?? '', actualizada: e.updatedAt }
+  },
+  ['entrevista'],
+  // El nombre del programa viene de Programas
+  { tags: ['entrevistas', 'programas'] },
+)
+
 /** La destacada: la última marcada como destacada, o la última publicada. */
 export const entrevistaDestacada = unstable_cache(
   async (programa?: string) => {

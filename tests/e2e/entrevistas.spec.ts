@@ -37,3 +37,21 @@ test('en el celular, el "+" de la cinta de programas se va al llegar al final', 
   await cinta.evaluate((el) => el.scrollTo({ left: 0 }))
   await expect(mas).toHaveCSS('opacity', '1')
 })
+
+test('cada entrevista tiene su página, con el reproductor y más entrevistas', async ({ page }) => {
+  await page.goto('/radio/entrevistas')
+  const titulo = page.locator('ol li a').first()
+  const texto = (await titulo.textContent())!.trim()
+  await titulo.click()
+
+  await expect(page).toHaveURL(/\/radio\/entrevistas\/[a-z0-9-]+$/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(texto)
+  await expect(
+    page.getByRole('button', { name: /^Escuchar la entrevista a / }).first(),
+  ).toBeVisible()
+  await expect(page.getByRole('complementary').getByRole('link').first()).toBeVisible()
+  await expect(page.getByRole('link', { name: '← Todas las entrevistas' })).toHaveAttribute(
+    'href',
+    '/radio/entrevistas',
+  )
+})

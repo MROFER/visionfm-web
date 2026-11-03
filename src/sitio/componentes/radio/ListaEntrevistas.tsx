@@ -1,14 +1,29 @@
+import Link from 'next/link'
+
 import type { TarjetaEntrevista } from '../../datos/formas'
 import { fechaCorta, fechaDia } from '../../lib/fecha'
 import { reloj } from '../../lib/formato'
 import { Foto } from '../ui/Foto'
 import { AvanceEntrevista, BotonEntrevista } from './BotonEntrevista'
 
-/** Entrevista destacada: bloque oscuro con foto, resumen y reproductor con avance. */
-export function EntrevistaDestacada({ entrevista: e }: { entrevista: TarjetaEntrevista }) {
+const enlace = (e: TarjetaEntrevista) => `/radio/entrevistas/${e.slug}`
+
+/**
+ * Entrevista destacada: bloque oscuro con foto, resumen y reproductor con avance. En la página de la
+ * entrevista es su encabezado: el título es el h1 y el resumen se ve también en el celular.
+ */
+export function EntrevistaDestacada({
+  entrevista: e,
+  enPagina = false,
+}: {
+  entrevista: TarjetaEntrevista
+  enPagina?: boolean
+}) {
+  const Titulo = enPagina ? 'h1' : 'h2'
+  const titulo = `${e.entrevistado}: ${e.tema}`
   return (
     <article
-      id={e.slug}
+      id={enPagina ? undefined : e.slug}
       className="mb-6 flex scroll-mt-4 flex-col gap-5 bg-tinta p-3 text-blanco md:mb-10 md:flex-row md:flex-wrap md:gap-8 md:p-8"
     >
       {e.foto && (
@@ -21,13 +36,21 @@ export function EntrevistaDestacada({ entrevista: e }: { entrevista: TarjetaEntr
       )}
       <div className={`flex min-w-0 flex-col gap-2.5 px-1 pb-1 md:flex-[1_1_420px] md:gap-3.5 md:p-0 ${e.foto ? '' : 'pt-2 md:pt-0'}`}>
         <span className="text-[11px] font-extrabold tracking-[0.12em] text-vivo-claro uppercase md:text-xs">
-          Destacada · {fechaDia(e.fecha)}
+          {enPagina ? 'Entrevista' : 'Destacada'} · {fechaDia(e.fecha)}
         </span>
-        <h2 className="m-0 font-titulos text-2xl leading-[1.1] font-extrabold md:text-[40px] md:leading-[1.08]">
-          {e.entrevistado}: {e.tema}
-        </h2>
+        <Titulo className="m-0 font-titulos text-2xl leading-[1.1] font-extrabold md:text-[40px] md:leading-[1.08]">
+          {enPagina ? (
+            titulo
+          ) : (
+            <Link href={enlace(e)} className="no-underline hover:text-vivo-claro">
+              {titulo}
+            </Link>
+          )}
+        </Titulo>
         {e.resumen && (
-          <p className="m-0 hidden max-w-[620px] text-base leading-[1.6] text-oscuro-1 md:block">{e.resumen}</p>
+          <p className={`m-0 max-w-[620px] text-base leading-[1.6] text-oscuro-1 ${enPagina ? '' : 'hidden md:block'}`}>
+            {e.resumen}
+          </p>
         )}
         <span className="text-[13px] text-oscuro-1 md:text-sm">
           {[e.programa && `En ${e.programa.nombre}`, e.duracion && reloj(e.duracion)].filter(Boolean).join(' · ')}
@@ -60,9 +83,9 @@ export function FilaEntrevista({ entrevista: e }: { entrevista: TarjetaEntrevist
       />
       <Foto imagen={e.foto} sizes="64px" className="hidden size-16 shrink-0 md:block" />
       <span className="flex min-w-0 flex-1 flex-col gap-1">
-        <span className="font-titulos text-[17px] leading-[1.2] font-bold md:text-[21px]">
+        <Link href={enlace(e)} className="font-titulos text-[17px] leading-[1.2] font-bold no-underline hover:text-acento-hover md:text-[21px]">
           {e.entrevistado}: {e.tema}
-        </span>
+        </Link>
         <span className="text-xs text-meta md:hidden">{datos.filter(Boolean).join(' · ')}</span>
         {e.programa && <span className="hidden text-sm text-meta md:block">En {e.programa.nombre}</span>}
       </span>

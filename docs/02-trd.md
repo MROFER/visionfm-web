@@ -53,6 +53,7 @@ Definidas en `.env.example` (sin valores) y cargadas en Coolify. Nunca en el rep
 | `PREVIEW_SECRET` | vista previa de borradores |
 | `CRON_SECRET` | tareas programadas (publicación programada, limpieza, refresco de medianoche) |
 | `INDEXNOW_KEY` | aviso a Bing al publicar |
+| `ASSEMBLYAI_API_KEY` | transcripción de entrevistas con IA al subir el audio; sin la clave no se transcribe |
 | `INDEXAR` | `si` solo en producción después del lanzamiento: habilita la indexación en `robots.txt` y en las páginas; en cualquier otro valor todo va con `noindex` |
 
 La URL del stream no es variable de entorno: vive en la ficha `ajustes` para que la radio pueda cambiarla.

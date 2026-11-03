@@ -160,6 +160,54 @@ export function migas(origen: string, pasos: { nombre: string; ruta?: string }[]
   }
 }
 
+/** La entrevista como episodio de su programa, con el audio y lo que se dijo en texto. */
+export function entrevista(
+  origen: string,
+  e: {
+    slug: string
+    entrevistado: string
+    tema: string
+    resumen: string
+    fecha: string
+    actualizada?: string
+    duracion: number | null
+    programa: { nombre: string; slug: string } | null
+    foto: Imagen | null
+    audio: string | null
+    transcripcion: string
+  },
+): Nodo {
+  const ruta = `/radio/entrevistas/${e.slug}`
+  return limpio({
+    '@type': 'RadioEpisode',
+    '@id': url(origen, `${ruta}#entrevista`),
+    name: `${e.entrevistado}: ${e.tema}`,
+    description: e.resumen,
+    url: url(origen, ruta),
+    datePublished: e.fecha,
+    dateModified: e.actualizada,
+    image: imagenes(origen, e.foto),
+    inLanguage: 'es-UY',
+    partOfSeries: e.programa
+      ? {
+          '@type': 'RadioSeries',
+          name: e.programa.nombre,
+          url: url(origen, `/radio/entrevistas?programa=${e.programa.slug}`),
+        }
+      : undefined,
+    publisher: { '@id': idRadio(origen) },
+    isPartOf: { '@id': idSitio(origen) },
+    audio: e.audio
+      ? limpio({
+          '@type': 'AudioObject',
+          contentUrl: url(origen, e.audio),
+          duration: e.duracion ? `PT${e.duracion}S` : undefined,
+          transcript: e.transcripcion,
+        })
+      : undefined,
+  })
+}
+
 /** Google corta el titular en 110 caracteres. */
 const titular = (texto: string) =>
   texto.length > 110 ? `${texto.slice(0, 109).trimEnd()}…` : texto
