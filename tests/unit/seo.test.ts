@@ -1,5 +1,7 @@
+import { resolveRobots } from 'next/dist/build/webpack/loaders/metadata/resolve-route-data'
 import { afterEach, describe, expect, it } from 'vitest'
 
+import { BOTS_DE_ENTRENAMIENTO, BOTS_DE_RESPUESTA, reglasDeRobots } from '@/sitio/seo/bots'
 import { sePuedeIndexar } from '@/sitio/seo/indexacion'
 import { llmsTxt } from '@/sitio/seo/llms'
 import {
@@ -152,5 +154,29 @@ describe('sePuedeIndexar', () => {
     expect(sePuedeIndexar()).toBe(false)
     process.env.INDEXAR = 'si'
     expect(sePuedeIndexar()).toBe(true)
+  })
+})
+
+describe('robots.txt', () => {
+  const txt = resolveRobots({ rules: reglasDeRobots() })
+  // Las reglas del bloque donde está el bot (varios bots pueden compartir bloque)
+  const reglas = (bot: string) =>
+    txt
+      .split('\n\n')
+      .find((b) => b.split('\n').includes(`User-Agent: ${bot}`))
+      ?.split('\n')
+      .filter((l) => !l.startsWith('User-Agent:'))
+
+  it('los bots que responden entran, pero no al panel ni a los links de los anuncios', () => {
+    for (const bot of ['*', ...BOTS_DE_RESPUESTA]) {
+      expect(reglas(bot)).toEqual(
+        expect.arrayContaining(['Allow: /', 'Disallow: /admin', 'Disallow: /a/']),
+      )
+    }
+  })
+
+  it('los bots que entrenan modelos no entran, y Google-Extended no se toca', () => {
+    for (const bot of BOTS_DE_ENTRENAMIENTO) expect(reglas(bot)).toEqual(['Disallow: /'])
+    expect(txt).not.toContain('Google-Extended')
   })
 })
