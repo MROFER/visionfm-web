@@ -4,6 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { sembrar } from '@/seed'
 import { cargarGrilla } from '@/seed/grilla'
+import { borrarNoticiasDePrueba, cargarNoticiasDePrueba } from '@/seed/noticias-de-prueba'
 
 // `pnpm seed` deja el sitio navegable y se puede correr más de una vez
 let payload: Payload
@@ -115,4 +116,19 @@ describe('datos de ejemplo', () => {
     const entrevista = await payload.findByID({ collection: 'entrevistas', id: docs[0].id })
     expect(entrevista.programa).toMatchObject({ nombre: 'Conectados' })
   }, 120_000)
+
+  it('las noticias de prueba se cargan una sola vez y se sacan sin tocar las de ejemplo', async () => {
+    const publicadas = async () =>
+      (await payload.count({ collection: 'noticias', where: { _status: { equals: 'published' } } }))
+        .totalDocs
+    const medios = (await payload.count({ collection: 'medios' })).totalDocs
+
+    expect(await cargarNoticiasDePrueba(payload)).toEqual({ creadas: 84, existentes: 0 })
+    expect(await publicadas()).toBe(8 + 84)
+    expect(await cargarNoticiasDePrueba(payload)).toEqual({ creadas: 0, existentes: 84 })
+
+    expect(await borrarNoticiasDePrueba(payload)).toBe(84)
+    expect(await publicadas()).toBe(8)
+    expect((await payload.count({ collection: 'medios' })).totalDocs).toBe(medios)
+  }, 300_000)
 })

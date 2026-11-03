@@ -100,6 +100,24 @@ docker compose up -d --force-recreate app
 
 **Borra todos los programas** y carga los de la grilla. Las entrevistas siguen en su programa si tiene el mismo nombre, o pasan al que les toca en los datos de ejemplo; si alguna queda sin programa, el comando lo avisa y se elige desde el panel. Termina con `Programación: … programas borrados y … cargados.` El segundo comando reinicia el sitio para que muestre la grilla nueva.
 
+## Noticias de prueba
+
+Para ver cómo se ven Noticias y sus páginas con muchas notas: carga 84 noticias inventadas, 14 por sección, con fecha de los días anteriores a las de ejemplo y una foto de color cada una. "Todas" pasa a tener 8 páginas y cada sección 2. Con la demo levantada:
+
+```powershell
+docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/cargar-noticias.ts
+docker compose up -d --force-recreate app
+```
+
+Termina con `Noticias de prueba: 84 cargadas.` Si se corre de nuevo no duplica nada. Cada nota dice en el texto que es de prueba. Para sacarlas sin tocar las demás notas:
+
+```powershell
+docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/borrar-noticias.ts
+docker compose up -d --force-recreate app
+```
+
+`docker compose down -v`, antes de entregar la demo, también las borra.
+
 ## Enlace de la radio en vivo
 
 Los botones de "Escuchar en vivo" tocan el enlace que está en el panel: `/admin` → **Sistema → Ajustes generales → URL del stream**. La semilla deja uno de ejemplo que no suena; hay que cambiarlo por el de la radio:
