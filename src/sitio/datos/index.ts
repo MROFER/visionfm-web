@@ -382,7 +382,8 @@ export const obtenerVoces = unstable_cache(
   { tags: ['programas'] },
 )
 
-export const POR_PAGINA = 10
+/** Notas por página del archivo de Noticias: 12 llenan las filas de a tres (web) y de a dos (tablet). */
+export const POR_PAGINA = 12
 
 /**
  * Archivo de Noticias, de una sección o de todas, paginado. `q` busca en título, bajada y cuerpo, en

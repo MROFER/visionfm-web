@@ -31,7 +31,9 @@ export function NotaDestacada({ nota, prioridad }: { nota: Nota; prioridad?: boo
           {nota.titulo}
         </Link>
       </h3>
-      {nota.fecha && <span className="text-xs text-meta lg:text-[13px]">{fechaDia(nota.fecha)}</span>}
+      {nota.fecha && (
+        <span className="text-xs text-meta lg:text-[13px]">{fechaDia(nota.fecha)}</span>
+      )}
     </article>
   )
 }
@@ -49,7 +51,9 @@ export function NotaChica({ nota }: { nota: Nota }) {
             {nota.titulo}
           </Link>
         </h3>
-        {nota.fecha && <span className="text-xs text-meta lg:text-[13px]">{fechaCorta(nota.fecha)}</span>}
+        {nota.fecha && (
+          <span className="text-xs text-meta lg:text-[13px]">{fechaCorta(nota.fecha)}</span>
+        )}
       </div>
       <Link href={nota.href} aria-hidden tabIndex={-1} className="block shrink-0">
         <Foto
@@ -62,21 +66,41 @@ export function NotaChica({ nota }: { nota: Nota }) {
   )
 }
 
-/** Fila del archivo: en web, foto 160×110 a la izquierda; en el celular, cuadrada a la derecha. */
-export function NotaFila({ nota }: { nota: Nota }) {
+/**
+ * Nota del archivo de Noticias. En web, como en los diarios: la foto grande arriba y, debajo, la sección,
+ * el titular y las primeras líneas de la bajada, de a tres por fila. En el celular, fila con la foto
+ * cuadrada a la derecha, para que la destacada siga mandando y la lista no se haga eterna.
+ */
+export function NotaTarjeta({ nota }: { nota: Nota }) {
   return (
-    <article className="flex gap-3.5 border-b border-linea py-4 md:gap-5 md:py-[22px]">
-      <Link href={nota.href} aria-hidden tabIndex={-1} className="order-last block shrink-0 md:order-first">
-        <Foto imagen={nota.foto} sizes="(min-width: 768px) 160px, 96px" className="size-24 md:h-[110px] md:w-40" />
+    <article className="flex gap-3.5 border-b border-linea py-4 md:flex-col md:gap-2 md:border-0 md:py-0">
+      <Link
+        href={nota.href}
+        aria-hidden
+        tabIndex={-1}
+        className="order-last block shrink-0 md:order-first md:mb-1.5"
+      >
+        <Foto
+          imagen={nota.foto}
+          sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 96px"
+          className="size-24 md:aspect-[16/9] md:h-auto md:w-full"
+        />
       </Link>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5 md:gap-2">
         <Seccion nota={nota} chica />
-        <h3 className="m-0 font-titulos text-[19px] leading-[1.22] font-semibold md:text-[22px] md:leading-[1.2]">
+        <h3 className="m-0 font-titulos text-[19px] leading-[1.22] font-semibold md:text-xl md:leading-[1.2]">
           <Link href={nota.href} className="no-underline hover:text-acento-hover">
             {nota.titulo}
           </Link>
         </h3>
-        {nota.fecha && <span className="text-xs text-meta md:text-[13px]">{fechaCorta(nota.fecha)}</span>}
+        {nota.bajada && (
+          <p className="m-0 hidden text-[15px] leading-normal text-texto-2 md:line-clamp-2">
+            {nota.bajada}
+          </p>
+        )}
+        {nota.fecha && (
+          <span className="text-xs text-meta md:text-[13px]">{fechaCorta(nota.fecha)}</span>
+        )}
       </div>
     </article>
   )

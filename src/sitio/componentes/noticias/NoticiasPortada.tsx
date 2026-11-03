@@ -3,10 +3,10 @@ import Link from 'next/link'
 import type { TarjetaNota } from '../../datos/formas'
 import { fechaCorta, fechaDia } from '../../lib/fecha'
 import { Foto } from '../ui/Foto'
-import { AlAireCaja } from './AlAireCaja'
 
 /**
- * Arriba de Noticias: la destacada grande y, en web, la columna "Últimas noticias" con la caja Al aire.
+ * Arriba de Noticias: la destacada grande y, en web, la columna "Últimas noticias". La radio no se repite
+ * acá: ya está en el encabezado.
  */
 export function NoticiasPortada({ destacada, ultimas }: { destacada: TarjetaNota; ultimas: TarjetaNota[] }) {
   return (
@@ -61,7 +61,6 @@ export function NoticiasPortada({ destacada, ultimas }: { destacada: TarjetaNota
               </span>
             </Link>
           ))}
-          <AlAireCaja />
         </aside>
       )}
     </section>
