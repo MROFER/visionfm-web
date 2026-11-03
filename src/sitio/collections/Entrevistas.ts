@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { campoSlug } from '@/base/fields/slug'
 import { campoBusqueda } from '@/sitio/busqueda/campo'
+import { transcribirAlSubirAudio } from '@/sitio/transcripcion/tarea'
 import {
   accesoPorArea,
   autorPorDefecto,
@@ -28,6 +29,7 @@ export const Entrevistas: CollectionConfig = {
   hooks: {
     beforeOperation: [anotarSiEsBorrador],
     beforeChange: [autorPorDefecto(), soloPublicaQuienPuede('radio')],
+    afterChange: [transcribirAlSubirAudio],
   },
   fields: [
     { name: 'entrevistado', type: 'text', required: true },
@@ -63,6 +65,17 @@ export const Entrevistas: CollectionConfig = {
     },
     { name: 'foto', type: 'upload', relationTo: 'medios' },
     { name: 'resumen', type: 'textarea', admin: { description: 'Para Google y el buscador.' } },
+    {
+      // Los asistentes de IA no escuchan audio: sin texto, para ellos la entrevista no existe
+      name: 'transcripcion',
+      label: 'Transcripción',
+      type: 'textarea',
+      admin: {
+        rows: 12,
+        description:
+          'Lo que se dijo, en texto. Al subir el audio se completa sola con IA, si el servidor tiene la clave: revisá los nombres. Un párrafo por intervención, separados por una línea en blanco. Si un párrafo empieza con "Nombre:", el nombre sale en negrita.',
+      },
+    },
     { name: 'destacada', type: 'checkbox', admin: { position: 'sidebar' } },
     {
       name: 'autor',

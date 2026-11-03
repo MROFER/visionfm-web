@@ -143,6 +143,7 @@ export interface Config {
       sincronizarAccess: TaskSincronizarAccess;
       avisoVencimientoAnuncios: TaskAvisoVencimientoAnuncios;
       reporteMensualAnunciantes: TaskReporteMensualAnunciantes;
+      transcribirEntrevista: TaskTranscribirEntrevista;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -425,6 +426,10 @@ export interface Entrevista {
    * Para Google y el buscador.
    */
   resumen?: string | null;
+  /**
+   * Lo que se dijo, en texto. Al subir el audio se completa sola con IA, si el servidor tiene la clave: revisá los nombres. Un párrafo por intervención, separados por una línea en blanco. Si un párrafo empieza con "Nombre:", el nombre sale en negrita.
+   */
+  transcripcion?: string | null;
   destacada?: boolean | null;
   /**
    * Quien la cargó.
@@ -856,6 +861,7 @@ export interface PayloadJob {
           | 'sincronizarAccess'
           | 'avisoVencimientoAnuncios'
           | 'reporteMensualAnunciantes'
+          | 'transcribirEntrevista'
           | 'schedulePublish';
         taskID: string;
         input?:
@@ -890,7 +896,14 @@ export interface PayloadJob {
       }[]
     | null;
   taskSlug?:
-    | ('inline' | 'sincronizarAccess' | 'avisoVencimientoAnuncios' | 'reporteMensualAnunciantes' | 'schedulePublish')
+    | (
+        | 'inline'
+        | 'sincronizarAccess'
+        | 'avisoVencimientoAnuncios'
+        | 'reporteMensualAnunciantes'
+        | 'transcribirEntrevista'
+        | 'schedulePublish'
+      )
     | null;
   queue?: string | null;
   waitUntil?: string | null;
@@ -1090,6 +1103,7 @@ export interface EntrevistasSelect<T extends boolean = true> {
   duracion?: T;
   foto?: T;
   resumen?: T;
+  transcripcion?: T;
   destacada?: T;
   autor?: T;
   wordpress?:
@@ -1862,6 +1876,18 @@ export interface TaskReporteMensualAnunciantes {
   output: {
     anunciantes?: number | null;
     enviados?: number | null;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskTranscribirEntrevista".
+ */
+export interface TaskTranscribirEntrevista {
+  input: {
+    entrevista: number;
+  };
+  output: {
+    estado?: string | null;
   };
 }
 /**

@@ -16,6 +16,8 @@ x-app: &app
     NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Falta NEXT_PUBLIC_SITE_URL en .env}
     # La demo no se indexa nunca
     INDEXAR: ''
+    # Opcional: sin la clave las entrevistas no se transcriben
+    ASSEMBLYAI_API_KEY: ${ASSEMBLYAI_API_KEY:-}
   volumes:
     - medios:/app/medios
     - archivos:/app/archivos

@@ -31,6 +31,7 @@ import { Programas } from './sitio/collections/Programas'
 import { Secciones } from './sitio/collections/Secciones'
 import { mapaDeCache } from './sitio/cache/mapa'
 import { tareasPublicidad } from './sitio/publicidad/tareas'
+import { tareaTranscribirEntrevista } from './sitio/transcripcion/tarea'
 import { Ajustes } from './sitio/globals/Ajustes'
 import { Cinevision } from './sitio/globals/Cinevision'
 import { Institucional } from './sitio/globals/Institucional'
@@ -133,7 +134,7 @@ export default buildConfig(
         // Corre dentro del mismo proceso, cada minuto, solo en producción (en desarrollo y tests
         // las tareas se disparan a mano).
         jobs: {
-          tasks: [tareaSincronizarAccess, ...tareasPublicidad],
+          tasks: [tareaSincronizarAccess, ...tareasPublicidad, tareaTranscribirEntrevista],
           autoRun: [{ cron: '* * * * *', queue: 'default' }],
           shouldAutoRun: () => process.env.NODE_ENV === 'production',
           access: {
