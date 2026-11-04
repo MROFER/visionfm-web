@@ -7,17 +7,20 @@ import { Foto } from '../ui/Foto'
 
 /**
  * Arriba de Noticias: la destacada grande y, en web, la columna "Últimas noticias". La radio no se repite
- * acá: ya está en el encabezado. `filtro` (el de fechas) va chico a la derecha de la fecha de la
- * destacada, sobre la línea que la separa del resto; en la web lo muestra la fila del archivo.
+ * acá: ya está en el encabezado. En el celular `filtro` (el de fechas) va chico, solo y a la derecha, apoyado
+ * sobre la línea que separa la destacada del resto, como en Entrevistas. En la web lo muestra la fila del
+ * archivo; si no hay archivo, `filtroEnWeb` lo deja acá, al lado de la fecha.
  */
 export function NoticiasPortada({
   destacada,
   ultimas,
   filtro,
+  filtroEnWeb = false,
 }: {
   destacada: TarjetaNota
   ultimas: TarjetaNota[]
   filtro?: ReactNode
+  filtroEnWeb?: boolean
 }) {
   return (
     <section className="flex flex-col gap-10 border-b-[3px] border-tinta pt-5 pb-5 md:pt-8 lg:mb-2 lg:flex-row lg:pb-10">
@@ -41,14 +44,15 @@ export function NoticiasPortada({
           </Link>
         </h2>
         <p className="m-0 hidden text-[21px] leading-normal text-texto-2 md:block">{destacada.bajada}</p>
-        {(destacada.fecha || filtro) && (
+        {(destacada.fecha || (filtro && filtroEnWeb)) && (
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs text-meta md:text-[13px]">
               {destacada.fecha ? fechaDia(destacada.fecha) : ''}
             </span>
-            {filtro}
+            {filtro && filtroEnWeb && <div className="hidden md:block">{filtro}</div>}
           </div>
         )}
+        {filtro && <div className="-mb-2.5 flex justify-end pt-1.5 md:hidden">{filtro}</div>}
       </article>
       {ultimas.length > 0 && (
         <aside aria-labelledby="ultimas-noticias" className="hidden min-w-0 flex-col lg:flex lg:flex-[1_1_320px]">
