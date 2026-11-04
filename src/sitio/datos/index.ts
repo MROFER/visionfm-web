@@ -6,7 +6,7 @@ import type { Equipo } from '@/payload-types'
 import { idsQueCoinciden } from '../busqueda/consulta'
 import type { ExcepcionEnGrilla } from '../lib/grilla'
 import { enumerar } from '../lib/texto'
-import { mesEnMontevideo, rangoDelMes } from '../lib/fecha'
+import { hoyEnMontevideo, rangoDeDias } from '../lib/fecha'
 import { diaEnMontevideo, sumarDias } from '../publicidad/fechas'
 import { aImagen, aTarjetaEntrevista, aTarjetaNota, aTarjetaPelicula } from './formas'
 import type { ProgramaCompleto, ProgramaGrilla, Voz } from './tipos'
@@ -252,7 +252,7 @@ export const ENTREVISTAS_POR_PAGINA = 8
 
 /**
  * Archivo de entrevistas, de un programa o de todos. `q` busca en el nombre, el tema y el resumen;
- * `mes` ("2026-10") deja solo las de ese mes.
+ * `desde` y `hasta` ("2026-10-15", los dos incluidos) dejan solo las de esos días.
  */
 export const listarEntrevistas = unstable_cache(
   async ({
@@ -260,22 +260,24 @@ export const listarEntrevistas = unstable_cache(
     cantidad = ENTREVISTAS_POR_PAGINA,
     programa,
     q,
-    mes,
+    desde,
+    hasta,
     excluir,
   }: {
     pagina: number
     cantidad?: number
     programa?: string
     q?: string
-    mes?: string
+    desde?: string
+    hasta?: string
     excluir?: number | null
   }) => {
     const p = await payload()
     const condiciones: Where[] = []
     if (programa) condiciones.push({ 'programa.slug': { equals: programa } })
-    if (mes) {
-      const { desde, hasta } = rangoDelMes(mes)
-      condiciones.push({ fecha: { greater_than_equal: desde } }, { fecha: { less_than: hasta } })
+    if (desde && hasta) {
+      const rango = rangoDeDias(desde, hasta)
+      condiciones.push({ fecha: { greater_than_equal: rango.desde } }, { fecha: { less_than: rango.hasta } })
     }
     if (excluir) condiciones.push({ id: { not_equals: excluir } })
     if (q) {
@@ -306,8 +308,9 @@ export const listarEntrevistas = unstable_cache(
 )
 
 /**
- * Programa y mes de cada entrevista publicada, de la más nueva a la más vieja: arma las pestañas de
- * programas (solo los que tienen entrevistas, el más activo primero) y el filtro por mes.
+ * Programa y día de cada entrevista publicada, de la más nueva a la más vieja: arma las pestañas de
+ * programas (solo los que tienen entrevistas, el más activo primero) y el calendario del filtro por
+ * fechas, que marca los días con entrevistas.
  */
 export const indiceEntrevistas = unstable_cache(
   async () => {
@@ -322,7 +325,7 @@ export const indiceEntrevistas = unstable_cache(
       ...publico,
     })
     return docs.map((d) => ({
-      mes: mesEnMontevideo(d.fecha),
+      dia: hoyEnMontevideo(new Date(d.fecha)),
       programa:
         typeof d.programa === 'object' && d.programa?.slug
           ? { nombre: d.programa.nombre, slug: d.programa.slug }

@@ -118,6 +118,24 @@ docker compose up -d --force-recreate app
 
 `docker compose down -v`, antes de entregar la demo, también las borra.
 
+## Entrevistas de prueba
+
+Para ver cómo queda la página de una entrevista con su transcripción, y para probar el filtro por fechas de Entrevistas: carga 24 entrevistas inventadas, repartidas en los últimos cuatro meses, con el audio de ejemplo y una transcripción de prueba cada una. Las transcripciones ya vienen escritas, así que no se mandan a AssemblyAI ni gastan nada. Con la demo levantada:
+
+```powershell
+docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/cargar-entrevistas.ts
+docker compose up -d --force-recreate app
+```
+
+Termina con `Entrevistas de prueba: 24 cargadas.` Si se corre de nuevo no duplica nada. Cada una dice en el resumen que es de prueba. Para sacarlas sin tocar las demás entrevistas:
+
+```powershell
+docker compose run --rm --build semilla node_modules/.bin/payload run src/seed/borrar-entrevistas.ts
+docker compose up -d --force-recreate app
+```
+
+`docker compose down -v`, antes de entregar la demo, también las borra.
+
 ## Transcripción de entrevistas con IA
 
 Cada entrevista tiene su página con el audio y lo que se dijo en texto, que es lo que leen los buscadores y los asistentes de IA. El texto lo saca AssemblyAI del audio, en español y separando quién habla: según la página de precios de AssemblyAI en noviembre de 2026, sale entre 15 y 25 centavos de dólar por hora de audio.

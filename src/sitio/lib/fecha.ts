@@ -73,26 +73,53 @@ export function diasDeFunciones(fechas: string[]) {
 /** La hora de este pedido, para que el primer render del servidor y del navegador coincidan. */
 export const marcaDeTiempo = () => Date.now()
 
-// Filtro por mes de las entrevistas: el mes va como "2026-10" en la dirección
+// Las direcciones viejas del filtro por mes de las entrevistas traen el mes como "2026-10"
 export const esMes = (valor: string) => /^\d{4}-(0[1-9]|1[0-2])$/.test(valor)
 
-/** "2026-10": el mes de una fecha, en hora de Montevideo. */
-export function mesEnMontevideo(iso: string) {
-  const p = partes(new Date(iso), { year: 'numeric', month: '2-digit' })
-  return `${p.year}-${p.month}`
+// Filtro por fechas de las entrevistas: cada punta va como "2026-10-15" en la dirección y cuenta entera
+export const esDia = (valor: string) =>
+  /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(valor) &&
+  new Date(`${valor}T12:00:00Z`).toISOString().startsWith(valor)
+
+/** Del primer instante del día `desde` al primero del día siguiente a `hasta`, en hora de Montevideo. */
+export function rangoDeDias(desde: string, hasta: string) {
+  const siguiente = new Date(`${hasta}T12:00:00Z`)
+  siguiente.setUTCDate(siguiente.getUTCDate() + 1)
+  const inicio = (dia: string) => new Date(`${dia}T00:00:00-03:00`).toISOString()
+  return { desde: inicio(desde), hasta: inicio(siguiente.toISOString().slice(0, 10)) }
 }
 
-/** "Octubre 2026" */
-export function nombreDelMes(mes: string) {
+/** El primer y el último día de un mes ("2026-10"), para las direcciones viejas con `mes`. */
+export function diasDelMes(mes: string) {
   const [anio, numero] = mes.split('-').map(Number)
-  const p = partes(new Date(Date.UTC(anio, numero - 1, 15, 12)), { month: 'long' })
-  return `${mayuscula(p.month)} ${anio}`
+  const ultimo = new Date(Date.UTC(anio, numero, 0)).getUTCDate()
+  return { desde: `${mes}-01`, hasta: `${mes}-${String(ultimo).padStart(2, '0')}` }
 }
 
-/** Desde el primer instante del mes hasta el del siguiente, en hora de Montevideo. */
-export function rangoDelMes(mes: string) {
-  const [anio, numero] = mes.split('-').map(Number)
-  const siguiente = numero === 12 ? `${anio + 1}-01` : `${anio}-${String(numero + 1).padStart(2, '0')}`
-  const inicio = (m: string) => new Date(`${m}-01T00:00:00-03:00`).toISOString()
-  return { desde: inicio(mes), hasta: inicio(siguiente) }
+const MESES_CORTOS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+
+const partesDelDia = (dia: string) => dia.split('-').map(Number) as [number, number, number]
+
+/**
+ * "del 1 de agosto al 15 de octubre", "del 3 al 9 de agosto" o "el 3 de agosto"; con el año cuando no
+ * es el de `hoy` o las puntas son de años distintos.
+ */
+export function nombreDelRango(desde: string, hasta: string, hoy: string) {
+  const [a1, m1, d1] = partesDelDia(desde)
+  const [a2, m2, d2] = partesDelDia(hasta)
+  const conAnio = a1 !== a2 || a2 !== partesDelDia(hoy)[0]
+  const anio = (a: number) => (conAnio ? ` de ${a}` : '')
+  if (desde === hasta) return `el ${d1} de ${MESES[m1 - 1]}${anio(a1)}`
+  if (a1 === a2 && m1 === m2) return `del ${d1} al ${d2} de ${MESES[m2 - 1]}${anio(a2)}`
+  return `del ${d1} de ${MESES[m1 - 1]}${a1 !== a2 ? ` de ${a1}` : ''} al ${d2} de ${MESES[m2 - 1]}${anio(a2)}`
+}
+
+/** "1 ago – 15 oct", o "3 ago" si es un solo día. */
+export function rangoCorto(desde: string, hasta: string) {
+  const corto = (dia: string) => {
+    const [, m, d] = partesDelDia(dia)
+    return `${d} ${MESES_CORTOS[m - 1]}`
+  }
+  return desde === hasta ? corto(desde) : `${corto(desde)} – ${corto(hasta)}`
 }

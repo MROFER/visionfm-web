@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 
 import { BotonEntrevista } from '@/sitio/componentes/radio/BotonEntrevista'
 import { EntrevistaDestacada } from '@/sitio/componentes/radio/ListaEntrevistas'
+import { Transcripcion } from '@/sitio/componentes/radio/Transcripcion'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Migas } from '@/sitio/componentes/ui/Migas'
 import { listarEntrevistas, obtenerEntrevista } from '@/sitio/datos'
@@ -14,6 +15,9 @@ import { parrafosDeTranscripcion } from '@/sitio/lib/texto'
 import { entrevista as nodoEntrevista } from '@/sitio/seo/estructurados'
 
 type Parametros = { params: Promise<{ slug: string }> }
+
+// Con más letras que esto la transcripción arranca plegada (unos cuatro párrafos a la vista)
+const LARGA = 1500
 
 export async function generateMetadata({ params }: Parametros): Promise<Metadata> {
   const { slug } = await params
@@ -77,14 +81,14 @@ export default async function Entrevista({ params }: Parametros) {
               >
                 Transcripción
               </h2>
-              <div className="cuerpo-nota max-w-[728px] pt-5 md:pt-7">
+              <Transcripcion larga={transcripcion.reduce((n, p) => n + p.dice.length, 0) > LARGA}>
                 {transcripcion.map((p, i) => (
                   <p key={i}>
                     {p.quien && <strong className="font-bold">{p.quien}: </strong>}
                     {p.dice}
                   </p>
                 ))}
-              </div>
+              </Transcripcion>
             </section>
           )}
 
