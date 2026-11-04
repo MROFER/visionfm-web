@@ -98,7 +98,8 @@ export async function PaginaNoticias({
     const cadena = params.toString()
     return cadena ? `${base}?${cadena}` : base
   }
-  // El mismo filtro de Entrevistas: debajo de la destacada o, sin ella, en la fila del archivo
+  // El mismo filtro de Entrevistas, en la fila del archivo a la derecha. En el celular esa fila no se ve,
+  // así que con la destacada va debajo de ella, junto a su fecha
   const filtro =
     dias.length > 0 || desde ? (
       <FiltroFechas dias={dias} desde={desde} hasta={hasta} hoy={hoy} cosa={{ una: 'nota', varias: 'notas' }} />
@@ -134,7 +135,13 @@ export async function PaginaNoticias({
         </div>
         <TiraSecciones secciones={secciones} actual={seccion} todas />
 
-        {conPortada && <NoticiasPortada destacada={destacada} ultimas={ultimas} filtro={filtro} />}
+        {conPortada && (
+          <NoticiasPortada
+            destacada={destacada}
+            ultimas={ultimas}
+            filtro={filtro && archivo.notas.length > 0 ? <div className="md:hidden">{filtro}</div> : filtro}
+          />
+        )}
 
         {q || !conPortada ? (
           <div className="flex items-center justify-between gap-4 pt-6 pb-1">
@@ -152,11 +159,14 @@ export async function PaginaNoticias({
           </div>
         ) : (
           archivo.notas.length > 0 && (
-            <div className="hidden items-baseline justify-between pt-6 pb-1 md:flex">
+            <div className="hidden items-center justify-between gap-4 pt-6 pb-1 md:flex">
               <h2 className="etiqueta m-0 text-[13px]">Archivo</h2>
-              <span className="text-[13px] text-meta">
-                Página {pagina} de {archivo.paginas}
-              </span>
+              <div className="flex items-center gap-4">
+                <span className="text-[13px] whitespace-nowrap text-meta">
+                  Página {pagina} de {archivo.paginas}
+                </span>
+                {filtro}
+              </div>
             </div>
           )
         )}
