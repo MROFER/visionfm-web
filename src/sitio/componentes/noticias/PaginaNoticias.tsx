@@ -99,7 +99,7 @@ export async function PaginaNoticias({
     return cadena ? `${base}?${cadena}` : base
   }
   // El mismo filtro de Entrevistas, en la fila del archivo a la derecha. En el celular esa fila no se ve,
-  // así que con la destacada va debajo de ella, junto a su fecha
+  // así que con la destacada va solo, sobre la línea que la separa del resto
   const filtro =
     dias.length > 0 || desde ? (
       <FiltroFechas dias={dias} desde={desde} hasta={hasta} hoy={hoy} cosa={{ una: 'nota', varias: 'notas' }} />
@@ -139,7 +139,8 @@ export async function PaginaNoticias({
           <NoticiasPortada
             destacada={destacada}
             ultimas={ultimas}
-            filtro={filtro && archivo.notas.length > 0 ? <div className="md:hidden">{filtro}</div> : filtro}
+            filtro={filtro}
+            filtroEnWeb={archivo.notas.length === 0}
           />
         )}
 
