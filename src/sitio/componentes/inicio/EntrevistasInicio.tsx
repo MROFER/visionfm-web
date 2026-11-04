@@ -7,7 +7,10 @@ import { BotonEntrevista } from '../radio/BotonEntrevista'
 import { Buscador } from '../ui/Buscador'
 import { TituloSeccion } from '../ui/TituloSeccion'
 
-/** Últimas entrevistas con buscador. El play las pasa con el mismo audio de la radio. */
+/**
+ * Últimas entrevistas. El play las pasa con el mismo audio de la radio. En el celular no hay buscador:
+ * para buscar se entra por "Todas las entrevistas". En web el buscador sigue al lado del título.
+ */
 export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevista[] }) {
   return (
     <section id="radio" className="contenedor pt-6 pb-6 lg:border-b lg:border-linea lg:pt-12 lg:pb-10">
@@ -24,12 +27,6 @@ export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevi
           </Link>
         </div>
       </TituloSeccion>
-      <Buscador
-        accion="/radio/entrevistas"
-        etiqueta="Buscar entrevistas"
-        placeholder="Buscar entrevistas…"
-        className="mt-3.5 lg:hidden"
-      />
       {entrevistas.length ? (
         <ol className="m-0 list-none p-0 lg:mt-2">
           {entrevistas.map((e) => {

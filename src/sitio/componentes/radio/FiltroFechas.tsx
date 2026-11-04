@@ -33,11 +33,14 @@ function atajos(hoy: string): { nombre: string; rango: Rango }[] {
   ]
 }
 
+type Cosa = { una: string; varias: string }
+const ENTREVISTAS: Cosa = { una: 'entrevista', varias: 'entrevistas' }
+
 const cuantas = (dias: string[], r: Rango | null) =>
   r ? dias.filter((d) => d >= r.desde && d <= r.hasta).length : dias.length
 
 /**
- * Filtro por fechas de Entrevistas. El botón del calendario (en web, con "Filtrar") abre un panel con
+ * Filtro por fechas de Entrevistas y de Noticias. El botón del calendario (en web, con "Filtrar") abre un panel con
  * atajos ("Esta semana", "Mes pasado"…) que dicen cuántas entrevistas tienen, y "Elegir las fechas", que
  * usa el calendario del teléfono o del navegador. En el celular el panel sube desde abajo; en web se abre
  * debajo del botón. El rango va en la dirección (`desde` y `hasta`), así se puede compartir y volver atrás.
@@ -47,12 +50,15 @@ export function FiltroFechas({
   desde,
   hasta,
   hoy,
+  cosa = ENTREVISTAS,
 }: {
-  /** El día de cada entrevista que se puede ver (uno por entrevista, así se cuentan). */
+  /** El día de cada entrevista (o nota) que se puede ver, uno por cada una, así se cuentan. */
   dias: string[]
   desde?: string
   hasta?: string
   hoy: string
+  /** Lo que se cuenta, en singular y plural: entrevistas en Radio, notas en Noticias. */
+  cosa?: Cosa
 }) {
   const router = useRouter()
   const ruta = usePathname()
@@ -148,7 +154,7 @@ export function FiltroFechas({
                 <IconoCerrar tamano={20} />
               </button>
             </div>
-            <Panel dias={dias} hoy={hoy} inicial={actual} aplicar={aplicar} />
+            <Panel dias={dias} hoy={hoy} inicial={actual} aplicar={aplicar} cosa={cosa} />
           </div>
         </>
       )}
@@ -161,11 +167,13 @@ function Panel({
   hoy,
   inicial,
   aplicar,
+  cosa,
 }: {
   dias: string[]
   hoy: string
   inicial: Rango | null
   aplicar: (r: Rango | null) => void
+  cosa: Cosa
 }) {
   const opciones = atajos(hoy)
   const delAtajo = inicial
@@ -214,7 +222,7 @@ function Panel({
         {cantidad !== null && (
           <span className="text-sm text-meta">
             {cantidad}
-            <span className="sr-only"> {cantidad === 1 ? 'entrevista' : 'entrevistas'}</span>
+            <span className="sr-only"> {cantidad === 1 ? cosa.una : cosa.varias}</span>
           </span>
         )}
       </button>
@@ -274,10 +282,10 @@ function Panel({
           {faltanFechas
             ? 'Elegí las dos fechas'
             : !rango
-              ? 'Ver todas las entrevistas'
+              ? `Ver todas las ${cosa.varias}`
               : total === 0
-                ? 'Sin entrevistas en esas fechas'
-                : `Ver ${total} ${total === 1 ? 'entrevista' : 'entrevistas'}`}
+                ? `Sin ${cosa.varias} en esas fechas`
+                : `Ver ${total} ${total === 1 ? cosa.una : cosa.varias}`}
         </button>
       </div>
     </>

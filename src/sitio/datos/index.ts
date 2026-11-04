@@ -411,23 +411,35 @@ export const POR_PAGINA = 12
 
 /**
  * Archivo de Noticias, de una sección o de todas, paginado. `q` busca en título, bajada y cuerpo, en
- * español y sin distinguir tildes; los resultados van del más nuevo al más viejo.
+ * español y sin distinguir tildes; `desde` y `hasta` ("2026-10-15", los dos incluidos) dejan solo las de
+ * esos días. Los resultados van del más nuevo al más viejo.
  */
 export const listarNoticias = unstable_cache(
   async ({
     seccion,
     pagina,
     q,
+    desde,
+    hasta,
     excluir,
   }: {
     seccion?: string
     pagina: number
     q?: string
+    desde?: string
+    hasta?: string
     excluir?: number | null
   }) => {
     const p = await payload()
     const condiciones: Where[] = []
     if (seccion) condiciones.push({ 'seccion.slug': { equals: seccion } })
+    if (desde && hasta) {
+      const rango = rangoDeDias(desde, hasta)
+      condiciones.push(
+        { fechaPublicacion: { greater_than_equal: rango.desde } },
+        { fechaPublicacion: { less_than: rango.hasta } },
+      )
+    }
     if (excluir) condiciones.push({ id: { not_equals: excluir } })
     if (q) {
       const ids = await idsQueCoinciden(p, 'noticias', q)
@@ -451,6 +463,28 @@ export const listarNoticias = unstable_cache(
     }
   },
   ['listar-noticias'],
+  { tags: ['noticias'] },
+)
+
+/**
+ * El día de cada nota publicada, de una sección o de todas: el filtro por fechas de Noticias cuenta con
+ * esto cuántas notas tiene cada atajo ("Esta semana", "Mes pasado"…).
+ */
+export const diasDeNoticias = unstable_cache(
+  async (seccion?: string) => {
+    const p = await payload()
+    const { docs } = await p.find({
+      collection: 'noticias',
+      sort: '-fechaPublicacion',
+      pagination: false,
+      depth: 0,
+      select: { fechaPublicacion: true },
+      where: seccion ? { 'seccion.slug': { equals: seccion } } : undefined,
+      ...publico,
+    })
+    return docs.flatMap((d) => (d.fechaPublicacion ? [hoyEnMontevideo(new Date(d.fechaPublicacion))] : []))
+  },
+  ['dias-de-noticias'],
   { tags: ['noticias'] },
 )
 

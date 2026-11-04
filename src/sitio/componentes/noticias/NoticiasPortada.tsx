@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 
 import type { TarjetaNota } from '../../datos/formas'
 import { fechaCorta, fechaDia } from '../../lib/fecha'
@@ -6,9 +7,18 @@ import { Foto } from '../ui/Foto'
 
 /**
  * Arriba de Noticias: la destacada grande y, en web, la columna "Últimas noticias". La radio no se repite
- * acá: ya está en el encabezado.
+ * acá: ya está en el encabezado. `filtro` (el de fechas) va chico a la derecha de la fecha de la
+ * destacada, sobre la línea que la separa del resto.
  */
-export function NoticiasPortada({ destacada, ultimas }: { destacada: TarjetaNota; ultimas: TarjetaNota[] }) {
+export function NoticiasPortada({
+  destacada,
+  ultimas,
+  filtro,
+}: {
+  destacada: TarjetaNota
+  ultimas: TarjetaNota[]
+  filtro?: ReactNode
+}) {
   return (
     <section className="flex flex-col gap-10 border-b-[3px] border-tinta pt-5 pb-5 md:pt-8 lg:mb-2 lg:flex-row lg:pb-10">
       <article className="flex min-w-0 flex-col gap-2.5 md:gap-3.5 lg:flex-[999_1_560px]">
@@ -31,8 +41,13 @@ export function NoticiasPortada({ destacada, ultimas }: { destacada: TarjetaNota
           </Link>
         </h2>
         <p className="m-0 hidden text-[21px] leading-normal text-texto-2 md:block">{destacada.bajada}</p>
-        {destacada.fecha && (
-          <span className="text-xs text-meta md:text-[13px]">{fechaDia(destacada.fecha)}</span>
+        {(destacada.fecha || filtro) && (
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-xs text-meta md:text-[13px]">
+              {destacada.fecha ? fechaDia(destacada.fecha) : ''}
+            </span>
+            {filtro}
+          </div>
         )}
       </article>
       {ultimas.length > 0 && (
