@@ -1,9 +1,11 @@
 import Link from 'next/link'
 
 import type { SeccionMenu } from '../../navegacion'
+import { CintaConMas } from './CintaConMas'
 
 /**
- * Tira de secciones de Noticias. En el celular se desliza de costado. Con `todas` es la de la página
+ * Tira de secciones de Noticias. En el celular se desliza de costado, con el mismo "+" de las pestañas
+ * de Entrevistas (CintaConMas). Con `todas` es la de la página
  * Noticias: suma "Todas" al principio, una línea negra arriba y las no elegidas van más finas.
  */
 export function TiraSecciones({
@@ -19,9 +21,10 @@ export function TiraSecciones({
   enlaces.push(...secciones.map((s) => ({ ...s, href: `/noticias/${s.slug}` })))
   const elegida = todas ? (actual ?? '') : actual
   return (
-    <nav
-      aria-label="Secciones de noticias"
-      className={`flex gap-5 overflow-x-auto border-b border-linea md:flex-wrap md:overflow-visible ${
+    <CintaConMas
+      etiqueta="Secciones de noticias"
+      etiquetaMas="Ver más secciones"
+      claseNav={`flex gap-5 overflow-x-auto border-b border-linea md:flex-wrap md:overflow-visible ${
         todas ? 'md:gap-x-6 md:border-t md:border-t-tinta' : 'gap-[18px] md:gap-x-7'
       }`}
     >
@@ -37,6 +40,6 @@ export function TiraSecciones({
           {s.nombre}
         </Link>
       ))}
-    </nav>
+    </CintaConMas>
   )
 }
