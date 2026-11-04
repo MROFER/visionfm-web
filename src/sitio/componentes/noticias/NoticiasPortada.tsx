@@ -8,7 +8,7 @@ import { Foto } from '../ui/Foto'
 /**
  * Arriba de Noticias: la destacada grande y, en web, la columna "Últimas noticias". La radio no se repite
  * acá: ya está en el encabezado. `filtro` (el de fechas) va chico a la derecha de la fecha de la
- * destacada, sobre la línea que la separa del resto.
+ * destacada, sobre la línea que la separa del resto; en la web lo muestra la fila del archivo.
  */
 export function NoticiasPortada({
   destacada,
