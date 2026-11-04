@@ -8,9 +8,13 @@ import { grupoActual, telefonoParaLink, type GrupoMenu } from '../../navegacion'
 import type { Clima } from '../../datos/clima'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
 import { CabeceraCelular } from '../reproductor/CabeceraCelular'
-import { IconoCerrar, IconoFlechaAbajo, IconoMenu } from '../ui/iconos'
+import { IconoFlechaAbajo } from '../ui/iconos'
 import { LogoApilado } from '../ui/Logo'
 import { Cinta, type NotaCinta } from './Cinta'
+
+// Cada línea de la hamburguesa del celular
+const LINEA =
+  'absolute right-0 h-[3px] w-7 bg-current transition-[translate,rotate,scale,opacity] duration-200 ease-out motion-reduce:transition-none'
 
 /**
  * Header del sitio (design/LEEME.md, sección 6). Desde 1024 px: menú con desplegables y botón
@@ -126,9 +130,15 @@ export function Encabezado({
               aria-expanded={menuAbierto}
               aria-controls="menu-movil"
               onClick={() => setMenuAbierto(!menuAbierto)}
-              className="absolute top-0 right-0 flex size-11 cursor-pointer items-center justify-center bg-tinta text-blanco"
+              className="absolute top-0 right-0 flex size-11 cursor-pointer items-center justify-end text-tinta"
             >
-              {menuAbierto ? <IconoCerrar /> : <IconoMenu />}
+              {/* Tres líneas sin recuadro, alineadas al margen; al abrir, la de arriba y la de abajo giran y
+                  forman la cruz, y la del medio se desvanece */}
+              <span aria-hidden className="relative block h-5 w-7">
+                <span className={`${LINEA} top-0 ${menuAbierto ? 'translate-y-[8.5px] rotate-45' : ''}`} />
+                <span className={`${LINEA} top-[8.5px] ${menuAbierto ? 'scale-x-40 opacity-0' : ''}`} />
+                <span className={`${LINEA} top-[17px] ${menuAbierto ? '-translate-y-[8.5px] -rotate-45' : ''}`} />
+              </span>
             </button>
           </div>
           <Cinta notas={cinta.notas} clima={cinta.clima} />
