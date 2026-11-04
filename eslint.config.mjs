@@ -24,7 +24,7 @@ const config = [
     },
   },
   {
-    ignores: ['.next/', 'design/', 'src/payload-types.ts', 'src/migrations/', 'src/app/(payload)/'],
+    ignores: ['.next/', '.claude/', 'design/', 'src/payload-types.ts', 'src/migrations/', 'src/app/(payload)/'],
   },
 ]
 
