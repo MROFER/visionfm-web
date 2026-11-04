@@ -1,0 +1,23 @@
+{
+  "skillOverrides": {
+    "animation-performance": "user-invocable-only",
+    "break-ui": "user-invocable-only",
+    "diagnosing-bugs": "user-invocable-only",
+    "domain-modeling": "user-invocable-only",
+    "emil-design-eng": "user-invocable-only",
+    "grill-me": "user-invocable-only",
+    "impeccable": "user-invocable-only",
+    "improve-animations": "user-invocable-only",
+    "insecure-defaults": "user-invocable-only",
+    "mobile-native": "user-invocable-only",
+    "mp-integrate": "user-invocable-only",
+    "mp-review": "user-invocable-only",
+    "mp-test-setup": "user-invocable-only",
+    "mp-webhooks": "user-invocable-only",
+    "review-animations": "user-invocable-only",
+    "security-audit": "user-invocable-only",
+    "supply-chain-risk-auditor": "user-invocable-only",
+    "to-questionnaire": "user-invocable-only",
+    "vercel-react-best-practices": "user-invocable-only"
+  }
+}
