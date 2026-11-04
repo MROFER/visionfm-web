@@ -4,6 +4,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { sembrar } from '@/seed'
 import { cargarGrilla } from '@/seed/grilla'
+import {
+  borrarEntrevistasDePrueba,
+  cargarEntrevistasDePrueba,
+  entrevistasDePrueba,
+} from '@/seed/entrevistas-de-prueba'
 import { borrarNoticiasDePrueba, cargarNoticiasDePrueba } from '@/seed/noticias-de-prueba'
 
 // `pnpm seed` deja el sitio navegable y se puede correr más de una vez
@@ -130,5 +135,24 @@ describe('datos de ejemplo', () => {
     expect(await borrarNoticiasDePrueba(payload)).toBe(84)
     expect(await publicadas()).toBe(8)
     expect((await payload.count({ collection: 'medios' })).totalDocs).toBe(medios)
+  }, 300_000)
+
+  it('las entrevistas de prueba traen transcripción y se sacan sin tocar las de ejemplo', async () => {
+    const total = async () => (await payload.count({ collection: 'entrevistas' })).totalDocs
+    const antes = await total()
+
+    expect(await cargarEntrevistasDePrueba(payload)).toEqual({ creadas: 24, existentes: 0 })
+    expect(await total()).toBe(antes + 24)
+    expect(await cargarEntrevistasDePrueba(payload)).toEqual({ creadas: 0, existentes: 24 })
+    const { docs } = await payload.find({
+      collection: 'entrevistas',
+      where: { tema: { equals: entrevistasDePrueba()[1].tema } },
+      depth: 0,
+    })
+    expect(docs[0].transcripcion).toMatch(/^Conectados: /)
+    expect(docs[0].duracion).toBeGreaterThan(0)
+
+    expect(await borrarEntrevistasDePrueba(payload)).toBe(24)
+    expect(await total()).toBe(antes)
   }, 300_000)
 })

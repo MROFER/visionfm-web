@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
-import { FiltroMes } from '@/sitio/componentes/radio/FiltroMes'
+import { FiltroFechas } from '@/sitio/componentes/radio/FiltroFechas'
 import { EntrevistaDestacada, FilaEntrevista } from '@/sitio/componentes/radio/ListaEntrevistas'
 import { PestanasProgramas } from '@/sitio/componentes/radio/PestanasProgramas'
 import { Buscador } from '@/sitio/componentes/ui/Buscador'
@@ -16,7 +16,7 @@ import {
   obtenerAjustes,
   obtenerGrilla,
 } from '@/sitio/datos'
-import { esMes, nombreDelMes } from '@/sitio/lib/fecha'
+import { diasDelMes, esDia, esMes, hoyEnMontevideo, nombreDelRango } from '@/sitio/lib/fecha'
 
 export const metadata: Metadata = {
   title: 'Entrevistas',
@@ -27,21 +27,29 @@ type Busqueda = Promise<{
   pagina?: string | string[]
   q?: string | string[]
   programa?: string | string[]
+  desde?: string | string[]
+  hasta?: string | string[]
+  /** Las direcciones viejas del filtro por mes siguen andando */
   mes?: string | string[]
 }>
 
 const uno = (v?: string | string[]) => (Array.isArray(v) ? v[0] : v)
 
 // Entrevistas (design/LEEME.md, sección 7): buscador, pestañas por programa, destacada con reproductor,
-// archivo paginado y filtro por mes. Todo suena con el mismo audio de la radio.
+// archivo paginado y filtro por fechas. Todo suena con el mismo audio de la radio.
 export default async function Entrevistas({ searchParams }: { searchParams: Busqueda }) {
   const busqueda = await searchParams
   const numero = Number(uno(busqueda.pagina))
   const pagina = Number.isInteger(numero) && numero > 1 ? numero : 1
   const q = uno(busqueda.q)?.trim().slice(0, 100) ?? ''
   const programa = uno(busqueda.programa) || undefined
-  const mesPedido = uno(busqueda.mes)
-  const mes = mesPedido && esMes(mesPedido) ? mesPedido : undefined
+  const hoy = hoyEnMontevideo()
+  // Rango de días, los dos incluidos; si vienen al revés se dan vuelta. `mes` es el filtro de antes
+  let [desde, hasta] = [uno(busqueda.desde), uno(busqueda.hasta)]
+  const mesViejo = uno(busqueda.mes)
+  if (!desde && !hasta && mesViejo && esMes(mesViejo)) ({ desde, hasta } = diasDelMes(mesViejo))
+  if (!desde || !hasta || !esDia(desde) || !esDia(hasta)) desde = hasta = undefined
+  else if (desde > hasta) [desde, hasta] = [hasta, desde]
 
   const [ajustes, grilla, indice] = await Promise.all([
     obtenerAjustes(),
@@ -55,29 +63,32 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
   if (programa && !elegido && !conEntrevistas.has(programa)) notFound()
   // Un programa de la grilla todavía sin entrevistas también se puede elegir por la dirección
   if (programa && elegido && !conEntrevistas.has(programa)) conEntrevistas.set(programa, elegido.nombre)
-  const meses = [...new Set(indice.filter((e) => !programa || e.programa?.slug === programa).map((e) => e.mes))]
+  const dias = indice.filter((e) => !programa || e.programa?.slug === programa).map((e) => e.dia)
 
-  // Con búsqueda o mes elegido no hay destacada: se listan todas las que coinciden
-  const filtrando = Boolean(q || mes)
+  // Con búsqueda o fechas elegidas no hay destacada: se listan todas las que coinciden
+  const filtrando = Boolean(q || desde)
   const destacada = filtrando ? null : await entrevistaDestacada(programa)
   const archivo = await listarEntrevistas({
     pagina,
     programa,
     q: q || undefined,
-    mes,
+    desde,
+    hasta,
     excluir: destacada?.id,
   })
   if (pagina > archivo.paginas) notFound()
 
-  const href = (cambios: { pagina?: number; programa?: string | null; mes?: string | null }) => {
+  const href = (cambios: { pagina?: number; programa?: string | null; fechas?: null }) => {
     const params = new URLSearchParams()
     const mismoPrograma = cambios.programa === undefined
     const prog = mismoPrograma ? programa : cambios.programa
     if (prog) params.set('programa', prog)
     if (q && mismoPrograma) params.set('q', q)
-    // Al cambiar de programa el mes se suelta: puede no tener entrevistas de ese programa
-    const m = cambios.mes === undefined ? (mismoPrograma ? mes : undefined) : cambios.mes
-    if (m) params.set('mes', m)
+    // Las fechas siguen al cambiar de programa: "las de agosto" de otro programa
+    if (desde && hasta && cambios.fechas !== null) {
+      params.set('desde', desde)
+      params.set('hasta', hasta)
+    }
     if (cambios.pagina && cambios.pagina > 1) params.set('pagina', String(cambios.pagina))
     const cadena = params.toString()
     return cadena ? `/radio/entrevistas?${cadena}` : '/radio/entrevistas'
@@ -90,10 +101,7 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
       elegida: slug === programa,
     })),
   ]
-  const opcionesMes = [
-    { valor: '', etiqueta: 'Todas las fechas', href: href({ mes: null }) },
-    ...meses.map((m) => ({ valor: m, etiqueta: nombreDelMes(m), href: href({ mes: m }) })),
-  ]
+  const rango = desde && hasta ? nombreDelRango(desde, hasta, hoy) : ''
 
   return (
     <main className="pb-10 md:pb-20">
@@ -129,7 +137,7 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
 
         <div className="flex items-end justify-between gap-4 border-b-[3px] border-tinta pb-2.5">
           <h2 className="etiqueta m-0 text-xs md:text-[13px]">
-            {q ? `Resultados para “${q}”` : mes ? `Entrevistas de ${nombreDelMes(mes).toLowerCase()}` : 'Todas las entrevistas'}
+            {q ? `Resultados para “${q}”` : rango ? `Entrevistas ${rango}` : 'Todas las entrevistas'}
           </h2>
           <div className="flex items-center gap-4">
             {archivo.paginas > 1 && (
@@ -137,7 +145,9 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
                 Página {pagina} de {archivo.paginas}
               </span>
             )}
-            {meses.length > 0 && <FiltroMes opciones={opcionesMes} actual={mes ?? ''} />}
+            {(dias.length > 0 || desde) && (
+              <FiltroFechas dias={dias} desde={desde} hasta={hasta} hoy={hoy} />
+            )}
           </div>
         </div>
         {archivo.entrevistas.length > 0 ? (
@@ -155,10 +165,10 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
                   Ver todas
                 </Link>
               </>
-            ) : mes ? (
+            ) : rango ? (
               <>
-                No hay entrevistas en {nombreDelMes(mes).toLowerCase()}.{' '}
-                <Link href={href({ mes: null })} className="font-semibold">
+                No hay entrevistas {rango}.{' '}
+                <Link href={href({ fechas: null })} className="font-semibold">
                   Ver todas
                 </Link>
               </>
