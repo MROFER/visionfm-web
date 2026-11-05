@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { diasDeFunciones, fechaCorta, fechaLarga, hoyEnMontevideo } from '@/sitio/lib/fecha'
+import { diasDeFunciones, fechaCorta, fechaLarga, horaDelDia, hoyEnMontevideo } from '@/sitio/lib/fecha'
 import { duracionAudio, duracionPelicula, reloj } from '@/sitio/lib/formato'
 
 // 2026-10-16 es viernes
@@ -30,6 +30,11 @@ describe('fechas', () => {
     expect(fechaLarga(new Date('2026-10-13T02:00:00Z'))).toBe('Lunes 12 de octubre de 2026')
     expect(fechaCorta('2026-10-11T15:00:00Z')).toBe('11 oct')
     expect(hoyEnMontevideo(new Date('2026-10-13T02:00:00Z'))).toBe('2026-10-12')
+  })
+  it('la hora de publicación va de 00:00 a 23:59, en Montevideo', () => {
+    expect(horaDelDia('2026-11-04T11:30:00Z')).toBe('08:30')
+    expect(horaDelDia('2026-11-05T03:05:00Z')).toBe('00:05')
+    expect(horaDelDia('2026-11-05T02:45:00Z')).toBe('23:45')
   })
 })
 

@@ -5,12 +5,14 @@ import { notFound } from 'next/navigation'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { Compartir } from '@/sitio/componentes/noticias/Compartir'
+import { convertidoresNota, pieDeFoto } from '@/sitio/componentes/noticias/convertidores'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
+import { IconoReloj } from '@/sitio/componentes/ui/iconos'
 import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
 import { notasRelacionadas, obtenerAjustes, obtenerNota } from '@/sitio/datos'
 import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
-import { fechaCompleta } from '@/sitio/lib/fecha'
+import { fechaCompleta, horaDelDia } from '@/sitio/lib/fecha'
 import { minutosDeLectura, palabrasDeLexical, partirEnLaMitad } from '@/sitio/lib/texto'
 import { articulo, migas } from '@/sitio/seo/estructurados'
 
@@ -47,7 +49,7 @@ export default async function Nota({ params }: Parametros) {
   const minutos = minutosDeLectura(palabrasDeLexical(nota.cuerpo))
   // La del medio va solo en notas de 6 párrafos o más (docs/07-permisos-y-publicidad.md, sección 3)
   const mitades = partirEnLaMitad(nota.cuerpo)
-  const pie = [nota.epigrafe, nota.credito && `Foto: ${nota.credito}`].filter(Boolean).join(' · ')
+  const pie = pieDeFoto(nota.epigrafe, nota.credito)
   const origen = urlDelSitio().origin
   const datos = [
     articulo(origen, nota),
@@ -98,8 +100,19 @@ export default async function Nota({ params }: Parametros) {
             <span className="text-[13px] md:text-sm">
               <strong>{nota.firma}</strong>{' '}
               <span className="text-meta">
-                {nota.fecha && <time dateTime={nota.fecha}>· {fechaCompleta(nota.fecha)}</time>}{' '}
-                · {minutos} min de lectura
+                {/* El punto queda al final de cada dato, así al cortar la línea ninguna empieza con "·" */}
+                {nota.fecha ? (
+                  <>
+                    <time dateTime={nota.fecha}>· {fechaCompleta(nota.fecha)} ·</time>{' '}
+                    <span className="whitespace-nowrap">
+                      <IconoReloj tamano={13} className="mr-1 inline align-[-2px]" />
+                      {`${horaDelDia(nota.fecha)} ·`}
+                    </span>{' '}
+                  </>
+                ) : (
+                  '· '
+                )}
+                <span className="whitespace-nowrap">{minutos} min de lectura</span>
               </span>
             </span>
             <div className="hidden md:block">
@@ -121,7 +134,7 @@ export default async function Nota({ params }: Parametros) {
         <div className="cuerpo-nota contenedor max-w-[728px] pt-5 md:pt-0">
           {mitades ? (
             <>
-              <RichText data={mitades[0]} />
+              <RichText data={mitades[0]} converters={convertidoresNota} />
               {/* `block`: el cuerpo deja sin caja a los div del editor, y este necesita la suya */}
               <div className="block py-2 md:py-3">
                 <Publicidad
@@ -132,10 +145,10 @@ export default async function Nota({ params }: Parametros) {
                   segunAnuncio
                 />
               </div>
-              <RichText data={mitades[1]} />
+              <RichText data={mitades[1]} converters={convertidoresNota} />
             </>
           ) : (
-            <RichText data={nota.cuerpo} />
+            <RichText data={nota.cuerpo} converters={convertidoresNota} />
           )}
         </div>
 
