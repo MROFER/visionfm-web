@@ -1,8 +1,11 @@
+import { BlocksFeature, lexicalEditor, UploadFeature } from '@payloadcms/richtext-lexical'
 import {
   Forbidden,
   type Access,
+  type Block,
   type CollectionBeforeChangeHook,
   type CollectionConfig,
+  type TextField,
   type Where,
 } from 'payload'
 
@@ -48,6 +51,26 @@ const soloEnSeccionesPermitidas: CollectionBeforeChangeHook = ({ data, req }) =>
   return data
 }
 
+const epigrafe: TextField = { name: 'epigrafe', label: 'Epígrafe', type: 'text' }
+
+/** Galería dentro del texto: de 2 a 12 fotos que se pasan con flechas, cada una con su epígrafe. */
+const Galeria: Block = {
+  slug: 'galeria',
+  interfaceName: 'BloqueGaleria',
+  labels: { singular: 'Galería', plural: 'Galerías' },
+  fields: [
+    {
+      name: 'fotos',
+      type: 'array',
+      required: true,
+      minRows: 2,
+      maxRows: 12,
+      labels: { singular: 'Foto', plural: 'Fotos' },
+      fields: [{ name: 'foto', type: 'upload', relationTo: 'medios', required: true }, epigrafe],
+    },
+  ],
+}
+
 // docs/04-esquema.md (noticias) y docs/03-flujos.md (P2, flujo editorial)
 export const Noticias: CollectionConfig = {
   slug: 'noticias',
@@ -84,7 +107,20 @@ export const Noticias: CollectionConfig = {
       admin: { description: 'Único dentro de la sección; cambiarlo cambia la URL.' },
     }),
     { name: 'bajada', type: 'textarea', required: true, minLength: 80, maxLength: 280 },
-    { name: 'cuerpo', type: 'richText', required: true },
+    {
+      name: 'cuerpo',
+      type: 'richText',
+      required: true,
+      // Además del texto, fotos sueltas con su epígrafe y galerías, donde la redacción quiera ponerlas.
+      // Todo queda dentro del texto de la nota: no hay tablas nuevas en la base.
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures.filter((f) => f.key !== 'upload'),
+          UploadFeature({ collections: { medios: { fields: [epigrafe] } } }),
+          BlocksFeature({ blocks: [Galeria] }),
+        ],
+      }),
+    },
     { name: 'foto', type: 'upload', relationTo: 'medios', required: true },
     { name: 'epigrafe', label: 'Epígrafe', type: 'text' },
     {
