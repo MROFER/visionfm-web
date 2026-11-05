@@ -10,7 +10,7 @@ import { EntrevistaEnNota } from '@/sitio/componentes/noticias/EntrevistaEnNota'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { IconoReloj } from '@/sitio/componentes/ui/iconos'
-import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
+import { NotaTarjeta } from '@/sitio/componentes/ui/TarjetaNota'
 import { notasRelacionadas, obtenerAjustes, obtenerEntrevista, obtenerNota } from '@/sitio/datos'
 import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaCompleta, horaDelDia } from '@/sitio/lib/fecha'
@@ -40,8 +40,9 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
   }
 }
 
-// La nota (design/LEEME.md, sección 7): encabezado a 780 px, foto a 1040, cuerpo a 680, una publicidad
-// arriba, otra en el medio si la nota es larga y otra al final, y "Seguí leyendo"
+// La nota (design/LEEME.md, sección 7): encabezado a 780 px, foto a 1040 (16:10 en el celular), cuerpo
+// a 680, una publicidad arriba, otra en el medio si la nota es larga y otra al final, y "Seguí leyendo"
+// con las tarjetas del archivo
 export default async function Nota({ params }: Parametros) {
   const { seccion, slug } = await params
   const [nota, ajustes] = await Promise.all([obtenerNota(seccion, slug), obtenerAjustes()])
@@ -130,7 +131,7 @@ export default async function Nota({ params }: Parametros) {
             imagen={nota.foto}
             sizes="(min-width: 1088px) 1040px, 100vw"
             prioridad
-            className="h-[250px] w-full sm:h-auto sm:max-h-[520px] sm:aspect-[2/1]"
+            className="aspect-[16/10] h-auto w-full md:max-h-[520px] md:aspect-[2/1]"
           />
           {pie && <figcaption className="px-4 text-xs text-meta md:px-0 md:text-[13px]">{pie}</figcaption>}
         </figure>
@@ -180,9 +181,10 @@ export default async function Nota({ params }: Parametros) {
           >
             Seguí leyendo
           </h2>
-          <div className="lg:grid lg:grid-cols-3 lg:gap-8">
+          {/* Las mismas tarjetas del archivo de Noticias */}
+          <div className="md:grid md:grid-cols-2 md:gap-x-6 md:gap-y-10 md:pt-4 lg:grid-cols-3 lg:gap-x-8">
             {relacionadas.map((n) => (
-              <NotaChica key={n.id} nota={n} />
+              <NotaTarjeta key={n.id} nota={n} />
             ))}
           </div>
         </section>
