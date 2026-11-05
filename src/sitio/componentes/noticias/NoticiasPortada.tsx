@@ -9,21 +9,28 @@ import { Foto } from '../ui/Foto'
  * Arriba de Noticias: la destacada grande y, en web, la columna "Últimas noticias". La radio no se repite
  * acá: ya está en el encabezado. En el celular `filtro` (el de fechas) va chico, solo y a la derecha, apoyado
  * sobre la línea que separa la destacada del resto, como en Entrevistas. En la web lo muestra la fila del
- * archivo; si no hay archivo, `filtroEnWeb` lo deja acá, al lado de la fecha.
+ * archivo; si no hay archivo, `filtroEnWeb` lo deja acá, al lado de la fecha. En la web, si hay archivo, la
+ * línea la pone su fila, con "Archivo" y el filtro encima: `lineaEnWeb` en falso la saca de acá.
  */
 export function NoticiasPortada({
   destacada,
   ultimas,
   filtro,
   filtroEnWeb = false,
+  lineaEnWeb = true,
 }: {
   destacada: TarjetaNota
   ultimas: TarjetaNota[]
   filtro?: ReactNode
   filtroEnWeb?: boolean
+  lineaEnWeb?: boolean
 }) {
   return (
-    <section className="flex flex-col gap-10 border-b-[3px] border-tinta pt-5 pb-5 md:pt-8 lg:mb-2 lg:flex-row lg:pb-10">
+    <section
+      className={`flex flex-col gap-10 border-b-[3px] border-tinta pt-5 pb-5 md:pt-8 lg:mb-2 lg:flex-row lg:pb-10 ${
+        lineaEnWeb ? '' : 'md:border-b-0'
+      }`}
+    >
       <article className="flex min-w-0 flex-col gap-2.5 md:gap-3.5 lg:flex-[999_1_560px]">
         <Link href={destacada.href} aria-hidden tabIndex={-1} className="block">
           <Foto

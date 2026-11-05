@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import type { ReactNode } from 'react'
 
 import {
   destacadaDeSeccion,
@@ -105,6 +106,14 @@ export async function PaginaNoticias({
       <FiltroFechas dias={dias} desde={desde} hasta={hasta} hoy={hoy} cosa={{ una: 'nota', varias: 'notas' }} />
     ) : null
 
+  // La página del archivo, o cuántas notas encontró la búsqueda
+  const cuenta =
+    archivo.total > 0
+      ? q
+        ? `${archivo.total} ${archivo.total === 1 ? 'nota' : 'notas'}`
+        : `Página ${pagina} de ${archivo.paginas}`
+      : null
+
   return (
     <main className="pb-8 md:pb-20">
       <Migas
@@ -141,34 +150,32 @@ export async function PaginaNoticias({
             ultimas={ultimas}
             filtro={filtro}
             filtroEnWeb={archivo.notas.length === 0}
+            lineaEnWeb={archivo.notas.length === 0}
           />
         )}
 
         {q || !conPortada ? (
-          <div className="flex items-center justify-between gap-4 pt-6 pb-1">
-            <h2 className="etiqueta m-0 text-[13px]">
-              {q ? `Resultados para “${q}”` : rango ? `${actual?.nombre ?? 'Noticias'} ${rango}` : 'Archivo'}
-            </h2>
-            <div className="flex items-center gap-4">
-              {archivo.total > 0 && (
-                <span className="text-[13px] whitespace-nowrap text-meta">
-                  {q ? `${archivo.total} ${archivo.total === 1 ? 'nota' : 'notas'}` : `Página ${pagina} de ${archivo.paginas}`}
-                </span>
-              )}
-              {filtro}
-            </div>
-          </div>
-        ) : (
-          archivo.notas.length > 0 && (
-            <div className="hidden items-center justify-between gap-4 pt-6 pb-1 md:flex">
-              <h2 className="etiqueta m-0 text-[13px]">Archivo</h2>
+          <>
+            <div className="flex items-center justify-between gap-4 pt-6 pb-1 md:items-end md:border-b-[3px] md:border-tinta md:pb-2.5">
+              <h2 className="etiqueta m-0 text-[13px]">
+                {q ? `Resultados para “${q}”` : rango ? `${actual?.nombre ?? 'Noticias'} ${rango}` : 'Archivo'}
+              </h2>
               <div className="flex items-center gap-4">
-                <span className="text-[13px] whitespace-nowrap text-meta">
-                  Página {pagina} de {archivo.paginas}
-                </span>
+                {cuenta && <span className="text-[13px] whitespace-nowrap text-meta md:hidden">{cuenta}</span>}
                 {filtro}
               </div>
             </div>
+            {cuenta && <CuentaBajoLinea>{cuenta}</CuentaBajoLinea>}
+          </>
+        ) : (
+          archivo.notas.length > 0 && (
+            <>
+              <div className="hidden items-end justify-between gap-4 border-b-[3px] border-tinta pt-6 pb-2.5 md:flex lg:pt-0">
+                <h2 className="etiqueta m-0 text-[13px]">Archivo</h2>
+                {filtro}
+              </div>
+              <CuentaBajoLinea>{cuenta}</CuentaBajoLinea>
+            </>
           )
         )}
 
@@ -208,4 +215,12 @@ export async function PaginaNoticias({
       </div>
     </main>
   )
+}
+
+/**
+ * En web, la página del archivo (o la cuenta de la búsqueda) va debajo de la línea, a la derecha y a la
+ * misma distancia que el filtro está arriba de ella, como en Entrevistas.
+ */
+function CuentaBajoLinea({ children }: { children: ReactNode }) {
+  return <p className="m-0 hidden pt-[11px] text-right text-[13px] leading-4 text-meta md:block">{children}</p>
 }
