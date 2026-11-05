@@ -30,6 +30,8 @@ for (const [nombre, tamano] of [
         ['/noticias', 2],
         ['/noticias/locales', 2],
         [NOTA, 2],
+        // Una nota larga suma la del medio
+        ['/noticias/opinion/que-nos-dice-el-anglo-sobre-el-futuro-de-la-ciudad', 3],
         ['/radio/programacion', 2],
         ['/radio/entrevistas', 1],
         [entrevista, 2],

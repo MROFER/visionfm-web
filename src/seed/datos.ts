@@ -172,6 +172,12 @@ export const NOTICIAS: {
     parrafos: [
       'El Paisaje Industrial Fray Bentos es mucho más que un museo: es una oportunidad para repensar la ciudad.',
       'Hace falta un plan que combine conservación, turismo y nuevos usos para los edificios.',
+      'Desde que la Unesco lo declaró Patrimonio de la Humanidad, el Anglo recibe cada año más visitantes, pero la mayoría pasa el día y sigue viaje.',
+      'Para que se queden hacen falta más camas, más propuestas de noche y una costanera que conecte el barrio con el centro.',
+      'Algunos galpones ya tienen nuevos usos, como la sala de exposiciones y los talleres, y otros esperan un proyecto desde hace años.',
+      'La experiencia de otras ciudades muestra que el patrimonio funciona cuando los vecinos lo sienten propio y no solo como una postal.',
+      'Por eso cualquier plan tendría que discutirse en el barrio, con las familias que trabajaron en el frigorífico y con los comerciantes.',
+      'El Anglo ya cambió la historia de Fray Bentos una vez. Depende de nosotros que vuelva a hacerlo.',
     ],
     diasAtras: 4,
   },

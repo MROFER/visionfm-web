@@ -62,7 +62,7 @@ export const Anuncios: CollectionConfig = {
       validate: medidasExactas(300, 250),
       admin: {
         description:
-          'Para Cinevisión en el celular, donde si falta va la de 320×100, y para el formato cuadrado del final de la nota.',
+          'Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, y para el formato cuadrado del final de la nota.',
       },
     },
     { name: 'link', type: 'text' },
@@ -112,7 +112,7 @@ export const Anuncios: CollectionConfig = {
       hasMany: true,
       admin: {
         description:
-          'Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota", arriba y abajo, a estas secciones. Vacío = todas.',
+          'Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota" (arriba, en el medio y abajo) a estas secciones. Vacío = todas.',
       },
     },
     {

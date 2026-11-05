@@ -17,6 +17,7 @@ import * as migration_20261103_040908_transcripcion_entrevistas from './20261103
 import * as migration_20261103_062502_tarea_transcribir from './20261103_062502_tarea_transcribir';
 import * as migration_20261105_041908_publicidad_abajo from './20261105_041908_publicidad_abajo';
 import * as migration_20261105_043229_formatos_final_nota from './20261105_043229_formatos_final_nota';
+import * as migration_20261105_045636_publicidad_medio_nota from './20261105_045636_publicidad_medio_nota';
 
 export const migrations = [
   {
@@ -112,6 +113,11 @@ export const migrations = [
   {
     up: migration_20261105_043229_formatos_final_nota.up,
     down: migration_20261105_043229_formatos_final_nota.down,
-    name: '20261105_043229_formatos_final_nota'
+    name: '20261105_043229_formatos_final_nota',
+  },
+  {
+    up: migration_20261105_045636_publicidad_medio_nota.up,
+    down: migration_20261105_045636_publicidad_medio_nota.down,
+    name: '20261105_045636_publicidad_medio_nota'
   },
 ];

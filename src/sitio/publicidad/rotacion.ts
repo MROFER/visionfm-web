@@ -14,6 +14,7 @@ export const CON_SECCION: Ubicacion[] = [
   'noticias-seccion',
   'noticias-seccion-abajo',
   'noticias-nota',
+  'noticias-nota-medio',
   'noticias-nota-abajo',
 ]
 

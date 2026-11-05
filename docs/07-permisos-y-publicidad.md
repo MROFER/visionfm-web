@@ -156,6 +156,7 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 | Noticias · Sección | Arriba del listado de la sección (se puede elegir qué secciones) |
 | Noticias · Sección · Abajo | Entre las páginas y "¿Tenés una noticia?" (se puede elegir qué secciones) |
 | Noticias · Nota | Arriba del título (se puede elegir notas de qué secciones) |
+| Noticias · Nota · En el medio | Solo en notas de 6 párrafos o más, después del párrafo de la mitad. Sale de 300×250 si el anuncio tiene esa imagen y, si no, la tira, al ancho del texto en web (se puede elegir notas de qué secciones) |
 | Noticias · Nota · Al final | Entre el final de la nota y "Seguí leyendo" (se puede elegir notas de qué secciones) |
 | Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos"; en el celular, 300×250 |
 | Cinevisión · Arriba (solo web) | Entre el carrusel y la cartelera; en el celular no aparece |
@@ -164,7 +165,7 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 
 ### Al cargar un anuncio
 
-1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (celular, para Cinevisión y otras ubicaciones en el medio de la página), con validación de medidas, y link de destino.
+1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (para Cinevisión en el celular y para el medio de la nota), con validación de medidas, y link de destino.
 2. **Formato al final de la nota** (solo si va en "Noticias · Nota · Al final"; 5/11/2026):
    - **Tira:** 728×90 en web y 320×100 en el celular.
    - **Cuadrado:** 300×250 en el celular y en web. En web va al lado de otros anuncios cuadrados distintos; cuántos lugares hay (uno, dos o tres) se elige en Ajustes, en "Cuadrados juntos al final de la nota". En una tablet entran dos. Los lugares que no se llenan muestran el aviso propio.
