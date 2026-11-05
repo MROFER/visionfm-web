@@ -202,6 +202,10 @@ export interface Noticia {
   epigrafe?: string | null;
   seccion: number | Seccione;
   autor?: (number | null) | Usuario;
+  /**
+   * Si la nota tiene una entrevista de la radio, su reproductor va arriba del texto.
+   */
+  entrevista?: (number | null) | Entrevista;
   fechaPublicacion?: string | null;
   fechaActualizacion?: string | null;
   estadoEditorial: 'borrador' | 'en-revision' | 'devuelta' | 'aprobada' | 'publicada';
@@ -1078,6 +1082,7 @@ export interface NoticiasSelect<T extends boolean = true> {
   epigrafe?: T;
   seccion?: T;
   autor?: T;
+  entrevista?: T;
   fechaPublicacion?: T;
   fechaActualizacion?: T;
   estadoEditorial?: T;
@@ -1944,6 +1949,20 @@ export interface TaskSchedulePublish {
     } | null;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BloqueGaleria".
+ */
+export interface BloqueGaleria {
+  fotos: {
+    foto: number | Medio;
+    epigrafe?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galeria';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

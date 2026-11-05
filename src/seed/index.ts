@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto'
 import type { CollectionSlug, Payload, Where } from 'payload'
 
 import { slugify } from '@/base/lib/slug'
@@ -44,6 +45,24 @@ export function parrafos(textos: string[]): Noticia['cuerpo'] {
         ],
       })),
     },
+  }
+}
+
+type NodoLexical = Noticia['cuerpo']['root']['children'][number]
+const idDeBloque = () => randomBytes(12).toString('hex')
+
+/** Lexical: una foto en el medio del texto, con su epígrafe. */
+export function fotoEnElTexto(foto: number, epigrafe: string): NodoLexical {
+  return { type: 'upload', version: 3, format: '', id: idDeBloque(), fields: { epigrafe }, relationTo: 'medios', value: foto }
+}
+
+/** Lexical: una galería en el medio del texto. */
+export function galeriaEnElTexto(fotos: { foto: number; epigrafe: string }[]): NodoLexical {
+  return {
+    type: 'block',
+    version: 2,
+    format: '',
+    fields: { id: idDeBloque(), blockName: '', blockType: 'galeria', fotos: fotos.map((f) => ({ id: idDeBloque(), ...f })) },
   }
 }
 
@@ -159,6 +178,24 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
     }),
   )
 
+  // La primera nota trae una foto en el medio del texto y una galería, para verlas en el sitio
+  const conFotos = async (titulo: string, textos: string[]) => {
+    const foto = async (k: number, color: string) => (await imagen(`${titulo} (foto ${k})`, 1600, 900, `Foto ${k}`, color)).id
+    const cuerpo = parrafos(textos)
+    const [primero, ...resto] = cuerpo.root.children
+    cuerpo.root.children = [
+      primero,
+      fotoEnElTexto(await foto(1, COLORES[1]), 'Las columnas nuevas, en el tramo del muelle.'),
+      ...resto,
+      galeriaEnElTexto([
+        { foto: await foto(2, COLORES[2]), epigrafe: 'El acceso al Barrio Anglo, de noche.' },
+        { foto: await foto(3, COLORES[3]), epigrafe: 'La costanera con las luminarias nuevas.' },
+        { foto: await foto(4, COLORES[4]), epigrafe: 'Los trabajos de la primera etapa.' },
+      ]),
+    ]
+    return cuerpo
+  }
+
   // Noticias publicadas
   const notas: { id: number }[] = []
   for (const [i, n] of NOTICIAS.entries()) {
@@ -173,7 +210,7 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
             titulo: n.titulo,
             slug: '',
             bajada: n.bajada,
-            cuerpo: parrafos(n.parrafos),
+            cuerpo: i === 0 ? await conFotos(n.titulo, n.parrafos) : parrafos(n.parrafos),
             seccion,
             foto: (await imagen(n.titulo, 1600, 900, n.seccion, COLORES[i % COLORES.length])).id,
             epigrafe: 'Imagen de ejemplo.',
@@ -224,9 +261,10 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
       })
     },
   )
+  const entrevistas: { id: number }[] = []
   for (const e of ENTREVISTAS) {
     if (!programas.has(e.programa)) continue
-    await buscarOCrear('entrevistas', { tema: { equals: e.tema } }, () =>
+    const doc = await buscarOCrear<{ id: number }>('entrevistas', { tema: { equals: e.tema } }, () =>
       payload.create({
         collection: 'entrevistas',
         data: {
@@ -241,6 +279,11 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
         },
       }),
     )
+    entrevistas.push(doc)
+  }
+  // La primera nota lleva una entrevista, para ver su reproductor arriba del texto
+  if (notas[0] && entrevistas[0]) {
+    await payload.update({ collection: 'noticias', id: notas[0].id, data: { entrevista: entrevistas[0].id } })
   }
 
   // Películas y funciones de esta semana
