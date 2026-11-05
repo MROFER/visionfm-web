@@ -136,17 +136,27 @@ Se carga **cada anuncio una sola vez** y se elige **en qué ubicaciones aparece*
 
 ### Ubicaciones
 
-Son los espacios que tiene el diseño: uno por página, siempre en la zona de primer impacto. La excepción es Cinevisión, donde el aviso va debajo de la cartelera para no tapar las películas (lo decidió la radio el 15/10/2026); en web tiene además un segundo espacio entre el carrusel y la cartelera (18/10/2026). La página de cada película no tiene.
+Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las páginas tienen al menos dos: uno arriba, en la zona de primer impacto, y otro al final (lo pidió la radio). El Inicio tiene uno entre cada bloque. Cinevisión sigue con el aviso debajo de la cartelera para no tapar las películas (15/10/2026) y, en web, un segundo espacio entre el carrusel y la cartelera (18/10/2026). La página de cada película no tiene. Cada espacio es una ubicación propia, así se vende y se mide por separado.
 
 | Ubicación | Dónde aparece |
 |---|---|
 | Inicio | Entre el hero en vivo y Noticias |
+| Inicio · Entre Noticias y Cine | Debajo de Noticias |
+| Inicio · Entre Cine y Entrevistas | Debajo de Cinevisión |
+| Inicio · Antes de Participá | Debajo de Entrevistas |
 | Radio · En vivo | Debajo del reproductor |
+| Radio · En vivo · Abajo (solo web) | Entre la radio y el pie; en el celular el reproductor es a pantalla completa y no aparece |
 | Radio · Programación | Debajo de la banda "Al aire" |
+| Radio · Programación · Abajo | Al final de la grilla, antes de "Las voces de Visión" |
 | Radio · Entrevistas | Arriba del listado |
+| Radio · Cada entrevista · Arriba | Arriba de la entrevista |
+| Radio · Cada entrevista · Abajo | Al final de la página |
 | Noticias · Listado | Arriba de la destacada |
+| Noticias · Listado · Abajo | Entre las páginas y "¿Tenés una noticia?" |
 | Noticias · Sección | Arriba del listado de la sección (se puede elegir qué secciones) |
+| Noticias · Sección · Abajo | Entre las páginas y "¿Tenés una noticia?" (se puede elegir qué secciones) |
 | Noticias · Nota | Arriba del título (se puede elegir notas de qué secciones) |
+| Noticias · Nota · Al final | Entre el final de la nota y "Seguí leyendo" (se puede elegir notas de qué secciones) |
 | Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos"; en el celular, 300×250 |
 | Cinevisión · Arriba (solo web) | Entre el carrusel y la cartelera; en el celular no aparece |
 | Institucional | Arriba del contenido |

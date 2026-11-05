@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 // En vivo (design/LEEME.md, sección 7): en el celular y la tablet es el reproductor a pantalla completa;
-// en web no hay diseño propio y va el hero del Inicio.
+// en web no hay diseño propio y va el hero del Inicio, con otra publicidad entre la radio y el pie.
 export default async function EnVivo() {
   const ajustes = await obtenerAjustes()
   return (
@@ -27,6 +27,9 @@ export default async function EnVivo() {
         <HeroEnVivo telefono={ajustes.telefono}>
           <Publicidad ubicacion="radio-en-vivo" aviso={ajustes.avisoPropio} oscuro />
         </HeroEnVivo>
+        <div className="contenedor py-12">
+          <Publicidad ubicacion="radio-en-vivo-abajo" aviso={ajustes.avisoPropio} />
+        </div>
       </div>
     </main>
   )

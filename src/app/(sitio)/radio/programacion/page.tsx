@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 // Programación (design/LEEME.md, sección 7): pestañas por día, con el programa al aire remarcado y
-// primero, y "Las voces de Visión"
+// primero, una publicidad arriba y otra al final de la grilla, y "Las voces de Visión"
 export default async function Programacion() {
   const [ajustes, programas, voces, excepciones] = await Promise.all([
     obtenerAjustes(),
@@ -52,6 +52,10 @@ export default async function Programacion() {
         </div>
         <div className="mt-4 md:mt-0">
           <GrillaSemanal programas={programas} />
+        </div>
+
+        <div className="pt-8 md:pt-14">
+          <Publicidad ubicacion="radio-programacion-abajo" aviso={ajustes.avisoPropio} />
         </div>
 
         {voces.length > 0 && (

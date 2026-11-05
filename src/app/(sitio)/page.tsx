@@ -14,7 +14,8 @@ import {
 } from '@/sitio/datos'
 import { hoyEnMontevideo } from '@/sitio/lib/fecha'
 
-// Inicio (design/LEEME.md, sección 7): hero en vivo, publicidad, noticias, Cinevisión, entrevistas y Participá
+// Inicio (design/LEEME.md, sección 7): hero en vivo, publicidad, noticias, Cinevisión, entrevistas y Participá,
+// con una publicidad entre cada bloque (docs/07-permisos-y-publicidad.md, sección 3)
 export default async function Inicio() {
   const [ajustes, portada, secciones] = await Promise.all([
     obtenerAjustes(),
@@ -36,12 +37,21 @@ export default async function Inicio() {
         <Publicidad ubicacion="inicio" aviso={ajustes.avisoPropio} />
       </div>
       <NoticiasInicio destacada={noticias.destacada} resto={noticias.resto} secciones={secciones} />
+      <div className="contenedor py-7 md:py-12">
+        <Publicidad ubicacion="inicio-noticias" aviso={ajustes.avisoPropio} />
+      </div>
       <CinevisionInicio
         cartelera={cartelera}
         destacadaId={portada.peliculaDestacada}
         direccion={ajustes.direccion}
       />
+      <div className="contenedor py-7 md:py-12">
+        <Publicidad ubicacion="inicio-cine" aviso={ajustes.avisoPropio} />
+      </div>
       <EntrevistasInicio entrevistas={entrevistas} />
+      <div className="contenedor py-7 md:py-12">
+        <Publicidad ubicacion="inicio-participa" aviso={ajustes.avisoPropio} />
+      </div>
       <div className="contenedor mt-2 mb-8 lg:mt-12 lg:mb-20">
         <Participa whatsapp={ajustes.whatsapp} />
       </div>

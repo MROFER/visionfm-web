@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { linkWhatsapp } from '../../navegacion'
 import { IconoWhatsapp } from '../ui/iconos'
 
-/** Bloque "Participá" (design/LEEME.md, sección 6): al final del Inicio y de Noticias. */
+/** Bloque "Participá" (design/LEEME.md, sección 6): al final del Inicio y de Noticias, en web y en el celular. */
 export function Participa({ whatsapp }: { whatsapp: string }) {
   return (
     <section

@@ -45,7 +45,7 @@ export async function leerBusqueda(busqueda: BusquedaNoticias) {
 
 /**
  * Noticias y cada sección (design/LEEME.md, sección 7): buscador, tira de secciones, destacada con las
- * últimas al lado, archivo paginado, filtro por fechas y, en el celular, Participá.
+ * últimas al lado, archivo paginado, filtro por fechas, una publicidad arriba y otra abajo, y Participá.
  */
 export async function PaginaNoticias({
   seccion,
@@ -209,7 +209,14 @@ export async function PaginaNoticias({
 
         <Paginacion actual={pagina} total={archivo.paginas} href={href} />
 
-        <div className="mt-8 lg:hidden">
+        <div className="pt-6 md:pt-10">
+          <Publicidad
+            ubicacion={seccion ? 'noticias-seccion-abajo' : 'noticias-listado-abajo'}
+            seccion={seccion}
+            aviso={ajustes.avisoPropio}
+          />
+        </div>
+        <div className="mt-8">
           <Participa whatsapp={ajustes.whatsapp} />
         </div>
       </div>
