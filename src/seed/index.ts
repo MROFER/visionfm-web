@@ -261,9 +261,10 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
       })
     },
   )
+  const entrevistas: { id: number }[] = []
   for (const e of ENTREVISTAS) {
     if (!programas.has(e.programa)) continue
-    await buscarOCrear('entrevistas', { tema: { equals: e.tema } }, () =>
+    const doc = await buscarOCrear<{ id: number }>('entrevistas', { tema: { equals: e.tema } }, () =>
       payload.create({
         collection: 'entrevistas',
         data: {
@@ -278,6 +279,11 @@ export async function sembrar(payload: Payload, hoy = new Date()) {
         },
       }),
     )
+    entrevistas.push(doc)
+  }
+  // La primera nota lleva una entrevista, para ver su reproductor arriba del texto
+  if (notas[0] && entrevistas[0]) {
+    await payload.update({ collection: 'noticias', id: notas[0].id, data: { entrevista: entrevistas[0].id } })
   }
 
   // Películas y funciones de esta semana
