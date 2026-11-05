@@ -148,10 +148,12 @@
 .cabecera-logo-entero {
   transition: opacity 0.2s ease 0.2s;
 }
+/* El dibujo del logo chico trae 4 px de aire a la izquierda: se corre para que la V quede en el margen,
+   como el logo grande y la hamburguesa */
 .cabecera-logo-compacto {
   position: absolute;
   top: -8px;
-  left: 0;
+  left: -4px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease;
@@ -187,10 +189,12 @@
     border-radius 0.45s,
     background-color 0.25s;
 }
+/* Sonando: 16 px de la V del logo chico (que termina en 36 px) y 16 px de las líneas de la hamburguesa
+   (28 px pegadas a la derecha), así los cuatro espacios de la barra miden lo mismo que el margen */
 .cabecera-celular[data-activo] .cabecera-reproductor {
   top: -6px;
-  left: 56px;
-  width: calc(100% - 112px);
+  left: 52px;
+  width: calc(100% - 96px);
   height: 56px;
   padding: 6px;
   border-radius: 14px;
