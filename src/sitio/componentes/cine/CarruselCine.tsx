@@ -115,7 +115,7 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
             <Flecha lado="derecha" onClick={() => tocar(actual + 1)} />
             <nav
               aria-label="Imágenes del carrusel"
-              className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-2 md:bottom-6 md:gap-3"
+              className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1.5 md:bottom-6 md:gap-[7px]"
             >
               {diapositivas.map((d, i) => (
                 <Negativo key={i} activo={i === actual} etiqueta={`Imagen ${i + 1}: ${d.alt}`} onClick={() => tocar(i)} />
@@ -143,12 +143,18 @@ function Flecha({ lado, onClick }: { lado: 'izquierda' | 'derecha'; onClick: () 
   )
 }
 
-/** Indicador con forma de negativo: 3 perforaciones arriba y abajo y la ventana en el medio. */
+/**
+ * Indicador con forma de negativo: 3 perforaciones arriba y abajo y la ventana en el medio. Mide 18×13 en
+ * el celular y 25×18 en web, con todas las medidas en píxeles enteros para que el dibujo no se borronee.
+ * El que se está viendo se dibuja más grande (20×15 y 29×20, cerca del ×1.15 del diseño) en vez de
+ * escalarlo, porque escalado queda borroso; los márgenes negativos hacen que no empuje a los otros.
+ * Se puede tocar más allá del dibujo: cada uno tiene 24 px de ancho y de alto como mínimo.
+ */
 function Negativo({ activo, etiqueta, onClick }: { activo: boolean; etiqueta: string; onClick: () => void }) {
   const perforaciones = (
-    <span aria-hidden className="flex justify-around px-0.5">
+    <span aria-hidden className={`flex justify-between px-[2px] ${activo ? 'md:px-1' : 'md:px-[3px]'}`}>
       {[0, 1, 2].map((k) => (
-        <span key={k} className="h-0.5 w-[3px] rounded-[1px] bg-linea md:h-[3px] md:w-1" />
+        <span key={k} className="h-px w-[2px] bg-linea md:h-[2px] md:w-[3px]" />
       ))}
     </span>
   )
@@ -158,14 +164,14 @@ function Negativo({ activo, etiqueta, onClick }: { activo: boolean; etiqueta: st
       onClick={onClick}
       aria-label={etiqueta}
       aria-current={activo ? 'true' : undefined}
-      className={`flex h-[22px] w-[30px] cursor-pointer flex-col justify-between rounded-[1px] bg-negativo p-0.5 transition-[transform,opacity] duration-200 md:h-[30px] md:w-[42px] ${
+      className={`relative flex cursor-pointer flex-col justify-between rounded-[1px] bg-negativo p-px transition-opacity duration-200 before:absolute before:-inset-x-[3px] before:-inset-y-[6px] md:before:-inset-y-[3px] ${
         activo
-          ? 'scale-115 opacity-100 shadow-[0_0_0_1px_#fff,0_2px_6px_rgba(0,0,0,0.35)]'
-          : 'opacity-75 shadow-[0_1px_3px_rgba(0,0,0,0.3)]'
+          ? '-m-px h-[15px] w-5 opacity-100 shadow-[0_0_0_1px_#fff,0_2px_6px_rgba(0,0,0,0.35)] md:-mx-0.5 md:h-5 md:w-[29px]'
+          : 'h-[13px] w-[18px] opacity-75 shadow-[0_1px_3px_rgba(0,0,0,0.3)] md:h-[18px] md:w-[25px]'
       }`}
     >
       {perforaciones}
-      <span aria-hidden className={`my-0.5 flex-1 ${activo ? 'bg-[#e8e6e1]' : 'bg-[#6e6a62]'}`} />
+      <span aria-hidden className={`my-px flex-1 ${activo ? 'bg-[#e8e6e1]' : 'bg-[#6e6a62]'}`} />
       {perforaciones}
     </button>
   )
