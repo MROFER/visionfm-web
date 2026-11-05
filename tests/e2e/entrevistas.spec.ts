@@ -59,6 +59,30 @@ test('en el celular se eligen las dos fechas a mano y el botón dice cuántas ha
   await expect(panel).toHaveCount(0)
 })
 
+test.describe('en el celular, con el dedo', () => {
+  test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+
+  test('tocar el ícono del calendario con el panel abierto lo cierra y no lo vuelve a abrir', async ({
+    page,
+  }) => {
+    await page.goto('/radio/entrevistas')
+    const calendario = page.getByRole('button', { name: 'Filtrar por fecha' })
+    // El ícono arriba de la pantalla, donde el panel que sube desde abajo no lo tapa
+    await calendario.evaluate((e) => window.scrollBy(0, e.getBoundingClientRect().top - 110))
+    const caja = await calendario.boundingBox()
+    if (!caja) throw new Error('No se ve el calendario')
+    const x = caja.x + caja.width / 2
+    const y = caja.y + caja.height / 2
+
+    await page.touchscreen.tap(x, y)
+    const panel = page.getByRole('dialog', { name: 'Filtrar por fecha' })
+    await expect(panel).toBeVisible()
+    await page.touchscreen.tap(x, y)
+    await expect(panel).toHaveCount(0)
+    await expect(calendario).toHaveAttribute('aria-expanded', 'false')
+  })
+})
+
 test('las direcciones viejas del filtro por mes siguen andando', async ({ page }) => {
   await page.goto('/radio/entrevistas?mes=2026-10')
   await expect(

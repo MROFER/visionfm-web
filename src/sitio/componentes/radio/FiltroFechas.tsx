@@ -131,9 +131,11 @@ export function FiltroFechas({
 
       {abierto && (
         <>
+          {/* Cierra con el clic y no al apoyar el dedo: si se cerrara antes, el clic caería en el botón del
+              calendario que queda debajo y lo volvería a abrir */}
           <div
             aria-hidden
-            onPointerDown={() => setAbierto(false)}
+            onClick={() => setAbierto(false)}
             className="fixed inset-0 z-[60] bg-tinta/60 md:hidden"
           />
           <div
