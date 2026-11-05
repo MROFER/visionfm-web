@@ -202,6 +202,10 @@ export interface Noticia {
   epigrafe?: string | null;
   seccion: number | Seccione;
   autor?: (number | null) | Usuario;
+  /**
+   * Si la nota tiene una entrevista de la radio, su reproductor va arriba del texto.
+   */
+  entrevista?: (number | null) | Entrevista;
   fechaPublicacion?: string | null;
   fechaActualizacion?: string | null;
   estadoEditorial: 'borrador' | 'en-revision' | 'devuelta' | 'aprobada' | 'publicada';
@@ -1050,6 +1054,7 @@ export interface NoticiasSelect<T extends boolean = true> {
   epigrafe?: T;
   seccion?: T;
   autor?: T;
+  entrevista?: T;
   fechaPublicacion?: T;
   fechaActualizacion?: T;
   estadoEditorial?: T;

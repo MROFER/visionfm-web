@@ -97,6 +97,15 @@ export const Noticias: CollectionConfig = {
     },
     { name: 'autor', type: 'relationship', relationTo: 'usuarios', admin: { position: 'sidebar' } },
     {
+      name: 'entrevista',
+      type: 'relationship',
+      relationTo: 'entrevistas',
+      admin: {
+        position: 'sidebar',
+        description: 'Si la nota tiene una entrevista de la radio, su reproductor va arriba del texto.',
+      },
+    },
+    {
       name: 'fechaPublicacion',
       label: 'Fecha de publicación',
       type: 'date',

@@ -5,10 +5,11 @@ import { notFound } from 'next/navigation'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { Compartir } from '@/sitio/componentes/noticias/Compartir'
+import { EntrevistaEnNota } from '@/sitio/componentes/noticias/EntrevistaEnNota'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
-import { notasRelacionadas, obtenerAjustes, obtenerNota } from '@/sitio/datos'
+import { notasRelacionadas, obtenerAjustes, obtenerEntrevista, obtenerNota } from '@/sitio/datos'
 import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaCompleta } from '@/sitio/lib/fecha'
 import { minutosDeLectura, palabrasDeLexical } from '@/sitio/lib/texto'
@@ -42,7 +43,10 @@ export default async function Nota({ params }: Parametros) {
   const { seccion, slug } = await params
   const [nota, ajustes] = await Promise.all([obtenerNota(seccion, slug), obtenerAjustes()])
   if (!nota) notFound()
-  const relacionadas = await notasRelacionadas(nota.id, seccion, 3)
+  const [relacionadas, entrevista] = await Promise.all([
+    notasRelacionadas(nota.id, seccion, 3),
+    nota.entrevista ? obtenerEntrevista(nota.entrevista) : null,
+  ])
   const minutos = minutosDeLectura(palabrasDeLexical(nota.cuerpo))
   const pie = [nota.epigrafe, nota.credito && `Foto: ${nota.credito}`].filter(Boolean).join(' · ')
   const origen = urlDelSitio().origin
@@ -116,6 +120,7 @@ export default async function Nota({ params }: Parametros) {
         </figure>
 
         <div className="cuerpo-nota contenedor max-w-[728px] pt-5 md:pt-0">
+          {entrevista && <EntrevistaEnNota entrevista={entrevista} />}
           <RichText data={nota.cuerpo} />
         </div>
 
