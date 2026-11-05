@@ -532,6 +532,8 @@ export const obtenerNota = unstable_cache(
     return {
       ...aTarjetaNota(n),
       cuerpo: n.cuerpo,
+      // Solo si la entrevista está publicada: si no, llega su id y no se muestra
+      entrevista: n.entrevista && typeof n.entrevista === 'object' ? n.entrevista.slug : null,
       actualizada: n.fechaActualizacion ?? null,
       epigrafe: n.epigrafe ?? '',
       credito: foto?.credito ?? '',

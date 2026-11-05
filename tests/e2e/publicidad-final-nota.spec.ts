@@ -47,8 +47,12 @@ const medidas = async (imagenes: Locator) =>
 test('en web, los cuadrados van de a tres y el lugar que falta lo llena el aviso propio', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   const aviso = await conAnuncios(page, [anuncio(1, 'cuadrado'), anuncio(2, 'cuadrado'), anuncio(3, 'tira')])
-  // Puede salir la tira: se recarga hasta que sale un cuadrado
-  for (let i = 0; i < 20 && (await aviso.locator('a[href^="/a/3"]').count()) > 0; i++) await page.reload()
+  // Puede salir la tira: se recarga hasta que sale un cuadrado, esperando cada vez a que lleguen los anuncios
+  const elegido = async () => {
+    await expect(aviso.locator('a[href^="/a/"]:visible').first()).toBeVisible()
+    return aviso.locator('a[href^="/a/3"]').count()
+  }
+  for (let i = 0; i < 20 && (await elegido()) > 0; i++) await page.reload()
 
   const enlaces = aviso.locator('a[href^="/a/"]:visible')
   await expect(enlaces).toHaveCount(2)

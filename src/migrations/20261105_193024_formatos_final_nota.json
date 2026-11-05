@@ -60,6 +60,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "entrevista_id": {
+          "name": "entrevista_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "fecha_publicacion": {
           "name": "fecha_publicacion",
           "type": "timestamp(3) with time zone",
@@ -226,6 +232,21 @@
           "columns": [
             {
               "expression": "autor_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "noticias_entrevista_idx": {
+          "name": "noticias_entrevista_idx",
+          "columns": [
+            {
+              "expression": "entrevista_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -454,6 +475,19 @@
           "onDelete": "set null",
           "onUpdate": "no action"
         },
+        "noticias_entrevista_id_entrevistas_id_fk": {
+          "name": "noticias_entrevista_id_entrevistas_id_fk",
+          "tableFrom": "noticias",
+          "tableTo": "entrevistas",
+          "columnsFrom": [
+            "entrevista_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "noticias_aprobado_por_id_usuarios_id_fk": {
           "name": "noticias_aprobado_por_id_usuarios_id_fk",
           "tableFrom": "noticias",
@@ -560,6 +594,12 @@
         },
         "version_autor_id": {
           "name": "version_autor_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_entrevista_id": {
+          "name": "version_entrevista_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -763,6 +803,21 @@
           "columns": [
             {
               "expression": "version_autor_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_noticias_v_version_version_entrevista_idx": {
+          "name": "_noticias_v_version_version_entrevista_idx",
+          "columns": [
+            {
+              "expression": "version_entrevista_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1042,6 +1097,19 @@
           "tableTo": "usuarios",
           "columnsFrom": [
             "version_autor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "_noticias_v_version_entrevista_id_entrevistas_id_fk": {
+          "name": "_noticias_v_version_entrevista_id_entrevistas_id_fk",
+          "tableFrom": "_noticias_v",
+          "tableTo": "entrevistas",
+          "columnsFrom": [
+            "version_entrevista_id"
           ],
           "columnsTo": [
             "id"
@@ -9365,7 +9433,6 @@
         "noticias-seccion",
         "noticias-seccion-abajo",
         "noticias-nota",
-        "noticias-nota-medio",
         "noticias-nota-abajo",
         "cinevision",
         "cinevision-arriba",
@@ -9402,7 +9469,6 @@
         "noticias-seccion",
         "noticias-seccion-abajo",
         "noticias-nota",
-        "noticias-nota-medio",
         "noticias-nota-abajo",
         "cinevision",
         "cinevision-arriba",
@@ -9561,6 +9627,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "c4bdc9da-88d3-4819-a2e9-29cf37638657",
+  "id": "a84f748a-0014-4d07-80db-a410b51eabd5",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

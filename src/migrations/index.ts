@@ -16,8 +16,8 @@ import * as migration_20261101_224027_rol_sin_default_en_base from './20261101_2
 import * as migration_20261103_040908_transcripcion_entrevistas from './20261103_040908_transcripcion_entrevistas';
 import * as migration_20261103_062502_tarea_transcribir from './20261103_062502_tarea_transcribir';
 import * as migration_20261105_041908_publicidad_abajo from './20261105_041908_publicidad_abajo';
-import * as migration_20261105_043229_formatos_final_nota from './20261105_043229_formatos_final_nota';
-import * as migration_20261105_045636_publicidad_medio_nota from './20261105_045636_publicidad_medio_nota';
+import * as migration_20261105_161554_entrevista_en_nota from './20261105_161554_entrevista_en_nota';
+import * as migration_20261105_193024_formatos_final_nota from './20261105_193024_formatos_final_nota';
 
 export const migrations = [
   {
@@ -111,13 +111,13 @@ export const migrations = [
     name: '20261105_041908_publicidad_abajo',
   },
   {
-    up: migration_20261105_043229_formatos_final_nota.up,
-    down: migration_20261105_043229_formatos_final_nota.down,
-    name: '20261105_043229_formatos_final_nota',
+    up: migration_20261105_161554_entrevista_en_nota.up,
+    down: migration_20261105_161554_entrevista_en_nota.down,
+    name: '20261105_161554_entrevista_en_nota',
   },
   {
-    up: migration_20261105_045636_publicidad_medio_nota.up,
-    down: migration_20261105_045636_publicidad_medio_nota.down,
-    name: '20261105_045636_publicidad_medio_nota'
+    up: migration_20261105_193024_formatos_final_nota.up,
+    down: migration_20261105_193024_formatos_final_nota.down,
+    name: '20261105_193024_formatos_final_nota'
   },
 ];
