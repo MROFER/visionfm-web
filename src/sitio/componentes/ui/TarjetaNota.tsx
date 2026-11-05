@@ -69,7 +69,8 @@ export function NotaChica({ nota }: { nota: Nota }) {
 /**
  * Nota del archivo de Noticias. En web, como en los diarios: la foto grande arriba y, debajo, la sección,
  * el titular y las primeras líneas de la bajada, de a tres por fila. En el celular, fila con la foto
- * cuadrada a la derecha, para que la destacada siga mandando y la lista no se haga eterna.
+ * chica a la derecha, para que la destacada siga mandando y la lista no se haga eterna: 128×96 (4:3), que
+ * recorta menos la foto de web que el cuadrado de antes sin hacer más alta la fila.
  */
 export function NotaTarjeta({ nota }: { nota: Nota }) {
   return (
@@ -82,8 +83,8 @@ export function NotaTarjeta({ nota }: { nota: Nota }) {
       >
         <Foto
           imagen={nota.foto}
-          sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 96px"
-          className="size-24 md:aspect-[16/9] md:h-auto md:w-full"
+          sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 128px"
+          className="h-24 w-32 md:aspect-[16/9] md:h-auto md:w-full"
         />
       </Link>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5 md:gap-2">
