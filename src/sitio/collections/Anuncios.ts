@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, PayloadRequest } from 'payload'
 
 import { medidasExactas } from '@/base/fields/medidas'
 import { accesoPorArea } from '@/base/permisos'
@@ -59,10 +59,20 @@ export const Anuncios: CollectionConfig = {
       label: 'Imagen cuadrada (300×250)',
       type: 'upload',
       relationTo: 'medios',
-      validate: medidasExactas(300, 250),
+      validate: (
+        valor: unknown,
+        argumentos: { req: PayloadRequest; required?: boolean; siblingData: { ubicaciones?: string[] } },
+      ) => {
+        // El costado de la nota solo tiene lugar para el cuadrado
+        const { ubicaciones } = argumentos.siblingData
+        if (!valor && ubicaciones?.includes('noticias-nota-costado')) {
+          return 'Para el costado de la nota hace falta la imagen de 300×250.'
+        }
+        return medidasExactas(300, 250)(valor, argumentos)
+      },
       admin: {
         description:
-          'Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, y para el formato cuadrado del final de la nota.',
+          'Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota, donde es obligatoria.',
       },
     },
     { name: 'link', type: 'text' },
@@ -112,7 +122,7 @@ export const Anuncios: CollectionConfig = {
       hasMany: true,
       admin: {
         description:
-          'Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota" (arriba, en el medio y abajo) a estas secciones. Vacío = todas.',
+          'Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota" (arriba, en el medio, al costado y abajo) a estas secciones. Vacío = todas.',
       },
     },
     {

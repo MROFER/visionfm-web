@@ -25,13 +25,15 @@ for (const [nombre, tamano] of [
 
     test('cada página tiene sus publicidades', async ({ page }) => {
       const entrevista = await unaEntrevista(page)
+      // En web, la nota suma la columna de cuadrados del costado
+      const costado = nombre === 'en web' ? 1 : 0
       const esperadas: [string, number][] = [
         ['/', 4],
         ['/noticias', 2],
         ['/noticias/locales', 2],
-        [NOTA, 2],
+        [NOTA, 2 + costado],
         // Una nota larga suma la del medio
-        ['/noticias/opinion/que-nos-dice-el-anglo-sobre-el-futuro-de-la-ciudad', 3],
+        ['/noticias/opinion/que-nos-dice-el-anglo-sobre-el-futuro-de-la-ciudad', 3 + costado],
         ['/radio/programacion', 2],
         ['/radio/entrevistas', 1],
         [entrevista, 2],
@@ -62,7 +64,7 @@ test('en web, Noticias termina con la publicidad y «¿Tenés una noticia?»', a
 
 test('la publicidad del final de la nota va antes de «Seguí leyendo»', async ({ page }) => {
   await page.goto(NOTA)
-  const ultima = avisos(page).last()
+  const ultima = page.locator('aside[data-ubicacion="noticias-nota-abajo"]')
   const antes = await ultima.evaluate((a) => {
     const segui = document.getElementById('segui-leyendo')!
     const fin = document.querySelector('article')!

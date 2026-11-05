@@ -126,6 +126,19 @@ describe('anuncios que rotan', () => {
     expect((await listar('ubicacion=noticias-nota&seccion=rotacion-politica')).ids).toEqual([todas.id])
   })
 
+  it('el costado de la nota pide la imagen de 300×250', async () => {
+    await expect(anuncio({ nombre: 'Sin cuadrado', ubicaciones: ['noticias-nota-costado'] })).rejects.toThrow(
+      /300×250/,
+    )
+    const cuadrado = await imagen(300, 250)
+    const conCuadrado = await anuncio({
+      nombre: 'Con cuadrado',
+      ubicaciones: ['noticias-nota-costado'],
+      imagenRectangulo: cuadrado.id,
+    })
+    expect((await listar('ubicacion=noticias-nota-costado&seccion=rotacion-deportes')).ids).toEqual([conCuadrado.id])
+  })
+
   it('rechaza ubicaciones que no existen', async () => {
     expect((await listar('ubicacion=portada')).estado).toBe(400)
     expect((await listar('ubicacion=inicio&seccion=../x')).estado).toBe(400)
