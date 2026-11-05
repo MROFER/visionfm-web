@@ -41,6 +41,8 @@ const vigentesDelDia = unstable_cache(
         imagenWeb: true,
         imagenMovil: true,
         imagenRectangulo: true,
+        imagenAncha: true,
+        formatoFinalNota: true,
       },
       populate: { secciones: { slug: true } },
     })
@@ -55,6 +57,8 @@ const vigentesDelDia = unstable_cache(
         web: aImagen(a.imagenWeb),
         movil: aImagen(a.imagenMovil),
         rectangulo: aImagen(a.imagenRectangulo),
+        ancha: aImagen(a.imagenAncha),
+        formato: a.formatoFinalNota ?? 'tira',
       }))
   },
   ['anuncios-vigentes'],

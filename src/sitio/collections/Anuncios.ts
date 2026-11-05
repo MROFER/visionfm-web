@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { medidasExactas } from '@/base/fields/medidas'
 import { accesoPorArea } from '@/base/permisos'
 import { descargarMetricas, descargarReporte } from '../publicidad/tareas'
+import type { FormatoFinalNota } from '../publicidad/rotacion'
 import { UBICACIONES } from '../publicidad/ubicaciones'
 
 export { UBICACIONES }
@@ -55,17 +56,55 @@ export const Anuncios: CollectionConfig = {
     },
     {
       name: 'imagenRectangulo',
-      label: 'Imagen celular en el medio de la página (300×250)',
+      label: 'Imagen cuadrada (300×250)',
       type: 'upload',
       relationTo: 'medios',
       validate: medidasExactas(300, 250),
       admin: {
         description:
-          'Para las ubicaciones que van entre secciones, como Cinevisión. Si falta, va la de 320×100.',
+          'Para Cinevisión en el celular, donde si falta va la de 320×100, y para el formato cuadrado del final de la nota.',
       },
     },
     { name: 'link', type: 'text' },
     { name: 'ubicaciones', type: 'select', hasMany: true, required: true, options: UBICACIONES },
+    {
+      name: 'formatoFinalNota',
+      label: 'Formato al final de la nota',
+      type: 'radio',
+      defaultValue: 'tira',
+      options: [
+        { label: 'Tira: 728×90 en web y 320×100 en el celular', value: 'tira' },
+        { label: 'Cuadrado: 300×250; en web, al lado de otros anuncios cuadrados', value: 'cuadrado' },
+        { label: 'Ancho: 970×250 en web y 320×100 en el celular', value: 'ancho' },
+      ] satisfies { label: string; value: FormatoFinalNota }[],
+      admin: {
+        condition: (datos) => Boolean(datos?.ubicaciones?.includes('noticias-nota-abajo')),
+        description: 'Cuántos cuadrados van juntos en web se elige en Ajustes.',
+      },
+      validate: (
+        valor: unknown,
+        { siblingData }: { siblingData: { imagenRectangulo?: unknown; imagenAncha?: unknown } },
+      ) => {
+        if (valor === 'cuadrado' && !siblingData.imagenRectangulo) {
+          return 'Para el cuadrado hace falta la imagen de 300×250.'
+        }
+        if (valor === 'ancho' && !siblingData.imagenAncha) {
+          return 'Para el ancho hace falta la imagen de 970×250.'
+        }
+        return true
+      },
+    },
+    {
+      name: 'imagenAncha',
+      label: 'Imagen ancha (970×250)',
+      type: 'upload',
+      relationTo: 'medios',
+      validate: medidasExactas(970, 250),
+      admin: {
+        condition: (_, hermanos) => hermanos?.formatoFinalNota === 'ancho',
+        description: 'Solo en web, al final de la nota.',
+      },
+    },
     {
       name: 'secciones',
       type: 'relationship',

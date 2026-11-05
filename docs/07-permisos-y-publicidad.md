@@ -165,10 +165,14 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 ### Al cargar un anuncio
 
 1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (celular, para Cinevisión y otras ubicaciones en el medio de la página), con validación de medidas, y link de destino.
-2. **Dónde:** casillas con las ubicaciones. Atajos: "Todas", "Todo Radio", "Todo Noticias". En Sección y Nota, además, qué secciones (por ejemplo, solo Deportes).
-3. **Cuándo:** fecha de inicio y fin.
-4. **Peso:** cuántas veces sale en la rotación comparado con los otros anuncios de la misma ubicación (1 = normal, 2 = el doble).
-5. Guarda: el anuncio entra en rotación en esas ubicaciones durante su vigencia, sin tocar nada más.
+2. **Formato al final de la nota** (solo si va en "Noticias · Nota · Al final"; 5/11/2026):
+   - **Tira:** 728×90 en web y 320×100 en el celular.
+   - **Cuadrado:** 300×250 en el celular y en web. En web va al lado de otros anuncios cuadrados distintos; cuántos lugares hay (uno, dos o tres) se elige en Ajustes, en "Cuadrados juntos al final de la nota". En una tablet entran dos. Los lugares que no se llenan muestran el aviso propio.
+   - **Ancho:** 970×250 en web, con su propia imagen, y 320×100 en el celular.
+3. **Dónde:** casillas con las ubicaciones. Atajos: "Todas", "Todo Radio", "Todo Noticias". En Sección y Nota, además, qué secciones (por ejemplo, solo Deportes).
+4. **Cuándo:** fecha de inicio y fin.
+5. **Peso:** cuántas veces sale en la rotación comparado con los otros anuncios de la misma ubicación (1 = normal, 2 = el doble). Al final de la nota, el peso elige el primero; los otros cuadrados se eligen también por peso entre los que quedan.
+6. Guarda: el anuncio entra en rotación en esas ubicaciones durante su vigencia, sin tocar nada más.
 
 ### Vista por ubicación
 
