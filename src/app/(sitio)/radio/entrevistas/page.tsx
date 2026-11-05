@@ -139,17 +139,14 @@ export default async function Entrevistas({ searchParams }: { searchParams: Busq
           <h2 className="etiqueta m-0 text-xs md:text-[13px]">
             {q ? `Resultados para “${q}”` : rango ? `Entrevistas ${rango}` : 'Todas las entrevistas'}
           </h2>
-          <div className="flex items-center gap-4">
-            {archivo.paginas > 1 && (
-              <span className="hidden text-[13px] text-meta md:inline">
-                Página {pagina} de {archivo.paginas}
-              </span>
-            )}
-            {(dias.length > 0 || desde) && (
-              <FiltroFechas dias={dias} desde={desde} hasta={hasta} hoy={hoy} />
-            )}
-          </div>
+          {(dias.length > 0 || desde) && <FiltroFechas dias={dias} desde={desde} hasta={hasta} hoy={hoy} />}
         </div>
+        {/* En web, la página va debajo de la línea, a la derecha y a la misma distancia que el filtro arriba */}
+        {archivo.paginas > 1 && (
+          <p className="m-0 hidden pt-[11px] text-right text-[13px] leading-4 text-meta md:block">
+            Página {pagina} de {archivo.paginas}
+          </p>
+        )}
         {archivo.entrevistas.length > 0 ? (
           <ol className="m-0 list-none p-0">
             {archivo.entrevistas.map((e) => (
