@@ -599,7 +599,7 @@ export interface Anuncio {
   imagenWeb: number | Medio;
   imagenMovil: number | Medio;
   /**
-   * Para las ubicaciones que van entre secciones, como Cinevisión. Si falta, va la de 320×100.
+   * Para Cinevisión en el celular, donde si falta va la de 320×100, y para el formato cuadrado del final de la nota.
    */
   imagenRectangulo?: (number | null) | Medio;
   link?: string | null;
@@ -626,6 +626,14 @@ export interface Anuncio {
     | 'institucional'
     | 'institucional-formularios'
   )[];
+  /**
+   * Cuántos cuadrados van juntos en web se elige en Ajustes.
+   */
+  formatoFinalNota?: ('tira' | 'cuadrado' | 'ancho') | null;
+  /**
+   * Solo en web, al final de la nota.
+   */
+  imagenAncha?: (number | null) | Medio;
   /**
    * Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota", arriba y abajo, a estas secciones. Vacío = todas.
    */
@@ -1264,6 +1272,8 @@ export interface AnunciosSelect<T extends boolean = true> {
   imagenRectangulo?: T;
   link?: T;
   ubicaciones?: T;
+  formatoFinalNota?: T;
+  imagenAncha?: T;
   secciones?: T;
   desde?: T;
   hasta?: T;
@@ -1720,6 +1730,10 @@ export interface Ajuste {
     imagenRectangulo?: (number | null) | Medio;
     link?: string | null;
   };
+  /**
+   * Cuando al final de la nota sale un anuncio cuadrado, en web van al lado otros anuncios cuadrados hasta completar estos lugares. Si no hay suficientes, el lugar que falta muestra el aviso propio.
+   */
+  cuadradosFinalNota?: ('1' | '2' | '3') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1847,6 +1861,7 @@ export interface AjustesSelect<T extends boolean = true> {
         imagenRectangulo?: T;
         link?: T;
       };
+  cuadradosFinalNota?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

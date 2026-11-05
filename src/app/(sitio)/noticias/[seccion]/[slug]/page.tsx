@@ -144,7 +144,13 @@ export default async function Nota({ params }: Parametros) {
       </article>
 
       <div className="contenedor pt-8 md:pt-14">
-        <Publicidad ubicacion="noticias-nota-abajo" seccion={seccion} aviso={ajustes.avisoPropio} anchoWeb={728} />
+        <Publicidad
+          ubicacion="noticias-nota-abajo"
+          seccion={seccion}
+          aviso={ajustes.avisoPropio}
+          anchoWeb={728}
+          cuadrados={ajustes.cuadradosFinalNota}
+        />
       </div>
 
       {relacionadas.length > 0 && (

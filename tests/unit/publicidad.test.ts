@@ -99,6 +99,44 @@ describe('rotación de anuncios', () => {
     expect(veces[2] / veces[1]).toBeLessThan(3.5)
   })
 
+  it('elige varios distintos, cada uno según su peso', async () => {
+    const { elegirVarios } = await import('@/sitio/publicidad/rotacion')
+    const lista = [
+      { id: 1, peso: 1 },
+      { id: 2, peso: 3 },
+      { id: 3, peso: 1 },
+    ]
+    for (let i = 0; i < 200; i++) {
+      const dos = elegirVarios(lista, 2).map((a) => a.id)
+      expect(new Set(dos).size).toBe(2)
+    }
+    // Si piden más de los que hay, van todos una vez
+    expect(elegirVarios(lista, 5).map((a) => a.id).sort()).toEqual([1, 2, 3])
+    expect(elegirVarios([], 2)).toEqual([])
+  })
+
+  it('al final de la nota, el cuadrado lleva al lado otros cuadrados distintos', async () => {
+    const { elegirFinalDeNota } = await import('@/sitio/publicidad/rotacion')
+    const foto = { url: '/x.webp' }
+    const lista = [
+      { id: 1, peso: 1, formato: 'cuadrado' as const, rectangulo: foto },
+      { id: 2, peso: 1, formato: 'tira' as const, rectangulo: foto },
+      { id: 3, peso: 1, formato: 'cuadrado' as const, rectangulo: foto },
+      { id: 4, peso: 1, formato: 'ancho' as const, rectangulo: null },
+    ]
+    // Total 4: [0, 1) es el primero
+    const cuadrado = elegirFinalDeNota(lista, 3, () => 0.1)
+    expect(cuadrado.principal?.id).toBe(1)
+    // Solo hay otro cuadrado: el tercer lugar lo llena el aviso propio
+    expect(cuadrado.cuadrados.map((a) => a.id)).toEqual([1, 3])
+    expect(elegirFinalDeNota(lista, 1, () => 0.1).cuadrados.map((a) => a.id)).toEqual([1])
+
+    // Una tira o un ancho salen solos
+    expect(elegirFinalDeNota(lista, 3, () => 0.3)).toMatchObject({ principal: { id: 2 }, cuadrados: [] })
+    expect(elegirFinalDeNota(lista, 3, () => 0.9)).toMatchObject({ principal: { id: 4 }, cuadrados: [] })
+    expect(elegirFinalDeNota([], 3)).toEqual({ principal: null, cuadrados: [] })
+  })
+
   it('vigencia por día, secciones y robots', async () => {
     const { esRobot, estaVigente, vaEnSeccion } = await import('@/sitio/publicidad/rotacion')
     const a = { desde: '2026-10-10T12:00:00.000Z', hasta: '2026-10-16T12:00:00.000Z' }

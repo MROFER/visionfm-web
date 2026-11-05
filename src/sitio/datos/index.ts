@@ -33,6 +33,8 @@ export const obtenerAjustes = unstable_cache(
         rectangulo: aImagen(a.avisoPropio?.imagenRectangulo),
         link: a.avisoPropio?.link || '/institucional/publicidad',
       },
+      // En web, cuántos anuncios cuadrados van juntos al final de la nota
+      cuadradosFinalNota: Math.min(3, Math.max(1, Number(a.cuadradosFinalNota) || 3)),
     }
   },
   ['ajustes'],

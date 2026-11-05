@@ -17,6 +17,13 @@ export const CON_SECCION: Ubicacion[] = [
   'noticias-nota-abajo',
 ]
 
+/**
+ * Cómo sale un anuncio al final de la nota, elegido al subirlo: tira (728×90 en web, 320×100 en el
+ * celular), cuadrado (300×250; en web, de a varios anuncios distintos) o ancho (970×250, solo en web).
+ */
+export const FORMATOS_FINAL_NOTA = ['tira', 'cuadrado', 'ancho'] as const
+export type FormatoFinalNota = (typeof FORMATOS_FINAL_NOTA)[number]
+
 /** Lo que el navegador necesita para mostrar un anuncio. El link de destino lo resuelve `/a/{id}`. */
 export type AnuncioRotable = {
   id: number
@@ -24,6 +31,9 @@ export type AnuncioRotable = {
   web: Imagen | null
   movil: Imagen | null
   rectangulo: Imagen | null
+  /** La de 970×250, para el formato ancho del final de la nota. */
+  ancha: Imagen | null
+  formato: FormatoFinalNota
 }
 
 /** Elige uno al azar: un anuncio de peso 2 sale el doble de veces que uno de peso 1. */
@@ -36,6 +46,37 @@ export function elegirAnuncio<T extends { peso: number }>(lista: T[], azar = Mat
     if (punto < 0) return anuncio
   }
   return lista[lista.length - 1]
+}
+
+/** Elige `cantidad` distintos, cada uno según su peso entre los que quedan. */
+export function elegirVarios<T extends { peso: number }>(
+  lista: T[],
+  cantidad: number,
+  azar = Math.random,
+): T[] {
+  const quedan = [...lista]
+  const elegidos: T[] = []
+  while (elegidos.length < cantidad && quedan.length > 0) {
+    const uno = elegirAnuncio(quedan, azar)!
+    elegidos.push(uno)
+    quedan.splice(quedan.indexOf(uno), 1)
+  }
+  return elegidos
+}
+
+/**
+ * Al final de la nota sale uno según el peso, en su formato. Si es cuadrado, en web van al lado otros
+ * cuadrados distintos hasta `lugares`; los lugares que no se llenan los completa quien lo muestra.
+ */
+export function elegirFinalDeNota<
+  T extends { peso: number; formato: FormatoFinalNota; rectangulo: unknown },
+>(lista: T[], lugares: number, azar = Math.random): { principal: T | null; cuadrados: T[] } {
+  const principal = elegirAnuncio(lista, azar)
+  if (!principal || principal.formato !== 'cuadrado' || !principal.rectangulo) {
+    return { principal, cuadrados: [] }
+  }
+  const otros = lista.filter((a) => a !== principal && a.formato === 'cuadrado' && a.rectangulo)
+  return { principal, cuadrados: [principal, ...elegirVarios(otros, lugares - 1, azar)] }
 }
 
 type Vigencia = { desde: string; hasta: string; activo?: boolean | null }

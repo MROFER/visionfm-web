@@ -75,5 +75,21 @@ export const Ajustes: GlobalConfig = {
         { name: 'link', type: 'text', defaultValue: '/institucional/publicidad' },
       ],
     },
+    {
+      name: 'cuadradosFinalNota',
+      label: 'Cuadrados juntos al final de la nota (web)',
+      type: 'radio',
+      defaultValue: '3',
+      options: [
+        { label: 'Uno', value: '1' },
+        { label: 'Dos', value: '2' },
+        { label: 'Tres', value: '3' },
+      ],
+      admin: {
+        layout: 'horizontal',
+        description:
+          'Cuando al final de la nota sale un anuncio cuadrado, en web van al lado otros anuncios cuadrados hasta completar estos lugares. Si no hay suficientes, el lugar que falta muestra el aviso propio.',
+      },
+    },
   ],
 }
