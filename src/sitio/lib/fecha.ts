@@ -33,6 +33,12 @@ export function fechaCompleta(iso: string) {
   return `${p.day} de ${p.month} de ${p.year}`
 }
 
+/** "08:30": la hora en Montevideo, de 0 a 23. */
+export function horaDelDia(iso: string) {
+  const p = partes(new Date(iso), { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+  return `${p.hour}:${p.minute}`
+}
+
 /** "09/10" */
 export function fechaNumerica(iso: string) {
   const p = partes(new Date(iso), { day: '2-digit', month: '2-digit' })
