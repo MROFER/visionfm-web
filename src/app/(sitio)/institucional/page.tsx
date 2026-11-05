@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { EquipoRadio } from '@/sitio/componentes/institucional/EquipoRadio'
 import { Historia } from '@/sitio/componentes/institucional/Historia'
+import { CintaConMas } from '@/sitio/componentes/ui/CintaConMas'
 import { Migas } from '@/sitio/componentes/ui/Migas'
 import { Redes } from '@/sitio/componentes/ui/Redes'
 import { obtenerAjustes } from '@/sitio/datos'
@@ -54,9 +55,12 @@ export default async function Institucional() {
         <h1 className="m-0 mt-2 mb-4 font-titulos text-[34px] leading-[1.05] font-extrabold tracking-[-0.01em] md:mt-2.5 md:mb-5 md:text-[64px] md:leading-none md:tracking-[-0.02em]">
           Radio, noticias y cine en Fray Bentos
         </h1>
-        <nav
-          aria-label="Secciones institucionales"
-          className="flex gap-[18px] overflow-x-auto border-t-[3px] border-b border-tinta border-b-linea [scrollbar-width:none] md:flex-wrap md:gap-x-7"
+        {/* El mismo "+" de Noticias y Entrevistas: en el celular avisa que hay más a la derecha */}
+        <CintaConMas
+          etiqueta="Secciones institucionales"
+          etiquetaMas="Ver más secciones"
+          className="border-t-[3px] border-tinta"
+          claseNav="flex gap-[18px] overflow-x-auto border-b border-linea md:flex-wrap md:gap-x-7"
         >
           {SECCIONES.map((s) => (
             <a
@@ -67,7 +71,7 @@ export default async function Institucional() {
               {s.nombre}
             </a>
           ))}
-        </nav>
+        </CintaConMas>
 
         <section id="nosotros" aria-labelledby="titulo-nosotros" className="flex scroll-mt-4 flex-col gap-3 py-6 md:max-w-[760px] md:gap-3.5 md:pt-12 md:pb-10">
           <h2 id="titulo-nosotros" className={titulo2}>
