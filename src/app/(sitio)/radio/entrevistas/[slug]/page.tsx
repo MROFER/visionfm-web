@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { BotonEntrevista } from '@/sitio/componentes/radio/BotonEntrevista'
 import { EntrevistaDestacada } from '@/sitio/componentes/radio/ListaEntrevistas'
 import { Transcripcion } from '@/sitio/componentes/radio/Transcripcion'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Migas } from '@/sitio/componentes/ui/Migas'
-import { listarEntrevistas, obtenerEntrevista } from '@/sitio/datos'
+import { listarEntrevistas, obtenerAjustes, obtenerEntrevista } from '@/sitio/datos'
 import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaCorta } from '@/sitio/lib/fecha'
 import { reloj } from '@/sitio/lib/formato'
@@ -41,10 +42,11 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
 }
 
 // La entrevista: el bloque oscuro con el reproductor, la transcripción (lo que leen buscadores y
-// asistentes de IA, que no escuchan audio) y más entrevistas del mismo programa.
+// asistentes de IA, que no escuchan audio), más entrevistas del mismo programa y una publicidad arriba
+// y otra al final.
 export default async function Entrevista({ params }: Parametros) {
   const { slug } = await params
-  const e = await obtenerEntrevista(slug)
+  const [e, ajustes] = await Promise.all([obtenerEntrevista(slug), obtenerAjustes()])
   if (!e) notFound()
   // Más del mismo programa; si es la única, las últimas de todos
   const delPrograma = e.programa
@@ -64,6 +66,9 @@ export default async function Entrevista({ params }: Parametros) {
     <main className="pb-10 md:pb-20">
       <Migas pasos={[{ nombre: 'Entrevistas', ruta: '/radio/entrevistas' }, { nombre: e.entrevistado }]} />
       <DatosEstructurados nodos={[nodoEntrevista(urlDelSitio().origin, e)]} />
+      <div className="contenedor pt-4 md:pt-8">
+        <Publicidad ubicacion="radio-entrevista" aviso={ajustes.avisoPropio} />
+      </div>
       <div className="contenedor pt-4 md:pt-9">
         <nav aria-label="Ruta" className="mb-4 flex flex-wrap gap-2 text-[13px] text-meta md:mb-6">
           <Link href="/radio/entrevistas" className="text-meta">
@@ -127,6 +132,9 @@ export default async function Entrevista({ params }: Parametros) {
             </aside>
           )}
         </div>
+      </div>
+      <div className="contenedor pt-8 md:pt-14">
+        <Publicidad ubicacion="radio-entrevista-abajo" aviso={ajustes.avisoPropio} />
       </div>
     </main>
   )

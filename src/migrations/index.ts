@@ -15,6 +15,7 @@ import * as migration_20261018_195921_cinevision_arriba from './20261018_195921_
 import * as migration_20261101_224027_rol_sin_default_en_base from './20261101_224027_rol_sin_default_en_base';
 import * as migration_20261103_040908_transcripcion_entrevistas from './20261103_040908_transcripcion_entrevistas';
 import * as migration_20261103_062502_tarea_transcribir from './20261103_062502_tarea_transcribir';
+import * as migration_20261105_041908_publicidad_abajo from './20261105_041908_publicidad_abajo';
 
 export const migrations = [
   {
@@ -100,6 +101,11 @@ export const migrations = [
   {
     up: migration_20261103_062502_tarea_transcribir.up,
     down: migration_20261103_062502_tarea_transcribir.down,
-    name: '20261103_062502_tarea_transcribir'
+    name: '20261103_062502_tarea_transcribir',
+  },
+  {
+    up: migration_20261105_041908_publicidad_abajo.up,
+    down: migration_20261105_041908_publicidad_abajo.down,
+    name: '20261105_041908_publicidad_abajo'
   },
 ];
