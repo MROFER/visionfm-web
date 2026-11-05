@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { Compartir } from '@/sitio/componentes/noticias/Compartir'
+import { convertidoresNota, pieDeFoto } from '@/sitio/componentes/noticias/convertidores'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
 import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
@@ -44,7 +45,7 @@ export default async function Nota({ params }: Parametros) {
   if (!nota) notFound()
   const relacionadas = await notasRelacionadas(nota.id, seccion, 3)
   const minutos = minutosDeLectura(palabrasDeLexical(nota.cuerpo))
-  const pie = [nota.epigrafe, nota.credito && `Foto: ${nota.credito}`].filter(Boolean).join(' · ')
+  const pie = pieDeFoto(nota.epigrafe, nota.credito)
   const origen = urlDelSitio().origin
   const datos = [
     articulo(origen, nota),
@@ -116,7 +117,7 @@ export default async function Nota({ params }: Parametros) {
         </figure>
 
         <div className="cuerpo-nota contenedor max-w-[728px] pt-5 md:pt-0">
-          <RichText data={nota.cuerpo} />
+          <RichText data={nota.cuerpo} converters={convertidoresNota} />
         </div>
 
         <div className="contenedor pt-6 md:hidden">
