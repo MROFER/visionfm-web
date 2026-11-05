@@ -64,6 +64,9 @@ const propia = (aviso: AjustesSitio['avisoPropio']): Pieza => ({
  * Con `cuadrados` (al final de la nota) el anuncio sale en el formato que se eligió al subirlo: tira,
  * cuadrado o ancho. Si es cuadrado, en web van al lado otros anuncios cuadrados hasta esos lugares, y los
  * que faltan los llena el aviso propio. El tercero entra recién en pantallas de 1024 px.
+ *
+ * Con `segunAnuncio` (en el medio de la nota) sale cuadrado, de 300×250, si el anuncio tiene esa imagen,
+ * y si no, la tira: en web, al ancho del texto.
  */
 export function Publicidad({
   ubicacion,
@@ -73,6 +76,7 @@ export function Publicidad({
   anchoWeb = 970,
   rectangulo = false,
   cuadrados,
+  segunAnuncio = false,
 }: {
   ubicacion: Ubicacion
   /** En Noticias · Sección y Nota: la sección, para los anuncios que se limitan a algunas. */
@@ -85,6 +89,8 @@ export function Publicidad({
   rectangulo?: boolean
   /** Al final de la nota: en web, cuántos anuncios cuadrados van juntos (de Ajustes). */
   cuadrados?: number
+  /** En el medio de la nota: cuadrado si el anuncio tiene la imagen de 300×250 y, si no, la tira. */
+  segunAnuncio?: boolean
 }) {
   // undefined mientras carga; sin principal si no hay anuncios para esta ubicación
   const [eleccion, setEleccion] = useState<Eleccion | undefined>(undefined)
@@ -141,8 +147,11 @@ export function Publicidad({
   const colores = oscuro
     ? 'border-oscuro-borde bg-oscuro-caja text-oscuro-2'
     : 'border-aviso-borde bg-aviso text-meta'
+  // En el medio de la nota manda la imagen del anuncio; mientras carga se reserva el cuadrado
+  const cuadradoMedio = segunAnuncio && (!pieza || Boolean(pieza.rectangulo))
   // Al final de la nota, el anuncio cuadrado también sale cuadrado en el celular
-  const cuadradoMovil = rectangulo || Boolean(cuadrados && pieza?.pago && pieza.formato === 'cuadrado')
+  const cuadradoMovil =
+    rectangulo || cuadradoMedio || Boolean(cuadrados && pieza?.pago && pieza.formato === 'cuadrado')
   const tamanoMovil = cuadradoMovil ? 'h-[250px] w-[300px] max-w-full' : 'h-[100px] w-[320px] max-w-full'
   const tamanoWeb = `h-[90px] max-w-full ${ancho}`
   const fotoMovil = pieza && (cuadradoMovil ? (pieza.rectangulo ?? pieza.movil) : pieza.movil)
@@ -196,7 +205,15 @@ export function Publicidad({
         </div>
       ) : (
         <div className="hidden w-full justify-center md:flex" data-aviso data-anuncio={pieza?.id ?? undefined}>
-          {!pieza ? (
+          {cuadradoMedio ? (
+            pieza?.rectangulo ? (
+              <Enlace pieza={pieza}>
+                <Foto imagen={pieza.rectangulo} sizes="300px" className="h-[250px] w-[300px]" />
+              </Enlace>
+            ) : (
+              <Reservado clase={`${colores} h-[250px] w-[300px]`} />
+            )
+          ) : !pieza ? (
             <Reservado clase={`${colores} ${tamanoWeb}`} />
           ) : anchaWeb ? (
             <Enlace pieza={pieza} clase="block w-[970px] max-w-full">

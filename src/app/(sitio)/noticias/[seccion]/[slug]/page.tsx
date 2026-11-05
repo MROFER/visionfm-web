@@ -14,7 +14,7 @@ import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
 import { notasRelacionadas, obtenerAjustes, obtenerEntrevista, obtenerNota } from '@/sitio/datos'
 import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
 import { fechaCompleta, horaDelDia } from '@/sitio/lib/fecha'
-import { minutosDeLectura, palabrasDeLexical } from '@/sitio/lib/texto'
+import { minutosDeLectura, palabrasDeLexical, partirEnLaMitad } from '@/sitio/lib/texto'
 import { articulo, migas } from '@/sitio/seo/estructurados'
 
 type Parametros = { params: Promise<{ seccion: string; slug: string }> }
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
 }
 
 // La nota (design/LEEME.md, sección 7): encabezado a 780 px, foto a 1040, cuerpo a 680, una publicidad
-// arriba y otra al final, y "Seguí leyendo"
+// arriba, otra en el medio si la nota es larga y otra al final, y "Seguí leyendo"
 export default async function Nota({ params }: Parametros) {
   const { seccion, slug } = await params
   const [nota, ajustes] = await Promise.all([obtenerNota(seccion, slug), obtenerAjustes()])
@@ -51,6 +51,8 @@ export default async function Nota({ params }: Parametros) {
     nota.entrevista ? obtenerEntrevista(nota.entrevista) : null,
   ])
   const minutos = minutosDeLectura(palabrasDeLexical(nota.cuerpo))
+  // La del medio va solo en notas de 6 párrafos o más (docs/07-permisos-y-publicidad.md, sección 3)
+  const mitades = partirEnLaMitad(nota.cuerpo)
   const pie = pieDeFoto(nota.epigrafe, nota.credito)
   const origen = urlDelSitio().origin
   const datos = [
@@ -135,7 +137,24 @@ export default async function Nota({ params }: Parametros) {
 
         <div className="cuerpo-nota contenedor max-w-[728px] pt-5 md:pt-0">
           {entrevista && <EntrevistaEnNota entrevista={entrevista} />}
-          <RichText data={nota.cuerpo} converters={convertidoresNota} />
+          {mitades ? (
+            <>
+              <RichText data={mitades[0]} converters={convertidoresNota} />
+              {/* `block`: el cuerpo deja sin caja a los div del editor, y este necesita la suya */}
+              <div className="block py-2 md:py-3">
+                <Publicidad
+                  ubicacion="noticias-nota-medio"
+                  seccion={seccion}
+                  aviso={ajustes.avisoPropio}
+                  anchoWeb={728}
+                  segunAnuncio
+                />
+              </div>
+              <RichText data={mitades[1]} converters={convertidoresNota} />
+            </>
+          ) : (
+            <RichText data={nota.cuerpo} converters={convertidoresNota} />
+          )}
         </div>
 
         <div className="contenedor pt-6 md:hidden">
