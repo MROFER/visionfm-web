@@ -605,19 +605,29 @@ export interface Anuncio {
   link?: string | null;
   ubicaciones: (
     | 'inicio'
+    | 'inicio-noticias'
+    | 'inicio-cine'
+    | 'inicio-participa'
     | 'radio-en-vivo'
+    | 'radio-en-vivo-abajo'
     | 'radio-programacion'
+    | 'radio-programacion-abajo'
     | 'radio-entrevistas'
+    | 'radio-entrevista'
+    | 'radio-entrevista-abajo'
     | 'noticias-listado'
+    | 'noticias-listado-abajo'
     | 'noticias-seccion'
+    | 'noticias-seccion-abajo'
     | 'noticias-nota'
+    | 'noticias-nota-abajo'
     | 'cinevision'
     | 'cinevision-arriba'
     | 'institucional'
     | 'institucional-formularios'
   )[];
   /**
-   * Limita "Noticias · Sección" y "Noticias · Nota" a estas secciones. Vacío = todas.
+   * Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota", arriba y abajo, a estas secciones. Vacío = todas.
    */
   secciones?: (number | Seccione)[] | null;
   desde: string;
@@ -641,12 +651,22 @@ export interface AnunciosMetrica {
   anuncio: number | Anuncio;
   ubicacion:
     | 'inicio'
+    | 'inicio-noticias'
+    | 'inicio-cine'
+    | 'inicio-participa'
     | 'radio-en-vivo'
+    | 'radio-en-vivo-abajo'
     | 'radio-programacion'
+    | 'radio-programacion-abajo'
     | 'radio-entrevistas'
+    | 'radio-entrevista'
+    | 'radio-entrevista-abajo'
     | 'noticias-listado'
+    | 'noticias-listado-abajo'
     | 'noticias-seccion'
+    | 'noticias-seccion-abajo'
     | 'noticias-nota'
+    | 'noticias-nota-abajo'
     | 'cinevision'
     | 'cinevision-arriba'
     | 'institucional'

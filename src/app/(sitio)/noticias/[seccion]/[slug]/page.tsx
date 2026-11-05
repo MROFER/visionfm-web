@@ -40,7 +40,8 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
   }
 }
 
-// La nota (design/LEEME.md, sección 7): encabezado a 780 px, foto a 1040, cuerpo a 680 y "Seguí leyendo"
+// La nota (design/LEEME.md, sección 7): encabezado a 780 px, foto a 1040, cuerpo a 680, una publicidad
+// arriba y otra al final, y "Seguí leyendo"
 export default async function Nota({ params }: Parametros) {
   const { seccion, slug } = await params
   const [nota, ajustes] = await Promise.all([obtenerNota(seccion, slug), obtenerAjustes()])
@@ -141,6 +142,10 @@ export default async function Nota({ params }: Parametros) {
           <Compartir titulo={nota.titulo} variante="movil" />
         </div>
       </article>
+
+      <div className="contenedor pt-8 md:pt-14">
+        <Publicidad ubicacion="noticias-nota-abajo" seccion={seccion} aviso={ajustes.avisoPropio} anchoWeb={728} />
+      </div>
 
       {relacionadas.length > 0 && (
         <section aria-labelledby="segui-leyendo" className="contenedor mt-8 md:mt-[72px]">

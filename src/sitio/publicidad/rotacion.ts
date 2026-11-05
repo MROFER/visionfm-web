@@ -10,7 +10,12 @@ export const esUbicacion = (valor: unknown): valor is Ubicacion =>
   typeof valor === 'string' && UBICACIONES.some((u) => u.value === valor)
 
 /** Ubicaciones donde el anuncio se puede limitar a algunas secciones de Noticias. */
-export const CON_SECCION: Ubicacion[] = ['noticias-seccion', 'noticias-nota']
+export const CON_SECCION: Ubicacion[] = [
+  'noticias-seccion',
+  'noticias-seccion-abajo',
+  'noticias-nota',
+  'noticias-nota-abajo',
+]
 
 /** Lo que el navegador necesita para mostrar un anuncio. El link de destino lo resuelve `/a/{id}`. */
 export type AnuncioRotable = {

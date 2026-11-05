@@ -73,7 +73,7 @@ export const Anuncios: CollectionConfig = {
       hasMany: true,
       admin: {
         description:
-          'Limita "Noticias · Sección" y "Noticias · Nota" a estas secciones. Vacío = todas.',
+          'Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota", arriba y abajo, a estas secciones. Vacío = todas.',
       },
     },
     {
