@@ -9,6 +9,7 @@ import {
   type AnuncioRotable,
   elegirAnuncio,
   elegirFinalDeNota,
+  elegirVarios,
   type Ubicacion,
 } from '../../publicidad/rotacion'
 import { Foto } from '../ui/Foto'
@@ -67,6 +68,9 @@ const propia = (aviso: AjustesSitio['avisoPropio']): Pieza => ({
  *
  * Con `segunAnuncio` (en el medio de la nota) sale cuadrado, de 300×250, si el anuncio tiene esa imagen,
  * y si no, la tira: en web, al ancho del texto.
+ *
+ * Con `costado` (al costado de la nota, solo en web) van uno abajo del otro esa cantidad de cuadrados
+ * de 300×250, de anuncios distintos elegidos por peso. Los que faltan los llena el aviso propio.
  */
 export function Publicidad({
   ubicacion,
@@ -77,6 +81,7 @@ export function Publicidad({
   rectangulo = false,
   cuadrados,
   segunAnuncio = false,
+  costado,
 }: {
   ubicacion: Ubicacion
   /** En Noticias · Sección y Nota: la sección, para los anuncios que se limitan a algunas. */
@@ -91,6 +96,8 @@ export function Publicidad({
   cuadrados?: number
   /** En el medio de la nota: cuadrado si el anuncio tiene la imagen de 300×250 y, si no, la tira. */
   segunAnuncio?: boolean
+  /** Al costado de la nota: cuántos cuadrados van uno abajo del otro. */
+  costado?: number
 }) {
   // undefined mientras carga; sin principal si no hay anuncios para esta ubicación
   const [eleccion, setEleccion] = useState<Eleccion | undefined>(undefined)
@@ -106,14 +113,16 @@ export function Publicidad({
         setEleccion(
           cuadrados
             ? elegirFinalDeNota(anuncios, cuadrados)
-            : { principal: elegirAnuncio(anuncios), cuadrados: [] },
+            : costado
+              ? deCostado(elegirVarios(anuncios.filter((a) => a.rectangulo), costado))
+              : { principal: elegirAnuncio(anuncios), cuadrados: [] },
         ),
       )
       .catch(() => {
         if (!control.signal.aborted) setEleccion({ principal: null, cuadrados: [] })
       })
     return () => control.abort()
-  }, [ubicacion, seccion, cuadrados])
+  }, [ubicacion, seccion, cuadrados, costado])
 
   // Una impresión por anuncio y por visita, cuando se ve al menos la mitad (el que está oculto por el
   // tamaño de pantalla nunca se cruza con la vista)
@@ -158,8 +167,38 @@ export function Publicidad({
   const anchaWeb = Boolean(cuadrados && pieza?.pago && pieza.formato === 'ancho' && pieza.ancha)
   const juntos = cuadrados && eleccion ? eleccion.cuadrados : []
 
+  if (costado) {
+    return (
+      <aside ref={caja} aria-label="Publicidad" data-ubicacion={ubicacion} className="flex flex-col gap-8">
+        {Array.from({ length: costado }, (_, i) => {
+          const elegido = eleccion?.cuadrados[i]
+          const p = eleccion === undefined ? null : elegido ? deAnuncio(elegido, ubicacion) : propia(aviso)
+          return (
+            <div key={i} className="flex flex-col items-center gap-2" data-aviso data-anuncio={p?.id ?? undefined}>
+              <span className="text-[10px] font-extrabold tracking-[0.14em] text-meta uppercase">Publicidad</span>
+              {!p ? (
+                <Reservado clase={`${colores} h-[250px] w-[300px]`} />
+              ) : p.rectangulo ? (
+                <Enlace pieza={p}>
+                  <Foto imagen={p.rectangulo} sizes="300px" className="h-[250px] w-[300px]" />
+                </Enlace>
+              ) : (
+                <Vacio href={p.href} clase={`${colores} h-[250px] w-[300px]`} />
+              )}
+            </div>
+          )
+        })}
+      </aside>
+    )
+  }
+
   return (
-    <aside ref={caja} aria-label="Publicidad" className="flex flex-col items-center gap-2">
+    <aside
+      ref={caja}
+      aria-label="Publicidad"
+      data-ubicacion={ubicacion}
+      className="flex flex-col items-center gap-2"
+    >
       <span
         className={`text-[10px] font-extrabold tracking-[0.14em] uppercase ${oscuro ? 'text-oscuro-2' : 'text-meta'}`}
       >
@@ -231,6 +270,9 @@ export function Publicidad({
     </aside>
   )
 }
+
+/** Al costado: los elegidos van en los lugares; el primero dice si hay anuncios pagos que contar. */
+const deCostado = (elegidos: AnuncioRotable[]): Eleccion => ({ principal: elegidos[0] ?? null, cuadrados: elegidos })
 
 function Enlace({ pieza, clase = 'block', children }: { pieza: Pieza; clase?: string; children: React.ReactNode }) {
   if (!pieza.pago) {

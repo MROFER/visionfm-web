@@ -19,6 +19,7 @@ import * as migration_20261105_041908_publicidad_abajo from './20261105_041908_p
 import * as migration_20261105_161554_entrevista_en_nota from './20261105_161554_entrevista_en_nota';
 import * as migration_20261105_193024_formatos_final_nota from './20261105_193024_formatos_final_nota';
 import * as migration_20261105_193519_publicidad_medio_nota from './20261105_193519_publicidad_medio_nota';
+import * as migration_20261105_205736_publicidad_costado_nota from './20261105_205736_publicidad_costado_nota';
 
 export const migrations = [
   {
@@ -124,6 +125,11 @@ export const migrations = [
   {
     up: migration_20261105_193519_publicidad_medio_nota.up,
     down: migration_20261105_193519_publicidad_medio_nota.down,
-    name: '20261105_193519_publicidad_medio_nota'
+    name: '20261105_193519_publicidad_medio_nota',
+  },
+  {
+    up: migration_20261105_205736_publicidad_costado_nota.up,
+    down: migration_20261105_205736_publicidad_costado_nota.down,
+    name: '20261105_205736_publicidad_costado_nota'
   },
 ];

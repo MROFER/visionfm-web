@@ -17,6 +17,7 @@ export const UBICACIONES = [
   { label: 'Noticias · Sección · Abajo', value: 'noticias-seccion-abajo' },
   { label: 'Noticias · Nota', value: 'noticias-nota' },
   { label: 'Noticias · Nota · En el medio', value: 'noticias-nota-medio' },
+  { label: 'Noticias · Nota · Costado (solo web)', value: 'noticias-nota-costado' },
   { label: 'Noticias · Nota · Al final', value: 'noticias-nota-abajo' },
   { label: 'Cinevisión', value: 'cinevision' },
   { label: 'Cinevisión · Arriba (solo web)', value: 'cinevision-arriba' },

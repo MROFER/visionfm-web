@@ -599,7 +599,7 @@ export interface Anuncio {
   imagenWeb: number | Medio;
   imagenMovil: number | Medio;
   /**
-   * Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, y para el formato cuadrado del final de la nota.
+   * Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota, donde es obligatoria.
    */
   imagenRectangulo?: (number | null) | Medio;
   link?: string | null;
@@ -621,6 +621,7 @@ export interface Anuncio {
     | 'noticias-seccion-abajo'
     | 'noticias-nota'
     | 'noticias-nota-medio'
+    | 'noticias-nota-costado'
     | 'noticias-nota-abajo'
     | 'cinevision'
     | 'cinevision-arriba'
@@ -636,7 +637,7 @@ export interface Anuncio {
    */
   imagenAncha?: (number | null) | Medio;
   /**
-   * Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota" (arriba, en el medio y abajo) a estas secciones. Vacío = todas.
+   * Limita las ubicaciones de "Noticias · Sección" y "Noticias · Nota" (arriba, en el medio, al costado y abajo) a estas secciones. Vacío = todas.
    */
   secciones?: (number | Seccione)[] | null;
   desde: string;
@@ -676,6 +677,7 @@ export interface AnunciosMetrica {
     | 'noticias-seccion-abajo'
     | 'noticias-nota'
     | 'noticias-nota-medio'
+    | 'noticias-nota-costado'
     | 'noticias-nota-abajo'
     | 'cinevision'
     | 'cinevision-arriba'

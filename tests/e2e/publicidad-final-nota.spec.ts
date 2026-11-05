@@ -34,7 +34,7 @@ async function conAnuncios(page: Page, anuncios: ReturnType<typeof anuncio>[]) {
     })
   })
   await page.goto(NOTA)
-  return page.getByRole('complementary', { name: 'Publicidad' }).last()
+  return page.locator('aside[data-ubicacion="noticias-nota-abajo"]')
 }
 
 const medidas = async (imagenes: Locator) =>
