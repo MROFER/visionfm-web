@@ -38,6 +38,14 @@ export const IconoCalendario = ({ tamano = 16, className }: Props) => (
   </svg>
 )
 
+/** Reloj: la hora de publicación de la nota. */
+export const IconoReloj = ({ tamano = 16, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="square">
+    <circle cx="12" cy="12" r="9" />
+    <polyline points="12 7 12 12 15.5 14" />
+  </svg>
+)
+
 /** Ruedita de "conectando": gira sola, salvo que la persona pidió menos movimiento. */
 export const IconoCargando = ({ tamano = 16, className = '' }: Props) => (
   <svg {...base(tamano)} className={`motion-safe:animate-spin ${className}`} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round">
@@ -75,11 +83,24 @@ export const IconoFacebook = ({ tamano = 20, className }: Props) => (
   </svg>
 )
 
-/** Para redes sin ícono propio en el diseño (X, YouTube, TikTok): un enlace genérico. */
+export const IconoX = ({ tamano = 20, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="currentColor">
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+  </svg>
+)
+
+/** Para redes sin ícono propio en el diseño (X, YouTube, TikTok) y para copiar un enlace. */
 export const IconoEnlace = ({ tamano = 20, className }: Props) => (
   <svg {...base(tamano)} className={className} {...trazo}>
     <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
     <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+  </svg>
+)
+
+/** Tilde: el enlace ya se copió. */
+export const IconoListo = ({ tamano = 20, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="square">
+    <polyline points="5 12.5 10 17.5 19 7" />
   </svg>
 )
 

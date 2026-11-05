@@ -7,10 +7,11 @@ import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
 import { Compartir } from '@/sitio/componentes/noticias/Compartir'
 import { DatosEstructurados } from '@/sitio/componentes/ui/DatosEstructurados'
 import { Foto } from '@/sitio/componentes/ui/Foto'
+import { IconoReloj } from '@/sitio/componentes/ui/iconos'
 import { NotaChica } from '@/sitio/componentes/ui/TarjetaNota'
 import { notasRelacionadas, obtenerAjustes, obtenerNota } from '@/sitio/datos'
 import { imagenParaCompartir, OPEN_GRAPH, urlDelSitio } from '@/sitio/lib/compartir'
-import { fechaCompleta } from '@/sitio/lib/fecha'
+import { fechaCompleta, horaDelDia } from '@/sitio/lib/fecha'
 import { minutosDeLectura, palabrasDeLexical } from '@/sitio/lib/texto'
 import { articulo, migas } from '@/sitio/seo/estructurados'
 
@@ -95,8 +96,19 @@ export default async function Nota({ params }: Parametros) {
             <span className="text-[13px] md:text-sm">
               <strong>{nota.firma}</strong>{' '}
               <span className="text-meta">
-                {nota.fecha && <time dateTime={nota.fecha}>· {fechaCompleta(nota.fecha)}</time>}{' '}
-                · {minutos} min de lectura
+                {/* El punto queda al final de cada dato, así al cortar la línea ninguna empieza con "·" */}
+                {nota.fecha ? (
+                  <>
+                    <time dateTime={nota.fecha}>· {fechaCompleta(nota.fecha)} ·</time>{' '}
+                    <span className="whitespace-nowrap">
+                      <IconoReloj tamano={13} className="mr-1 inline align-[-2px]" />
+                      {`${horaDelDia(nota.fecha)} ·`}
+                    </span>{' '}
+                  </>
+                ) : (
+                  '· '
+                )}
+                <span className="whitespace-nowrap">{minutos} min de lectura</span>
               </span>
             </span>
             <div className="hidden md:block">
