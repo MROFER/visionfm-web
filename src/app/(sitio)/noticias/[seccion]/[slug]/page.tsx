@@ -42,8 +42,9 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
 
 // La nota (design/LEEME.md, sección 7): encabezado a 780 px, foto a 1040 (16:10 en el celular), cuerpo
 // a 680, una publicidad arriba, otra en el medio si la nota es larga y otra al final, y "Seguí leyendo"
-// con las tarjetas del archivo. Desde 1280 px el bloque va a la izquierda, con la foto al ancho del
-// encabezado en 16:10, y a la derecha los cuadrados del costado
+// con las tarjetas del archivo. Desde 1280 px el bloque y los cuadrados del costado van juntos y
+// centrados, con la foto al ancho del encabezado en 16:10, el título en 48 px y la publicidad de arriba
+// y la del final al ancho de los dos
 export default async function Nota({ params }: Parametros) {
   const { seccion, slug } = await params
   const [nota, ajustes] = await Promise.all([obtenerNota(seccion, slug), obtenerAjustes()])
@@ -87,14 +88,19 @@ export default async function Nota({ params }: Parametros) {
         </nav>
       </div>
 
-      {/* Desde 1280 px el bloque de la nota va a la izquierda, a los márgenes del sitio, y a la derecha
-          los cuadrados del costado. Por debajo queda centrado. */}
-      <div className="xl:mx-auto xl:flex xl:max-w-sitio xl:justify-between xl:px-6">
-        <div className="xl:w-[780px] xl:shrink-0">
-          <div className="contenedor xl:px-0">
-            <Publicidad ubicacion="noticias-nota" seccion={seccion} aviso={ajustes.avisoPropio} anchoWeb={728} />
-          </div>
+      {/* Desde 1280 px el bloque (780) y el costado (300) van juntos, centrados: 1140 px con la separación */}
+      <div className="contenedor xl:max-w-[1188px]">
+        <Publicidad
+          ubicacion="noticias-nota"
+          seccion={seccion}
+          aviso={ajustes.avisoPropio}
+          anchoWeb={728}
+          anchoXl={1140}
+        />
+      </div>
 
+      <div className="xl:mx-auto xl:flex xl:max-w-[1188px] xl:justify-between xl:px-6">
+        <div className="xl:w-[780px] xl:shrink-0">
           <article>
             <header className="contenedor flex max-w-[828px] flex-col xl:max-w-none xl:px-0 gap-3.5 pt-5 md:gap-5 md:pt-8">
               {nota.seccion && (
@@ -105,7 +111,7 @@ export default async function Nota({ params }: Parametros) {
                   {nota.seccion.nombre}
                 </Link>
               )}
-              <h1 className="m-0 font-titulos text-4xl leading-[1.06] font-bold tracking-[-0.01em] md:text-6xl md:leading-[1.04] md:tracking-[-0.02em]">
+              <h1 className="m-0 font-titulos text-4xl leading-[1.06] font-bold tracking-[-0.01em] md:text-6xl md:leading-[1.04] md:tracking-[-0.02em] xl:text-5xl xl:leading-[1.08]">
                 {nota.titulo}
               </h1>
               <p className="m-0 text-[19px] leading-[1.45] text-texto-2 md:text-2xl">{nota.bajada}</p>
@@ -172,20 +178,21 @@ export default async function Nota({ params }: Parametros) {
           </article>
         </div>
 
-        <div className="hidden w-[300px] shrink-0 pt-[18px] xl:block">
+        <div className="hidden w-[300px] shrink-0 pt-8 xl:block">
           <div className="sticky top-24">
             <Publicidad ubicacion="noticias-nota-costado" seccion={seccion} aviso={ajustes.avisoPropio} costado={2} />
           </div>
         </div>
       </div>
 
-      {/* Al ancho del sitio, debajo de las dos columnas: el formato ancho y los tres cuadrados no entran en el bloque */}
-      <div className="contenedor pt-8 md:pt-14">
+      {/* Debajo de las dos columnas y a su ancho: el formato ancho y los tres cuadrados no entran en el bloque */}
+      <div className="contenedor pt-8 md:pt-14 xl:max-w-[1188px]">
         <Publicidad
           ubicacion="noticias-nota-abajo"
           seccion={seccion}
           aviso={ajustes.avisoPropio}
           anchoWeb={728}
+          anchoXl={1140}
           cuadrados={ajustes.cuadradosFinalNota}
         />
       </div>

@@ -71,6 +71,9 @@ const propia = (aviso: AjustesSitio['avisoPropio']): Pieza => ({
  *
  * Con `costado` (al costado de la nota, solo en web) van uno abajo del otro esa cantidad de cuadrados
  * de 300×250, de anuncios distintos elegidos por peso. Los que faltan los llena el aviso propio.
+ *
+ * Con `anchoXl` (arriba y al final de la nota) la tira ocupa, desde 1280 px, todo el ancho de su caja,
+ * con la proporción de la imagen: más ancha y un poco más alta.
  */
 export function Publicidad({
   ubicacion,
@@ -82,6 +85,7 @@ export function Publicidad({
   cuadrados,
   segunAnuncio = false,
   costado,
+  anchoXl,
 }: {
   ubicacion: Ubicacion
   /** En Noticias · Sección y Nota: la sección, para los anuncios que se limitan a algunas. */
@@ -98,6 +102,8 @@ export function Publicidad({
   segunAnuncio?: boolean
   /** Al costado de la nota: cuántos cuadrados van uno abajo del otro. */
   costado?: number
+  /** Desde 1280 px, la tira va a lo ancho de su caja, que mide estos px (para pedir la imagen justa). */
+  anchoXl?: number
 }) {
   // undefined mientras carga; sin principal si no hay anuncios para esta ubicación
   const [eleccion, setEleccion] = useState<Eleccion | undefined>(undefined)
@@ -152,7 +158,7 @@ export function Publicidad({
         ? deAnuncio(eleccion.principal, ubicacion)
         : propia(aviso)
 
-  const ancho = anchoWeb === 728 ? 'w-[728px]' : 'w-[970px]'
+  const ancho = `${anchoWeb === 728 ? 'w-[728px]' : 'w-[970px]'}${anchoXl ? ' xl:w-full' : ''}`
   const colores = oscuro
     ? 'border-oscuro-borde bg-oscuro-caja text-oscuro-2'
     : 'border-aviso-borde bg-aviso text-meta'
@@ -162,7 +168,7 @@ export function Publicidad({
   const cuadradoMovil =
     rectangulo || cuadradoMedio || Boolean(cuadrados && pieza?.pago && pieza.formato === 'cuadrado')
   const tamanoMovil = cuadradoMovil ? 'h-[250px] w-[300px] max-w-full' : 'h-[100px] w-[320px] max-w-full'
-  const tamanoWeb = `h-[90px] max-w-full ${ancho}`
+  const tamanoWeb = `h-[90px] max-w-full ${ancho}${anchoXl ? ' xl:h-auto xl:aspect-[970/90]' : ''}`
   const fotoMovil = pieza && (cuadradoMovil ? (pieza.rectangulo ?? pieza.movil) : pieza.movil)
   const anchaWeb = Boolean(cuadrados && pieza?.pago && pieza.formato === 'ancho' && pieza.ancha)
   const juntos = cuadrados && eleccion ? eleccion.cuadrados : []
@@ -260,7 +266,11 @@ export function Publicidad({
             </Enlace>
           ) : pieza.web ? (
             <Enlace pieza={pieza} clase={`block max-w-full ${ancho}`}>
-              <Foto imagen={pieza.web} sizes={`${anchoWeb}px`} className="h-auto w-full" />
+              <Foto
+                imagen={pieza.web}
+                sizes={anchoXl ? `(min-width: 1280px) ${anchoXl}px, ${anchoWeb}px` : `${anchoWeb}px`}
+                className="h-auto w-full"
+              />
             </Enlace>
           ) : (
             <Vacio href={pieza.href} clase={`${colores} ${tamanoWeb}`} />
