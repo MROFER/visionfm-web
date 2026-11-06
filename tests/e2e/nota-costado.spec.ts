@@ -1,8 +1,9 @@
 import { expect, test, type Page } from '@playwright/test'
 
-// Nota en web con la columna del costado (5/11/2026): desde 1280 px el bloque de la nota va a la
-// izquierda, a los márgenes del sitio, con la foto al ancho del título, y a la derecha dos cuadrados de
-// «Noticias · Nota · Costado» (docs/07-permisos-y-publicidad.md, sección 3). Los anuncios se simulan.
+// Nota en web con la columna del costado (6/11/2026): desde 1280 px el bloque de la nota y el costado
+// van juntos y centrados, con la foto al ancho del título, el título en 48 px y la publicidad de arriba
+// y la del final a lo ancho de los dos. A la derecha, dos cuadrados de «Noticias · Nota · Costado»
+// (docs/07-permisos-y-publicidad.md, sección 3). Los anuncios se simulan.
 const NOTA = '/noticias/locales/la-rambla-suma-nuevas-luminarias-led-en-el-tramo-del-anglo'
 
 const imagen = (ancho: number, alto: number) => ({
@@ -44,19 +45,52 @@ async function conAnuncios(page: Page, anuncios: ReturnType<typeof anuncio>[]) {
   return page.locator('aside[data-ubicacion="noticias-nota-costado"]')
 }
 
+/** La imagen de la publicidad de arriba, cuando ya llegó. */
+async function medidaArriba(page: Page) {
+  const imagen = page.locator('aside[data-ubicacion="noticias-nota"] img:visible')
+  await expect(imagen).toBeVisible()
+  return (await imagen.boundingBox())!
+}
+
 const caja = async (page: Page, selector: string) =>
   (await page.locator(selector).first().boundingBox())!
 
-test('en web, el bloque y el costado van a los márgenes de «Seguí leyendo»', async ({ page }) => {
+test('en web, el bloque y el costado van juntos y centrados, con la publicidad de arriba a su ancho', async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   const costado = await conAnuncios(page, [])
   await expect(costado).toBeVisible()
-  const linea = await caja(page, '#segui-leyendo')
   const titulo = await caja(page, 'article h1')
   const columna = (await costado.boundingBox())!
-  expect(Math.round(titulo.x)).toBe(Math.round(linea.x))
-  expect(Math.round(columna.x + columna.width)).toBe(Math.round(linea.x + linea.width))
+  // 780 del bloque + 60 de separación + 300 del costado = 1140, centrados en 1440
+  expect(Math.round(titulo.x)).toBe(150)
+  expect(Math.round(columna.x + columna.width)).toBe(1290)
   expect(Math.round(columna.width)).toBe(300)
+  const arriba = await medidaArriba(page)
+  expect([Math.round(arriba.x), Math.round(arriba.width)]).toEqual([150, 1140])
+  // Con la proporción de la imagen: más alta que los 90 px de siempre
+  expect(Math.abs(arriba.height - (1140 * 90) / 970)).toBeLessThan(2)
+})
+
+test('en web, la tira del final también va a lo ancho de los dos', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  // Sin anuncios sale el aviso propio o la invitación a anunciar, con la misma caja que la tira
+  await page.route(
+    (url) => url.pathname === '/api/anuncios' && url.searchParams.get('ubicacion') === 'noticias-nota-abajo',
+    (route) => route.fulfill({ json: { anuncios: [] } }),
+  )
+  await page.goto(NOTA)
+  const abajo = page.locator('aside[data-ubicacion="noticias-nota-abajo"] a:visible')
+  await expect(abajo).toBeVisible()
+  const b = (await abajo.boundingBox())!
+  expect([Math.round(b.x), Math.round(b.width)]).toEqual([150, 1140])
+})
+
+test('en web, el título va en 48 px', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto(NOTA)
+  await expect(page.locator('article h1')).toHaveCSS('font-size', '48px')
 })
 
 test('en web, la foto va al ancho del título, en 16:10, y el texto con su sangría de siempre', async ({
@@ -109,5 +143,11 @@ for (const [nombre, ancho] of [
     const titulo = await caja(page, 'article h1')
     const enDerecha = ancho - (titulo.x + titulo.width)
     expect(Math.abs(titulo.x - enDerecha)).toBeLessThan(ancho > 800 ? 80 : 40)
+    if (ancho > 800) {
+      // En la tablet la publicidad de arriba sigue en 728 de ancho y el título en 60 px
+      const arriba = await medidaArriba(page)
+      expect(Math.round(arriba.width)).toBe(728)
+      await expect(page.locator('article h1')).toHaveCSS('font-size', '60px')
+    }
   })
 }
