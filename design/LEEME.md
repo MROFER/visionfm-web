@@ -169,7 +169,7 @@ Recuadro con borde de 2 px: kicker "PARTICIPÁ", título "¿Tenés una noticia? 
 2. Publicidad 970×90.
 3. **Noticias:** tira de secciones · nota destacada grande a la izquierda (ocupa 2 filas) · 4 notas chicas en grilla 2×2 a la derecha · botón "Todas las noticias".
 4. **Cinevisión** (banda gris): película destacada (afiche, título, género · duración · calificación, sinopsis, botones Ver tráiler → `/cinevision/{slug}#trailer` y Ver funciones → `#funciones`) + "También en cartelera" (afiche, título, género · calificación y **solo los días**, sin horarios).
-5. **Entrevistas:** buscador + últimas 4 entrevistas con botón play.
+5. **Entrevistas:** últimas 4 entrevistas con botón play y "Todas las entrevistas", sin buscador (6/11/2026: para buscar está el archivo).
 6. Bloque **Participá**.
 
 En mobile el orden es el mismo; la película destacada **debe mostrar género, duración y calificación**.
