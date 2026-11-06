@@ -124,3 +124,13 @@ test('cada entrevista tiene su página, con el reproductor y más entrevistas', 
     '/radio/entrevistas',
   )
 })
+
+// En el Inicio, Entrevistas no tiene buscador: solo "Todas las entrevistas" (6/11/2026)
+test('en el Inicio, Entrevistas lleva solo «Todas las entrevistas», sin buscador', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  const seccion = page.locator('section#radio')
+  await expect(seccion.getByRole('link', { name: 'Todas las entrevistas →' })).toBeVisible()
+  await expect(seccion.getByRole('searchbox')).toHaveCount(0)
+  await expect(seccion.locator('form')).toHaveCount(0)
+})

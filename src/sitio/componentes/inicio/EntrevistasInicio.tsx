@@ -4,28 +4,19 @@ import type { TarjetaEntrevista } from '../../datos/formas'
 import { fechaDia } from '../../lib/fecha'
 import { duracionAudio } from '../../lib/formato'
 import { BotonEntrevista } from '../radio/BotonEntrevista'
-import { Buscador } from '../ui/Buscador'
 import { TituloSeccion } from '../ui/TituloSeccion'
 
 /**
- * Últimas entrevistas. El play las pasa con el mismo audio de la radio. En el celular no hay buscador:
- * para buscar se entra por "Todas las entrevistas". En web el buscador sigue al lado del título.
+ * Últimas entrevistas. El play las pasa con el mismo audio de la radio. Sin buscador: para buscar se
+ * entra por "Todas las entrevistas", que en web va al lado del título y en el celular al final.
  */
 export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevista[] }) {
   return (
     <section id="radio" className="contenedor pt-6 pb-6 lg:border-b lg:border-linea lg:pt-12 lg:pb-10">
       <TituloSeccion titulo="Entrevistas" kicker="Escuchá de nuevo">
-        <div className="hidden flex-wrap items-center gap-x-5 gap-y-3 lg:flex">
-          <Buscador
-            accion="/radio/entrevistas"
-            etiqueta="Buscar entrevistas"
-            placeholder="Buscar entrevistas, programas…"
-            className="w-[380px] max-w-full"
-          />
-          <Link href="/radio/entrevistas" className="etiqueta tracking-[0.08em]">
-            Todas las entrevistas →
-          </Link>
-        </div>
+        <Link href="/radio/entrevistas" className="etiqueta hidden tracking-[0.08em] lg:inline">
+          Todas las entrevistas →
+        </Link>
       </TituloSeccion>
       {entrevistas.length ? (
         <ol className="m-0 list-none p-0 lg:mt-2">
