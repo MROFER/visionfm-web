@@ -150,6 +150,7 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 | Radio · Programación · Abajo | Al final de la grilla, antes de "Las voces de Visión" |
 | Radio · Entrevistas | Arriba del listado |
 | Radio · Cada entrevista · Arriba | Arriba de la entrevista |
+| Radio · Cada entrevista · Costado (solo web) | Entre el reproductor y "Más entrevistas": dos cuadrados de 300×250 de anuncios distintos elegidos por peso, en la columna de la derecha si la entrevista tiene transcripción y, si no, uno al lado del otro; los que faltan muestran el aviso propio. Necesita la imagen de 300×250. En el celular no aparece (6/11/2026) |
 | Radio · Cada entrevista · Abajo | Al final de la página |
 | Noticias · Listado | Arriba de la destacada |
 | Noticias · Listado · Abajo | Entre las páginas y "¿Tenés una noticia?" |
@@ -166,7 +167,7 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 
 ### Al cargar un anuncio
 
-1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (para Cinevisión en el celular y para el medio de la nota; obligatoria para el costado de la nota), con validación de medidas, y link de destino.
+1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (para Cinevisión en el celular y para el medio de la nota; obligatoria para el costado de la nota y de la entrevista), con validación de medidas, y link de destino.
 2. **Formato al final de la nota** (solo si va en "Noticias · Nota · Al final"; 5/11/2026):
    - **Tira:** 728×90 en web y 320×100 en el celular.
    - **Cuadrado:** 300×250 en el celular y en web. En web va al lado de otros anuncios cuadrados distintos; cuántos lugares hay (uno, dos o tres) se elige en Ajustes, en "Cuadrados juntos al final de la nota". En una tablet entran dos. Los lugares que no se llenan muestran el aviso propio.

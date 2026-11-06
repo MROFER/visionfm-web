@@ -68,11 +68,14 @@ export const Anuncios: CollectionConfig = {
         if (!valor && ubicaciones?.includes('noticias-nota-costado')) {
           return 'Para el costado de la nota hace falta la imagen de 300×250.'
         }
+        if (!valor && ubicaciones?.includes('radio-entrevista-costado')) {
+          return 'Para el costado de la entrevista hace falta la imagen de 300×250.'
+        }
         return medidasExactas(300, 250)(valor, argumentos)
       },
       admin: {
         description:
-          'Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota, donde es obligatoria.',
+          'Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota y de la entrevista, donde es obligatoria.',
       },
     },
     { name: 'link', type: 'text' },

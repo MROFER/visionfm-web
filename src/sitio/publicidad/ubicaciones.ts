@@ -10,6 +10,7 @@ export const UBICACIONES = [
   { label: 'Radio · Programación · Abajo', value: 'radio-programacion-abajo' },
   { label: 'Radio · Entrevistas', value: 'radio-entrevistas' },
   { label: 'Radio · Cada entrevista · Arriba', value: 'radio-entrevista' },
+  { label: 'Radio · Cada entrevista · Costado (solo web)', value: 'radio-entrevista-costado' },
   { label: 'Radio · Cada entrevista · Abajo', value: 'radio-entrevista-abajo' },
   { label: 'Noticias · Listado', value: 'noticias-listado' },
   { label: 'Noticias · Listado · Abajo', value: 'noticias-listado-abajo' },

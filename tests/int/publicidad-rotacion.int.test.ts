@@ -130,6 +130,9 @@ describe('anuncios que rotan', () => {
     await expect(anuncio({ nombre: 'Sin cuadrado', ubicaciones: ['noticias-nota-costado'] })).rejects.toThrow(
       /300×250/,
     )
+    await expect(anuncio({ nombre: 'Entrevista sin cuadrado', ubicaciones: ['radio-entrevista-costado'] })).rejects.toThrow(
+      /300×250/,
+    )
     const cuadrado = await imagen(300, 250)
     const conCuadrado = await anuncio({
       nombre: 'Con cuadrado',

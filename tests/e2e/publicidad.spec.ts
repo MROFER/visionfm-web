@@ -36,7 +36,8 @@ for (const [nombre, tamano] of [
         ['/noticias/opinion/que-nos-dice-el-anglo-sobre-el-futuro-de-la-ciudad', 3 + costado],
         ['/radio/programacion', 2],
         ['/radio/entrevistas', 1],
-        [entrevista, 2],
+        // En web, cada entrevista suma los cuadrados entre el reproductor y «Más entrevistas»
+        [entrevista, 2 + costado],
         // En el celular, la del reproductor a pantalla completa; en web, la de entre la radio y el pie
         ['/radio/en-vivo', 1],
         ['/institucional', 1],

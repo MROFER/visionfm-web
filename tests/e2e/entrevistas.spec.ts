@@ -124,3 +124,25 @@ test('cada entrevista tiene su página, con el reproductor y más entrevistas', 
     '/radio/entrevistas',
   )
 })
+
+// Cada entrevista, en web: dos cuadrados entre el reproductor y «Más entrevistas» (6/11/2026)
+test('en web, cada entrevista lleva dos cuadrados arriba de «Más entrevistas»', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/radio/entrevistas')
+  await page.locator('ol li a').first().click()
+  await expect(page).toHaveURL(/\/radio\/entrevistas\/[a-z0-9-]+$/)
+  const costado = page.locator('aside[data-ubicacion="radio-entrevista-costado"]')
+  await expect(costado).toBeVisible()
+  const cuadros = costado.locator('[data-aviso] > :last-child')
+  await expect(cuadros).toHaveCount(2)
+  for (const c of await cuadros.all()) {
+    const b = (await c.boundingBox())!
+    expect(`${Math.round(b.width)}×${Math.round(b.height)}`).toBe('300×250')
+  }
+  const mas = (await page.locator('#mas-entrevistas').boundingBox())!
+  const caja = (await costado.boundingBox())!
+  expect(caja.y + caja.height).toBeLessThan(mas.y)
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(costado).toBeHidden()
+})
