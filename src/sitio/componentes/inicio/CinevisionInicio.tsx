@@ -31,8 +31,8 @@ export function CinevisionInicio({
     <section id="cine" aria-label="Cinevisión" className="border-y border-linea bg-suave">
       <div className="contenedor flex flex-col gap-4 py-7 lg:gap-8 lg:pt-14 lg:pb-16">
         <TituloSeccion titulo="El cine de Fray Bentos" kicker="Cinevisión · Cine" tamano="enorme">
+          {/* En web, arriba del botón no va la línea "Cartelera del … al …" (7/11/2026) */}
           <div className="hidden flex-col items-end gap-2.5 lg:flex">
-            {rango && <span className="text-[13px] font-extrabold tracking-[0.08em] uppercase">Cartelera {rango}</span>}
             <BotonOscuro href="/cinevision">Cartelera completa</BotonOscuro>
           </div>
         </TituloSeccion>
