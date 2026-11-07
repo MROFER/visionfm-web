@@ -160,14 +160,14 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 | Noticias · Nota · En el medio | Solo en notas de 6 párrafos o más, después del párrafo de la mitad. Sale de 300×250 si el anuncio tiene esa imagen y, si no, la tira, al ancho del texto en web (se puede elegir notas de qué secciones) |
 | Noticias · Nota · Costado (solo web) | En pantallas de 1280 px o más, a la derecha de la nota: dos cuadrados de 300×250, uno abajo del otro, de anuncios distintos elegidos por peso; los que faltan muestran el aviso propio. Necesita la imagen de 300×250. En el celular y la tablet no aparece (se puede elegir notas de qué secciones; 5/11/2026) |
 | Noticias · Nota · Al final | Entre el final de la nota y "Seguí leyendo". En pantallas de 1280 px o más, la tira va a lo ancho, como la de arriba (se puede elegir notas de qué secciones) |
-| Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos"; en el celular, 300×250 |
+| Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos"; en el celular, la tira de 320×100 |
 | Cinevisión · Arriba (solo web) | Entre el carrusel y la cartelera; en el celular no aparece |
 | Institucional | Arriba del contenido |
 | Institucional · Sumarse, Publicidad, Contacto | Arriba del formulario |
 
 ### Al cargar un anuncio
 
-1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (para Cinevisión en el celular y para el medio de la nota; obligatoria para el costado de la nota y de la entrevista), con validación de medidas, y link de destino.
+1. **Creatividad:** imagen 970×90 (escritorio), imagen 320×100 (celular) y, opcional, imagen 300×250 (para el medio de la nota; obligatoria para el costado de la nota y de la entrevista), con validación de medidas, y link de destino.
 2. **Formato al final de la nota** (solo si va en "Noticias · Nota · Al final"; 5/11/2026):
    - **Tira:** 728×90 en web y 320×100 en el celular.
    - **Cuadrado:** 300×250 en el celular y en web. En web va al lado de otros anuncios cuadrados distintos; cuántos lugares hay (uno, dos o tres) se elige en Ajustes, en "Cuadrados juntos al final de la nota". En una tablet entran dos. Los lugares que no se llenan muestran el aviso propio.

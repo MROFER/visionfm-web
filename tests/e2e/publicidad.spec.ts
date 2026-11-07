@@ -76,3 +76,13 @@ test('la publicidad del final de la nota va antes de «Seguí leyendo»', async 
   })
   expect(antes).toBe(true)
 })
+
+test('en el celular, la publicidad de Cinevisión es la tira de 320×100', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/cinevision')
+  const pieza = page.locator('aside[data-ubicacion="cinevision"]').locator('img:visible, a:visible').first()
+  await expect(pieza).toBeVisible()
+  const caja = (await pieza.boundingBox())!
+  expect(Math.round(caja.width)).toBe(320)
+  expect(Math.abs(caja.height - 100)).toBeLessThanOrEqual(2)
+})

@@ -219,7 +219,7 @@ Acceso: área Cinevisión. Vista de panel propia: grilla semanal con "Copiar sem
 | `emailReporte` | email | si se completa, recibe el reporte mensual |
 | `imagenWeb`* | relación → `medios` | 970×90 exacto |
 | `imagenMovil`* | relación → `medios` | 320×100 exacto |
-| `imagenRectangulo` | relación → `medios` | 300×250 exacto; para ubicaciones en el medio de la página (Cinevisión). Si falta, va la de 320×100 |
+| `imagenRectangulo` | relación → `medios` | 300×250 exacto; para el medio y el final de la nota y para el costado (ver docs/07) |
 | `link` | URL | |
 | `ubicaciones`* | multiselect | inicio · radio-en-vivo · radio-programacion · radio-entrevistas · noticias-listado · noticias-seccion · noticias-nota · institucional · institucional-formularios |
 | `secciones` | relación múltiple → `secciones` | limita Sección y Nota a esas secciones; vacío = todas |
