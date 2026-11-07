@@ -168,7 +168,7 @@ Recuadro con borde de 2 px: kicker "PARTICIPÁ", título "¿Tenés una noticia? 
 1. **Hero en vivo** (fondo oscuro): "■ AL AIRE AHORA · 96.5 FM", nombre del programa, conductor y horario, barra de progreso del programa (inicio–fin), botones "Escuchar en vivo" y "Programación completa", teléfono. A la derecha, **"A continuación"**: el primer ítem lleva la etiqueta **"Después"** y los siguientes **"Más tarde"** (nunca "Ahora").
 2. Publicidad 970×90.
 3. **Noticias:** tira de secciones · nota destacada grande a la izquierda (ocupa 2 filas) · 4 notas chicas en grilla 2×2 a la derecha · botón "Todas las noticias".
-4. **Cinevisión** (banda gris): película destacada (afiche, título, género · duración · calificación, sinopsis, botones Ver tráiler → `/cinevision/{slug}#trailer` y Ver funciones → `#funciones`) + "También en cartelera" (afiche, título, género · calificación y **solo los días**, sin horarios).
+4. **Cinevisión** (banda gris): película destacada (afiche, título, género · duración · calificación, sinopsis, botones Ver tráiler → `/cinevision/{slug}#trailer` y Ver funciones → `#funciones`) + "También en cartelera" (afiche, título, género · calificación y **solo los días**, sin horarios). En web, a la derecha del título va solo "Cartelera completa", sin "Cartelera del … al …" (7/11/2026).
 5. **Entrevistas:** últimas 4 entrevistas con botón play y "Todas las entrevistas", sin buscador (6/11/2026: para buscar está el archivo).
 6. Bloque **Participá**.
 
