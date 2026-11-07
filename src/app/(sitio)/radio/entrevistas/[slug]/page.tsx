@@ -79,7 +79,7 @@ export default async function Entrevista({ params }: Parametros) {
 
         <div className={`flex flex-col gap-10 ${transcripcion.length ? 'lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-16' : ''}`}>
           {transcripcion.length > 0 && (
-            <section aria-labelledby="transcripcion">
+            <section aria-labelledby="transcripcion" className="lg:flex lg:flex-col">
               <h2
                 id="transcripcion"
                 className="etiqueta m-0 border-b-[3px] border-tinta pb-2.5 text-xs md:text-[13px]"
