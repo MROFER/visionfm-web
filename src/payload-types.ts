@@ -599,7 +599,7 @@ export interface Anuncio {
   imagenWeb: number | Medio;
   imagenMovil: number | Medio;
   /**
-   * Para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota, donde es obligatoria.
+   * Para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota y de la entrevista, donde es obligatoria.
    */
   imagenRectangulo?: (number | null) | Medio;
   link?: string | null;
@@ -614,6 +614,7 @@ export interface Anuncio {
     | 'radio-programacion-abajo'
     | 'radio-entrevistas'
     | 'radio-entrevista'
+    | 'radio-entrevista-costado'
     | 'radio-entrevista-abajo'
     | 'noticias-listado'
     | 'noticias-listado-abajo'
@@ -670,6 +671,7 @@ export interface AnunciosMetrica {
     | 'radio-programacion-abajo'
     | 'radio-entrevistas'
     | 'radio-entrevista'
+    | 'radio-entrevista-costado'
     | 'radio-entrevista-abajo'
     | 'noticias-listado'
     | 'noticias-listado-abajo'

@@ -97,40 +97,49 @@ export default async function Entrevista({ params }: Parametros) {
             </section>
           )}
 
-          {otras.length > 0 && (
-            <aside aria-labelledby="mas-entrevistas">
-              <h2
-                id="mas-entrevistas"
-                className="etiqueta m-0 border-b-[3px] border-tinta pb-2.5 text-xs md:text-[13px]"
-              >
-                {deDonde.nombre}
-              </h2>
-              <ul className="m-0 list-none p-0">
-                {otras.map((o) => (
-                  <li key={o.id} className="flex items-center gap-3 border-b border-linea py-3.5">
-                    <BotonEntrevista
-                      entrevista={o}
-                      className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-tinta bg-blanco hover:bg-tinta hover:text-blanco"
-                    />
-                    <span className="flex min-w-0 flex-col gap-1">
-                      <Link
-                        href={`/radio/entrevistas/${o.slug}`}
-                        className="font-titulos text-[17px] leading-[1.2] font-bold no-underline hover:text-acento-hover"
-                      >
-                        {o.entrevistado}: {o.tema}
-                      </Link>
-                      <span className="text-xs text-meta">
-                        {[fechaCorta(o.fecha), o.duracion ? reloj(o.duracion) : null].filter(Boolean).join(' · ')}
+          <div className="flex flex-col gap-10">
+            {/* En web, dos cuadrados entre el reproductor y "Más entrevistas": en la columna de la derecha
+                si hay transcripción y, si no, uno al lado del otro */}
+            <div
+              className={`hidden lg:block ${transcripcion.length ? '' : '[&>aside]:flex-row [&>aside]:justify-center'}`}
+            >
+              <Publicidad ubicacion="radio-entrevista-costado" aviso={ajustes.avisoPropio} costado={2} />
+            </div>
+            {otras.length > 0 && (
+              <aside aria-labelledby="mas-entrevistas">
+                <h2
+                  id="mas-entrevistas"
+                  className="etiqueta m-0 border-b-[3px] border-tinta pb-2.5 text-xs md:text-[13px]"
+                >
+                  {deDonde.nombre}
+                </h2>
+                <ul className="m-0 list-none p-0">
+                  {otras.map((o) => (
+                    <li key={o.id} className="flex items-center gap-3 border-b border-linea py-3.5">
+                      <BotonEntrevista
+                        entrevista={o}
+                        className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-tinta bg-blanco hover:bg-tinta hover:text-blanco"
+                      />
+                      <span className="flex min-w-0 flex-col gap-1">
+                        <Link
+                          href={`/radio/entrevistas/${o.slug}`}
+                          className="font-titulos text-[17px] leading-[1.2] font-bold no-underline hover:text-acento-hover"
+                        >
+                          {o.entrevistado}: {o.tema}
+                        </Link>
+                        <span className="text-xs text-meta">
+                          {[fechaCorta(o.fecha), o.duracion ? reloj(o.duracion) : null].filter(Boolean).join(' · ')}
+                        </span>
                       </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <Link href={deDonde.href} className="etiqueta mt-4 inline-block text-[11px] no-underline">
-                Ver todas <span aria-hidden>→</span>
-              </Link>
-            </aside>
-          )}
+                    </li>
+                  ))}
+                </ul>
+                <Link href={deDonde.href} className="etiqueta mt-4 inline-block text-[11px] no-underline">
+                  Ver todas <span aria-hidden>→</span>
+                </Link>
+              </aside>
+            )}
+          </div>
         </div>
       </div>
       <div className="contenedor pt-8 md:pt-14">
