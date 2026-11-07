@@ -2,7 +2,8 @@ type Hito = { anio: number; titulo: string; texto: string }
 
 /**
  * "Nuestra historia": línea de tiempo en la banda oscura. Horizontal en web, en dos columnas en tablet y
- * vertical en el celular. El último hito va resaltado y, si es de este año, dice "Hoy".
+ * vertical en el celular. El último hito va resaltado y, si es de este año, dice "Hoy". Los años van más
+ * chicos que los títulos de sección: 32 px en web (6/11/2026).
  */
 export function Historia({ hitos, anioActual }: { hitos: Hito[]; anioActual: number }) {
   if (!hitos.length) return null
@@ -41,7 +42,7 @@ export function Historia({ hitos, anioActual }: { hitos: Hito[]; anioActual: num
                   }`}
                 />
                 <span
-                  className={`block font-titulos text-4xl leading-none font-extrabold md:text-5xl lg:text-[56px] lg:tracking-[-0.02em] ${
+                  className={`block font-titulos text-2xl leading-none font-extrabold md:text-[28px] lg:text-[32px] lg:tracking-[-0.01em] ${
                     ultimo ? 'text-blanco' : 'text-vivo-claro'
                   }`}
                 >
