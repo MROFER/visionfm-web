@@ -190,7 +190,7 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
   - Web: **solo afiches**, sin texto.
   - Mobile: **grilla de 2 columnas**, afiche + nombre debajo.
   - Cada afiche lleva a la página de la película.
-- **Próximos estrenos:** afiche + "Estreno: [FECHA]" debajo (mobile: carrusel horizontal con nombre y fecha).
+- **Próximos estrenos:** afiche + "Estreno: [FECHA]" debajo (mobile: carrusel horizontal con nombre y fecha). En web (7/11/2026), la fecha va en una cinta naranja en la esquina del afiche ("ESTRENO 16 DIC") y el afiche lleva el mismo hover que la cartelera (título y género).
 - **Entradas y precios** (General, promociones, cómo se compran) y **Cómo llegar** (mapa, dirección, teléfono).
 
 **Película (`/cinevision/{slug}`)**

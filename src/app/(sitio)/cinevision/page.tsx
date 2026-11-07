@@ -11,7 +11,7 @@ import { obtenerAjustes, obtenerCartelera } from '@/sitio/datos'
 import { obtenerCinevision, proximosEstrenos } from '@/sitio/datos/cinevision'
 import { diasConFunciones } from '@/sitio/lib/cine'
 import { urlDelSitio } from '@/sitio/lib/compartir'
-import { fechaNumerica, hoyEnMontevideo } from '@/sitio/lib/fecha'
+import { fechaCorta, fechaNumerica, hoyEnMontevideo } from '@/sitio/lib/fecha'
 import { telefonoParaLink } from '@/sitio/navegacion'
 import { cine as nodoCine, migas, pelicula as nodosPelicula } from '@/sitio/seo/estructurados'
 
@@ -99,14 +99,31 @@ export default async function Cinevision() {
               {estrenos.map((p) => (
                 <li key={p.id} className="w-[130px] shrink-0 md:w-auto">
                   <Link href={`/cinevision/${p.slug}`} className="group flex flex-col gap-1.5 no-underline md:gap-2">
-                    <Foto
-                      imagen={p.afiche}
-                      sizes="(min-width: 768px) 230px, 130px"
-                      className="aspect-[2/3] w-full"
-                      textoSinFoto="Afiche"
-                    />
+                    <div className="relative overflow-hidden">
+                      <Foto
+                        imagen={p.afiche}
+                        sizes="(min-width: 768px) 230px, 130px"
+                        className="aspect-[2/3] w-full"
+                        textoSinFoto="Afiche"
+                      />
+                      {/* En web, el mismo hover que la cartelera y la fecha en una cinta en la esquina (7/11/2026).
+                          Solo para la vista: los lectores de pantalla leen el título y la fecha de abajo */}
+                      <div
+                        aria-hidden="true"
+                        className="absolute inset-0 hidden flex-col items-center justify-center gap-1 bg-tinta/70 p-4 text-center text-blanco opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 lg:flex"
+                      >
+                        <span className="font-titulos text-2xl leading-[1.15] font-bold uppercase">{p.titulo}</span>
+                        {p.genero && <span className="text-lg">{p.genero}</span>}
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className="absolute top-10 -right-12 hidden w-[220px] rotate-45 bg-acento py-1.5 text-center text-sm font-extrabold tracking-[0.08em] text-blanco uppercase shadow-[0_2px_6px_rgba(0,0,0,0.35)] lg:block"
+                      >
+                        Estreno {fechaCorta(p.fechaEstreno)}
+                      </span>
+                    </div>
                     <span className="font-titulos text-base font-bold group-hover:text-acento md:sr-only">{p.titulo}</span>
-                    <span className="text-xs font-extrabold text-acento md:text-sm md:tracking-[0.04em]">
+                    <span className="text-xs font-extrabold text-acento md:text-sm md:tracking-[0.04em] lg:sr-only">
                       Estreno: {fechaNumerica(p.fechaEstreno)}
                     </span>
                   </Link>
