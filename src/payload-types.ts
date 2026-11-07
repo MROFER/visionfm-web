@@ -599,7 +599,7 @@ export interface Anuncio {
   imagenWeb: number | Medio;
   imagenMovil: number | Medio;
   /**
-   * Para Cinevisión en el celular, donde si falta va la de 320×100, para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota, donde es obligatoria.
+   * Para el medio de la nota, donde si falta va la tira, para el formato cuadrado del final de la nota y para el costado de la nota, donde es obligatoria.
    */
   imagenRectangulo?: (number | null) | Medio;
   link?: string | null;

@@ -54,8 +54,8 @@ const propia = (aviso: AjustesSitio['avisoPropio']): Pieza => ({
 
 /**
  * Espacio de publicidad (970×90 en web, 320×100 en celular). Casi todas las páginas tienen uno arriba y
- * otro al final; el Inicio, uno entre cada bloque. En Cinevisión va debajo de la cartelera, en 300×250 en
- * el celular, y en web hay otro entre el carrusel y la cartelera. En la página de cada película no hay.
+ * otro al final; el Inicio, uno entre cada bloque. En Cinevisión va debajo de la cartelera, y en web hay
+ * otro entre el carrusel y la cartelera. En la página de cada película no hay.
  *
  * Al cargar pide los anuncios que rotan hoy en su ubicación (`/api/anuncios`) y elige uno según el peso
  * (docs/07-permisos-y-publicidad.md, sección 3). Cuenta una impresión por anuncio cuando se ve al menos
@@ -81,7 +81,6 @@ export function Publicidad({
   aviso,
   oscuro = false,
   anchoWeb = 970,
-  rectangulo = false,
   cuadrados,
   segunAnuncio = false,
   costado,
@@ -94,8 +93,6 @@ export function Publicidad({
   oscuro?: boolean
   /** 970×90 en las portadas; 728×90 dentro de una nota. */
   anchoWeb?: 970 | 728
-  /** En el celular, 300×250 en vez de la tira de 320×100: para los avisos en el medio de la página. */
-  rectangulo?: boolean
   /** Al final de la nota: en web, cuántos anuncios cuadrados van juntos (de Ajustes). */
   cuadrados?: number
   /** En el medio de la nota: cuadrado si el anuncio tiene la imagen de 300×250 y, si no, la tira. */
@@ -166,7 +163,7 @@ export function Publicidad({
   const cuadradoMedio = segunAnuncio && (!pieza || Boolean(pieza.rectangulo))
   // Al final de la nota, el anuncio cuadrado también sale cuadrado en el celular
   const cuadradoMovil =
-    rectangulo || cuadradoMedio || Boolean(cuadrados && pieza?.pago && pieza.formato === 'cuadrado')
+    cuadradoMedio || Boolean(cuadrados && pieza?.pago && pieza.formato === 'cuadrado')
   const tamanoMovil = cuadradoMovil ? 'h-[250px] w-[300px] max-w-full' : 'h-[100px] w-[320px] max-w-full'
   const tamanoWeb = `h-[90px] max-w-full ${ancho}${anchoXl ? ' xl:h-auto xl:aspect-[970/90]' : ''}`
   const fotoMovil = pieza && (cuadradoMovil ? (pieza.rectangulo ?? pieza.movil) : pieza.movil)
