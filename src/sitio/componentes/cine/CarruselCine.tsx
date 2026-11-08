@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import type { DiapositivaCine } from '../../datos/cinevision'
+
+const sinCambios = () => () => {}
 
 /** Cada cuánto avanza solo, mientras nadie lo toque. */
 const AUTOAVANCE = 7000
@@ -13,6 +15,11 @@ const AUTOAVANCE = 7000
  * dentro de los márgenes del contenedor y más bajo que en el diseño (1240×384 como máximo), para que
  * entre entero en una notebook. Flechas en web, negativos de película como indicadores y deslizar con
  * el dedo (scroll-snap). Avanza solo hasta que alguien lo toca, y nunca si el sistema pide menos movimiento.
+ *
+ * Es infinito (7/11/2026): al final va una copia de la primera imagen y al principio una de la última.
+ * Después de la última se desliza hacia la copia de la primera y, cuando se detiene, salta sin animación
+ * a la primera de verdad, que se ve igual; para atrás, lo mismo. Así nunca rebobina todas las imágenes.
+ * La copia del principio aparece recién con JavaScript, para que la página cargue en la primera imagen.
  */
 export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[] }) {
   const pista = useRef<HTMLDivElement>(null)
@@ -21,27 +28,64 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
   const [quieto, setQuieto] = useState(false)
   const [encima, setEncima] = useState(false)
   const total = diapositivas.length
+  const infinito = total > 1
+  // Con la copia de la última al principio, la imagen i está en el lugar i + 1
+  // Falso en el servidor y al hidratar; verdadero después, ya con JavaScript
+  const hidratado = useSyncExternalStore(sinCambios, () => true, () => false)
+  const montado = infinito && hidratado
+  const espera = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  const ir = useCallback(
-    (indice: number) => {
+  // Recién montado, antes de pintar: se ubica en la primera de verdad, después de la copia
+  useLayoutEffect(() => {
+    const el = pista.current
+    if (montado && el) el.scrollTo({ left: el.clientWidth, behavior: 'instant' })
+  }, [montado])
+
+  // Parado sobre una copia, salta sin animación a la imagen que copia
+  const enderezar = useCallback(() => {
+    const el = pista.current
+    if (!el || !montado) return null
+    const lugar = Math.round(el.scrollLeft / el.clientWidth)
+    const real = lugar === 0 ? total : lugar === total + 1 ? 1 : lugar
+    if (real !== lugar) el.scrollTo({ left: real * el.clientWidth, behavior: 'instant' })
+    return real
+  }, [montado, total])
+
+  const deslizarA = (lugar: number) => {
+    const el = pista.current
+    el?.scrollTo({ left: lugar * el.clientWidth, behavior: 'smooth' })
+  }
+
+  // Un paso para un lado o para el otro, sin rebobinar nunca
+  const pasar = useCallback(
+    (paso: 1 | -1) => {
       const el = pista.current
       if (!el) return
-      const destino = (indice + total) % total
-      el.scrollTo({ left: destino * el.clientWidth, behavior: 'smooth' })
+      const lugar = enderezar() ?? Math.round(el.scrollLeft / el.clientWidth)
+      const ultimo = montado ? total + 1 : total - 1
+      el.scrollTo({ left: Math.min(Math.max(lugar + paso, 0), ultimo) * el.clientWidth, behavior: 'smooth' })
     },
-    [total],
+    [enderezar, montado, total],
   )
 
-  const tocar = (indice: number) => {
+  const tocar = (paso: 1 | -1) => {
     setQuieto(true)
-    ir(indice)
+    pasar(paso)
+  }
+
+  const elegir = (indice: number) => {
+    setQuieto(true)
+    enderezar()
+    deslizarA(montado ? indice + 1 : indice)
   }
 
   useEffect(() => {
     if (quieto || encima || total < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const t = setInterval(() => ir(actual + 1), AUTOAVANCE)
+    const t = setInterval(() => pasar(1), AUTOAVANCE)
     return () => clearInterval(t)
-  }, [actual, quieto, encima, total, ir])
+  }, [actual, quieto, encima, total, pasar])
+
+  useEffect(() => () => clearTimeout(espera.current), [])
 
   if (!total) return null
 
@@ -60,11 +104,18 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
           ref={pista}
           onScroll={(e) => {
             const el = e.currentTarget
-            setActual(Math.round(el.scrollLeft / el.clientWidth))
+            const lugar = Math.round(el.scrollLeft / el.clientWidth)
+            setActual(montado ? (lugar - 1 + total) % total : lugar)
+            // Cuando deja de moverse, si quedó en una copia, pasa a la de verdad
+            clearTimeout(espera.current)
+            espera.current = setTimeout(enderezar, 120)
           }}
           className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          {diapositivas.map((d, i) => {
+          {(montado ? [total - 1, ...diapositivas.map((_, i) => i), 0] : diapositivas.map((_, i) => i)).map((i, lugar) => {
+            const d = diapositivas[i]
+            // Las copias del principio y del final son solo para la vista
+            const copia = montado && (lugar === 0 || lugar === total + 1)
             const imagen = (
               <picture>
                 <source
@@ -82,23 +133,23 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
                   alt={d.alt}
                   width={390}
                   height={240}
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                  fetchPriority={i === 0 ? 'high' : undefined}
+                  loading={i === 0 && !copia ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 && !copia ? 'high' : undefined}
                   className="aspect-[390/240] w-full object-cover md:aspect-[1240/384] md:max-h-[384px]"
                 />
               </picture>
             )
             return (
               <div
-                key={i}
-                role="group"
-                aria-roledescription="imagen"
-                aria-label={`${i + 1} de ${total}`}
-                aria-hidden={i !== actual}
+                key={copia ? `copia-${lugar}` : i}
+                role={copia ? undefined : 'group'}
+                aria-roledescription={copia ? undefined : 'imagen'}
+                aria-label={copia ? undefined : `${i + 1} de ${total}`}
+                aria-hidden={copia || i !== actual}
                 className="w-full shrink-0 snap-start"
               >
                 {d.link ? (
-                  <Link href={d.link} tabIndex={i === actual ? 0 : -1} className="block">
+                  <Link href={d.link} tabIndex={!copia && i === actual ? 0 : -1} className="block">
                     {imagen}
                   </Link>
                 ) : (
@@ -111,14 +162,14 @@ export function CarruselCine({ diapositivas }: { diapositivas: DiapositivaCine[]
 
         {total > 1 && (
           <>
-            <Flecha lado="izquierda" onClick={() => tocar(actual - 1)} />
-            <Flecha lado="derecha" onClick={() => tocar(actual + 1)} />
+            <Flecha lado="izquierda" onClick={() => tocar(-1)} />
+            <Flecha lado="derecha" onClick={() => tocar(1)} />
             <nav
               aria-label="Imágenes del carrusel"
               className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1.5 md:bottom-6 md:gap-[7px]"
             >
               {diapositivas.map((d, i) => (
-                <Negativo key={i} activo={i === actual} etiqueta={`Imagen ${i + 1}: ${d.alt}`} onClick={() => tocar(i)} />
+                <Negativo key={i} activo={i === actual} etiqueta={`Imagen ${i + 1}: ${d.alt}`} onClick={() => elegir(i)} />
               ))}
             </nav>
           </>
