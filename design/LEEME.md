@@ -200,11 +200,13 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 - **Mobile:** Funciones (pestañas, horarios, precios y cómo se compran) → Tráiler → **Sinopsis** → Ficha técnica → También en cartelera.
 
 **Institucional:** hero, Quiénes somos, **Nuestra historia** (línea de tiempo de hitos), **Equipo**, Ser parte, Publicidad, Contacto. El Equipo va en este orden:
-1. **Dirección:** foto grande.
-2. **Producción general:** debajo de Dirección, foto grande, una sola persona.
+1. **Dirección.**
+2. **Producción general.**
 3. **Conducción.**
 4. **Columnistas y colaboradores.**
 5. **Equipo técnico.**
+
+Cada área lleva su título y arranca su propia fila, y todas usan la **misma tarjeta** (8/11/2026): la foto llena un cuadro 4:5, recortada hacia arriba para no cortar la cara, y el nombre y el puesto van en una **franja oscura** (`ink`, con un filete `accent` arriba) sobre la parte de abajo de la foto. Van cuatro tarjetas por fila en computadora, tres en tablet y dos en el celular.
 
 **Quiero sumarme:** formulario con área de interés, datos personales, mensaje y adjunto (CV, audio o video), más los pasos de "Cómo funciona".
 
