@@ -209,7 +209,7 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 
 Cada área lleva su título y arranca su propia fila, y todas usan la **misma tarjeta** (8/11/2026): la foto llena un cuadro 4:5, recortada hacia arriba para no cortar la cara, y el nombre y el puesto van en una **franja oscura** (`ink`, con un filete `accent` arriba) sobre la parte de abajo de la foto. Van cuatro tarjetas por fila en computadora, tres en tablet y dos en el celular.
 
-Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música →"), Publicidad ("Pedir tarifas →") y Contacto ("Escribinos →") son iguales: fondo `ink` y naranja al pasar el mouse (8/11/2026).
+Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música →"), Publicidad ("Pedir tarifas →") y Contacto ("Escribinos →") son iguales: fondo `ink` y naranja al pasar el mouse (8/11/2026). En computadora, los tres de la derecha (Quiero sumarme, Enviar mi música y Pedir tarifas) miden lo mismo para que no queden escalonados.
 
 **Quiero sumarme:** formulario con área de interés, datos personales, mensaje y adjunto (CV, audio o video), más los pasos de "Cómo funciona". Es para trabajar en la radio.
 

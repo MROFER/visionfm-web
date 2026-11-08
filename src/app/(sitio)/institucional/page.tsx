@@ -36,6 +36,10 @@ const PRODUCTOS = [
   { tipo: 'Cine', nombre: 'Cinevisión', detalle: 'Tu aviso en la página de la cartelera de Cinevisión.' },
 ]
 
+// Ser parte, Tu música y Publicidad: en computadora los tres botones de la derecha miden lo mismo, así no
+// quedan escalonados (8/11/2026)
+const mismoAncho = 'md:w-[260px]'
+
 const titulo2 = 'm-0 font-titulos text-[28px] leading-none font-extrabold md:text-[40px]'
 const texto = 'flex flex-col gap-3 text-base leading-[1.6] text-texto-2 md:gap-3.5 md:text-lg md:leading-[1.65] [&_p]:m-0'
 
@@ -116,7 +120,7 @@ export default async function Institucional() {
               )}
             </div>
           </div>
-          <Boton href="/institucional/sumarse">Quiero sumarme →</Boton>
+          <Boton href="/institucional/sumarse" className={`flex ${mismoAncho}`}>Quiero sumarme →</Boton>
         </section>
 
         {/* Tu música: la puerta de los artistas, aparte de Ser parte, que es trabajar en la radio (8/11/2026) */}
@@ -140,7 +144,7 @@ export default async function Institucional() {
               )}
             </div>
           </div>
-          <Boton href="/institucional/musica">Enviar mi música →</Boton>
+          <Boton href="/institucional/musica" className={`flex ${mismoAncho}`}>Enviar mi música →</Boton>
         </section>
 
         <section id="publicidad" aria-labelledby="titulo-publicidad" className="flex scroll-mt-4 flex-col gap-3 border-b border-linea py-6 md:gap-7 md:py-14">
@@ -153,7 +157,7 @@ export default async function Institucional() {
                 {inst.publicidad ? <RichText data={inst.publicidad} /> : <p>Tu marca en la radio, en el sitio y en el cine.</p>}
               </div>
             </div>
-            <Boton href="/institucional/publicidad" className="hidden md:flex">
+            <Boton href="/institucional/publicidad" className={`hidden md:flex ${mismoAncho}`}>
               Pedir tarifas →
             </Boton>
           </div>
