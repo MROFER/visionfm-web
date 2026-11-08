@@ -173,7 +173,7 @@ Recuadro con borde de 2 px: kicker "PARTICIPÁ", título "¿Tenés una noticia? 
 5. **Entrevistas:** últimas 4 entrevistas con botón play y "Todas las entrevistas", sin buscador (6/11/2026: para buscar está el archivo).
 6. Bloque **Participá**.
 
-En mobile el orden es el mismo; la película destacada **debe mostrar género, duración y calificación**.
+En mobile el orden es el mismo; la película destacada **debe mostrar género, duración y calificación**. En mobile (8/11/2026), las 4 notas chicas usan la misma fila que el archivo de Noticias (foto 4:3 de 128×96 a la derecha) y "Todas las entrevistas" es el mismo botón oscuro a todo el ancho que "Todas las noticias" y "Cartelera completa".
 
 **Noticias:** título, tira de secciones (Locales, Nacionales, Policiales, Deportes, Cultura, Opinión), buscador interno, destacada, "Últimas noticias", "Archivo" y paginación numerada.
 
