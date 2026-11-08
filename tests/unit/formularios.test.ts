@@ -41,6 +41,29 @@ describe('validación de formularios', () => {
     expect(r.ok && r.datos.extra).toEqual({ donde: ['radio', 'cine'], empresa: 'Panadería', presupuesto: 'a-definir', plazo: 'ya' })
   })
 
+  it('Enviá tu música pide el link para escucharla y la autorización', () => {
+    const musica = {
+      artista: 'Los del Puerto',
+      nombre: 'Ana',
+      email: 'ana@ejemplo.com',
+      escuchar: 'https://open.spotify.com/track/abc',
+      autorizacion: 'si',
+      consentimiento: 'si',
+    }
+    const r = validarFormulario('musica', musica)
+    expect(r.ok && r.datos.extra).toEqual({ artista: 'Los del Puerto', escuchar: 'https://open.spotify.com/track/abc', autorizacion: 'si' })
+    const sinDatos = validarFormulario('musica', { ...musica, artista: '', escuchar: '', autorizacion: '' })
+    expect(sinDatos.ok).toBe(false)
+    if (!sinDatos.ok) {
+      expect(sinDatos.errores).toEqual({
+        artista: 'Escribí el nombre del artista o la banda.',
+        escuchar: 'Pegá un link para escuchar tu música.',
+        autorizacion: 'Para enviar, confirmá que podés compartir este material.',
+      })
+    }
+    expect(validarCampo('musica', 'escuchar', 'mi tema')).toBe('Revisá el link.')
+  })
+
   it('revisa el formato de teléfono y link', () => {
     expect(validarCampo('sumarse', 'telefono', 'llamame')).toMatch(/teléfono/)
     expect(validarCampo('sumarse', 'link', 'instagram.com/ana')).toBeNull()

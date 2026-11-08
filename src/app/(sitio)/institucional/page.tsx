@@ -21,6 +21,7 @@ const SECCIONES = [
   { id: 'nosotros', nombre: 'Quiénes somos' },
   { id: 'equipo', nombre: 'Equipo' },
   { id: 'ser-parte', nombre: 'Ser parte' },
+  { id: 'musica', nombre: 'Tu música' },
   { id: 'publicidad', nombre: 'Publicidad' },
   { id: 'contacto', nombre: 'Contacto' },
 ]
@@ -39,7 +40,7 @@ const titulo2 = 'm-0 font-titulos text-[28px] leading-none font-extrabold md:tex
 const texto = 'flex flex-col gap-3 text-base leading-[1.6] text-texto-2 md:gap-3.5 md:text-lg md:leading-[1.65] [&_p]:m-0'
 
 // Institucional (design/LEEME.md, sección 7): Quiénes somos, Nuestra historia, Equipo, Ser parte,
-// Publicidad y Contacto en una sola página, con anclas para el menú.
+// Tu música, Publicidad y Contacto en una sola página, con anclas para el menú.
 export default async function Institucional() {
   const [ajustes, inst, equipo] = await Promise.all([obtenerAjustes(), obtenerInstitucional(), obtenerEquipo()])
 
@@ -116,6 +117,30 @@ export default async function Institucional() {
             </div>
           </div>
           <Boton href="/institucional/sumarse">Quiero sumarme →</Boton>
+        </section>
+
+        {/* Tu música: la puerta de los artistas, aparte de Ser parte, que es trabajar en la radio (8/11/2026) */}
+        <section
+          id="musica"
+          aria-labelledby="titulo-musica"
+          className="flex scroll-mt-4 flex-col gap-3 border-b border-linea py-6 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-8 md:py-14"
+        >
+          <div className="flex flex-col gap-3 md:flex-[1_1_480px]">
+            <h2 id="titulo-musica" className={titulo2}>
+              Tu música
+            </h2>
+            <div className={texto}>
+              {inst.tuMusica ? (
+                <RichText data={inst.tuMusica} />
+              ) : (
+                <p>
+                  ¿Sos artista o tenés una banda? Queremos escuchar tu material. Compartilo con nosotros para una posible
+                  difusión en el 96.5.
+                </p>
+              )}
+            </div>
+          </div>
+          <Boton href="/institucional/musica">Enviar mi música →</Boton>
         </section>
 
         <section id="publicidad" aria-labelledby="titulo-publicidad" className="flex scroll-mt-4 flex-col gap-3 border-b border-linea py-6 md:gap-7 md:py-14">

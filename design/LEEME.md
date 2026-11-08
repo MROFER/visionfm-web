@@ -14,7 +14,7 @@ Un medio local con **tres partes que conviven en el mismo edificio**:
 2. **La redacción de noticias**: portal de noticias locales con secciones.
 3. **Cinevisión**: el cine de Fray Bentos (cartelera, estrenos, funciones, entradas).
 
-Más una parte **Institucional** (quiénes somos, historia, equipo, ser parte, publicidad, contacto).
+Más una parte **Institucional** (quiénes somos, historia, equipo, ser parte, tu música, publicidad, contacto).
 
 El sitio debe tratar las tres partes por igual, pero la radio en vivo es lo que nunca puede faltar: **el botón "Escuchar en vivo" y la información de qué está al aire deben estar presentes en todo el sitio.**
 
@@ -118,8 +118,9 @@ URLs sugeridas:
 /noticias/{slug}          Nota
 /cinevision               Cinevisión (#cartelera, #estrenos, #entradas)
 /cinevision/{slug}        Película
-/institucional            Institucional (#nosotros, #equipo, #ser-parte, #publicidad, #contacto)
+/institucional            Institucional (#nosotros, #equipo, #ser-parte, #musica, #publicidad, #contacto)
 /sumarse                  Quiero sumarme
+/musica                   Enviá tu música (en el sitio, /institucional/musica)
 /tarifas                  Pedir tarifas (publicidad)
 /contacto                 Contacto
 ```
@@ -128,7 +129,7 @@ URLs sugeridas:
 - **Radio:** En vivo · Programación · Entrevistas · Conductores
 - **Noticias:** Últimas noticias · Locales · Nacionales · Policiales · Deportes · Cultura · Opinión
 - **Cinevisión:** Cartelera · Estrenos · Entradas y precios · Cómo llegar
-- **Institucional:** Quiénes somos · Equipo · Ser parte · Publicidad · Contacto
+- **Institucional:** Quiénes somos · Equipo · Ser parte · Enviá tu música · Publicidad · Contacto
 
 En web cada grupo es un desplegable. El grupo de la sección actual va subrayado en `accent`. En mobile es un menú hamburguesa con grupos tipo acordeón (+ / −) y al final "Llamá a la radio: 099 318 578".
 
@@ -199,7 +200,7 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 - **Web:** fila de dos columnas de igual alto: **Tráiler** (video 16:9) a la izquierda y **Funciones** a la derecha. Funciones tiene pestañas por día, horarios con chips de idioma y formato, y al pie los precios y "Las entradas se compran en boletería…". **No** lleva botón "Cómo llegar". Debajo, la **Ficha técnica** a todo el ancho en 2 columnas, y después "También en cartelera". **No** hay sección "Sinopsis" aparte.
 - **Mobile:** Funciones (pestañas, horarios, precios y cómo se compran) → Tráiler → **Sinopsis** → Ficha técnica → También en cartelera.
 
-**Institucional:** hero, Quiénes somos, **Nuestra historia** (línea de tiempo de hitos), **Equipo**, Ser parte, Publicidad, Contacto. El Equipo va en este orden:
+**Institucional:** hero, Quiénes somos, **Nuestra historia** (línea de tiempo de hitos), **Equipo**, Ser parte, **Tu música**, Publicidad, Contacto. El Equipo va en este orden:
 1. **Dirección.**
 2. **Producción general.**
 3. **Conducción.**
@@ -208,9 +209,11 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 
 Cada área lleva su título y arranca su propia fila, y todas usan la **misma tarjeta** (8/11/2026): la foto llena un cuadro 4:5, recortada hacia arriba para no cortar la cara, y el nombre y el puesto van en una **franja oscura** (`ink`, con un filete `accent` arriba) sobre la parte de abajo de la foto. Van cuatro tarjetas por fila en computadora, tres en tablet y dos en el celular.
 
-Los botones de Ser parte ("Quiero sumarme →"), Publicidad ("Pedir tarifas →") y Contacto ("Escribinos →") son iguales: fondo `ink` y naranja al pasar el mouse (8/11/2026).
+Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música →"), Publicidad ("Pedir tarifas →") y Contacto ("Escribinos →") son iguales: fondo `ink` y naranja al pasar el mouse (8/11/2026).
 
-**Quiero sumarme:** formulario con área de interés, datos personales, mensaje y adjunto (CV, audio o video), más los pasos de "Cómo funciona".
+**Quiero sumarme:** formulario con área de interés, datos personales, mensaje y adjunto (CV, audio o video), más los pasos de "Cómo funciona". Es para trabajar en la radio.
+
+**Enviá tu música:** la puerta de los artistas y las bandas, aparte de Ser parte (8/11/2026). En Institucional va su propia sección, **Tu música**, entre Ser parte y Publicidad, con el botón "Enviar mi música →" igual a los otros, y en el menú va "Enviá tu música" después de Ser parte. La página repite el armazón de Quiero sumarme: pasos de "Cómo funciona" y formulario con artista o banda, nombre, email, teléfono, ciudad y género (estos tres opcionales), **link para escucharla** (obligatorio), el tema en MP3 (opcional), un mensaje (opcional) y la casilla con la que el artista autoriza a pasarlo en la radio. Los envíos llegan a Mensajes con el tipo Música.
 
 **Pedir tarifas:** formulario comercial que pregunta dónde se quiere anunciar (Radio, Web o Cine, multiselección), datos de la empresa, presupuesto y plazo. Ofrece la **descarga del kit comercial en PDF**. Los pedidos van a un email o planilla comercial.
 

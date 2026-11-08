@@ -89,6 +89,22 @@ describe('envío de formularios', () => {
     expect((await r.json()).error.errores.adjunto).toMatch(/No pudimos leer ese archivo/)
   })
 
+  it('Enviá tu música guarda el artista, el link y la autorización', async () => {
+    const r = await enviar('musica', {
+      artista: 'Los del Puerto',
+      nombre: marca,
+      email: 'banda@ejemplo.com',
+      genero: 'Rock',
+      escuchar: 'https://youtu.be/abc123',
+      autorizacion: 'si',
+      consentimiento: 'si',
+    })
+    expect(r.status).toBe(201)
+    const { docs } = await payload.find({ collection: 'mensajes', where: { nombre: { equals: marca }, tipo: { equals: 'musica' } }, depth: 0 })
+    expect(docs).toHaveLength(1)
+    expect(docs[0].datos).toEqual({ artista: 'Los del Puerto', genero: 'Rock', escuchar: 'https://youtu.be/abc123', autorizacion: 'si' })
+  })
+
   it('no conoce otros formularios', async () => {
     expect((await enviar('cualquiera', contacto)).status).toBe(404)
   })

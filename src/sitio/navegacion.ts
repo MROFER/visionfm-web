@@ -41,6 +41,7 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
       enlaces: [
         { etiqueta: 'Quiénes somos', href: '/institucional#nosotros' },
         { etiqueta: 'Ser parte', href: '/institucional/sumarse' },
+        { etiqueta: 'Enviá tu música', href: '/institucional/musica' },
         { etiqueta: 'Publicidad', href: '/institucional/publicidad' },
         { etiqueta: 'Contacto', href: '/institucional/contacto' },
       ],

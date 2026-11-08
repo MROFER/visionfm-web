@@ -236,11 +236,11 @@ Acceso: área Publicidad. El sitio pide los anuncios vigentes; rotan en el naveg
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| `tipo`* | select | contacto · sumarse · tarifas |
+| `tipo`* | select | contacto · sumarse · tarifas · musica |
 | `nombre`* | texto | |
 | `email`* | email | |
 | `telefono` | texto | |
-| `datos` | JSON | campos propios de cada formulario (motivo, área de interés, dónde anunciar, presupuesto, plazo, empresa) |
+| `datos` | JSON | campos propios de cada formulario (motivo, área de interés, dónde anunciar, presupuesto, plazo, empresa; en música: artista, ciudad, género, link para escucharla y autorización) |
 | `mensaje` | textarea | |
 | `adjunto` | relación → `archivos` (privado) | máx. 10 MB |
 | `estado`* | select | nuevo · leído · respondido |
@@ -277,7 +277,7 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 ## Fichas globales
 
 ### ajustes
-`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas; no se publican), `avisoPropio` (`imagenWeb` 970×90, `imagenMovil` 320×100, `imagenRectangulo` 300×250, `link`: el aviso de la radio que ocupa las ubicaciones sin anuncios). Acceso: área Sistema.
+`streamUrl`*, `telefono`*, `whatsapp`*, `direccion`, `email`, `redes` (array red/url), `emailsFormularios` (contacto, sumarse, tarifas, musica; no se publican), `avisoPropio` (`imagenWeb` 970×90, `imagenMovil` 320×100, `imagenRectangulo` 300×250, `link`: el aviso de la radio que ocupa las ubicaciones sin anuncios). Acceso: área Sistema.
 
 ### portada
 `notaDestacada` (→ noticias), `peliculaDestacada` (→ peliculas). Acceso: área Noticias (Publicar).
@@ -286,7 +286,7 @@ Se cargan en la migración de WordPress y las crean los hooks de noticias. Acces
 `carrusel` (array: `imagenWeb` 2480×768 (se muestra a 1240×384 como máximo, el doble para pantallas retina), `imagenMovil` 390×240, `alt`*, `link`, `orden`), `precios` (array: `concepto`, `precio`), `promociones` (array), `comoSeCompran` (textarea), `comoLlegar` (`direccion`, `mapaImagen`, `mapaLink`, `telefono`). Acceso: área Cinevisión.
 
 ### institucional
-`quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: área Institucional.
+`quienesSomos` (rich text), `hitos` (array: `anio`, `titulo`, `texto`), `serParte` (rich text), `tuMusica` (rich text), `publicidad` (rich text), `kitComercial` (→ archivos, PDF). Acceso: área Institucional.
 
 ---
 

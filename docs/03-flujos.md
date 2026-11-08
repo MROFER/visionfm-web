@@ -63,11 +63,11 @@ Elementos globales en todas las páginas: barra superior (fecha, "Al aire", tel�
 5. Mira el tráiler: la imagen se reemplaza por el video de YouTube al tocar play.
 6. **Sin funciones esta semana:** "No hay funciones programadas. Mirá los próximos estrenos." con link.
 
-### F6 · Enviar un formulario (contacto, sumarse, tarifas)
+### F6 · Enviar un formulario (contacto, sumarse, tarifas, música)
 1. El usuario completa los campos; la validación avisa campo por campo al salir de cada uno. Debe marcar la casilla de consentimiento con link a la política de privacidad.
 2. Adjunta un archivo (opcional): se valida tipo y tamaño (máximo 10 MB) antes de subir.
 3. Envía: Cloudflare Turnstile verifica en segundo plano que no sea un bot.
-4. Éxito: el formulario se reemplaza por "Recibimos tu mensaje. Te respondemos a la brevedad." El mensaje queda en el panel y llega por email al destinatario configurado.
+4. Éxito: el formulario se reemplaza por "Recibimos tu mensaje. Te respondemos a la brevedad." (en Enviá tu música, "Recibimos tu música. Si va a sonar en el 96.5, te avisamos."). El mensaje queda en el panel y llega por email al destinatario configurado.
 5. Error de red: "No pudimos enviar el mensaje. Revisá tu conexión y probá de nuevo." sin perder lo escrito.
 6. En Publicidad, el kit comercial se descarga con un link directo al PDF.
 
@@ -151,7 +151,7 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 5. Ubicaciones muestra qué anuncios rotan hoy en cada espacio; si uno queda vacío, sale el aviso propio de la radio.
 
 ### P7 · Responder mensajes
-1. Mensajes muestra los envíos de los tres formularios, filtrables por tipo y estado.
+1. Mensajes muestra los envíos de los cuatro formularios, filtrables por tipo y estado.
 2. El editor abre uno, descarga el adjunto y lo marca como "Respondido".
 
 ### P8 · Cambiar la programación
