@@ -206,6 +206,8 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 4. **Columnistas y colaboradores.**
 5. **Equipo técnico.**
 
+Los botones de Ser parte ("Quiero sumarme →"), Publicidad ("Pedir tarifas →") y Contacto ("Escribinos →") son iguales: fondo `ink` y naranja al pasar el mouse (8/11/2026).
+
 **Quiero sumarme:** formulario con área de interés, datos personales, mensaje y adjunto (CV, audio o video), más los pasos de "Cómo funciona".
 
 **Pedir tarifas:** formulario comercial que pregunta dónde se quiere anunciar (Radio, Web o Cine, multiselección), datos de la empresa, presupuesto y plazo. Ofrece la **descarga del kit comercial en PDF**. Los pedidos van a un email o planilla comercial.
