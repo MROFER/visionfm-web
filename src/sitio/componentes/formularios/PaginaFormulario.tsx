@@ -4,8 +4,8 @@ import type { AjustesSitio } from '../../datos'
 import { Publicidad } from '../globales/Publicidad'
 
 /**
- * Armazón de Quiero sumarme, Pedir tarifas y Contacto (design/LEEME.md, sección 7): publicidad, ruta,
- * kicker, título y bajada; debajo de la raya, la columna lateral y el formulario.
+ * Armazón de Quiero sumarme, Enviá tu música, Pedir tarifas y Contacto (design/LEEME.md, sección 7):
+ * publicidad, ruta, kicker, título y bajada; debajo de la raya, la columna lateral y el formulario.
  */
 export function PaginaFormulario({
   ajustes,

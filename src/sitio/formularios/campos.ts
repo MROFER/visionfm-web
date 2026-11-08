@@ -1,7 +1,7 @@
-// Campos y validación de los tres formularios del sitio (design/LEEME.md, sección 7; docs/03-flujos.md, F6).
+// Campos y validación de los cuatro formularios del sitio (design/LEEME.md, sección 7; docs/03-flujos.md, F6).
 // Lo usan el navegador, para avisar campo por campo, y POST /api/formularios/{tipo}, que vuelve a validar.
 
-export const TIPOS_FORMULARIO = ['contacto', 'sumarse', 'tarifas'] as const
+export const TIPOS_FORMULARIO = ['contacto', 'sumarse', 'tarifas', 'musica'] as const
 export type TipoFormulario = (typeof TIPOS_FORMULARIO)[number]
 
 export const esTipoFormulario = (valor: string): valor is TipoFormulario =>
@@ -27,6 +27,9 @@ export const AREAS_SUMARSE: Opcion[] = [
   { valor: 'programa', nombre: 'Propuesta de programa' },
   { valor: 'cinevision', nombre: 'Cinevisión' },
 ]
+
+/** Enviá tu música: la casilla con la que el artista autoriza a pasar el tema en la radio. */
+export const AUTORIZACION: Opcion[] = [{ valor: 'si', nombre: 'Sí' }]
 
 export const DONDE_ANUNCIAR: (Opcion & { detalle: string })[] = [
   { valor: 'radio', nombre: 'Radio', detalle: 'Spots, menciones y auspicio de programas en el 96.5 FM.' },
@@ -116,10 +119,26 @@ export const CAMPOS: Record<TipoFormulario, Campo[]> = {
     { nombre: 'plazo', requerido: true, opciones: PLAZOS },
     { nombre: 'mensaje', maximo: 5000 },
   ],
+  musica: [
+    { nombre: 'artista', requerido: true, maximo: 120, falta: 'Escribí el nombre del artista o la banda.' },
+    { ...NOMBRE, falta: 'Escribí tu nombre.' },
+    EMAIL,
+    TELEFONO,
+    { nombre: 'ciudad', maximo: 80 },
+    { nombre: 'genero', maximo: 80 },
+    { nombre: 'escuchar', requerido: true, tipo: 'url', maximo: 300, falta: 'Pegá un link para escuchar tu música.' },
+    { nombre: 'mensaje', maximo: 5000 },
+    {
+      nombre: 'autorizacion',
+      requerido: true,
+      opciones: AUTORIZACION,
+      falta: 'Para enviar, confirmá que podés compartir este material.',
+    },
+  ],
 }
 
 /** Qué formularios llevan adjunto (Pedir tarifas no tiene). */
-export const CON_ADJUNTO: Record<TipoFormulario, boolean> = { contacto: true, sumarse: true, tarifas: false }
+export const CON_ADJUNTO: Record<TipoFormulario, boolean> = { contacto: true, sumarse: true, tarifas: false, musica: true }
 
 const EMAIL_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
@@ -181,6 +200,6 @@ export function validarFormulario(tipo: TipoFormulario, valores: Valores): Resul
 /** Nombre legible de un valor guardado (para el email y el panel). */
 export function nombreDeOpcion(campo: string, valor: string): string {
   const lista =
-    campo === 'motivo' ? MOTIVOS : campo === 'areas' ? AREAS_SUMARSE : campo === 'donde' ? DONDE_ANUNCIAR : campo === 'presupuesto' ? PRESUPUESTOS : campo === 'plazo' ? PLAZOS : []
+    campo === 'motivo' ? MOTIVOS : campo === 'areas' ? AREAS_SUMARSE : campo === 'donde' ? DONDE_ANUNCIAR : campo === 'presupuesto' ? PRESUPUESTOS : campo === 'plazo' ? PLAZOS : campo === 'autorizacion' ? AUTORIZACION : []
   return lista.find((o) => o.valor === valor)?.nombre ?? valor
 }

@@ -163,7 +163,7 @@ Son los espacios que tiene el diseño. Desde el 5/11/2026 casi todas las página
 | Cinevisión | Debajo de la cartelera, antes de "Próximos estrenos"; en el celular, la tira de 320×100 |
 | Cinevisión · Arriba (solo web) | Entre el carrusel y la cartelera; en el celular no aparece |
 | Institucional | Arriba del contenido |
-| Institucional · Sumarse, Publicidad, Contacto | Arriba del formulario |
+| Institucional · Sumarse, Música, Publicidad, Contacto | Arriba del formulario |
 
 ### Al cargar un anuncio
 

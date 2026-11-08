@@ -21,6 +21,7 @@ import * as migration_20261105_193024_formatos_final_nota from './20261105_19302
 import * as migration_20261105_193519_publicidad_medio_nota from './20261105_193519_publicidad_medio_nota';
 import * as migration_20261105_205736_publicidad_costado_nota from './20261105_205736_publicidad_costado_nota';
 import * as migration_20261106_233941_publicidad_costado_entrevista from './20261106_233941_publicidad_costado_entrevista';
+import * as migration_20261108_021634_tu_musica from './20261108_021634_tu_musica';
 
 export const migrations = [
   {
@@ -136,6 +137,11 @@ export const migrations = [
   {
     up: migration_20261106_233941_publicidad_costado_entrevista.up,
     down: migration_20261106_233941_publicidad_costado_entrevista.down,
-    name: '20261106_233941_publicidad_costado_entrevista'
+    name: '20261106_233941_publicidad_costado_entrevista',
+  },
+  {
+    up: migration_20261108_021634_tu_musica.up,
+    down: migration_20261108_021634_tu_musica.down,
+    name: '20261108_021634_tu_musica'
   },
 ];

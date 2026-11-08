@@ -4,14 +4,14 @@ import { tienePermiso, type UsuarioConPermisos } from '@/base/permisos'
 
 /**
  * Quién ve qué mensajes (docs/07, roles de fábrica): quien gestiona Institucional ve todos;
- * Comercial ve los de publicidad (tarifas); el Editor, los de contacto y sumarse.
+ * Comercial ve los de publicidad (tarifas); el Editor, los de contacto, sumarse y música.
  */
 const mensajesVisibles: Access = ({ req }) => {
   const usuario = req.user as unknown as UsuarioConPermisos | null
   if (tienePermiso(usuario, 'institucional', 'editarTodo')) return true
   const tipos: string[] = []
   if (tienePermiso(usuario, 'publicidad', 'editarTodo')) tipos.push('tarifas')
-  else if (tienePermiso(usuario, 'institucional', 'ver')) tipos.push('contacto', 'sumarse')
+  else if (tienePermiso(usuario, 'institucional', 'ver')) tipos.push('contacto', 'sumarse', 'musica')
   return tipos.length ? ({ tipo: { in: tipos } } satisfies Where) : false
 }
 
@@ -46,6 +46,7 @@ export const Mensajes: CollectionConfig = {
         { label: 'Contacto', value: 'contacto' },
         { label: 'Sumarse', value: 'sumarse' },
         { label: 'Tarifas de publicidad', value: 'tarifas' },
+        { label: 'Música', value: 'musica' },
       ],
     },
     { name: 'nombre', type: 'text', required: true, access: { update: soloLectura } },

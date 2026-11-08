@@ -16,6 +16,7 @@ export const obtenerInstitucional = unstable_cache(
       quienesSomos: g.quienesSomos ?? null,
       hitos: (g.hitos ?? []).map(({ anio, titulo, texto }) => ({ anio, titulo, texto: texto ?? '' })),
       serParte: g.serParte ?? null,
+      tuMusica: g.tuMusica ?? null,
       publicidad: g.publicidad ?? null,
       /** Se descarga desde /api/kit-comercial */
       hayKitComercial: Boolean(g.kitComercial),

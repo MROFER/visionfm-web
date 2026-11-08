@@ -24,6 +24,7 @@ const ASUNTOS: Record<TipoFormulario, string> = {
   contacto: 'Nuevo mensaje de contacto',
   sumarse: 'Nueva propuesta para sumarse',
   tarifas: 'Nuevo pedido de tarifas',
+  musica: 'Nueva música para escuchar',
 }
 
 const ETIQUETAS: Record<string, string> = {
@@ -36,6 +37,10 @@ const ETIQUETAS: Record<string, string> = {
   rubro: 'Rubro',
   presupuesto: 'Presupuesto mensual',
   plazo: 'Cuándo quiere empezar',
+  artista: 'Artista o banda',
+  genero: 'Género o estilo',
+  escuchar: 'Link para escucharla',
+  autorizacion: 'Autoriza pasarla en la radio',
 }
 
 /**
