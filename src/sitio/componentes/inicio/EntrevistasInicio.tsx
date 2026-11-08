@@ -4,7 +4,7 @@ import type { TarjetaEntrevista } from '../../datos/formas'
 import { fechaDia } from '../../lib/fecha'
 import { duracionAudio } from '../../lib/formato'
 import { BotonEntrevista } from '../radio/BotonEntrevista'
-import { TituloSeccion } from '../ui/TituloSeccion'
+import { BotonOscuro, TituloSeccion } from '../ui/TituloSeccion'
 
 /**
  * Últimas entrevistas. El play las pasa con el mismo audio de la radio y el nombre lleva a la página de
@@ -53,9 +53,10 @@ export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevi
       ) : (
         <p className="py-6 text-texto-2">Todavía no hay entrevistas publicadas.</p>
       )}
-      <Link href="/radio/entrevistas" className="etiqueta mt-4 inline-block tracking-[0.08em] lg:hidden">
-        Todas las entrevistas →
-      </Link>
+      {/* En el celular, el mismo botón oscuro que Todas las noticias y Cartelera completa (8/11/2026) */}
+      <BotonOscuro href="/radio/entrevistas" className="mt-5 min-h-12 lg:hidden">
+        Todas las entrevistas
+      </BotonOscuro>
     </section>
   )
 }

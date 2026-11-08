@@ -39,7 +39,8 @@ export function NotaDestacada({ nota, prioridad }: { nota: Nota; prioridad?: boo
 }
 
 /**
- * Nota chica. En web, foto arriba; en el celular, fila con la foto cuadrada a la derecha.
+ * Nota chica. En web, foto arriba; en el celular, fila con la foto a la derecha en 128×96 (4:3), igual que
+ * en la sección Noticias (8/11/2026).
  */
 export function NotaChica({ nota }: { nota: Nota }) {
   return (
@@ -58,8 +59,8 @@ export function NotaChica({ nota }: { nota: Nota }) {
       <Link href={nota.href} aria-hidden tabIndex={-1} className="block shrink-0">
         <Foto
           imagen={nota.foto}
-          sizes="(min-width: 1024px) 280px, 96px"
-          className="size-24 lg:h-40 lg:w-full"
+          sizes="(min-width: 1024px) 280px, 128px"
+          className="h-24 w-32 lg:h-40 lg:w-full"
         />
       </Link>
     </article>
