@@ -228,7 +228,7 @@ Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música 
    - Todos los botones de play o "Escuchar en vivo" controlan ese mismo audio y reflejan su estado (Escuchar en vivo ↔ Pausar).
 2. **"Al aire" y "A continuación"** se calculan con la grilla de programación y la hora de Uruguay (America/Montevideo).
 3. **Cartelera:** el filtro por día cambia qué películas se ven. En la página de la película, las pestañas por día cambian los horarios.
-4. **Carrusel de Cinevisión:** flechas, toque en los negativos y deslizar con el dedo en mobile. Autoavance opcional, que se pausa al interactuar.
+4. **Carrusel de Cinevisión:** flechas, toque en los negativos y deslizar con el dedo en mobile. Autoavance opcional, que se pausa al interactuar. Es infinito: después de la última sigue la primera, sin rebobinar. En el celular cada deslizada pasa una sola imagen y, por más rápido que se deslice, nunca se traba contra el final (8/11/2026).
 5. **Formularios:** validación, adjuntos con límite de tamaño ([X] MB a definir) y confirmación de envío.
 6. **Accesibilidad:** el HTML ya trae `aria-label`, `aria-expanded`, `aria-pressed` y `aria-current`. Mantenerlos y asegurar foco visible y navegación con teclado.
 
