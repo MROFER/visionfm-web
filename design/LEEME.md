@@ -197,7 +197,7 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 **Película (`/cinevision/{slug}`)**
 - Ruta (web) o "‹ Cartelera" (mobile).
 - Franja oscura con afiche, etiqueta "Estreno", título, título original · año, calificación en recuadro, género, duración, idioma ("Subtitulada y doblada") y formato (2D). En web lleva además la **sinopsis corta**. **Sin botones** de Ver funciones o Ver tráiler.
-- **Web:** fila de dos columnas de igual alto: **Tráiler** (video 16:9) a la izquierda y **Funciones** a la derecha. Funciones tiene pestañas por día, horarios con chips de idioma y formato, y al pie los precios y "Las entradas se compran en boletería…". **No** lleva botón "Cómo llegar". Debajo, la **Ficha técnica** a todo el ancho en 2 columnas, y después "También en cartelera". **No** hay sección "Sinopsis" aparte.
+- **Web:** fila de dos columnas de igual alto: **Tráiler** (video 16:9) a la izquierda y **Funciones** a la derecha. Funciones tiene pestañas por día (repartidas a lo ancho cuando son 5 o más; con menos, una al lado de la otra como en mobile, 8/11/2026), horarios con chips de idioma y formato, y al pie los precios y "Las entradas se compran en boletería…". **No** lleva botón "Cómo llegar". Debajo, la **Ficha técnica** a todo el ancho en 2 columnas, y después "También en cartelera". **No** hay sección "Sinopsis" aparte.
 - **Mobile:** Funciones (pestañas, horarios, precios y cómo se compran) → Tráiler → **Sinopsis** → Ficha técnica → También en cartelera.
 
 **Institucional:** hero, Quiénes somos, **Nuestra historia** (línea de tiempo de hitos), **Equipo**, Ser parte, **Tu música**, Publicidad, Contacto. El Equipo va en este orden:
