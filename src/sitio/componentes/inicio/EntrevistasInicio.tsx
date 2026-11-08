@@ -7,8 +7,9 @@ import { BotonEntrevista } from '../radio/BotonEntrevista'
 import { TituloSeccion } from '../ui/TituloSeccion'
 
 /**
- * Últimas entrevistas. El play las pasa con el mismo audio de la radio. Sin buscador: para buscar se
- * entra por "Todas las entrevistas", que en web va al lado del título y en el celular al final.
+ * Últimas entrevistas. El play las pasa con el mismo audio de la radio y el nombre lleva a la página de
+ * cada una. Sin buscador: para buscar se entra por "Todas las entrevistas", que en web va al lado del
+ * título y en el celular al final.
  */
 export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevista[] }) {
   return (
@@ -21,7 +22,7 @@ export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevi
       {entrevistas.length ? (
         <ol className="m-0 list-none p-0 lg:mt-2">
           {entrevistas.map((e) => {
-            const href = `/radio/entrevistas#${e.slug}`
+            const href = `/radio/entrevistas/${e.slug}`
             return (
               <li
                 key={e.id}
