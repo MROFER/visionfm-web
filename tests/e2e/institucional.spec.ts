@@ -69,3 +69,18 @@ test('en Institucional, los botones de Ser parte, Publicidad y Contacto son igua
   await tarifas.hover()
   await expect(tarifas).not.toHaveCSS('background-color', sumarme)
 })
+
+// En computadora, los botones de Ser parte, Tu música y Publicidad miden lo mismo y no quedan escalonados (8/11/2026)
+test('en web, los tres botones de la derecha tienen el mismo ancho y el mismo borde izquierdo', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/institucional')
+  const cajas = await Promise.all(
+    ['Quiero sumarme →', 'Enviar mi música →', 'Pedir tarifas →'].map((nombre) =>
+      page.getByRole('link', { name: nombre }).filter({ visible: true }).boundingBox(),
+    ),
+  )
+  for (const c of cajas) {
+    expect(c!.width).toBe(cajas[0]!.width)
+    expect(c!.x).toBe(cajas[0]!.x)
+  }
+})
