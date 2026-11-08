@@ -51,3 +51,21 @@ test('el formulario de música pide el link para escucharla y la autorización',
   await expect(page.getByText('Pegá un link para escuchar tu música.')).toBeVisible()
   await expect(page.getByText('Para enviar, confirmá que podés compartir este material.')).toBeVisible()
 })
+
+// Quiero sumarme, Pedir tarifas y Escribinos son el mismo botón: oscuro y naranja con el mouse (8/11/2026)
+test('en Institucional, los botones de Ser parte, Publicidad y Contacto son iguales', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/institucional')
+  const fondo = (nombre: string) =>
+    page
+      .getByRole('link', { name: nombre })
+      .filter({ visible: true })
+      .evaluate((a) => getComputedStyle(a).backgroundColor)
+  const sumarme = await fondo('Quiero sumarme →')
+  expect(await fondo('Pedir tarifas →')).toBe(sumarme)
+  expect(await fondo('Escribinos →')).toBe(sumarme)
+
+  const tarifas = page.getByRole('link', { name: 'Pedir tarifas →' }).filter({ visible: true })
+  await tarifas.hover()
+  await expect(tarifas).not.toHaveCSS('background-color', sumarme)
+})

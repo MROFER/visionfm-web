@@ -153,7 +153,7 @@ export default async function Institucional() {
                 {inst.publicidad ? <RichText data={inst.publicidad} /> : <p>Tu marca en la radio, en el sitio y en el cine.</p>}
               </div>
             </div>
-            <Boton href="/institucional/publicidad" acento className="hidden md:flex">
+            <Boton href="/institucional/publicidad" className="hidden md:flex">
               Pedir tarifas →
             </Boton>
           </div>
@@ -166,7 +166,7 @@ export default async function Institucional() {
               </li>
             ))}
           </ul>
-          <Boton href="/institucional/publicidad" acento className="flex md:hidden">
+          <Boton href="/institucional/publicidad" className="flex md:hidden">
             Pedir tarifas →
           </Boton>
         </section>
@@ -185,23 +185,13 @@ export default async function Institucional() {
   )
 }
 
-function Boton({
-  href,
-  acento = false,
-  className = 'flex',
-  children,
-}: {
-  href: string
-  acento?: boolean
-  className?: string
-  children: React.ReactNode
-}) {
+// Los tres botones (Quiero sumarme, Pedir tarifas y Escribinos) son iguales: oscuros y naranjas al pasar
+// el mouse (8/11/2026)
+function Boton({ href, className = 'flex', children }: { href: string; className?: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
-      className={`etiqueta min-h-12 items-center justify-center self-stretch px-6 text-blanco no-underline md:min-h-[52px] md:self-start ${
-        acento ? 'bg-acento hover:bg-acento-hover' : 'bg-tinta hover:bg-acento'
-      } ${className}`}
+      className={`etiqueta min-h-12 items-center justify-center self-stretch bg-tinta px-6 text-blanco no-underline hover:bg-acento md:min-h-[52px] md:self-start ${className}`}
     >
       {children}
     </Link>

@@ -207,6 +207,8 @@ En mobile el orden es el mismo; la película destacada **debe mostrar género, d
 4. **Columnistas y colaboradores.**
 5. **Equipo técnico.**
 
+Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música →"), Publicidad ("Pedir tarifas →") y Contacto ("Escribinos →") son iguales: fondo `ink` y naranja al pasar el mouse (8/11/2026).
+
 **Quiero sumarme:** formulario con área de interés, datos personales, mensaje y adjunto (CV, audio o video), más los pasos de "Cómo funciona". Es para trabajar en la radio.
 
 **Enviá tu música:** la puerta de los artistas y las bandas, aparte de Ser parte (8/11/2026). En Institucional va su propia sección, **Tu música**, entre Ser parte y Publicidad, con el botón "Enviar mi música →" igual a los otros, y en el menú va "Enviá tu música" después de Ser parte. La página repite el armazón de Quiero sumarme: pasos de "Cómo funciona" y formulario con artista o banda, nombre, email, teléfono, ciudad y género (estos tres opcionales), **link para escucharla** (obligatorio), el tema en MP3 (opcional), un mensaje (opcional) y la casilla con la que el artista autoriza a pasarlo en la radio. Los envíos llegan a Mensajes con el tipo Música.
