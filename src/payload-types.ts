@@ -697,7 +697,7 @@ export interface AnunciosMetrica {
  */
 export interface Mensaje {
   id: number;
-  tipo: 'contacto' | 'sumarse' | 'tarifas';
+  tipo: 'contacto' | 'sumarse' | 'tarifas' | 'musica';
   nombre: string;
   email: string;
   telefono?: string | null;
@@ -1682,6 +1682,21 @@ export interface Institucional {
     };
     [k: string]: unknown;
   } | null;
+  tuMusica?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   publicidad?: {
     root: {
       type: string;
@@ -1723,6 +1738,7 @@ export interface Ajuste {
     contacto?: string | null;
     sumarse?: string | null;
     tarifas?: string | null;
+    musica?: string | null;
   };
   /**
    * Se muestra en las ubicaciones de publicidad que no tienen anuncios vigentes.
@@ -1829,6 +1845,7 @@ export interface InstitucionalSelect<T extends boolean = true> {
         id?: T;
       };
   serParte?: T;
+  tuMusica?: T;
   publicidad?: T;
   kitComercial?: T;
   updatedAt?: T;
@@ -1858,6 +1875,7 @@ export interface AjustesSelect<T extends boolean = true> {
         contacto?: T;
         sumarse?: T;
         tarifas?: T;
+        musica?: T;
       };
   avisoPropio?:
     | T

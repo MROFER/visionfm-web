@@ -40,6 +40,7 @@ export const Ajustes: GlobalConfig = {
         { name: 'contacto', type: 'email' },
         { name: 'sumarse', type: 'email' },
         { name: 'tarifas', type: 'email' },
+        { name: 'musica', label: 'Música', type: 'email' },
       ],
     },
     {

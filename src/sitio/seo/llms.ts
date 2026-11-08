@@ -80,6 +80,7 @@ export function llmsTxt(origen: string, d: DatosLlms) {
     link(origen, 'Quiénes somos', '/institucional'),
     link(origen, 'Publicidad', '/institucional/publicidad', 'tarifas y kit comercial'),
     link(origen, 'Sumarse', '/institucional/sumarse'),
+    link(origen, 'Enviá tu música', '/institucional/musica', 'para artistas y bandas'),
     link(origen, 'Contacto', '/institucional/contacto'),
     '',
     '## Optional',

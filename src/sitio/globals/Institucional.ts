@@ -20,6 +20,7 @@ export const Institucional: GlobalConfig = {
       ],
     },
     { name: 'serParte', label: 'Ser parte', type: 'richText' },
+    { name: 'tuMusica', label: 'Tu música', type: 'richText' },
     { name: 'publicidad', type: 'richText' },
     {
       name: 'kitComercial',

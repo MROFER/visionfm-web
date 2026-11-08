@@ -46,6 +46,7 @@ export function Formulario({
   turnstile,
   boton,
   oscuro = false,
+  confirmacion = 'Recibimos tu mensaje. Te respondemos a la brevedad.',
   children,
 }: {
   tipo: TipoFormulario
@@ -54,13 +55,15 @@ export function Formulario({
   boton: string
   /** Botón negro (Contacto) en vez de naranja */
   oscuro?: boolean
+  /** Lo que queda en lugar del formulario después de enviarlo */
+  confirmacion?: string
   children: React.ReactNode
 }) {
   const [errores, setErrores] = useState<Record<string, string>>({})
   const [estado, setEstado] = useState<Estado>('listo')
   const [aviso, setAviso] = useState<string | null>(null)
   const formulario = useRef<HTMLFormElement>(null)
-  const confirmacion = useRef<HTMLDivElement>(null)
+  const recuadroEnviado = useRef<HTMLDivElement>(null)
 
   const marcar = (nombre: string, error: string | null) =>
     setErrores((previos) => {
@@ -115,7 +118,7 @@ export function Formulario({
       const respuesta = await fetch(`/api/formularios/${tipo}`, { method: 'POST', body: datos })
       if (respuesta.ok) {
         setEstado('enviado')
-        requestAnimationFrame(() => confirmacion.current?.focus())
+        requestAnimationFrame(() => recuadroEnviado.current?.focus())
         return
       }
       const cuerpo = (await respuesta.json().catch(() => null)) as {
@@ -138,15 +141,13 @@ export function Formulario({
   if (estado === 'enviado') {
     return (
       <div
-        ref={confirmacion}
+        ref={recuadroEnviado}
         tabIndex={-1}
         role="status"
         className="flex flex-col gap-2 border-2 border-tinta p-5 outline-none md:p-8"
       >
         <span className="etiqueta text-acento">Enviado</span>
-        <p className="m-0 font-titulos text-2xl leading-tight font-extrabold md:text-[32px]">
-          Recibimos tu mensaje. Te respondemos a la brevedad.
-        </p>
+        <p className="m-0 font-titulos text-2xl leading-tight font-extrabold md:text-[32px]">{confirmacion}</p>
       </div>
     )
   }
@@ -367,8 +368,31 @@ export function Casillas({
   )
 }
 
+/** Una casilla obligatoria con su texto, como la del consentimiento (en Enviá tu música, la autorización). */
+export function Casilla({ nombre, children }: { nombre: string; children: React.ReactNode }) {
+  const { errores } = useContext(ContextoFormulario)
+  const id = useId()
+  const error = errores[nombre]
+  return (
+    <div className="flex flex-col gap-1">
+      <label className="flex cursor-pointer items-start gap-3 text-sm leading-[1.5] text-texto-2 md:text-[15px]">
+        <input
+          type="checkbox"
+          name={nombre}
+          value="si"
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className="mt-0.5 size-5 shrink-0 accent-tinta"
+        />
+        <span>{children}</span>
+      </label>
+      <MensajeError id={`${id}-error`} texto={error} />
+    </div>
+  )
+}
+
 /** Adjunto opcional: valida tipo y tamaño apenas se elige y muestra el nombre del archivo. */
-export function Adjunto({ texto }: { texto: string }) {
+export function Adjunto({ texto, rotulo = 'Adjuntar archivo' }: { texto: string; rotulo?: string }) {
   const { errores } = useContext(ContextoFormulario)
   const [elegido, setElegido] = useState<{ nombre: string; peso: string } | null>(null)
   const [problema, setProblema] = useState<string | null>(null)
@@ -398,7 +422,7 @@ export function Adjunto({ texto }: { texto: string }) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <Rotulo texto="Adjuntar archivo" opcional />
+      <Rotulo texto={rotulo} opcional />
       <div className="flex items-stretch gap-2">
         <label
           htmlFor={id}

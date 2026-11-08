@@ -8,6 +8,7 @@ export const PAGINAS_FIJAS = [
   '/cinevision',
   '/institucional',
   '/institucional/sumarse',
+  '/institucional/musica',
   '/institucional/publicidad',
   '/institucional/contacto',
 ] as const

@@ -30,6 +30,28 @@ test('en web, los años de «Nuestra historia» van en 32 px, más chicos que lo
   await expect(page.locator('#titulo-nosotros')).toHaveCSS('font-size', '40px')
 })
 
+// Tu música: la puerta de los artistas, entre Ser parte y Publicidad, con su propia página (8/11/2026)
+test('Tu música va entre Ser parte y Publicidad y lleva a su formulario', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/institucional')
+  const cinta = page.getByRole('navigation', { name: 'Secciones institucionales' })
+  await expect(cinta.getByRole('link')).toHaveText(['Quiénes somos', 'Equipo', 'Ser parte', 'Tu música', 'Publicidad', 'Contacto'])
+  const ids = await page.locator('main section[id]').evaluateAll((s) => s.map((x) => x.id))
+  expect(ids.indexOf('musica')).toBe(ids.indexOf('ser-parte') + 1)
+  expect(ids.indexOf('publicidad')).toBe(ids.indexOf('musica') + 1)
+
+  await page.locator('#musica').getByRole('link', { name: 'Enviar mi música →' }).click()
+  await expect(page).toHaveURL(/\/institucional\/musica$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Enviá tu música' })).toBeVisible()
+})
+
+test('el formulario de música pide el link para escucharla y la autorización', async ({ page }) => {
+  await page.goto('/institucional/musica')
+  await page.getByRole('button', { name: 'Enviar mi música →' }).click()
+  await expect(page.getByText('Pegá un link para escuchar tu música.')).toBeVisible()
+  await expect(page.getByText('Para enviar, confirmá que podés compartir este material.')).toBeVisible()
+})
+
 // Quiero sumarme, Pedir tarifas y Escribinos son el mismo botón: oscuro y naranja con el mouse (8/11/2026)
 test('en Institucional, los botones de Ser parte, Publicidad y Contacto son iguales', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })

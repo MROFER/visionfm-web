@@ -38,7 +38,7 @@ Un sitio que trate por igual a las tres partes del medio (radio, redacción y Ci
 - "Al aire" y "A continuación" en todo el sitio, calculados con la grilla y la hora de Montevideo.
 - Un banner rotativo por página (970×90 / 320×100); en Cinevisión va debajo de la cartelera. Nunca en Película.
 - Buscador interno en Noticias y Entrevistas.
-- Tres formularios con adjunto (contacto, sumarse, tarifas) con protección contra spam.
+- Cuatro formularios (contacto, sumarse, tarifas y Enviá tu música; todos con adjunto menos tarifas) con protección contra spam.
 
 **Panel** (Payload, en español):
 - Usuarios por invitación con 8 roles de fábrica (Owner, Administrador, Manager, Editor, Periodista, Colaborador, Cinevisión, Comercial), permisos por área y acción, y registro de actividad completo (quién, qué, cuándo) con copia inmutable. Roles editables y delegación llegan en la etapa 2, al mes del lanzamiento.

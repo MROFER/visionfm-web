@@ -366,9 +366,9 @@ describe('mensajes', () => {
     )
   })
 
-  it('comercial ve solo los de tarifas; el editor, contacto y sumarse', async () => {
+  it('comercial ve solo los de tarifas; el editor, contacto, sumarse y música', async () => {
     const consentimiento = { aceptado: true, fecha: new Date().toISOString() }
-    for (const tipo of ['contacto', 'sumarse', 'tarifas'] as const) {
+    for (const tipo of ['contacto', 'sumarse', 'tarifas', 'musica'] as const) {
       await payload.create({
         collection: 'mensajes',
         data: { tipo, nombre: tipo, email: 'a@b.uy', estado: 'nuevo', consentimiento },
@@ -386,7 +386,7 @@ describe('mensajes', () => {
       overrideAccess: false,
       sort: 'tipo',
     })
-    expect(deEditor.docs.map((m) => m.tipo)).toEqual(['contacto', 'sumarse'])
+    expect(deEditor.docs.map((m) => m.tipo).sort()).toEqual(['contacto', 'musica', 'sumarse'])
     const sinAcceso = await payload
       .find({ collection: 'mensajes', user: periodista, overrideAccess: false })
       .catch(() => null)

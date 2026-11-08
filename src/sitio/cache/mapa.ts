@@ -86,6 +86,7 @@ export const mapaDeCache: MapaDeCache = {
       rutas: [
         '/institucional',
         '/institucional/sumarse',
+        '/institucional/musica',
         '/institucional/publicidad',
         '/institucional/contacto',
       ],
