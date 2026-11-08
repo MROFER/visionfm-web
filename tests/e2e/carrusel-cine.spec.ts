@@ -37,3 +37,14 @@ test('en web, el carrusel de Cinevisión pasa de la última a la primera sin reb
   await page.getByRole('button', { name: 'Imagen anterior' }).click()
   await expect(negativos.nth(total - 1)).toHaveAttribute('aria-current', 'true')
 })
+
+// Próximos estrenos: la fecha va en la cinta de la esquina también en el celular, no abajo del nombre (8/11/2026)
+test('en el celular, la fecha de estreno va en la cinta del afiche', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/cinevision')
+  const estreno = page.locator('#estrenos li').first()
+  await expect(estreno.locator('span[aria-hidden="true"]', { hasText: /^Estreno / })).toBeVisible()
+  // La fecha de abajo queda solo para lectores de pantalla
+  const abajo = await estreno.getByText(/^Estreno: /).boundingBox()
+  expect(abajo!.width).toBeLessThanOrEqual(1)
+})

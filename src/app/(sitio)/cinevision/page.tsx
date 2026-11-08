@@ -106,8 +106,9 @@ export default async function Cinevision() {
                         className="aspect-[2/3] w-full"
                         textoSinFoto="Afiche"
                       />
-                      {/* En web, el mismo hover que la cartelera y la fecha en una cinta en la esquina (7/11/2026).
-                          Solo para la vista: los lectores de pantalla leen el título y la fecha de abajo */}
+                      {/* En web, el mismo hover que la cartelera (7/11/2026). La fecha va en una cinta en la esquina
+                          en todos los tamaños (8/11/2026). Solo para la vista: los lectores de pantalla leen el título
+                          y la fecha de abajo */}
                       <div
                         aria-hidden="true"
                         className="absolute inset-0 hidden flex-col items-center justify-center gap-1 bg-tinta/70 p-4 text-center text-blanco opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 lg:flex"
@@ -117,13 +118,13 @@ export default async function Cinevision() {
                       </div>
                       <span
                         aria-hidden="true"
-                        className="absolute top-10 -right-12 hidden w-[220px] rotate-45 bg-acento py-1.5 text-center text-sm font-extrabold tracking-[0.08em] text-blanco uppercase shadow-[0_2px_6px_rgba(0,0,0,0.35)] lg:block"
+                        className="absolute top-[26px] -right-[34px] w-[150px] rotate-45 bg-acento py-1 text-center text-[10px] font-extrabold tracking-[0.06em] text-blanco uppercase shadow-[0_2px_6px_rgba(0,0,0,0.35)] lg:top-10 lg:-right-12 lg:w-[220px] lg:py-1.5 lg:text-sm lg:tracking-[0.08em]"
                       >
                         Estreno {fechaCorta(p.fechaEstreno)}
                       </span>
                     </div>
                     <span className="font-titulos text-base font-bold group-hover:text-acento md:sr-only">{p.titulo}</span>
-                    <span className="text-xs font-extrabold text-acento md:text-sm md:tracking-[0.04em] lg:sr-only">
+                    <span className="sr-only">
                       Estreno: {fechaNumerica(p.fechaEstreno)}
                     </span>
                   </Link>
