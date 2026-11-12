@@ -48,7 +48,7 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
   return (
     <section aria-label="En vivo" className="relative isolate overflow-hidden bg-tinta text-blanco">
       <FondoPixelado />
-      <div className="contenedor flex flex-wrap gap-x-14 gap-y-6 pt-7 pb-7 md:pt-14 md:pb-16">
+      <div className="contenedor flex flex-wrap gap-x-14 gap-y-6 pt-7 pb-7 md:pt-14 md:pb-16 lg:pt-20 lg:pb-[88px]">
         <div className="flex min-w-0 flex-[999_1_540px] flex-col justify-center gap-3.5 md:gap-5">
           <span className="flex items-center gap-2 text-[11px] font-extrabold tracking-[0.12em] text-vivo-claro uppercase md:gap-2.5 md:text-[13px]">
             <span aria-hidden className="size-2 bg-vivo md:size-2.5" />

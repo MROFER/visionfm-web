@@ -8,6 +8,10 @@ import { useEffect, useRef } from 'react'
  * orden al azar. Las imágenes ya vienen en cuadritos (public/hero), así que el navegador solo copia
  * pedazos de una sobre otra. Del lado del texto la foto se apaga para que el título se lea.
  *
+ * Las imágenes se muestran a tamaño fijo (1278 × 285 en pantalla) y centradas con el contenido, sin
+ * escalar: así la figura cae siempre entre el título y la lista, y el cuadrito mide 6 px en cualquier
+ * ancho. Son más anchas que la pantalla y se apagan solas en los costados.
+ *
  * Sin JavaScript, o hasta que carga, se ve la primera como fondo fijo. Con "reducir movimiento" queda
  * fija la que salió al azar, y con la pestaña oculta no cambia.
  */
@@ -15,6 +19,8 @@ const IMAGENES = ['/hero/mosaico-plaza.png', '/hero/mosaico-anglo.png']
 
 /** Lado del cuadrito dentro de la imagen (las imágenes están al doble: 6 px en pantalla). */
 const CELDA = 12
+/** Las imágenes están al doble del tamaño en pantalla. */
+const ESCALA = 0.5
 const PAUSA = 9000
 const DURACION = 1300
 
@@ -49,7 +55,7 @@ export function FondoPixelado() {
     let cuadro = 0
     let vivo = true
 
-    // Igual que background-size: cover con la imagen apoyada a la derecha
+    // Igual que el fondo de CSS: tamaño fijo, centrada
     const medir = (im: HTMLImageElement) => {
       const r = canvas.getBoundingClientRect()
       const dpr = Math.min(2, devicePixelRatio || 1)
@@ -57,8 +63,8 @@ export function FondoPixelado() {
       canvas.height = Math.round(r.height * dpr)
       const W = canvas.width
       const H = canvas.height
-      const s = Math.max(W / im.width, H / im.height)
-      return { s, x: W - im.width * s, y: (H - im.height * s) / 2, W, H }
+      const s = ESCALA * dpr
+      return { s, x: (W - im.width * s) / 2, y: (H - im.height * s) / 2, W, H }
     }
     const capa = (im: HTMLImageElement) => {
       const c = document.createElement('canvas')
@@ -138,11 +144,11 @@ export function FondoPixelado() {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden lg:block">
-      <div className="absolute inset-0 bg-[url(/hero/mosaico-plaza.png)] bg-cover bg-right [mask-image:linear-gradient(90deg,transparent_18%,#000_48%)]">
+      <div className="absolute inset-0 bg-[url(/hero/mosaico-plaza.png)] bg-[length:1278px_auto] bg-center bg-no-repeat [mask-image:linear-gradient(90deg,transparent_calc(50%-460px),#000_calc(50%-30px))]">
         <canvas ref={lienzo} className="absolute inset-0 size-full opacity-0" />
       </div>
       {/* Velo: oscuro donde va el texto, abierto donde está la figura */}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_22_29/0.6)_30%,rgb(19_22_29/0.25)_52%,transparent_70%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_22_29/0.6)_calc(50%-290px),rgb(19_22_29/0.25)_calc(50%+30px),transparent_calc(50%+290px))]" />
     </div>
   )
 }
