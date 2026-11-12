@@ -6,6 +6,7 @@ import { aContinuacion, aMinutos, momentoMontevideo, type Dia } from '../../lib/
 import { telefonoParaLink } from '../../navegacion'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
 import { useRadio } from '../reproductor/Radio'
+import { FondoPixelado } from './FondoPixelado'
 
 const NOMBRE_DIA: Record<Dia, string> = {
   lun: 'Lun',
@@ -27,6 +28,8 @@ function avance(inicio: string, fin: string, minutos: number) {
 /**
  * Hero oscuro del Inicio (design/LEEME.md, sección 7): el programa al aire con su avance y "A
  * continuación". En el celular muestra dos programas y debajo la publicidad, que llega como `children`.
+ * En web lleva de fondo fotos de la ciudad en cuadritos (FondoPixelado) y "A continuación" va en una caja
+ * de vidrio esmerilado, que deja ver el fondo sin que la lista pierda lectura.
  */
 export function HeroEnVivo({ telefono, children }: { telefono: string; children?: React.ReactNode }) {
   const { alAire, grilla, excepciones, ahora } = useRadio()
@@ -43,7 +46,8 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
     .replace('.', '')
 
   return (
-    <section aria-label="En vivo" className="bg-tinta text-blanco">
+    <section aria-label="En vivo" className="relative isolate overflow-hidden bg-tinta text-blanco">
+      <FondoPixelado />
       <div className="contenedor flex flex-wrap gap-x-14 gap-y-6 pt-7 pb-7 md:pt-14 md:pb-16">
         <div className="flex min-w-0 flex-[999_1_540px] flex-col justify-center gap-3.5 md:gap-5">
           <span className="flex items-center gap-2 text-[11px] font-extrabold tracking-[0.12em] text-vivo-claro uppercase md:gap-2.5 md:text-[13px]">
@@ -91,7 +95,10 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
           </a>
         </div>
 
-        <div id="programacion" className="mt-2.5 flex min-w-0 flex-[1_1_380px] flex-col md:mt-0">
+        <div
+          id="programacion"
+          className="mt-2.5 flex min-w-0 flex-[1_1_380px] flex-col md:mt-0 lg:self-center lg:rounded-[16px] lg:bg-tinta/60 lg:px-6 lg:pt-[22px] lg:pb-2 lg:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12),0_24px_48px_-24px_rgb(0_0_0/0.6)] lg:backdrop-blur-[3px]"
+        >
           <div className="flex items-baseline justify-between border-b-[3px] border-blanco pb-2 md:pb-2.5">
             <h2 className="m-0 text-xs font-extrabold tracking-[0.1em] uppercase md:text-[13px]">
               A continuación
@@ -108,7 +115,7 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
               {siguientes.map((e, i) => (
                 <li
                   key={`${e.programa.id}-${e.fecha}-${e.inicio}`}
-                  className={`flex gap-3.5 border-b border-oscuro-linea py-3.5 md:gap-4 md:py-4 ${
+                  className={`flex gap-3.5 border-b border-oscuro-linea py-3.5 md:gap-4 md:py-4 lg:border-blanco/12 lg:last:border-b-0 ${
                     i > 0 ? 'md:opacity-80' : ''
                   } ${i > 1 ? 'max-md:hidden' : ''}`}
                 >
