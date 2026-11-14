@@ -16,7 +16,9 @@ import { useEffect, useRef } from 'react'
  * Sin JavaScript, o hasta que carga, se ve la primera como fondo fijo. Con "reducir movimiento" queda
  * fija la que salió al azar, y con la pestaña oculta no cambia.
  */
-const IMAGENES = ['/hero/mosaico-plaza.png', '/hero/mosaico-anglo.png']
+/** Si se cambia una imagen, va con otro nombre: así el navegador y Cloudflare no muestran la vieja. */
+const IMAGENES = ['/hero/plaza-4px.png', '/hero/anglo-4px.png']
+const TINTA = '#13161d'
 
 /** Lado del cuadrito dentro de la imagen (las imágenes están al doble: 6 px en pantalla). */
 const CELDA = 8
@@ -73,7 +75,13 @@ export function FondoPixelado() {
       const c = document.createElement('canvas')
       c.width = geo.W
       c.height = geo.H
-      c.getContext('2d')?.drawImage(im, geo.x, geo.y, im.width * geo.s, im.height * geo.s)
+      const cc = c.getContext('2d')
+      if (cc) {
+        // Fuera de la imagen va tinta, para que no asome el fondo de CSS de abajo
+        cc.fillStyle = TINTA
+        cc.fillRect(0, 0, geo.W, geo.H)
+        cc.drawImage(im, geo.x, geo.y, im.width * geo.s, im.height * geo.s)
+      }
       return c
     }
 
@@ -147,7 +155,7 @@ export function FondoPixelado() {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden lg:block">
-      <div className="absolute inset-0 bg-[url(/hero/mosaico-plaza.png)] bg-[length:min(177.5vw,2556px)_auto] bg-center bg-no-repeat [mask-image:linear-gradient(90deg,transparent_max(18%,calc(50%-460px)),#000_max(48%,calc(50%-30px)))]">
+      <div className="absolute inset-0 bg-[url(/hero/plaza-4px.png)] bg-[length:min(177.5vw,2556px)_auto] bg-center bg-no-repeat [mask-image:linear-gradient(90deg,transparent_max(18%,calc(50%-460px)),#000_max(48%,calc(50%-30px)))]">
         <canvas ref={lienzo} className="absolute inset-0 size-full opacity-0" />
       </div>
       {/* Velo: oscuro donde va el texto, abierto donde está la figura */}
