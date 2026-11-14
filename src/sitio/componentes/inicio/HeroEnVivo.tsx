@@ -28,8 +28,8 @@ function avance(inicio: string, fin: string, minutos: number) {
 /**
  * Hero oscuro del Inicio (design/LEEME.md, sección 7): el programa al aire con su avance y "A
  * continuación". En el celular muestra dos programas y debajo la publicidad, que llega como `children`.
- * En web lleva de fondo fotos de la ciudad en cuadritos (FondoPixelado) y "A continuación" va en una caja
- * de vidrio esmerilado, que deja ver el fondo sin que la lista pierda lectura.
+ * En web lleva de fondo fotos de la ciudad en cuadritos (FondoPixelado) y "A continuación" va en un
+ * panel oscuro recto con un filete naranja arriba, para que la lista se lea sobre la imagen.
  */
 export function HeroEnVivo({ telefono, children }: { telefono: string; children?: React.ReactNode }) {
   const { alAire, grilla, excepciones, ahora } = useRadio()
@@ -97,7 +97,7 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
 
         <div
           id="programacion"
-          className="mt-2.5 flex min-w-0 flex-[1_1_380px] flex-col md:mt-0 lg:self-center lg:rounded-[16px] lg:bg-tinta/60 lg:px-6 lg:pt-[22px] lg:pb-2 lg:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.12),0_24px_48px_-24px_rgb(0_0_0/0.6)] lg:backdrop-blur-[3px]"
+          className="mt-2.5 flex min-w-0 flex-[1_1_380px] flex-col md:mt-0 lg:self-center lg:bg-tinta/90 lg:px-6 lg:pt-[22px] lg:pb-2 lg:shadow-[inset_0_3px_0_var(--color-acento),0_24px_48px_-24px_rgb(0_0_0/0.6)]"
         >
           <div className="flex items-baseline justify-between border-b-[3px] border-blanco pb-2 md:pb-2.5">
             <h2 className="m-0 text-xs font-extrabold tracking-[0.1em] uppercase md:text-[13px]">

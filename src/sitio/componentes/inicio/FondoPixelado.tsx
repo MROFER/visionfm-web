@@ -3,14 +3,15 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Fondo del hero del Inicio en web (desde 1024 px): fotos de Fray Bentos pasadas a cuadritos de 6 px en
+ * Fondo del hero del Inicio en web (desde 1024 px): fotos de Fray Bentos pasadas a cuadritos de 4 px en
  * cuatro tonos del tinta, que se turnan cada 9 segundos. El cambio se hace cuadrito por cuadrito, en
  * orden al azar. Las imágenes ya vienen en cuadritos (public/hero), así que el navegador solo copia
  * pedazos de una sobre otra. Del lado del texto la foto se apaga para que el título se lea.
  *
- * Las imágenes se muestran a tamaño fijo (1278 × 285 en pantalla) y centradas con el contenido, sin
- * escalar: así la figura cae siempre entre el título y la lista, y el cuadrito mide 6 px en cualquier
- * ancho. Son más anchas que la pantalla y se apagan solas en los costados.
+ * La composición está pensada para 1440 px: hasta ese ancho la imagen se achica junto con la pantalla
+ * (se ve entera, con los cuadritos un poco más chicos), y en pantallas más anchas queda a 2556 × 568 y
+ * centrada, así la figura cae siempre entre el título y la lista. Las imágenes se apagan solas en los
+ * bordes, y el degradé del lado del texto acompaña el ancho.
  *
  * Sin JavaScript, o hasta que carga, se ve la primera como fondo fijo. Con "reducir movimiento" queda
  * fija la que salió al azar, y con la pestaña oculta no cambia.
@@ -18,9 +19,11 @@ import { useEffect, useRef } from 'react'
 const IMAGENES = ['/hero/mosaico-plaza.png', '/hero/mosaico-anglo.png']
 
 /** Lado del cuadrito dentro de la imagen (las imágenes están al doble: 6 px en pantalla). */
-const CELDA = 12
+const CELDA = 8
 /** Las imágenes están al doble del tamaño en pantalla. */
 const ESCALA = 0.5
+/** Ancho para el que está armada la composición. */
+const DISENO = 1440
 const PAUSA = 9000
 const DURACION = 1300
 
@@ -63,7 +66,7 @@ export function FondoPixelado() {
       canvas.height = Math.round(r.height * dpr)
       const W = canvas.width
       const H = canvas.height
-      const s = ESCALA * dpr
+      const s = ESCALA * dpr * Math.min(1, r.width / DISENO)
       return { s, x: (W - im.width * s) / 2, y: (H - im.height * s) / 2, W, H }
     }
     const capa = (im: HTMLImageElement) => {
@@ -144,11 +147,11 @@ export function FondoPixelado() {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden lg:block">
-      <div className="absolute inset-0 bg-[url(/hero/mosaico-plaza.png)] bg-[length:1278px_auto] bg-center bg-no-repeat [mask-image:linear-gradient(90deg,transparent_calc(50%-460px),#000_calc(50%-30px))]">
+      <div className="absolute inset-0 bg-[url(/hero/mosaico-plaza.png)] bg-[length:min(177.5vw,2556px)_auto] bg-center bg-no-repeat [mask-image:linear-gradient(90deg,transparent_max(18%,calc(50%-460px)),#000_max(48%,calc(50%-30px)))]">
         <canvas ref={lienzo} className="absolute inset-0 size-full opacity-0" />
       </div>
       {/* Velo: oscuro donde va el texto, abierto donde está la figura */}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_22_29/0.6)_calc(50%-290px),rgb(19_22_29/0.25)_calc(50%+30px),transparent_calc(50%+290px))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_22_29/0.6)_max(30%,calc(50%-290px)),rgb(19_22_29/0.25)_max(52%,calc(50%+30px)),transparent_max(70%,calc(50%+290px)))]" />
     </div>
   )
 }
