@@ -2,7 +2,13 @@
 // de arquitectura). Los links que el diseño dejaba apuntando a anclas del Inicio van a las páginas reales.
 
 export type Enlace = { etiqueta: string; href: string }
-export type GrupoMenu = { clave: 'radio' | 'noticias' | 'cinevision' | 'institucional'; etiqueta: string; enlaces: Enlace[] }
+export type GrupoMenu = {
+  clave: 'radio' | 'noticias' | 'cinevision' | 'institucional'
+  etiqueta: string
+  /** Página a la que lleva el clic en el nombre del grupo */
+  href: string
+  enlaces: Enlace[]
+}
 
 export type SeccionMenu = { nombre: string; slug: string }
 
@@ -11,6 +17,7 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
     {
       clave: 'radio',
       etiqueta: 'Radio',
+      href: '/radio/en-vivo',
       enlaces: [
         { etiqueta: 'En vivo', href: '/radio/en-vivo' },
         { etiqueta: 'Programación', href: '/radio/programacion' },
@@ -20,6 +27,7 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
     {
       clave: 'noticias',
       etiqueta: 'Noticias',
+      href: '/noticias',
       enlaces: [
         { etiqueta: 'Últimas noticias', href: '/noticias' },
         ...secciones.map((s) => ({ etiqueta: s.nombre, href: `/noticias/${s.slug}` })),
@@ -28,6 +36,7 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
     {
       clave: 'cinevision',
       etiqueta: 'Cinevisión',
+      href: '/cinevision',
       enlaces: [
         { etiqueta: 'Cartelera', href: '/cinevision#cartelera' },
         { etiqueta: 'Estrenos', href: '/cinevision#estrenos' },
@@ -38,6 +47,7 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
     {
       clave: 'institucional',
       etiqueta: 'Institucional',
+      href: '/institucional',
       enlaces: [
         { etiqueta: 'Quiénes somos', href: '/institucional#nosotros' },
         { etiqueta: 'Ser parte', href: '/institucional/sumarse' },

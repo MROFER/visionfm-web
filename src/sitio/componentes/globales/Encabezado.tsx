@@ -18,7 +18,8 @@ const LINEA =
 
 /**
  * Header del sitio (design/LEEME.md, sección 6). Desde 1024 px: menú con desplegables y botón
- * "Escuchar en vivo". Más angosto: logo y radio animados (CabeceraCelular), hamburguesa con grupos en
+ * "Escuchar en vivo". El desplegable se abre al pasar el mouse o con la flecha, y el nombre de cada grupo
+ * lleva a su página. Más angosto: logo y radio animados (CabeceraCelular), hamburguesa con grupos en
  * acordeón y, debajo, la cinta con la fecha, las destacadas y el clima.
  */
 export function Encabezado({
@@ -37,6 +38,7 @@ export function Encabezado({
   const [grupoAbierto, setGrupoAbierto] = useState<GrupoMenu['clave'] | null>(null)
   const [rutaAnterior, setRutaAnterior] = useState(ruta)
   const nav = useRef<HTMLElement>(null)
+  const cierre = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   // Al navegar se cierra todo
   if (ruta !== rutaAnterior) {
@@ -88,16 +90,40 @@ export function Encabezado({
           </Link>
           <nav ref={nav} aria-label="Principal" className="flex gap-7">
             {menu.map((g) => (
-              <div key={g.clave} className="relative">
-                <button
-                  type="button"
-                  aria-expanded={desplegado === g.clave}
-                  onClick={() => setDesplegado(desplegado === g.clave ? null : g.clave)}
-                  className={`flex min-h-12 cursor-pointer items-center gap-1.5 text-[13px] font-extrabold tracking-[0.08em] uppercase ${
+              <div
+                key={g.clave}
+                className="relative flex items-center"
+                // Con el mouse, el desplegable se abre al pasar por encima y se cierra al salir (con una pausa
+                // corta, para que no se cierre si el mouse se desvía un poco al bajar a la lista)
+                onPointerEnter={(e) => {
+                  if (e.pointerType !== 'mouse') return
+                  clearTimeout(cierre.current)
+                  setDesplegado(g.clave)
+                }}
+                onPointerLeave={(e) => {
+                  if (e.pointerType !== 'mouse') return
+                  clearTimeout(cierre.current)
+                  cierre.current = setTimeout(() => setDesplegado((d) => (d === g.clave ? null : d)), 150)
+                }}
+              >
+                {/* El nombre lleva a la página del grupo; la flecha abre la lista con el teclado o el dedo */}
+                <Link
+                  href={g.href}
+                  aria-current={ruta === g.href ? 'page' : undefined}
+                  className={`flex min-h-12 items-center text-[13px] font-extrabold tracking-[0.08em] uppercase no-underline ${
                     actual === g.clave ? 'shadow-[inset_0_-3px_0_var(--color-acento)]' : ''
                   }`}
                 >
-                  {g.etiqueta} <IconoFlechaAbajo />
+                  {g.etiqueta}
+                </Link>
+                <button
+                  type="button"
+                  aria-label={`Ver las opciones de ${g.etiqueta}`}
+                  aria-expanded={desplegado === g.clave}
+                  onClick={() => setDesplegado(desplegado === g.clave ? null : g.clave)}
+                  className="flex min-h-12 cursor-pointer items-center pl-1.5"
+                >
+                  <IconoFlechaAbajo />
                 </button>
                 {desplegado === g.clave && (
                   <div className="absolute top-full -left-[18px] z-30 flex min-w-[260px] flex-col border-2 border-tinta bg-blanco">
