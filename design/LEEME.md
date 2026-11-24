@@ -231,6 +231,12 @@ Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música 
 4. **Carrusel de Cinevisión:** flechas, toque en los negativos y deslizar con el dedo en mobile. Autoavance opcional, que se pausa al interactuar. Es infinito: después de la última sigue la primera, sin rebobinar. En el celular cada deslizada pasa una sola imagen y, por más rápido que se deslice, nunca se traba contra el final (8/11/2026).
 5. **Formularios:** validación, adjuntos con límite de tamaño ([X] MB a definir) y confirmación de envío.
 6. **Accesibilidad:** el HTML ya trae `aria-label`, `aria-expanded`, `aria-pressed` y `aria-current`. Mantenerlos y asegurar foco visible y navegación con teclado.
+7. **Movimiento del hero del Inicio (24/11/2026):** cada movimiento cuenta algo que pasa en la radio. Con "reducir movimiento" todo queda quieto.
+   - Mientras la radio suena, el cuadrito naranja de "Al aire" (hero y barra de arriba) se vuelve tres barritas que se mueven.
+   - Al dar play, cuando el audio arranca, sale del botón del hero una onda de cuadritos naranja que recorre la foto y se apaga en menos de dos segundos. Pasa una vez por play: una reconexión sola no la dispara.
+   - Cuando empieza otro programa, el nombre y el horario nuevos suben en el lugar de los viejos, la barra de avance se completa y arranca de cero, y "A continuación" corre un lugar.
+   - Los botones de la radio se achican un poco al apretarlos, y el ícono y el texto cambian con un fundido sin que el botón cambie de ancho.
+   - No van: texto que entra animado al abrir la página, efectos al hacer scroll, cuadritos que titilan todo el tiempo, barritas que sigan la música de verdad ni video de fondo.
 
 ---
 

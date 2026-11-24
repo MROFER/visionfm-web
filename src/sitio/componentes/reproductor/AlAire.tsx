@@ -1,16 +1,24 @@
 'use client'
 
+import { Rueda } from '../ui/Rueda'
 import { useRadio } from './Radio'
 
-/** "Programa · Conducción" del programa que suena ahora. Sin programa cargado a esta hora, la radio. */
-export function AlAireTexto({ conConduccion = true }: { conConduccion?: boolean }) {
+/**
+ * "Programa · Conducción" del programa que suena ahora. Sin programa cargado a esta hora, la radio. Con
+ * `rodar`, cuando empieza otro programa el nombre nuevo sube en el lugar del viejo (barra de arriba).
+ */
+export function AlAireTexto({
+  conConduccion = true,
+  rodar = false,
+}: {
+  conConduccion?: boolean
+  rodar?: boolean
+}) {
   const { alAire } = useRadio()
-  if (!alAire) return <>Visión 96.5 FM</>
-  const { nombre, conduccion } = alAire.programa
-  return (
-    <>
-      {nombre}
-      {conConduccion && conduccion ? ` · ${conduccion}` : ''}
-    </>
-  )
+  const texto = !alAire
+    ? 'Visión 96.5 FM'
+    : conConduccion && alAire.programa.conduccion
+      ? `${alAire.programa.nombre} · ${alAire.programa.conduccion}`
+      : alAire.programa.nombre
+  return rodar ? <Rueda texto={texto} /> : <>{texto}</>
 }

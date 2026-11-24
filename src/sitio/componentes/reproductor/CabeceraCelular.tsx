@@ -29,7 +29,7 @@ export function CabeceraCelular() {
           onClick={alternar}
           aria-label={activo ? 'Pausar la radio en vivo' : 'Escuchar la radio en vivo'}
           aria-pressed={activo}
-          className={`flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-acento text-blanco hover:bg-acento-hover ${
+          className={`apretable flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-acento text-blanco hover:bg-acento-hover ${
             cargando ? 'motion-safe:animate-pulse' : ''
           }`}
         >
