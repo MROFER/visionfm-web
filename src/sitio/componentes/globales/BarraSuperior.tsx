@@ -1,5 +1,6 @@
 import { telefonoParaLink } from '../../navegacion'
 import { AlAireTexto } from '../reproductor/AlAire'
+import { IndicadorAlAire } from '../reproductor/IndicadorAlAire'
 import type { Clima } from '../../datos/clima'
 import { Cinta, type NotaCinta } from './Cinta'
 
@@ -19,10 +20,10 @@ export function BarraSuperior({
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2">
           <span className="flex items-center gap-2">
-            <span aria-hidden className="size-2 bg-vivo" />
+            <IndicadorAlAire className="size-2" />
             <span className="text-[11px] font-extrabold tracking-[0.1em] text-vivo-claro uppercase">Al aire</span>
             <span className="font-semibold">
-              <AlAireTexto />
+              <AlAireTexto rodar />
             </span>
           </span>
           <a href={`tel:${telefonoParaLink(telefono)}`} className="text-oscuro-1 no-underline">

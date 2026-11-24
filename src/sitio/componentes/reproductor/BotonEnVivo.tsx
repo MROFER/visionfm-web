@@ -3,10 +3,46 @@
 import { IconoCargando, IconoPausa, IconoPlay } from '../ui/iconos'
 import { useRadio } from './Radio'
 
+const TEXTOS = ['Escuchar en vivo', 'Conectando…', 'Reconectando…', 'Pausar'] as const
+
+/**
+ * Los textos de todos los estados, uno encima del otro (estilos.css, .pila): el botón mide lo que el más
+ * largo y no cambia de ancho al pasar de uno a otro. Los que no se ven quedan fuera del nombre del botón.
+ */
+function Textos({ texto }: { texto: string }) {
+  return (
+    <span className="pila pila-texto">
+      {TEXTOS.map((t) => (
+        <span key={t} data-activo={t === texto || undefined} aria-hidden={t !== texto || undefined}>
+          {t}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+/** Íconos de cada estado, uno encima del otro: el cambio es un fundido corto, sin saltos. */
+function Iconos({ estado, tamano }: { estado: 'play' | 'cargando' | 'pausa'; tamano?: number }) {
+  return (
+    <span aria-hidden className="pila">
+      <span data-activo={estado === 'play' || undefined}>
+        <IconoPlay tamano={tamano} />
+      </span>
+      <span data-activo={estado === 'cargando' || undefined}>
+        <IconoCargando tamano={tamano} className={estado === 'cargando' ? '' : 'pausada'} />
+      </span>
+      <span data-activo={estado === 'pausa' || undefined}>
+        <IconoPausa tamano={tamano} />
+      </span>
+    </span>
+  )
+}
+
 /**
  * "Escuchar en vivo" ↔ "Conectando…" ↔ "Pausar". Todos los botones del sitio controlan el mismo audio.
  * Mientras conecta se ve una ruedita: sin ella, el toque parece no haber hecho nada. Tocar de nuevo
- * corta la conexión. `compacto` es el del header en web, más bajo para que la barra mida 64 px.
+ * corta la conexión. Al apretarlos se achican un poco (.apretable). `compacto` es el del header en web,
+ * más bajo para que la barra mida 64 px.
  */
 export function BotonEnVivo({
   variante,
@@ -24,6 +60,7 @@ export function BotonEnVivo({
       : sonando
         ? 'Pausar'
         : 'Escuchar en vivo'
+  const estado = cargando ? 'cargando' : sonando ? 'pausa' : 'play'
 
   if (variante === 'redondo') {
     return (
@@ -33,9 +70,9 @@ export function BotonEnVivo({
         aria-label={activo ? 'Pausar la radio en vivo' : 'Escuchar la radio en vivo'}
         aria-pressed={activo}
         aria-busy={cargando}
-        className="relative flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-acento text-blanco hover:bg-acento-hover"
+        className="apretable relative flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-acento text-blanco hover:bg-acento-hover"
       >
-        {cargando ? <IconoCargando /> : sonando ? <IconoPausa /> : <IconoPlay />}
+        <Iconos estado={estado} />
         {sonando && !cargando && (
           <span className="absolute top-0 right-0 size-3 rounded-full border-2 border-blanco bg-vivo" />
         )}
@@ -50,16 +87,10 @@ export function BotonEnVivo({
         onClick={alternar}
         aria-pressed={activo}
         aria-busy={cargando}
-        className="flex min-h-[60px] cursor-pointer items-center justify-center gap-3 bg-acento px-7 text-sm font-extrabold tracking-[0.1em] text-blanco uppercase hover:bg-acento-hover md:min-h-16 md:justify-start md:gap-3.5 md:pl-[22px] md:text-[15px]"
+        className="apretable flex min-h-[60px] cursor-pointer items-center justify-center gap-3 bg-acento px-7 text-sm font-extrabold tracking-[0.1em] text-blanco uppercase hover:bg-acento-hover md:min-h-16 md:justify-start md:gap-3.5 md:pl-[22px] md:text-[15px]"
       >
-        {cargando ? (
-          <IconoCargando tamano={22} />
-        ) : sonando ? (
-          <IconoPausa tamano={22} />
-        ) : (
-          <IconoPlay tamano={22} />
-        )}
-        {texto}
+        <Iconos estado={estado} tamano={22} />
+        <Textos texto={texto} />
       </button>
     )
   }
@@ -70,12 +101,19 @@ export function BotonEnVivo({
       onClick={alternar}
       aria-pressed={activo}
       aria-busy={cargando}
-      className={`etiqueta flex cursor-pointer items-center gap-2.5 bg-acento text-blanco hover:bg-acento-hover ${
+      className={`etiqueta apretable flex cursor-pointer items-center gap-2.5 bg-acento text-blanco hover:bg-acento-hover ${
         compacto ? 'min-h-10 px-[15px] text-[10px]' : 'min-h-12 px-[18px]'
       }`}
     >
-      {cargando ? <IconoCargando tamano={12} /> : <span aria-hidden className="size-2 bg-blanco" />}
-      {texto}
+      <span aria-hidden className="pila size-3">
+        <span data-activo={!cargando || undefined}>
+          <span className="size-2 bg-blanco" />
+        </span>
+        <span data-activo={cargando || undefined}>
+          <IconoCargando tamano={12} className={cargando ? '' : 'pausada'} />
+        </span>
+      </span>
+      <Textos texto={texto} />
     </button>
   )
 }

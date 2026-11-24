@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { CinevisionInicio } from '@/sitio/componentes/inicio/CinevisionInicio'
 import { EntrevistasInicio } from '@/sitio/componentes/inicio/EntrevistasInicio'
 import { HeroEnVivo } from '@/sitio/componentes/inicio/HeroEnVivo'
@@ -13,6 +15,14 @@ import {
   ultimasNoticias,
 } from '@/sitio/datos'
 import { hoyEnMontevideo } from '@/sitio/lib/fecha'
+
+// Lo que muestra Google del Inicio y la pestaña del navegador. Las vistas previas al compartir toman lo
+// mismo. El título va entero: no lleva el " · Visión 96.5 FM" de las demás páginas.
+export const metadata: Metadata = {
+  title: { absolute: 'Visión 96.5 FM · La radio de Fray Bentos, en vivo' },
+  description:
+    'Escuchá Visión 96.5 FM en vivo desde Fray Bentos. Noticias de Fray Bentos y Río Negro, la programación de la radio y la cartelera de Cinevisión.',
+}
 
 // Inicio (design/LEEME.md, sección 7): hero en vivo, publicidad, noticias, Cinevisión, entrevistas y Participá,
 // con una publicidad entre cada bloque (docs/07-permisos-y-publicidad.md, sección 3)

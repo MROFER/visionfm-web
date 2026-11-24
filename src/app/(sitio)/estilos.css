@@ -246,3 +246,180 @@
     animation: none;
   }
 }
+
+/*
+ * Movimiento del hero y de los botones de la radio. Cada movimiento cuenta algo que pasa en la radio, se
+ * hace solo con transform y opacity y, con "reducir movimiento", queda quieto.
+ */
+
+/* "Al aire": el cuadrito naranja se vuelve tres barritas mientras la radio suena en la página */
+.indicador-al-aire {
+  position: relative;
+  display: inline-block;
+  flex: none;
+}
+.indicador-al-aire::before,
+.indicador-al-aire > span {
+  position: absolute;
+  background: var(--color-vivo);
+  transition: opacity 160ms ease;
+}
+.indicador-al-aire::before {
+  content: '';
+  inset: 0;
+}
+.indicador-al-aire > span {
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transform: scaleY(0.4);
+}
+.indicador-al-aire > span:nth-child(1) {
+  left: 0;
+}
+.indicador-al-aire > span:nth-child(2) {
+  left: calc(50% - 1px);
+}
+.indicador-al-aire > span:nth-child(3) {
+  right: 0;
+}
+.indicador-al-aire[data-sonando]::before {
+  opacity: 0;
+}
+.indicador-al-aire[data-sonando] > span {
+  opacity: 1;
+  animation: barritas 0.9s ease-in-out infinite alternate;
+}
+.indicador-al-aire[data-sonando] > span:nth-child(2) {
+  animation-duration: 0.62s;
+  animation-delay: -0.3s;
+}
+.indicador-al-aire[data-sonando] > span:nth-child(3) {
+  animation-duration: 0.78s;
+  animation-delay: -0.55s;
+}
+@keyframes barritas {
+  0% {
+    transform: scaleY(0.3);
+  }
+  35% {
+    transform: scaleY(1);
+  }
+  65% {
+    transform: scaleY(0.5);
+  }
+  100% {
+    transform: scaleY(0.85);
+  }
+}
+
+/* Cambio de programa (Rueda): el texto viejo sube y se apaga, y el nuevo entra desde abajo */
+.rueda {
+  position: relative;
+  display: inline-block;
+}
+.rueda > span {
+  display: inline-block;
+}
+.rueda-bloque,
+.rueda-bloque > span {
+  display: block;
+}
+.rueda-sale {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: rueda-sale 260ms ease-in forwards;
+}
+.rueda-bloque > .rueda-sale {
+  right: 0;
+  white-space: normal;
+}
+.rueda-entra {
+  animation: rueda-entra 520ms cubic-bezier(0.23, 1, 0.32, 1) 150ms both;
+}
+@keyframes rueda-sale {
+  to {
+    opacity: 0;
+    transform: translateY(-0.45em);
+  }
+}
+@keyframes rueda-entra {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em);
+  }
+}
+
+/* Botones de la radio y del hero: al apretar se achican un poco */
+.apretable {
+  transition:
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.apretable:active {
+  transform: scale(0.97);
+}
+
+/* Íconos y textos de cada estado del botón de la radio, uno encima del otro: se ve el del estado actual,
+   el cambio es un fundido corto y el botón no cambia de ancho */
+.pila {
+  display: inline-grid;
+  flex: none;
+}
+.pila > * {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 180ms cubic-bezier(0.23, 1, 0.32, 1),
+    filter 180ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.pila > :not([data-activo]) {
+  opacity: 0;
+  filter: blur(3px);
+  transform: scale(0.85);
+}
+.pila-texto > * {
+  display: block;
+  text-align: left;
+}
+.pila-texto > :not([data-activo]) {
+  transform: none;
+}
+/* La ruedita de "Conectando…" no gira mientras no se ve */
+.pila .pausada {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicador-al-aire[data-sonando] > span {
+    animation: none;
+    transform: scaleY(0.6);
+  }
+  .indicador-al-aire[data-sonando] > span:nth-child(2) {
+    transform: none;
+  }
+  .indicador-al-aire[data-sonando] > span:nth-child(3) {
+    transform: scaleY(0.45);
+  }
+  .rueda-sale {
+    display: none;
+  }
+  .rueda-entra {
+    animation: none;
+  }
+  .pila > * {
+    transition: none;
+  }
+  .apretable:active {
+    transform: none;
+  }
+}
