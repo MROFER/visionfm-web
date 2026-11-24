@@ -59,7 +59,8 @@ function Avance({ programa, valor }: { programa: string; valor: number }) {
  * panel oscuro recto con un filete naranja arriba, para que la lista se lea sobre la imagen.
  *
  * Cuando empieza otro programa con la página abierta, el nombre y el horario nuevos suben en el lugar de
- * los viejos (Rueda), la barra de avance arranca de cero y "A continuación" corre un lugar.
+ * los viejos (Rueda), la barra de avance arranca de cero y "A continuación" corre un lugar. En web, el
+ * panel de "A continuación" flota sobre la foto (estilos.css, .flotante).
  */
 export function HeroEnVivo({ telefono, children }: { telefono: string; children?: React.ReactNode }) {
   const { alAire, grilla, excepciones, ahora } = useRadio()
@@ -128,7 +129,7 @@ export function HeroEnVivo({ telefono, children }: { telefono: string; children?
 
         <div
           id="programacion"
-          className="mt-2.5 flex min-w-0 flex-[1_1_380px] flex-col md:mt-0 lg:self-center lg:bg-tinta/90 lg:px-6 lg:pt-[22px] lg:pb-2 lg:shadow-[inset_0_3px_0_var(--color-acento),0_24px_48px_-24px_rgb(0_0_0/0.6)]"
+          className="flotante mt-2.5 flex min-w-0 flex-[1_1_380px] flex-col md:mt-0 lg:relative lg:self-center lg:bg-tinta/90 lg:px-6 lg:pt-[22px] lg:pb-2 lg:shadow-[inset_0_3px_0_var(--color-acento)]"
         >
           <div className="flex items-baseline justify-between border-b-[3px] border-blanco pb-2 md:pb-2.5">
             <h2 className="m-0 text-xs font-extrabold tracking-[0.1em] uppercase md:text-[13px]">

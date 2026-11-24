@@ -423,3 +423,38 @@
     transform: none;
   }
 }
+
+/*
+ * "A continuación" en web flota sobre la foto: sube y baja unos píxeles, muy despacio. La sombra se queda
+ * abajo y se aclara un poco cuando el panel sube, así se nota que levita. Con "reducir movimiento" queda
+ * quieto, con la sombra de siempre.
+ */
+@media (min-width: 1024px) {
+  .flotante::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.6);
+  }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .flotante {
+    animation: flotar 7s ease-in-out infinite;
+  }
+  .flotante::after {
+    animation: flotar-sombra 7s ease-in-out infinite;
+  }
+}
+@keyframes flotar {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes flotar-sombra {
+  50% {
+    transform: translateY(6px) scaleX(0.96);
+    opacity: 0.7;
+  }
+}

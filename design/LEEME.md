@@ -236,6 +236,7 @@ Los botones de Ser parte ("Quiero sumarme →"), Tu música ("Enviar mi música 
    - Al dar play, cuando el audio arranca, sale del botón del hero una onda de cuadritos naranja que recorre la foto y se apaga en menos de dos segundos. Pasa una vez por play: una reconexión sola no la dispara.
    - Cuando empieza otro programa, el nombre y el horario nuevos suben en el lugar de los viejos, la barra de avance se completa y arranca de cero, y "A continuación" corre un lugar.
    - Los botones de la radio se achican un poco al apretarlos, y el ícono y el texto cambian con un fundido sin que el botón cambie de ancho.
+   - En web, el panel de "A continuación" flota sobre la foto: sube y baja 6 px muy despacio (una vuelta cada 7 segundos) y la sombra se queda abajo, un poco más clara cuando el panel sube. Es el único movimiento que no cuenta algo de la radio: está para que el panel se sienta liviano sobre la foto. En el celular y la tablet queda quieto.
    - No van: texto que entra animado al abrir la página, efectos al hacer scroll, cuadritos que titilan todo el tiempo, barritas que sigan la música de verdad ni video de fondo.
 
 ---
