@@ -91,7 +91,18 @@ function correr(ol: HTMLOListElement, antes: Map<string, Lugar>, ahora: Map<stri
  * lugar y "Más tarde" pasa a "Después". En el celular se ven los dos primeros. Con "reducir movimiento"
  * cambia sin animación.
  */
-export function ListaSiguientes({ siguientes, hoy }: { siguientes: Emision<ProgramaGrilla>[]; hoy: Dia }) {
+export function ListaSiguientes({
+  siguientes: proximos,
+  hoy,
+  alAire,
+}: {
+  siguientes: Emision<ProgramaGrilla>[]
+  hoy: Dia
+  /** Si viene, la lista arranca con el programa al aire: "Al aire", "Después" y "Más tarde" (Inicio). */
+  alAire?: Emision<ProgramaGrilla> | null
+}) {
+  const siguientes = alAire ? [alAire, ...proximos] : proximos
+  const etiquetas = alAire ? ['Al aire', 'Después'] : ['Después']
   const lista = useRef<HTMLOListElement>(null)
   /** Dónde estaba cada programa la última vez que se midió. */
   const lugares = useRef(new Map<string, Lugar>())
@@ -143,7 +154,7 @@ export function ListaSiguientes({ siguientes, hoy }: { siguientes: Emision<Progr
               {e.inicio}
             </span>
             <span className="text-[10px] font-extrabold tracking-[0.1em] text-vivo-claro uppercase md:text-[11px]">
-              <Rueda texto={i === 0 ? 'Después' : 'Más tarde'} />
+              <Rueda texto={etiquetas[i] ?? 'Más tarde'} />
             </span>
           </span>
           <span className="flex flex-col gap-0.5">

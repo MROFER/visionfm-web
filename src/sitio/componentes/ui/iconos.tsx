@@ -15,6 +15,13 @@ export const IconoPlay = ({ tamano = 16, className }: Props) => (
   </svg>
 )
 
+/** Play con las puntas apenas redondeadas: botón del header y hero del Inicio. */
+export const IconoPlayRedondo = ({ tamano = 16, className }: Props) => (
+  <svg {...base(tamano)} className={className} fill="currentColor" stroke="currentColor" strokeWidth={2.6} strokeLinejoin="round">
+    <path d="M8.2 5.6 18.6 12 8.2 18.4Z" />
+  </svg>
+)
+
 export const IconoPausa = ({ tamano = 16, className }: Props) => (
   <svg {...base(tamano)} className={className} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round">
     <line x1="8" y1="5" x2="8" y2="19" />
