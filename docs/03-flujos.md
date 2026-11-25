@@ -1,4 +1,4 @@
-# Flujos de la app · Visión 96.5 FM
+# Flujos de la app · Visión FM 96.5
 
 Recorridos paso a paso del sitio público y del panel. Las pantallas son las del diseño de Labs Fray Bentos; las rutas, las de la arquitectura.
 
@@ -182,7 +182,7 @@ borrador ──Enviar a revisión──▶ en revisión ──Aprobar y publicar
 
 | Estado | Dónde | Comportamiento |
 |---|---|---|
-| Sin programa al aire | Barra superior, hero | "Visión 96.5 FM · Música" con el botón en vivo igual |
+| Sin programa al aire | Barra superior, hero | "Visión FM 96.5 · Música" con el botón en vivo igual |
 | Conectando / error del stream | Todos los botones de play | Ver F1 |
 | Listado vacío | Noticias por sección, entrevistas, cartelera | Texto corto y link a otra sección con contenido |
 | Imagen faltante | Tarjetas y afiches | Caja `placeholder` con el logo, sin romper el diseño |

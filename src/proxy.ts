@@ -53,7 +53,7 @@ async function tablaActual(request: NextRequest) {
   return tabla ?? {}
 }
 
-const ELIMINADA = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Página eliminada · Visión 96.5 FM</title></head><body style="font-family:system-ui,sans-serif;max-width:32rem;margin:4rem auto;padding:0 1rem"><h1>Esta página ya no existe</h1><p>Se eliminó del sitio y no va a volver.</p><p><a href="/">Ir a la portada de Visión 96.5 FM</a></p></body></html>`
+const ELIMINADA = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Página eliminada · Visión FM 96.5</title></head><body style="font-family:system-ui,sans-serif;max-width:32rem;margin:4rem auto;padding:0 1rem"><h1>Esta página ya no existe</h1><p>Se eliminó del sitio y no va a volver.</p><p><a href="/">Ir a la portada de Visión FM 96.5</a></p></body></html>`
 
 // Next exige una Location absoluta. Detrás del túnel de Cloudflare el servidor ve http: el protocolo
 // sale de X-Forwarded-Proto, si no el navegador saltaría a http:// para volver a https://

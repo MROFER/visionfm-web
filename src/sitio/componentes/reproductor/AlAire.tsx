@@ -16,7 +16,7 @@ export function AlAireTexto({
 }) {
   const { alAire } = useRadio()
   const texto = !alAire
-    ? 'Visión 96.5 FM'
+    ? 'Visión FM 96.5'
     : conConduccion && alAire.programa.conduccion
       ? `${alAire.programa.nombre} · ${alAire.programa.conduccion}`
       : alAire.programa.nombre

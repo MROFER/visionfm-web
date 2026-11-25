@@ -93,7 +93,7 @@ export function Pie({ ajustes, secciones }: { ajustes: AjustesSitio; secciones: 
         </div>
         <div className="flex flex-col items-center gap-1 border-t border-oscuro-linea pt-4 text-center text-[13px] text-oscuro-2 lg:flex-row lg:justify-between lg:gap-6 lg:pt-5 lg:text-left">
           <span className="max-lg:order-2">
-            © {anio} Visión 96.5 FM. Todos los derechos reservados.
+            © {anio} Visión FM 96.5. Todos los derechos reservados.
           </span>
           <div className="contents lg:flex lg:items-center lg:gap-5">
             <nav

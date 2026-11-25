@@ -1,6 +1,6 @@
-# Visión 96.5 FM — Rediseño del sitio web (web y mobile)
+# Visión FM 96.5 — Rediseño del sitio web (web y mobile)
 
-Propuesta de diseño de **Labs Fray Bentos** para Visión 96.5 FM (Fray Bentos, Río Negro, Uruguay) — sitio actual: https://visionfm.com.uy/
+Propuesta de diseño de **Labs Fray Bentos** para Visión FM 96.5 (Fray Bentos, Río Negro, Uruguay) — sitio actual: https://visionfm.com.uy/
 
 Este paquete es la entrega de diseño para desarrollo. Está pensado para que una IA o un desarrollador implemente el sitio sin tener que adivinar. Leé este archivo completo antes de empezar.
 
@@ -10,7 +10,7 @@ Este paquete es la entrega de diseño para desarrollo. Está pensado para que un
 
 Un medio local con **tres partes que conviven en el mismo edificio**:
 
-1. **La radio** (96.5 FM): transmisión en vivo, programación, conductores, entrevistas.
+1. **La radio** (FM 96.5): transmisión en vivo, programación, conductores, entrevistas.
 2. **La redacción de noticias**: portal de noticias locales con secciones.
 3. **Cinevisión**: el cine de Fray Bentos (cartelera, estrenos, funciones, entradas).
 
@@ -93,6 +93,7 @@ Son HTML con una pequeña capa de plantilla:
 - **Libre Franklin** (500–800): titulares, nombres de programas, títulos de sección.
 - **Public Sans** (400–800): cuerpo, UI, botones, etiquetas.
 - **Newsreader** (700): **solo el logotipo "Visión"**.
+- **El nombre se escribe "Visión FM 96.5"**: primero FM y después la frecuencia, también en el logo y en los datos para Google. "96.5 FM" era un error del logo original. El logo va siempre apilado, "Visión" y debajo "FM 96.5" terminando en el borde de la N: en el header, el footer, la imagen para compartir, la pantalla de ingreso del panel y la página de error. Las páginas de Radio quedan como estaban (25/11/2026).
 - Etiquetas, botones y kickers: MAYÚSCULAS, peso 800, `letter-spacing` 0.08–0.14em, 11–14 px.
 
 ### Formas y layout
@@ -141,7 +142,7 @@ En web cada grupo es un desplegable. El grupo de la sección actual va subrayado
 
 ### Web
 - **Barra superior oscura:** fecha del día · "■ AL AIRE {programa} · {conductor}" · "Llamá a la radio: 099 318 578" (link `tel:`).
-- **Header:** logotipo "Visión 96.5 FM" (link al Inicio) · menú con desplegables · botón **"■ Escuchar en vivo"** (pasa a "Pausar" mientras suena). Línea inferior de 3 px.
+- **Header:** logotipo "Visión FM 96.5" (link al Inicio) · menú con desplegables · botón **"■ Escuchar en vivo"** (pasa a "Pausar" mientras suena). Línea inferior de 3 px.
 - **Footer oscuro:** marca + descripción · columnas La radio / Cinevisión / Noticias / Institucional (con ciudad e íconos de Instagram, Facebook y WhatsApp) · fila legal: © a la izquierda; Aviso legal · Privacidad · Cookies · Condiciones de uso · Publicidad · "Desarrollado por Labs Fray Bentos" a la derecha.
 
 ### Mobile

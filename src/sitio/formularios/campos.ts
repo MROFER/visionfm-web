@@ -32,7 +32,7 @@ export const AREAS_SUMARSE: Opcion[] = [
 export const AUTORIZACION: Opcion[] = [{ valor: 'si', nombre: 'Sí' }]
 
 export const DONDE_ANUNCIAR: (Opcion & { detalle: string })[] = [
-  { valor: 'radio', nombre: 'Radio', detalle: 'Spots, menciones y auspicio de programas en el 96.5 FM.' },
+  { valor: 'radio', nombre: 'Radio', detalle: 'Spots, menciones y auspicio de programas en la FM 96.5.' },
   { valor: 'web', nombre: 'Web', detalle: 'Banner rotativo en todas las páginas del sitio.' },
   { valor: 'cine', nombre: 'Cine', detalle: 'Tu aviso en la página de la cartelera de Cinevisión.' },
 ]

@@ -355,17 +355,17 @@ export function Radio({
 
   // Pantalla bloqueada, auriculares y centro de control (Media Session)
   const titulo =
-    pista?.tipo === 'entrevista' ? pista.titulo : (programa?.programa.nombre ?? 'Visión 96.5 FM')
+    pista?.tipo === 'entrevista' ? pista.titulo : (programa?.programa.nombre ?? 'Visión FM 96.5')
   const artista =
     pista?.tipo === 'entrevista'
-      ? 'Entrevista · Visión 96.5 FM'
-      : programa?.programa.conduccion || 'En vivo · 96.5 FM'
+      ? 'Entrevista · Visión FM 96.5'
+      : programa?.programa.conduccion || 'En vivo · FM 96.5'
   useEffect(() => {
     if (!pista || !('mediaSession' in navigator) || typeof MediaMetadata === 'undefined') return
     navigator.mediaSession.metadata = new MediaMetadata({
       title: titulo,
       artist: artista,
-      album: 'Visión 96.5 FM',
+      album: 'Visión FM 96.5',
       artwork: PORTADA,
     })
   }, [pista, titulo, artista])

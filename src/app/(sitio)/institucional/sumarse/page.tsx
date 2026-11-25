@@ -7,7 +7,7 @@ import { AREAS_SUMARSE } from '@/sitio/formularios/campos'
 
 export const metadata: Metadata = {
   title: 'Quiero sumarme',
-  description: 'Columnas, conducción, producción, pasantías y propuestas de programas: sumate a Visión 96.5 FM.',
+  description: 'Columnas, conducción, producción, pasantías y propuestas de programas: sumate a Visión FM 96.5.',
 }
 
 // Quiero sumarme (design/LEEME.md, sección 7)

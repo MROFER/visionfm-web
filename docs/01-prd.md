@@ -1,6 +1,6 @@
-# PRD · Nuevo sitio de Visión 96.5 FM
+# PRD · Nuevo sitio de Visión FM 96.5
 
-**Cliente:** Visión 96.5 FM, Fray Bentos (Río Negro, Uruguay) · **Sitio:** visionfm.com.uy
+**Cliente:** Visión FM 96.5, Fray Bentos (Río Negro, Uruguay) · **Sitio:** visionfm.com.uy
 **Diseño:** Labs Fray Bentos (`design/` en el repo)
 **Estado:** borrador para revisión · 2026-10-14
 

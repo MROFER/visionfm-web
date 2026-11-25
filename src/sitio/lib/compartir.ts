@@ -12,12 +12,12 @@ const IMAGEN_DEL_SITIO = {
   url: '/marca/compartir.png',
   width: 1200,
   height: 630,
-  alt: 'Visión 96.5 FM',
+  alt: 'Visión FM 96.5',
 }
 
 /** Lo que va en cada vista previa. Next no suma el openGraph del layout al de la página: lo reemplaza. */
 export const OPEN_GRAPH: OpenGraph = {
-  siteName: 'Visión 96.5 FM',
+  siteName: 'Visión FM 96.5',
   locale: 'es_UY',
   type: 'website',
   images: [IMAGEN_DEL_SITIO],

@@ -191,7 +191,7 @@ test('la pantalla bloqueada muestra la radio y deja pausar', async ({ page }) =>
     portada: navigator.mediaSession.metadata?.artwork[0]?.src,
     estado: navigator.mediaSession.playbackState,
   }))
-  expect(sesion).toMatchObject({ album: 'Visión 96.5 FM', estado: 'playing' })
+  expect(sesion).toMatchObject({ album: 'Visión FM 96.5', estado: 'playing' })
   expect(sesion.portada).toContain('/marca/icono-512.png')
 
   await page.getByRole('button', { name: 'Pausar' }).first().click()

@@ -1,4 +1,4 @@
-# Documentación · Visión 96.5 FM
+# Documentación · Visión FM 96.5
 
 | Documento | Qué responde |
 |---|---|

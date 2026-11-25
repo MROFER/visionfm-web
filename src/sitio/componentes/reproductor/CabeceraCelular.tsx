@@ -19,7 +19,7 @@ export function CabeceraCelular() {
 
   return (
     <div className="cabecera-celular" data-activo={activo || undefined}>
-      <Link href="/" className="cabecera-logo text-tinta" aria-label="Visión 96.5 FM, ir al inicio">
+      <Link href="/" className="cabecera-logo text-tinta" aria-label="Visión FM 96.5, ir al inicio">
         <LogoApilado className="cabecera-logo-entero block" />
         <LogoCompacto className="cabecera-logo-compacto" />
       </Link>
@@ -51,7 +51,7 @@ export function CabeceraCelular() {
                     aria-hidden
                     className="size-1.5 shrink-0 bg-vivo motion-safe:animate-pulse"
                   />
-                  {reconectando ? 'Reconectando…' : cargando ? 'Conectando…' : 'Al aire · 96.5 FM'}
+                  {reconectando ? 'Reconectando…' : cargando ? 'Conectando…' : 'Al aire · FM 96.5'}
                 </span>
                 <span className="block h-[18px] truncate text-sm leading-[18px] font-bold">
                   <AlAireTexto conConduccion={false} />

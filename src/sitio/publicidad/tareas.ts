@@ -112,8 +112,8 @@ export async function enviarReportesMensuales(payload: Payload, hoy = new Date()
     try {
       await payload.sendEmail({
         to: [...emails].join(', '),
-        subject: `Reporte de publicidad de ${mes.nombre} · Visión 96.5 FM`,
-        text: `Hola. Te mandamos adjunto el reporte de impresiones y clics de tus anuncios en ${mes.nombre}.\n\nVisión 96.5 FM`,
+        subject: `Reporte de publicidad de ${mes.nombre} · Visión FM 96.5`,
+        text: `Hola. Te mandamos adjunto el reporte de impresiones y clics de tus anuncios en ${mes.nombre}.\n\nVisión FM 96.5`,
         attachments: [
           {
             filename: `reporte-${mes.clave}.pdf`,

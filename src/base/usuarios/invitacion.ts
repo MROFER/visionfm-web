@@ -35,11 +35,11 @@ export async function enviarInvitacion(payload: Payload, usuario: { id: number |
   const link = `${sitio()}/admin/reset/${token}`
   await payload.sendEmail({
     to: usuario.email,
-    subject: 'Te invitaron al panel de Visión 96.5 FM',
+    subject: 'Te invitaron al panel de Visión FM 96.5',
     text: [
       `Hola${usuario.nombre ? ` ${usuario.nombre}` : ''}:`,
       '',
-      'Te crearon un usuario en el panel de Visión 96.5 FM. Para entrar, elegí tu contraseña en este link (vale 48 horas):',
+      'Te crearon un usuario en el panel de Visión FM 96.5. Para entrar, elegí tu contraseña en este link (vale 48 horas):',
       link,
       '',
       'La contraseña tiene que tener al menos 12 caracteres. Si el link venció, pedí que te reenvíen la invitación.',

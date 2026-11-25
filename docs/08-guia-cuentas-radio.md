@@ -1,4 +1,4 @@
-# Guía de cuentas para la radio · Visión 96.5 FM
+# Guía de cuentas para la radio · Visión FM 96.5
 
 Para la fase 6 (traspaso). Versión visual con casillas para marcar: https://claude.ai/artifact/TpfoVgF5EWz5duiCeNh5KU
 

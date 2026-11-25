@@ -1,4 +1,4 @@
-# Permisos, usuarios y publicidad · Visión 96.5 FM
+# Permisos, usuarios y publicidad · Visión FM 96.5
 
 Diseño del gestor de permisos, del alta y el ingreso de usuarios, y de la carga de publicidad con ubicaciones. Reemplaza los cuatro roles fijos que había en `04-esquema.md`.
 

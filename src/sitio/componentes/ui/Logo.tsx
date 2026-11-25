@@ -1,7 +1,7 @@
 import { FM, V, VISION } from '../../marca'
 
 /**
- * El logo de la radio en trazos: "96.5 FM" debajo de "Visión", terminando en el borde de la N. `tamano` es
+ * El logo de la radio en trazos: "FM 96.5" debajo de "Visión", terminando en el borde de la N. `tamano` es
  * la altura de la letra de "Visión": 34 en el celular y 40 en web, igual en el encabezado y en el pie.
  */
 export function LogoApilado({
@@ -20,7 +20,7 @@ export function LogoApilado({
       width={Math.round(125 * escala)}
       height={Math.round(47 * escala)}
       role="img"
-      aria-label="Visión 96.5 FM"
+      aria-label="Visión FM 96.5"
       className={className}
     >
       <path fill="currentColor" d={VISION} />

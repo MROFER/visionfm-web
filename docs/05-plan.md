@@ -1,4 +1,4 @@
-# Plan de implementación · Visión 96.5 FM
+# Plan de implementación · Visión FM 96.5
 
 Siete fases en orden. Las fases 0 a 5 se hacen en cuentas de la agencia, con dominio provisorio, para presentarle a la radio un producto que funciona; la fase 6 traspasa todo a la radio si firma el contrato. Cada una termina con algo que la radio puede ver en staging. Las horas son estimaciones propias para ajustar con la tarifa y el ritmo real del equipo; el total antes del lanzamiento quedó en 283–402 h, más 10–14 h de la etapa 2 de permisos al mes del lanzamiento: la revisión del 2026-10-14 sumó el flujo editorial, las excepciones de grilla y las tareas de SEO de la migración, y el gestor de permisos y la publicidad por ubicaciones sumaron 32–46 h junto con el registro de actividad (ver `07-permisos-y-publicidad.md`). La segunda revisión sumó 6–10 h de seguridad e infraestructura en la fase 0, y la parte de operación 3–4 h (aviso de vencimiento de anuncios, usuario de emergencia y entrega de cuentas). Las respuestas de la radio sumaron el reporte mensual a anunciantes (3–5 h) y la fase 6 de traspaso.
 

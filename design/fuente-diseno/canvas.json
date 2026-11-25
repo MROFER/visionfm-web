@@ -218,7 +218,7 @@
     "titulo": {
       "kind": "title1",
       "maxW": 8000,
-      "text": "Visión 96.5 FM — Propuesta de rediseño · Labs Fray Bentos",
+      "text": "Visión FM 96.5 — Propuesta de rediseño · Labs Fray Bentos",
       "w": 240,
       "x": 0,
       "y": -300
@@ -250,5 +250,5 @@
     "Mobile-Pelicula.dc.html"
   ],
   "pages": [],
-  "title": "Visión 96.5 FM — Rediseño web y mobile"
+  "title": "Visión FM 96.5 — Rediseño web y mobile"
 }

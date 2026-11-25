@@ -85,7 +85,7 @@ export function Encabezado({
       <header className="relative z-20 border-b-[3px] border-tinta bg-blanco">
         {/* Web */}
         <div className="contenedor hidden items-center justify-between gap-4 py-2 lg:flex">
-          <Link href="/" className="text-tinta" aria-label="Visión 96.5 FM, ir al inicio">
+          <Link href="/" className="text-tinta" aria-label="Visión FM 96.5, ir al inicio">
             <LogoApilado tamano={40} className="block" />
           </Link>
           <nav ref={nav} aria-label="Principal" className="flex gap-7">

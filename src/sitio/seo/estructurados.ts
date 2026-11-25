@@ -9,7 +9,7 @@ import { calificacion } from '../lib/formato'
 
 type Nodo = Record<string, unknown>
 
-const NOMBRE = 'Visión 96.5 FM'
+const NOMBRE = 'Visión FM 96.5'
 
 const url = (origen: string, ruta: string) =>
   /^https?:\/\//.test(ruta) ? ruta : `${origen.replace(/\/$/, '')}${ruta}`
@@ -64,6 +64,8 @@ export function radioYSitio(
       '@type': 'RadioStation',
       '@id': idRadio(origen),
       name: NOMBRE,
+      // Como la conoce la gente y como dice el dominio (visionfm.com.uy)
+      alternateName: 'Visión FM',
       url: url(origen, '/'),
       logo: url(origen, '/marca/icono-512.png'),
       image: url(origen, '/marca/compartir.png'),
@@ -89,7 +91,7 @@ export function radioYSitio(
         'query-input': 'required name=search_term_string',
       },
     },
-    // La emisión en vivo: la 96.5 FM y dónde se escucha por internet (la página y el audio directo)
+    // La emisión en vivo: la FM 96.5 y dónde se escucha por internet (la página y el audio directo)
     limpio({
       '@type': 'BroadcastService',
       '@id': idEmision(origen),
