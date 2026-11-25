@@ -61,20 +61,8 @@ function Avance({ programa, valor }: { programa: string; valor: number }) {
  * Cuando empieza otro programa con la página abierta, el nombre y el horario nuevos suben en el lugar de
  * los viejos (Rueda), la barra de avance arranca de cero y "A continuación" corre un lugar. En web, el
  * panel de "A continuación" flota sobre la foto (estilos.css, .flotante).
- *
- * En web, Radio › En vivo usa este mismo hero. Ahí el título de la página (H1) es el programa al aire. En el
- * Inicio (`enInicio`) el H1 es fijo, con la marca y la ciudad, porque es lo que Google toma como tema de la
- * página; el programa pasa a ser H2 y abajo de los botones va una frase que dice qué es el sitio.
  */
-export function HeroEnVivo({
-  telefono,
-  enInicio = false,
-  children,
-}: {
-  telefono: string
-  enInicio?: boolean
-  children?: React.ReactNode
-}) {
+export function HeroEnVivo({ telefono, children }: { telefono: string; children?: React.ReactNode }) {
   const { alAire, grilla, excepciones, ahora } = useRadio()
   const { dia: hoy, minutos } = momentoMontevideo(ahora)
   const programa = alAire ? `${alAire.programa.id}-${alAire.fecha}-${alAire.inicio}` : ''
@@ -89,40 +77,18 @@ export function HeroEnVivo({
     .replace(',', '')
     .replace('.', '')
 
-  const Programa = enInicio ? 'h2' : 'h1'
-  const alAireAhora = (
-    <span className="flex items-center gap-2 text-[11px] font-extrabold tracking-[0.12em] text-vivo-claro uppercase md:gap-2.5 md:text-[13px]">
-      <IndicadorAlAire className="size-2 md:size-2.5" />
-      {enInicio ? 'Al aire ahora' : 'Al aire ahora · FM 96.5'}
-    </span>
-  )
-  const llamar = (
-    <a
-      href={`tel:${telefonoParaLink(telefono)}`}
-      className="hidden text-[15px] text-oscuro-1 no-underline md:block"
-    >
-      Comunicate con la radio: <strong className="text-blanco">{telefono}</strong>
-    </a>
-  )
-
   return (
     <section aria-label="En vivo" className="relative isolate overflow-hidden bg-tinta text-blanco">
       <FondoPixelado />
       <div className="contenedor flex flex-wrap gap-x-14 gap-y-6 pt-7 pb-7 md:pt-14 md:pb-16 lg:pt-20 lg:pb-[88px]">
         <div className="flex min-w-0 flex-[999_1_540px] flex-col justify-center gap-3.5 md:gap-5">
-          {enInicio ? (
-            <div className="flex flex-col gap-1.5 md:gap-2">
-              <h1 className="m-0 text-[11px] font-extrabold tracking-[0.12em] text-oscuro-1 uppercase md:text-[13px]">
-                Visión FM 96.5 · La radio de Fray Bentos
-              </h1>
-              {alAireAhora}
-            </div>
-          ) : (
-            alAireAhora
-          )}
-          <Programa className="m-0 font-titulos text-5xl leading-none font-bold tracking-[-0.03em] md:text-[84px] md:leading-[0.98]">
-            <Rueda bloque texto={alAire ? alAire.programa.nombre : 'Visión FM 96.5'} />
-          </Programa>
+          <span className="flex items-center gap-2 text-[11px] font-extrabold tracking-[0.12em] text-vivo-claro uppercase md:gap-2.5 md:text-[13px]">
+            <IndicadorAlAire className="size-2 md:size-2.5" />
+            Al aire ahora · 96.5 FM
+          </span>
+          <h1 className="m-0 font-titulos text-5xl leading-none font-bold tracking-[-0.03em] md:text-[84px] md:leading-[0.98]">
+            <Rueda bloque texto={alAire ? alAire.programa.nombre : 'Visión 96.5 FM'} />
+          </h1>
           <p className="m-0 text-[15px] text-oscuro-1 md:text-[19px]">
             <Rueda
               bloque
@@ -153,17 +119,12 @@ export function HeroEnVivo({
               Programación completa
             </Link>
           </div>
-          {enInicio ? (
-            <div className="flex flex-col gap-2">
-              <p className="m-0 text-[15px] text-oscuro-1 md:text-base">
-                Escuchá la radio en vivo, leé las noticias de Fray Bentos y Río Negro y mirá la
-                cartelera de Cinevisión.
-              </p>
-              {llamar}
-            </div>
-          ) : (
-            llamar
-          )}
+          <a
+            href={`tel:${telefonoParaLink(telefono)}`}
+            className="hidden text-[15px] text-oscuro-1 no-underline md:block"
+          >
+            Comunicate con la radio: <strong className="text-blanco">{telefono}</strong>
+          </a>
         </div>
 
         <div

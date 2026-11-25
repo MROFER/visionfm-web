@@ -93,7 +93,7 @@ Son HTML con una pequeña capa de plantilla:
 - **Libre Franklin** (500–800): titulares, nombres de programas, títulos de sección.
 - **Public Sans** (400–800): cuerpo, UI, botones, etiquetas.
 - **Newsreader** (700): **solo el logotipo "Visión"**.
-- **El nombre se escribe "Visión FM 96.5"**: primero FM y después la frecuencia, también en el logo y en los datos para Google. "96.5 FM" era un error del logo original (25/11/2026).
+- **El nombre se escribe "Visión FM 96.5"**: primero FM y después la frecuencia, también en el logo y en los datos para Google. "96.5 FM" era un error del logo original. El logo va siempre apilado, "Visión" y debajo "FM 96.5" terminando en el borde de la N: en el header, el footer, la imagen para compartir, la pantalla de ingreso del panel y la página de error. Las páginas de Radio quedan como estaban (25/11/2026).
 - Etiquetas, botones y kickers: MAYÚSCULAS, peso 800, `letter-spacing` 0.08–0.14em, 11–14 px.
 
 ### Formas y layout
@@ -167,7 +167,7 @@ Recuadro con borde de 2 px: kicker "PARTICIPÁ", título "¿Tenés una noticia? 
 ## 7. Página por página
 
 **Inicio**
-1. **Hero en vivo** (fondo oscuro): arriba, el título de la página (H1) en una línea chica, "VISIÓN FM 96.5 · LA RADIO DE FRAY BENTOS", y debajo "■ AL AIRE AHORA"; el nombre del programa en grande (H2), conductor y horario, barra de progreso del programa (inicio–fin), botones "Escuchar en vivo" y "Programación completa", la frase "Escuchá la radio en vivo, leé las noticias de Fray Bentos y Río Negro y mirá la cartelera de Cinevisión." y el teléfono. El H1 es fijo porque es lo que Google toma como tema de la página, y el programa cambia cada hora (25/11/2026). A la derecha, **"A continuación"**: el primer ítem lleva la etiqueta **"Después"** y los siguientes **"Más tarde"** (nunca "Ahora").
+1. **Hero en vivo** (fondo oscuro): "■ AL AIRE AHORA · 96.5 FM", nombre del programa, conductor y horario, barra de progreso del programa (inicio–fin), botones "Escuchar en vivo" y "Programación completa", teléfono. A la derecha, **"A continuación"**: el primer ítem lleva la etiqueta **"Después"** y los siguientes **"Más tarde"** (nunca "Ahora").
 2. Publicidad 970×90.
 3. **Noticias:** tira de secciones · nota destacada grande a la izquierda (ocupa 2 filas) · 4 notas chicas en grilla 2×2 a la derecha · botón "Todas las noticias".
 4. **Cinevisión** (banda gris): película destacada (afiche, título, género · duración · calificación, sinopsis, botones Ver tráiler → `/cinevision/{slug}#trailer` y Ver funciones → `#funciones`) + "También en cartelera" (afiche, título, género · calificación y **solo los días**, sin horarios). En web, a la derecha del título va solo "Cartelera completa", sin "Cartelera del … al …" (7/11/2026).

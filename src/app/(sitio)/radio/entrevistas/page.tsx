@@ -20,7 +20,7 @@ import { diasDelMes, esDia, esMes, hoyEnMontevideo, nombreDelRango } from '@/sit
 
 export const metadata: Metadata = {
   title: 'Entrevistas',
-  description: 'Las voces de Fray Bentos que pasaron por Visión FM 96.5, para escuchar de nuevo.',
+  description: 'Las voces de Fray Bentos que pasaron por Visión 96.5 FM, para escuchar de nuevo.',
 }
 
 type Busqueda = Promise<{

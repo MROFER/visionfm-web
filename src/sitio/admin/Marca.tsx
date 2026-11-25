@@ -3,18 +3,21 @@
 
 import { FM, V, VISION } from '../marca'
 
-/** Logo de la pantalla de ingreso. Toma el color del texto, así se ve en modo claro y oscuro. */
+/**
+ * Logo de la pantalla de ingreso, apilado como en el sitio: "FM 96.5" debajo de "Visión", terminando en
+ * el borde de la N. Toma el color del texto, así se ve en modo claro y oscuro.
+ */
 export function Logo() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 11 198 35"
+      viewBox="-1 11 125 47"
       role="img"
       aria-label="Visión FM 96.5"
-      style={{ width: 260, maxWidth: '100%', height: 'auto', color: 'var(--theme-text)' }}
+      style={{ width: 164, maxWidth: '100%', height: 'auto', color: 'var(--theme-text)' }}
     >
       <path fill="currentColor" d={VISION} />
-      <path fill="#C03A0B" d={FM} />
+      <path fill="#C03A0B" transform="translate(-72.2 13)" d={FM} />
     </svg>
   )
 }

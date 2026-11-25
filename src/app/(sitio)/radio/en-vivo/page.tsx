@@ -8,7 +8,7 @@ import { obtenerAjustes } from '@/sitio/datos'
 
 export const metadata: Metadata = {
   title: 'En vivo',
-  description: 'Escuchá Visión FM 96.5 en vivo desde Fray Bentos.',
+  description: 'Escuchá Visión 96.5 FM en vivo desde Fray Bentos.',
 }
 
 // En vivo (design/LEEME.md, sección 7): en el celular y la tablet es el reproductor a pantalla completa;

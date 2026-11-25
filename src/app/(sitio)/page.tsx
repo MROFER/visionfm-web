@@ -40,7 +40,7 @@ export default async function Inicio() {
 
   return (
     <main>
-      <HeroEnVivo enInicio telefono={ajustes.telefono}>
+      <HeroEnVivo telefono={ajustes.telefono}>
         <Publicidad ubicacion="inicio" aviso={ajustes.avisoPropio} oscuro />
       </HeroEnVivo>
       <div className="contenedor hidden py-8 md:block">

@@ -14,7 +14,7 @@ import { emisiones } from '@/sitio/seo/estructurados'
 
 export const metadata: Metadata = {
   title: 'Programación',
-  description: 'Lo que suena en Visión FM 96.5, día por día, y quiénes lo conducen.',
+  description: 'Lo que suena en Visión 96.5 FM, día por día, y quiénes lo conducen.',
 }
 
 // Programación (design/LEEME.md, sección 7): pestañas por día, con el programa al aire remarcado y
@@ -42,7 +42,7 @@ export default async function Programacion() {
         <div className="flex flex-col gap-4 md:border-b-[3px] md:border-tinta md:pb-5">
           <div className="flex flex-col gap-2 md:gap-2.5">
             <span className="text-[11px] font-extrabold tracking-[0.12em] text-acento uppercase md:text-xs">
-              Radio · FM 96.5
+              Radio · 96.5 FM
             </span>
             <h1 className="m-0 font-titulos text-[40px] leading-none font-extrabold tracking-[-0.02em] md:text-[64px]">
               Programación
