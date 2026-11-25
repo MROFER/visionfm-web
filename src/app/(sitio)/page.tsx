@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { CinevisionInicio } from '@/sitio/componentes/inicio/CinevisionInicio'
 import { EntrevistasInicio } from '@/sitio/componentes/inicio/EntrevistasInicio'
-import { HeroEnVivo } from '@/sitio/componentes/inicio/HeroEnVivo'
+import { HeroInicio } from '@/sitio/componentes/inicio/HeroInicio'
 import { NoticiasInicio } from '@/sitio/componentes/inicio/NoticiasInicio'
 import { Participa } from '@/sitio/componentes/globales/Participa'
 import { Publicidad } from '@/sitio/componentes/globales/Publicidad'
@@ -40,10 +40,10 @@ export default async function Inicio() {
 
   return (
     <main>
-      <HeroEnVivo telefono={ajustes.telefono}>
+      <HeroInicio>
         <Publicidad ubicacion="inicio" aviso={ajustes.avisoPropio} oscuro />
-      </HeroEnVivo>
-      <div className="contenedor hidden py-8 md:block">
+      </HeroInicio>
+      <div id="despues-del-hero" className="contenedor hidden py-8 md:block">
         <Publicidad ubicacion="inicio" aviso={ajustes.avisoPropio} />
       </div>
       <NoticiasInicio destacada={noticias.destacada} resto={noticias.resto} secciones={secciones} />

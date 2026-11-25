@@ -1,6 +1,6 @@
 'use client'
 
-import { IconoCargando, IconoPausa, IconoPlay } from '../ui/iconos'
+import { IconoCargando, IconoPausa, IconoPlay, IconoPlayRedondo } from '../ui/iconos'
 import { useRadio } from './Radio'
 
 const TEXTOS = ['Escuchar en vivo', 'Conectando…', 'Reconectando…', 'Pausar'] as const
@@ -22,11 +22,19 @@ function Textos({ texto }: { texto: string }) {
 }
 
 /** Íconos de cada estado, uno encima del otro: el cambio es un fundido corto, sin saltos. */
-function Iconos({ estado, tamano }: { estado: 'play' | 'cargando' | 'pausa'; tamano?: number }) {
+function Iconos({
+  estado,
+  tamano,
+  redondo = false,
+}: {
+  estado: 'play' | 'cargando' | 'pausa'
+  tamano?: number
+  redondo?: boolean
+}) {
   return (
     <span aria-hidden className="pila">
       <span data-activo={estado === 'play' || undefined}>
-        <IconoPlay tamano={tamano} />
+        {redondo ? <IconoPlayRedondo tamano={tamano} /> : <IconoPlay tamano={tamano} />}
       </span>
       <span data-activo={estado === 'cargando' || undefined}>
         <IconoCargando tamano={tamano} className={estado === 'cargando' ? '' : 'pausada'} />
@@ -48,7 +56,7 @@ export function BotonEnVivo({
   variante,
   compacto = false,
 }: {
-  variante: 'header' | 'redondo' | 'hero'
+  variante: 'header' | 'redondo' | 'hero' | 'inicio'
   compacto?: boolean
 }) {
   const { sonando, cargando, reconectando, alternar } = useRadio()
@@ -95,24 +103,34 @@ export function BotonEnVivo({
     )
   }
 
+  // Hero del Inicio: puntas apenas redondeadas y el play redondeado
+  if (variante === 'inicio') {
+    return (
+      <button
+        type="button"
+        onClick={alternar}
+        aria-pressed={activo}
+        aria-busy={cargando}
+        className="apretable flex min-h-[54px] cursor-pointer items-center justify-center gap-3 rounded-[3px] bg-acento px-7 text-[13px] font-extrabold tracking-[0.1em] text-blanco uppercase hover:bg-acento-hover md:justify-start md:pl-6"
+      >
+        <Iconos estado={estado} tamano={18} redondo />
+        <Textos texto={texto} />
+      </button>
+    )
+  }
+
+  // Header: triángulo de play y puntas apenas redondeadas
   return (
     <button
       type="button"
       onClick={alternar}
       aria-pressed={activo}
       aria-busy={cargando}
-      className={`etiqueta apretable flex cursor-pointer items-center gap-2.5 bg-acento text-blanco hover:bg-acento-hover ${
+      className={`etiqueta apretable flex cursor-pointer items-center gap-2.5 rounded-[3px] bg-acento text-blanco hover:bg-acento-hover ${
         compacto ? 'min-h-10 px-[15px] text-[10px]' : 'min-h-12 px-[18px]'
       }`}
     >
-      <span aria-hidden className="pila size-3">
-        <span data-activo={!cargando || undefined}>
-          <span className="size-2 bg-blanco" />
-        </span>
-        <span data-activo={cargando || undefined}>
-          <IconoCargando tamano={12} className={cargando ? '' : 'pausada'} />
-        </span>
-      </span>
+      <Iconos estado={estado} tamano={13} redondo />
       <Textos texto={texto} />
     </button>
   )
