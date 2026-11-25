@@ -42,7 +42,7 @@ export function EntrevistasInicio({ entrevistas }: { entrevistas: TarjetaEntrevi
                     {e.entrevistado}: {e.tema}
                   </Link>
                   <span className="text-xs text-meta lg:text-[13px]">
-                    {e.programa ? `En ${e.programa.nombre}` : 'Visión 96.5 FM'}
+                    {e.programa ? `En ${e.programa.nombre}` : 'Visión FM 96.5'}
                     {e.duracion ? ` · ${duracionAudio(e.duracion)}` : ''}
                   </span>
                 </span>

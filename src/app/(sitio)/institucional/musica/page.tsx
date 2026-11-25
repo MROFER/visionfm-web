@@ -6,7 +6,7 @@ import { obtenerAjustes } from '@/sitio/datos'
 
 export const metadata: Metadata = {
   title: 'Enviá tu música',
-  description: '¿Sos artista o tenés una banda? Mandale tu música a Visión 96.5 FM para una posible difusión.',
+  description: '¿Sos artista o tenés una banda? Mandale tu música a Visión FM 96.5 para una posible difusión.',
 }
 
 // Enviá tu música (design/LEEME.md, sección 7): la puerta de los artistas, con su sección en Institucional

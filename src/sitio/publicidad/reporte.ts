@@ -58,14 +58,14 @@ export async function pdfReporte({
 }) {
   const pdf = await PDFDocument.create()
   pdf.setTitle(`Reporte de publicidad · ${anunciante} · ${mes}`)
-  pdf.setAuthor('Visión 96.5 FM')
+  pdf.setAuthor('Visión FM 96.5')
   const normal = await pdf.embedFont(StandardFonts.Helvetica)
   const negrita = await pdf.embedFont(StandardFonts.HelveticaBold)
   let pagina = pdf.addPage([595, 842])
   const gris = rgb(0.35, 0.35, 0.35)
   let y = 780
 
-  pagina.drawText('Visión 96.5 FM', { x: 50, y, size: 11, font: negrita, color: gris })
+  pagina.drawText('Visión FM 96.5', { x: 50, y, size: 11, font: negrita, color: gris })
   y -= 34
   pagina.drawText('Reporte de publicidad', { x: 50, y, size: 22, font: negrita })
   y -= 24

@@ -1,6 +1,6 @@
 // Armado de sitemaps y RSS (docs/05-plan.md, fase 5). Funciones puras: los datos llegan de src/sitio/datos/seo.ts.
 
-export const NOMBRE_DEL_SITIO = 'Visión 96.5 FM'
+export const NOMBRE_DEL_SITIO = 'Visión FM 96.5'
 
 export const escaparXml = (texto: string) =>
   texto

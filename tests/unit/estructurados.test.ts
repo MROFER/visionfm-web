@@ -24,6 +24,8 @@ describe('radioYSitio', () => {
     expect(radio).toMatchObject({
       '@type': 'RadioStation',
       '@id': `${ORIGEN}/#radio`,
+      name: 'Visión FM 96.5',
+      alternateName: 'Visión FM',
       telephone: '4562 0000',
       address: {
         streetAddress: '18 de Julio 1000',

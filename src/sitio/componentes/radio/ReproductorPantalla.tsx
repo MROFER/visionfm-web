@@ -55,7 +55,7 @@ export function ReproductorPantalla({ children }: { children?: React.ReactNode }
         </div>
         <div className="flex flex-col gap-1.5 text-center">
           <h1 className="m-0 font-titulos text-[32px] leading-tight font-extrabold">
-            {alAire?.programa.nombre ?? 'Visión 96.5 FM'}
+            {alAire?.programa.nombre ?? 'Visión FM 96.5'}
           </h1>
           {alAire && (
             <p className="m-0 text-base text-oscuro-2">

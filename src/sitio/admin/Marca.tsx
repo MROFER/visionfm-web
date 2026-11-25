@@ -1,4 +1,4 @@
-// Logotipo de la radio para el panel: "Visión" (Newsreader 700) y "96.5 FM", convertidos a trazos
+// Logotipo de la radio para el panel: "Visión" (Newsreader 700) y "FM 96.5", convertidos a trazos
 // para no cargar la tipografía. Las mismas formas están en public/marca/logo.svg e icono.svg.
 
 import { FM, V, VISION } from '../marca'
@@ -10,7 +10,7 @@ export function Logo() {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 11 198 35"
       role="img"
-      aria-label="Visión 96.5 FM"
+      aria-label="Visión FM 96.5"
       style={{ width: 260, maxWidth: '100%', height: 'auto', color: 'var(--theme-text)' }}
     >
       <path fill="currentColor" d={VISION} />

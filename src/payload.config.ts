@@ -52,7 +52,7 @@ export default buildConfig(
             baseDir: path.resolve(dirname),
           },
           meta: {
-            titleSuffix: ' · Visión 96.5 FM',
+            titleSuffix: ' · Visión FM 96.5',
             // El mismo favicon que el sitio
             icons: [
               { rel: 'icon', url: '/favicon.ico', sizes: 'any' },
@@ -121,7 +121,7 @@ export default buildConfig(
         email: process.env.SMTP_HOST
           ? nodemailerAdapter({
               defaultFromAddress: process.env.EMAIL_FROM || 'no-responder@visionfm.uy',
-              defaultFromName: 'Visión 96.5 FM',
+              defaultFromName: 'Visión FM 96.5',
               transportOptions: {
                 host: process.env.SMTP_HOST,
                 port: Number(process.env.SMTP_PORT || 587),

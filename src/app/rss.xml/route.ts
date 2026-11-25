@@ -11,7 +11,7 @@ export async function GET() {
     urlDelSitio().origin,
     {
       titulo: `Noticias · ${NOMBRE_DEL_SITIO}`,
-      descripcion: 'Las últimas noticias de Fray Bentos y Río Negro, de Visión 96.5 FM.',
+      descripcion: 'Las últimas noticias de Fray Bentos y Río Negro, de Visión FM 96.5.',
       ruta: '/rss.xml',
     },
     await notasParaRss(),

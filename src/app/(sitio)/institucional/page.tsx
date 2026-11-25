@@ -14,7 +14,7 @@ import { hoyEnMontevideo } from '@/sitio/lib/fecha'
 
 export const metadata: Metadata = {
   title: 'Institucional',
-  description: 'Quiénes somos, nuestra historia y el equipo de Visión 96.5 FM, la radio de Fray Bentos.',
+  description: 'Quiénes somos, nuestra historia y el equipo de Visión FM 96.5, la radio de Fray Bentos.',
 }
 
 const SECCIONES = [
@@ -27,7 +27,7 @@ const SECCIONES = [
 ]
 
 const PRODUCTOS = [
-  { tipo: 'Radio', nombre: 'Spots y auspicios', detalle: 'Tandas, menciones y auspicio de programas en el 96.5 FM.' },
+  { tipo: 'Radio', nombre: 'Spots y auspicios', detalle: 'Tandas, menciones y auspicio de programas en la FM 96.5.' },
   {
     tipo: 'Web',
     nombre: 'Banners en el sitio',
@@ -87,7 +87,7 @@ export default async function Institucional() {
               <RichText data={inst.quienesSomos} />
             ) : (
               <p>
-                Visión es un medio de Fray Bentos que reúne una radio, el 96.5 FM; una redacción de noticias locales; y
+                Visión es un medio de Fray Bentos que reúne una radio, la FM 96.5; una redacción de noticias locales; y
                 Cinevisión, el cine que funciona en el mismo edificio.
               </p>
             )}

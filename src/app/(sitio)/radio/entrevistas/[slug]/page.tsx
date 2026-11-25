@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Parametros): Promise<Metadata
   const ruta = `/radio/entrevistas/${slug}`
   return {
     title: titulo,
-    description: e.resumen || `Entrevista en Visión 96.5 FM, para escuchar de nuevo.`,
+    description: e.resumen || `Entrevista en Visión FM 96.5, para escuchar de nuevo.`,
     alternates: { canonical: ruta },
     openGraph: {
       ...OPEN_GRAPH,

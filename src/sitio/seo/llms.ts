@@ -39,7 +39,7 @@ export function llmsTxt(origen: string, d: DatosLlms) {
     ...(contacto.length ? [contacto.join(' '), ''] : []),
     '## Radio',
     '',
-    link(origen, 'En vivo', '/radio/en-vivo', 'la transmisión de la 96.5 FM'),
+    link(origen, 'En vivo', '/radio/en-vivo', 'la transmisión de la FM 96.5'),
     link(
       origen,
       'Programación',

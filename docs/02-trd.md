@@ -1,4 +1,4 @@
-# TRD · Nuevo sitio de Visión 96.5 FM
+# TRD · Nuevo sitio de Visión FM 96.5
 
 La arquitectura completa (diagrama, estructura del repo, rutas, reproductor, caché, despliegue, seguridad, SEO, migración e inventario del diseño) está en la página **Arquitectura Vision FM**: https://claude.ai/artifact/DvXeaBXMuTGAo5H9G9mhXn. Este documento resume las decisiones y agrega lo que esa página no cubre: entorno, API, errores y convenciones.
 

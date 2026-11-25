@@ -139,7 +139,7 @@ export async function importarNotas(payload: Payload, opciones: OpcionesImportar
     const data = await readFile(path.join(process.cwd(), 'public/marca/compartir.png'))
     const creado = await payload.create({
       collection: 'medios',
-      data: { alt: 'Visión 96.5 FM', origen: ORIGEN_SIN_FOTO },
+      data: { alt: 'Visión FM 96.5', origen: ORIGEN_SIN_FOTO },
       file: { data, mimetype: 'image/png', name: 'vision-sin-foto.png', size: data.length },
     })
     return creado.id

@@ -8,7 +8,7 @@ import { MOTIVOS } from '@/sitio/formularios/campos'
 
 export const metadata: Metadata = {
   title: 'Contacto',
-  description: '¿Tenés una noticia, un aviso o querés salir al aire? Escribile a Visión 96.5 FM.',
+  description: '¿Tenés una noticia, un aviso o querés salir al aire? Escribile a Visión FM 96.5.',
 }
 
 // Contacto (design/LEEME.md, sección 7)

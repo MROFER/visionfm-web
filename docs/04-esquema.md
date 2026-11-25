@@ -1,4 +1,4 @@
-# Esquema del backend · Visión 96.5 FM
+# Esquema del backend · Visión FM 96.5
 
 Colecciones y fichas globales de Payload sobre PostgreSQL. Payload genera las tablas y las migraciones a partir de esta configuración; los nombres de campo son los que irán en el código.
 

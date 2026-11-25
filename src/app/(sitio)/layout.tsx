@@ -45,7 +45,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   // Las imágenes y links de la vista previa al compartir salen con este dominio
   metadataBase: urlDelSitio(),
-  title: { default: 'Visión 96.5 FM', template: '%s · Visión 96.5 FM' },
+  title: { default: 'Visión FM 96.5', template: '%s · Visión FM 96.5' },
   description: 'Radio, noticias y Cinevisión desde Fray Bentos.',
   openGraph: OPEN_GRAPH,
   twitter: { card: 'summary_large_image' },

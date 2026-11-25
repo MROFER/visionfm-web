@@ -76,7 +76,7 @@ describe('sitemapDeNoticias', () => {
     )
     expect(xml).toContain('/noticias/locales/nueva')
     expect(xml).toContain('<news:title>Nueva &amp; buena</news:title>')
-    expect(xml).toContain('<news:name>Visión 96.5 FM</news:name><news:language>es</news:language>')
+    expect(xml).toContain('<news:name>Visión FM 96.5</news:name><news:language>es</news:language>')
     expect(xml).not.toContain('/noticias/locales/vieja')
   })
 })
@@ -129,7 +129,7 @@ describe('llmsTxt', () => {
       peliculas: [{ titulo: 'Película', slug: 'pelicula' }],
       programas: [{ nombre: 'La mañana' }],
     })
-    expect(texto.startsWith('# Visión 96.5 FM\n\n> ')).toBe(true)
+    expect(texto.startsWith('# Visión FM 96.5\n\n> ')).toBe(true)
     expect(texto).toContain('Dirección: 18 de Julio 1234, Fray Bentos. Teléfono: 4562 0000.')
     expect(texto).not.toContain('Email:')
     expect(texto).toContain(`- [Locales](${ORIGEN}/noticias/locales)`)
