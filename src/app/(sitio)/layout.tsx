@@ -31,6 +31,13 @@ const titulos = localFont({
   variable: '--fuente-titulos',
   display: 'swap',
 })
+// Inter Tight: solo el título del hero del Inicio
+const destacada = localFont({
+  src: './fuentes/inter-tight.woff2',
+  weight: '100 900',
+  variable: '--fuente-destacada',
+  display: 'swap',
+})
 const cuerpo = localFont({
   src: './fuentes/public-sans.woff2',
   weight: '400 800',
@@ -67,7 +74,7 @@ export default async function SitioLayout({ children }: { children: React.ReactN
     obtenerClima(),
   ])
   return (
-    <html lang="es-UY" className={`${titulos.variable} ${cuerpo.variable}`}>
+    <html lang="es-UY" className={`${titulos.variable} ${destacada.variable} ${cuerpo.variable}`}>
       <body>
         <Radio
           streamUrl={ajustes.streamUrl}

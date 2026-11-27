@@ -459,16 +459,6 @@
   }
 }
 
-/* Hero del Inicio: el marcador de la foto del frente se llena mientras está al frente */
-@keyframes llenar-marcador {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
 /* Hero del Inicio: la flecha de "Deslizá para seguir" baja y sube despacio */
 .invitacion-bajar {
   animation: invitacion-bajar 2.4s ease-in-out infinite;
@@ -479,11 +469,37 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(4px);
+    transform: translateY(6px);
+  }
+}
+/* Hero del Inicio: "Deslizá para seguir" titila despacio, para llamar la vista sin molestar */
+.invitacion-titilar {
+  animation: titilar 2.4s ease-in-out infinite;
+}
+@keyframes titilar {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* Hero del Inicio: en web el panel del programa al aire flota sobre el muelle; la sombra se abre al subir */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .flotante-claro {
+    animation: flotar-claro 7s ease-in-out infinite;
+  }
+}
+@keyframes flotar-claro {
+  50% {
+    transform: translateY(-8px);
+    box-shadow: 0 26px 46px rgb(19 22 29 / 0.1);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .invitacion-bajar {
+  .invitacion-bajar,
+  .invitacion-titilar {
     animation: none;
   }
 }
