@@ -485,16 +485,41 @@
     opacity: 1;
   }
 }
-/* Hero del Inicio: en web el panel del programa al aire flota sobre el muelle; la sombra se abre al subir */
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+/*
+ * Hero del Inicio: el panel del programa al aire flota, en web y en el celular. Solo se anima el transform,
+ * en su propia capa (will-change), así el navegador lo mueve sin repintar y sin saltos de píxel; la sombra
+ * de cuando sube es otra capa que solo cambia de opacidad. Curva senoidal: sube y baja sin frenazos.
+ */
+@media (prefers-reduced-motion: no-preference) {
   .flotante-claro {
-    animation: flotar-claro 7s ease-in-out infinite;
+    will-change: transform;
+    animation: flotar-claro 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  }
+  .flotante-claro::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: 0 26px 46px rgb(19 22 29 / 0.12);
+    opacity: 0;
+    will-change: opacity;
+    animation: flotar-claro-sombra 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
   }
 }
 @keyframes flotar-claro {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
   50% {
-    transform: translateY(-8px);
-    box-shadow: 0 26px 46px rgb(19 22 29 / 0.1);
+    transform: translate3d(0, -8px, 0);
+  }
+}
+@keyframes flotar-claro-sombra {
+  50% {
+    opacity: 1;
   }
 }
 @media (prefers-reduced-motion: reduce) {

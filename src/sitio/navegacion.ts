@@ -59,6 +59,17 @@ export function menuPrincipal(secciones: SeccionMenu[]): GrupoMenu[] {
   ]
 }
 
+/**
+ * Menú del celular (27/11/2026): estos van directo a su página, sin desplegar. Después va Institucional,
+ * el único grupo que se abre con "+". "En vivo" no hace falta: el play está en el encabezado.
+ */
+export const DIRECTOS_CELULAR: Enlace[] = [
+  { etiqueta: 'Noticias', href: '/noticias' },
+  { etiqueta: 'Programación', href: '/radio/programacion' },
+  { etiqueta: 'Entrevistas', href: '/radio/entrevistas' },
+  { etiqueta: 'Cinevisión', href: '/cinevision' },
+]
+
 /** El grupo del menú que va subrayado: sale del primer tramo de la URL. */
 export function grupoActual(ruta: string): GrupoMenu['clave'] | null {
   const tramo = ruta.split('/')[1]
