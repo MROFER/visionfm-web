@@ -39,7 +39,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
     .replace('.', '')
 
   return (
-    <section aria-label="Visión FM 96.5" className="relative isolate overflow-hidden bg-blanco text-tinta">
+    <section aria-label="Visión FM 96.5" className="relative isolate overflow-hidden bg-blanco text-marino">
       {/* Web: el dibujo del Anglo, con más agua abajo para llenar el hueco debajo de los botones */}
       <div
         aria-hidden
@@ -55,7 +55,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
             <span className="block">Fray Bentos</span>
           </h1>
           {/* En web, una idea por renglón */}
-          <p className="m-0 max-w-[520px] text-[17px] leading-[1.5] text-pretty text-tinta [text-shadow:0_0_10px_#fff,0_0_4px_#fff] md:text-xl lg:max-w-none">
+          <p className="m-0 max-w-[520px] text-[17px] leading-[1.5] text-pretty text-marino [text-shadow:0_0_10px_#fff,0_0_4px_#fff] md:text-xl lg:max-w-none">
             <span className="lg:block">Escuchá la radio en vivo,</span>{' '}
             <span className="lg:block">leé las noticias de Fray{'\u00a0'}Bentos y Río{'\u00a0'}Negro</span>{' '}
             <span className="lg:block">y mirá la cartelera de Cinevisión.</span>
@@ -65,7 +65,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
             <BotonEnVivo variante="inicio" />
             <Link
               href="/radio/programacion"
-              className="apretable hidden min-h-[54px] items-center rounded-[3px] border-2 border-tinta bg-blanco px-7 text-[13px] font-extrabold tracking-[0.1em] text-tinta uppercase no-underline hover:bg-tinta hover:text-blanco md:flex"
+              className="apretable hidden min-h-[54px] items-center rounded-[3px] border-2 border-marino bg-blanco px-7 text-[13px] font-extrabold tracking-[0.1em] text-marino uppercase no-underline hover:bg-marino hover:text-blanco md:flex"
             >
               Programación completa
             </Link>
@@ -79,7 +79,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
         <div
           id="programacion"
-          className="relative flex min-w-0 flex-[1_1_360px] flex-col rounded-[8px] border border-tinta bg-blanco px-5 pt-5 pb-1.5 shadow-[0_14px_40px_rgb(3_28_59/0.14)] md:px-6 md:pt-[22px] flotante-claro lg:absolute lg:top-[351px] lg:left-[847.5px] lg:w-[360px]"
+          className="relative flex min-w-0 flex-[1_1_360px] flex-col rounded-[8px] border border-marino bg-blanco px-5 pt-5 pb-1.5 shadow-[0_14px_40px_rgb(3_28_59/0.14)] md:px-6 md:pt-[22px] flotante-claro lg:absolute lg:top-[351px] lg:left-[847.5px] lg:w-[360px]"
         >
           <div className="flex items-center justify-between gap-3 pb-3">
             <h2 className="m-0 flex items-center gap-2 text-xs font-extrabold tracking-[0.12em] text-acento uppercase md:text-[13px]">
@@ -87,7 +87,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
               {alAire ? alAire.programa.nombre : 'A continuación'}
             </h2>
             <span className="hidden text-[13px] text-meta first-letter:uppercase md:inline">{fechaCabecera}</span>
-            <Link href="/radio/programacion" className="text-xs font-bold text-tinta md:hidden">
+            <Link href="/radio/programacion" className="text-xs font-bold text-marino md:hidden">
               Ver toda
             </Link>
           </div>
@@ -106,7 +106,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
       <a
         href="#despues-del-hero"
-        className="invitacion-titilar absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[11px] font-extrabold tracking-[0.16em] text-meta uppercase no-underline hover:text-tinta lg:flex"
+        className="invitacion-titilar absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[11px] font-extrabold tracking-[0.16em] text-meta uppercase no-underline hover:text-marino lg:flex"
       >
         <IconoFlechaAbajo tamano={18} className="invitacion-bajar" />
         Deslizá para seguir

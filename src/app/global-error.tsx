@@ -5,7 +5,7 @@
 export default function ErrorGlobal({ reset }: { reset: () => void }) {
   return (
     <html lang="es-UY">
-      <body style={{ margin: 0, fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', color: '#031c3b', background: '#fff' }}>
+      <body style={{ margin: 0, fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif', color: '#13161d', background: '#fff' }}>
         <main style={{ maxWidth: 1240, margin: '0 auto', padding: '64px 16px' }}>
           <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#c03a0b' }}>
             Error 500

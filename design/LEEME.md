@@ -79,7 +79,8 @@ Son HTML con una pequeña capa de plantilla:
 ### Colores
 | Token | Valor | Uso |
 |---|---|---|
-| `ink` | `#031C3B` | Azul marino institucional (27/11/2026, antes `#13161D`): texto principal, H1 y titulares, fondos oscuros (barra superior, hero en vivo, footer), botones secundarios, líneas gruesas. Las cajas, líneas y bordes sobre fondo oscuro van en la misma gama: `#0D2849`, `#1C3557` y `#2A4364` |
+| `ink` | `#13161D` | Texto principal, fondos oscuros (hero en vivo, footer), botones secundarios, líneas gruesas. El sitio es de lectura: el texto y los títulos siguen en este casi negro |
+| `marino` | `#031C3B` | Azul institucional (27/11/2026), **solo** en el encabezado y el hero del Inicio: logo, línea de 3 px del header, título, frase, panel y botón de contorno del hero |
 | `marino-barra` | `#011B3C` | Fondo de la barra superior (web) |
 | `marino-menu` | `#101F3A` | Texto del menú principal (web y celular) |
 | `accent` | `#C03A0B` | Botón "Escuchar en vivo", kickers/etiquetas de sección, subrayado de pestaña activa, botones principales |

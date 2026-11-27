@@ -19,7 +19,7 @@ export function CabeceraCelular() {
 
   return (
     <div className="cabecera-celular" data-activo={activo || undefined}>
-      <Link href="/" className="cabecera-logo text-tinta" aria-label="Visión FM 96.5, ir al inicio">
+      <Link href="/" className="cabecera-logo text-marino" aria-label="Visión FM 96.5, ir al inicio">
         <LogoApilado className="cabecera-logo-entero block" />
         <LogoCompacto className="cabecera-logo-compacto" />
       </Link>
