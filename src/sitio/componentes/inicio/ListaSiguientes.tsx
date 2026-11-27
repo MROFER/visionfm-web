@@ -92,17 +92,15 @@ function correr(ol: HTMLOListElement, antes: Map<string, Lugar>, ahora: Map<stri
  * cambia sin animación.
  */
 export function ListaSiguientes({
-  siguientes: proximos,
+  siguientes,
   hoy,
-  alAire,
+  claro = false,
 }: {
   siguientes: Emision<ProgramaGrilla>[]
   hoy: Dia
-  /** Si viene, la lista arranca con el programa al aire: "Al aire", "Después" y "Más tarde" (Inicio). */
-  alAire?: Emision<ProgramaGrilla> | null
+  /** Sobre fondo blanco (hero del Inicio). */
+  claro?: boolean
 }) {
-  const siguientes = alAire ? [alAire, ...proximos] : proximos
-  const etiquetas = alAire ? ['Al aire', 'Después'] : ['Después']
   const lista = useRef<HTMLOListElement>(null)
   /** Dónde estaba cada programa la última vez que se midió. */
   const lugares = useRef(new Map<string, Lugar>())
@@ -144,7 +142,7 @@ export function ListaSiguientes({
         <li
           key={claveDe(e)}
           data-clave={claveDe(e)}
-          className={`flex gap-3.5 border-b border-oscuro-linea py-3.5 transition-opacity duration-500 md:gap-4 md:py-4 lg:border-blanco/12 lg:last:border-b-0 ${
+          className={`flex gap-3.5 border-b py-3.5 transition-opacity duration-500 md:gap-4 md:py-4 lg:last:border-b-0 ${claro ? 'border-linea' : 'border-oscuro-linea lg:border-blanco/12'} ${
             i > 0 ? 'md:opacity-80' : ''
           } ${i > 1 ? 'max-md:hidden' : ''}`}
         >
@@ -153,8 +151,8 @@ export function ListaSiguientes({
               {e.dia !== hoy && `${NOMBRE_DIA[e.dia]} `}
               {e.inicio}
             </span>
-            <span className="text-[10px] font-extrabold tracking-[0.1em] text-vivo-claro uppercase md:text-[11px]">
-              <Rueda texto={etiquetas[i] ?? 'Más tarde'} />
+            <span className={`text-[10px] font-extrabold tracking-[0.1em] uppercase md:text-[11px] ${claro ? 'text-acento' : 'text-vivo-claro'}`}>
+              <Rueda texto={i === 0 ? 'Después' : 'Más tarde'} />
             </span>
           </span>
           <span className="flex flex-col gap-0.5">
@@ -162,7 +160,7 @@ export function ListaSiguientes({
               {e.programa.nombre}
             </span>
             {e.programa.conduccion && (
-              <span className="text-[13px] text-oscuro-2 md:text-sm">{e.programa.conduccion}</span>
+              <span className={`text-[13px] md:text-sm ${claro ? 'text-meta' : 'text-oscuro-2'}`}>{e.programa.conduccion}</span>
             )}
           </span>
         </li>

@@ -121,7 +121,7 @@ export function Encabezado({
                   aria-label={`Ver las opciones de ${g.etiqueta}`}
                   aria-expanded={desplegado === g.clave}
                   onClick={() => setDesplegado(desplegado === g.clave ? null : g.clave)}
-                  className="flex min-h-12 cursor-pointer items-center pl-1.5"
+                  className="sr-only flex min-h-12 cursor-pointer items-center pl-1.5 focus-visible:not-sr-only"
                 >
                   <IconoFlechaAbajo />
                 </button>
