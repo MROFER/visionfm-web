@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import { grupoActual, telefonoParaLink, type GrupoMenu } from '../../navegacion'
+import { DIRECTOS_CELULAR, grupoActual, telefonoParaLink, type GrupoMenu } from '../../navegacion'
 import type { Clima } from '../../datos/clima'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
 import { CabeceraCelular } from '../reproductor/CabeceraCelular'
@@ -103,7 +103,10 @@ export function Encabezado({
                 onPointerLeave={(e) => {
                   if (e.pointerType !== 'mouse') return
                   clearTimeout(cierre.current)
-                  cierre.current = setTimeout(() => setDesplegado((d) => (d === g.clave ? null : d)), 150)
+                  cierre.current = setTimeout(
+                    () => setDesplegado((d) => (d === g.clave ? null : d)),
+                    150,
+                  )
                 }}
               >
                 {/* El nombre lleva a la página del grupo; la flecha abre la lista con el teclado o el dedo */}
@@ -161,9 +164,15 @@ export function Encabezado({
               {/* Tres líneas sin recuadro, alineadas al margen; al abrir, la de arriba y la de abajo giran y
                   forman la cruz, y la del medio se desvanece */}
               <span aria-hidden className="relative block h-5 w-7">
-                <span className={`${LINEA} top-0 ${menuAbierto ? 'translate-y-[8.5px] rotate-45' : ''}`} />
-                <span className={`${LINEA} top-[8.5px] ${menuAbierto ? 'scale-x-40 opacity-0' : ''}`} />
-                <span className={`${LINEA} top-[17px] ${menuAbierto ? '-translate-y-[8.5px] -rotate-45' : ''}`} />
+                <span
+                  className={`${LINEA} top-0 ${menuAbierto ? 'translate-y-[8.5px] rotate-45' : ''}`}
+                />
+                <span
+                  className={`${LINEA} top-[8.5px] ${menuAbierto ? 'scale-x-40 opacity-0' : ''}`}
+                />
+                <span
+                  className={`${LINEA} top-[17px] ${menuAbierto ? '-translate-y-[8.5px] -rotate-45' : ''}`}
+                />
               </span>
             </button>
           </div>
@@ -177,41 +186,59 @@ export function Encabezado({
                 // El encabezado es fijo: el menú abierto se desplaza adentro si no entra en la pantalla
                 className="flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain border-t-[3px] border-tinta"
               >
-                {menu.map((g) => {
-                  const abierto = grupoAbierto === g.clave
+                {DIRECTOS_CELULAR.map((e) => {
+                  const enSeccion = ruta === e.href || ruta.startsWith(`${e.href}/`)
                   return (
-                    <div key={g.clave} className="border-b border-linea">
-                      <button
-                        type="button"
-                        aria-expanded={abierto}
-                        onClick={() => setGrupoAbierto(abierto ? null : g.clave)}
-                        className={`flex min-h-[52px] w-full cursor-pointer items-center justify-between text-[15px] font-extrabold tracking-[0.08em] uppercase ${
-                          actual === g.clave ? 'text-acento' : ''
-                        }`}
-                      >
-                        {g.etiqueta}
-                        <span aria-hidden className="text-xl font-semibold">
-                          {abierto ? '−' : '+'}
-                        </span>
-                      </button>
-                      {abierto && (
-                        <div className="flex flex-col pb-2">
-                          {g.enlaces.map((e) => (
-                            <Link
-                              key={e.href}
-                              href={e.href}
-                              onClick={() => setMenuAbierto(false)}
-                              aria-current={ruta === e.href ? 'page' : undefined}
-                              className="flex min-h-11 items-center pl-3 text-base font-semibold no-underline"
-                            >
-                              {e.etiqueta}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    <Link
+                      key={e.href}
+                      href={e.href}
+                      onClick={() => setMenuAbierto(false)}
+                      aria-current={ruta === e.href ? 'page' : undefined}
+                      className={`flex min-h-[52px] items-center border-b border-linea text-[15px] font-extrabold tracking-[0.08em] uppercase no-underline ${
+                        enSeccion ? 'text-acento' : ''
+                      }`}
+                    >
+                      {e.etiqueta}
+                    </Link>
                   )
                 })}
+                {menu
+                  .filter((g) => g.clave === 'institucional')
+                  .map((g) => {
+                    const abierto = grupoAbierto === g.clave
+                    return (
+                      <div key={g.clave} className="border-b border-linea">
+                        <button
+                          type="button"
+                          aria-expanded={abierto}
+                          onClick={() => setGrupoAbierto(abierto ? null : g.clave)}
+                          className={`flex min-h-[52px] w-full cursor-pointer items-center justify-between text-[15px] font-extrabold tracking-[0.08em] uppercase ${
+                            actual === g.clave ? 'text-acento' : ''
+                          }`}
+                        >
+                          {g.etiqueta}
+                          <span aria-hidden className="text-xl font-semibold">
+                            {abierto ? '−' : '+'}
+                          </span>
+                        </button>
+                        {abierto && (
+                          <div className="flex flex-col pb-2">
+                            {g.enlaces.map((e) => (
+                              <Link
+                                key={e.href}
+                                href={e.href}
+                                onClick={() => setMenuAbierto(false)}
+                                aria-current={ruta === e.href ? 'page' : undefined}
+                                className="flex min-h-11 items-center pl-3 text-base font-semibold no-underline"
+                              >
+                                {e.etiqueta}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 <a
                   href={`tel:${telefonoParaLink(telefono)}`}
                   className="flex min-h-[52px] items-center font-extrabold no-underline"
