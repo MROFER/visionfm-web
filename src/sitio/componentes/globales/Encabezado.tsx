@@ -88,7 +88,7 @@ export function Encabezado({
           <Link href="/" className="text-tinta" aria-label="Visión FM 96.5, ir al inicio">
             <LogoApilado tamano={40} className="block" />
           </Link>
-          <nav ref={nav} aria-label="Principal" className="flex gap-7">
+          <nav ref={nav} aria-label="Principal" className="flex gap-7 text-marino-menu">
             {menu.map((g) => (
               <div
                 key={g.clave}
@@ -179,12 +179,12 @@ export function Encabezado({
           <Cinta notas={cinta.notas} clima={cinta.clima} />
           {menuAbierto && (
             // Encima de la página, sin empujarla: tapa la línea del encabezado y la repite abajo
-            <div className="absolute inset-x-0 top-full z-10 border-b-[3px] border-tinta bg-blanco px-4 pb-3 shadow-[0_16px_24px_rgb(19_22_29/0.18)] md:px-6">
+            <div className="absolute inset-x-0 top-full z-10 border-b-[3px] border-tinta bg-blanco px-4 pb-3 shadow-[0_16px_24px_rgb(3_28_59/0.18)] md:px-6">
               <nav
                 id="menu-movil"
                 aria-label="Principal"
                 // El encabezado es fijo: el menú abierto se desplaza adentro si no entra en la pantalla
-                className="flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain border-t-[3px] border-tinta"
+                className="flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain border-t-[3px] border-tinta text-marino-menu"
               >
                 {DIRECTOS_CELULAR.map((e) => {
                   const enSeccion = ruta === e.href || ruta.startsWith(`${e.href}/`)

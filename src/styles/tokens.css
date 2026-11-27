@@ -3,7 +3,11 @@
 @theme {
   --color-*: initial;
   --color-blanco: #ffffff;
-  --color-tinta: #13161d;
+  --color-tinta: #031c3b;
+  /* Azules institucionales (27/11/2026): la tinta (#031C3B) es la de los títulos y el texto; la barra de
+     arriba y el menú principal llevan los suyos */
+  --color-marino-barra: #011b3c;
+  --color-marino-menu: #101f3a;
   --color-acento: #c03a0b;
   --color-acento-hover: #a3330a;
   --color-vivo: #ff7a45;
@@ -19,9 +23,9 @@
   --color-meta: #545862;
   --color-oscuro-1: #c9ccd3;
   --color-oscuro-2: #9ea3ae;
-  --color-oscuro-borde: #3a3f4b;
-  --color-oscuro-linea: #2c313c;
-  --color-oscuro-caja: #1d212b;
+  --color-oscuro-borde: #2a4364;
+  --color-oscuro-linea: #1c3557;
+  --color-oscuro-caja: #0d2849;
   /* Carrusel de Cinevisión */
   --color-carrusel: #d4d2cd;
   --color-carrusel-2: #cbc9c3;

@@ -79,7 +79,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
         <div
           id="programacion"
-          className="relative flex min-w-0 flex-[1_1_360px] flex-col rounded-[8px] border border-tinta bg-blanco px-5 pt-5 pb-1.5 shadow-[0_14px_40px_rgb(19_22_29/0.14)] md:px-6 md:pt-[22px] flotante-claro lg:absolute lg:top-[351px] lg:left-[847.5px] lg:w-[360px]"
+          className="relative flex min-w-0 flex-[1_1_360px] flex-col rounded-[8px] border border-tinta bg-blanco px-5 pt-5 pb-1.5 shadow-[0_14px_40px_rgb(3_28_59/0.14)] md:px-6 md:pt-[22px] flotante-claro lg:absolute lg:top-[351px] lg:left-[847.5px] lg:w-[360px]"
         >
           <div className="flex items-center justify-between gap-3 pb-3">
             <h2 className="m-0 flex items-center gap-2 text-xs font-extrabold tracking-[0.12em] text-acento uppercase md:text-[13px]">

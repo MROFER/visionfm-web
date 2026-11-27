@@ -33,7 +33,7 @@ test('en web, todas las tarjetas son iguales y la franja va sobre la parte de ab
     expect(c.franjaAbajo).toBeCloseTo(c.abajo, 0)
   }
   const franja = tarjetas.first().locator('> div')
-  await expect(franja).toHaveCSS('background-color', 'rgb(19, 22, 29)')
+  await expect(franja).toHaveCSS('background-color', 'rgb(3, 28, 59)')
   await expect(franja).toHaveCSS('border-top-width', '4px')
   await expect(franja).toHaveCSS('border-top-color', 'rgb(192, 58, 11)')
 })
