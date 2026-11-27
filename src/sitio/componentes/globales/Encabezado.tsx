@@ -82,10 +82,10 @@ export function Encabezado({
           className="fixed inset-0 z-[19] bg-tinta/60 lg:hidden"
         />
       )}
-      <header className="relative z-20 border-b-[3px] border-tinta bg-blanco">
+      <header className="relative z-20 border-b-[3px] border-marino bg-blanco">
         {/* Web */}
         <div className="contenedor hidden items-center justify-between gap-4 py-2 lg:flex">
-          <Link href="/" className="text-tinta" aria-label="Visión FM 96.5, ir al inicio">
+          <Link href="/" className="text-marino" aria-label="Visión FM 96.5, ir al inicio">
             <LogoApilado tamano={40} className="block" />
           </Link>
           <nav ref={nav} aria-label="Principal" className="flex gap-7 text-marino-menu">
@@ -129,7 +129,7 @@ export function Encabezado({
                   <IconoFlechaAbajo />
                 </button>
                 {desplegado === g.clave && (
-                  <div className="absolute top-full -left-[18px] z-30 flex min-w-[260px] flex-col border-2 border-tinta bg-blanco">
+                  <div className="absolute top-full -left-[18px] z-30 flex min-w-[260px] flex-col border-2 border-marino bg-blanco text-marino-menu">
                     {g.enlaces.map((e) => (
                       <Link
                         key={e.href}
@@ -159,7 +159,7 @@ export function Encabezado({
               aria-expanded={menuAbierto}
               aria-controls="menu-movil"
               onClick={() => setMenuAbierto(!menuAbierto)}
-              className="absolute top-0 right-0 flex size-11 cursor-pointer items-center justify-end text-tinta"
+              className="absolute top-0 right-0 flex size-11 cursor-pointer items-center justify-end text-marino"
             >
               {/* Tres líneas sin recuadro, alineadas al margen; al abrir, la de arriba y la de abajo giran y
                   forman la cruz, y la del medio se desvanece */}
@@ -179,12 +179,12 @@ export function Encabezado({
           <Cinta notas={cinta.notas} clima={cinta.clima} />
           {menuAbierto && (
             // Encima de la página, sin empujarla: tapa la línea del encabezado y la repite abajo
-            <div className="absolute inset-x-0 top-full z-10 border-b-[3px] border-tinta bg-blanco px-4 pb-3 shadow-[0_16px_24px_rgb(3_28_59/0.18)] md:px-6">
+            <div className="absolute inset-x-0 top-full z-10 border-b-[3px] border-marino bg-blanco px-4 pb-3 shadow-[0_16px_24px_rgb(3_28_59/0.18)] md:px-6">
               <nav
                 id="menu-movil"
                 aria-label="Principal"
                 // El encabezado es fijo: el menú abierto se desplaza adentro si no entra en la pantalla
-                className="flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain border-t-[3px] border-tinta text-marino-menu"
+                className="flex max-h-[calc(100dvh-7rem)] flex-col overflow-y-auto overscroll-contain border-t-[3px] border-marino text-marino-menu"
               >
                 {DIRECTOS_CELULAR.map((e) => {
                   const enSeccion = ruta === e.href || ruta.startsWith(`${e.href}/`)

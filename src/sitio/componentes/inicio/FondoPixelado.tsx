@@ -24,7 +24,7 @@ import { useRadio } from '../reproductor/Radio'
  */
 /** Si se cambia una imagen, va con otro nombre: así el navegador y Cloudflare no muestran la vieja. */
 const IMAGENES = ['/hero/plaza-4px.png', '/hero/anglo-4px.png']
-const TINTA = '#031c3b'
+const TINTA = '#13161d'
 
 /** Lado del cuadrito dentro de la imagen (las imágenes están al doble: 4 px en pantalla). */
 const CELDA = 8
@@ -368,7 +368,7 @@ export function FondoPixelado() {
         <canvas ref={lienzo} className="absolute inset-0 size-full opacity-0" />
       </div>
       {/* Velo: oscuro donde va el texto, abierto donde está la figura */}
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(3_28_59/0.6)_max(30%,calc(50%-290px)),rgb(3_28_59/0.25)_max(52%,calc(50%+30px)),transparent_max(70%,calc(50%+290px)))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_22_29/0.6)_max(30%,calc(50%-290px)),rgb(19_22_29/0.25)_max(52%,calc(50%+30px)),transparent_max(70%,calc(50%+290px)))]" />
     </div>
   )
 }
