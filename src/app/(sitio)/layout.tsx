@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   robots: sePuedeIndexar() ? { index: true, follow: true } : { index: false, follow: false },
 }
 
-export const viewport: Viewport = { themeColor: '#031c3b' }
+export const viewport: Viewport = { themeColor: '#011023' }
 
 export default async function SitioLayout({ children }: { children: React.ReactNode }) {
   const [ajustes, secciones, grilla, excepciones, notasCinta, clima] = await Promise.all([

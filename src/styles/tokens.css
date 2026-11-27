@@ -6,9 +6,9 @@
   --color-tinta: #13161d;
   /* Azules institucionales (27/11/2026), solo en el encabezado y el hero del Inicio: el resto del sitio es
      de lectura y sigue con la tinta. Barra de arriba, títulos del hero y logo, y menú principal. */
-  --color-marino-barra: #011b3c;
-  --color-marino: #031c3b;
-  --color-marino-menu: #101f3a;
+  --color-marino-barra: #000f23;
+  --color-marino: #011023;
+  --color-marino-menu: #091223;
   --color-acento: #c03a0b;
   --color-acento-hover: #a3330a;
   --color-vivo: #ff7a45;

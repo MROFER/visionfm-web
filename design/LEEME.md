@@ -80,9 +80,9 @@ Son HTML con una pequeña capa de plantilla:
 | Token | Valor | Uso |
 |---|---|---|
 | `ink` | `#13161D` | Texto principal, fondos oscuros (hero en vivo, footer), botones secundarios, líneas gruesas. El sitio es de lectura: el texto y los títulos siguen en este casi negro |
-| `marino` | `#031C3B` | Azul institucional (27/11/2026), **solo** en el encabezado y el hero del Inicio: logo, línea de 3 px del header, título, frase, panel y botón de contorno del hero |
-| `marino-barra` | `#011B3C` | Fondo de la barra superior (web) |
-| `marino-menu` | `#101F3A` | Texto del menú principal (web y celular) |
+| `marino` | `#011023` | Azul institucional (27/11/2026, oscurecido el mismo día), **solo** en el encabezado y el hero del Inicio: logo, línea de 3 px del header, título, frase, panel y botón de contorno del hero |
+| `marino-barra` | `#000F23` | Fondo de la barra superior (web) |
+| `marino-menu` | `#091223` | Texto del menú principal (web y celular) |
 | `accent` | `#C03A0B` | Botón "Escuchar en vivo", kickers/etiquetas de sección, subrayado de pestaña activa, botones principales |
 | `live` | `#FF7A45` / `#FF9A6E` | Indicador "Al aire" (cuadradito) y texto "Al aire" sobre fondo oscuro |
 | `rule` | `#D9D7D2` | Líneas divisorias finas |
