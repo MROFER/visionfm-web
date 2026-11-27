@@ -33,7 +33,7 @@ export function Icono() {
       width={24}
       height={24}
     >
-      <rect width="48" height="48" fill="#13161D" />
+      <rect width="48" height="48" fill="#031C3B" />
       <path fill="#FFFFFF" d={V} />
       <rect x="0" y="45" width="48" height="3" fill="#C03A0B" />
     </svg>

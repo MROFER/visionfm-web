@@ -79,7 +79,9 @@ Son HTML con una pequeña capa de plantilla:
 ### Colores
 | Token | Valor | Uso |
 |---|---|---|
-| `ink` | `#13161D` | Texto principal, fondos oscuros (barra superior, hero en vivo, footer), botones secundarios, líneas gruesas |
+| `ink` | `#031C3B` | Azul marino institucional (27/11/2026, antes `#13161D`): texto principal, H1 y titulares, fondos oscuros (barra superior, hero en vivo, footer), botones secundarios, líneas gruesas. Las cajas, líneas y bordes sobre fondo oscuro van en la misma gama: `#0D2849`, `#1C3557` y `#2A4364` |
+| `marino-barra` | `#011B3C` | Fondo de la barra superior (web) |
+| `marino-menu` | `#101F3A` | Texto del menú principal (web y celular) |
 | `accent` | `#C03A0B` | Botón "Escuchar en vivo", kickers/etiquetas de sección, subrayado de pestaña activa, botones principales |
 | `live` | `#FF7A45` / `#FF9A6E` | Indicador "Al aire" (cuadradito) y texto "Al aire" sobre fondo oscuro |
 | `rule` | `#D9D7D2` | Líneas divisorias finas |

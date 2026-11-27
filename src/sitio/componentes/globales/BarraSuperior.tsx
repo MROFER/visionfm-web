@@ -13,7 +13,7 @@ export function BarraSuperior({
   cinta: { notas: NotaCinta[]; clima: Clima | null }
 }) {
   return (
-    <div className="hidden bg-tinta text-blanco lg:block">
+    <div className="hidden bg-marino-barra text-blanco lg:block">
       <div className="contenedor flex min-h-9 items-center justify-between gap-x-6 text-[12px]">
         <div className="min-w-0 flex-1">
           <Cinta notas={cinta.notas} clima={cinta.clima} oscura />
