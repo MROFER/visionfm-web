@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { aContinuacion, aMinutos, momentoMontevideo } from '../../lib/grilla'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
@@ -46,7 +45,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
         aria-hidden
         className="pointer-events-none absolute top-16 left-[calc(50%-222.5px)] hidden w-[907px] [mask-image:linear-gradient(90deg,transparent,#000_3%),linear-gradient(0deg,transparent,#000_3%)] [mask-composite:intersect] lg:block"
       >
-        <AngloEnMovimiento />
+        <AngloEnMovimiento variante="web" prioridad />
       </div>
 
       <div className="contenedor relative flex flex-wrap items-center gap-x-14 gap-y-8 pt-10 pb-8 md:pt-16 md:pb-14 lg:min-h-[max(600px,calc(100svh-103px))] lg:items-start lg:pt-[83px] lg:pb-24">
@@ -75,7 +74,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
         {/* Celular y tablet: el dibujo entre los botones y el panel */}
         <div aria-hidden className="-mx-4 w-[calc(100%+32px)] md:-mx-6 md:w-[calc(100%+48px)] lg:hidden">
-          <Image src="/hero/anglo-celular.png" alt="" width={1013} height={436} className="h-auto w-full" />
+          <AngloEnMovimiento variante="celular" />
         </div>
 
         <div

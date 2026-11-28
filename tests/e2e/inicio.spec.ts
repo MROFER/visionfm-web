@@ -38,17 +38,20 @@ test('en el celular, las noticias chicas van en 128×96 y Todas las entrevistas 
   expect(await fondo(/^Todas las entrevistas/)).toBe(await fondo(/^Todas las noticias/))
 })
 
-// El dibujo del hero se mueve con el video lento solo en web y sin "reducir movimiento" (28/11/2026)
-for (const [ancho, movimiento, esperado] of [
-  [1529, 'no-preference', 1],
-  [1529, 'reduce', 0],
-  [390, 'no-preference', 0],
+// El dibujo del hero se mueve con el video lento, el de web o el chico del celular, y nunca con "reducir
+// movimiento": ahí queda la imagen quieta (28/11/2026)
+for (const [ancho, movimiento, web, celular] of [
+  [1529, 'no-preference', 1, 0],
+  [1529, 'reduce', 0, 0],
+  [390, 'no-preference', 0, 1],
+  [390, 'reduce', 0, 0],
 ] as const) {
-  test(`el video del Anglo, a ${ancho} px con movimiento ${movimiento}: ${esperado}`, async ({ page }) => {
+  test(`el video del Anglo, a ${ancho} px con movimiento ${movimiento}`, async ({ page }) => {
     await page.setViewportSize({ width: ancho, height: 800 })
     await page.emulateMedia({ reducedMotion: movimiento })
     await page.goto('/')
     await expect(page.locator('section[aria-label="Visión FM 96.5"] img').first()).toBeAttached()
-    await expect(page.getByTestId('anglo-video')).toHaveCount(esperado)
+    await expect(page.getByTestId('anglo-video-web')).toHaveCount(web)
+    await expect(page.getByTestId('anglo-video-celular')).toHaveCount(celular)
   })
 }

@@ -3,42 +3,51 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+const VARIANTES = {
+  web: { medios: '(min-width: 1024px)', archivo: 'anglo-bucle', poster: 'anglo-bucle-inicio.png', ancho: 1280, alto: 720 },
+  celular: { medios: '(max-width: 1023px)', archivo: 'anglo-bucle-celular', poster: 'anglo-bucle-celular.png', ancho: 780, alto: 336 },
+} as const
+
 /**
- * El dibujo del Anglo en web, con el video lento de Higgsfield (ida y vuelta, 5,7 s) que eligió Maximiliano.
- * Primero se ve el primer cuadro quieto, y el video se pide recién cuando la pantalla es de web y la persona
- * no desactivó las animaciones: en el celular o con movimiento reducido no se descarga.
+ * El dibujo del Anglo con el video lento de Higgsfield (ida y vuelta, 5,7 s, sin audio) que eligió Maximiliano.
+ * Siempre se ve primero la imagen quieta, que es el primer cuadro del video, y queda si el video no carga.
+ * El video (WebM, y MP4 para los navegadores que no leen WebM) se pide solo en el tamaño de pantalla de su
+ * variante, y nunca con "reducir movimiento" ni con el ahorro de datos activado. El del celular es un recorte
+ * más chico, con el mismo encuadre que tenía la imagen del celular.
  */
-export function AngloEnMovimiento() {
+export function AngloEnMovimiento({ variante, prioridad }: { variante: keyof typeof VARIANTES; prioridad?: boolean }) {
+  const { medios, archivo, poster, ancho, alto } = VARIANTES[variante]
   const [conVideo, setConVideo] = useState(false)
 
   useEffect(() => {
-    const web = window.matchMedia('(min-width: 1024px)')
+    const pantalla = window.matchMedia(medios)
     const quieto = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const decidir = () => setConVideo(web.matches && !quieto.matches)
+    const ahorro = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true
+    const decidir = () => setConVideo(pantalla.matches && !quieto.matches && !ahorro)
     decidir()
-    web.addEventListener('change', decidir)
+    pantalla.addEventListener('change', decidir)
     quieto.addEventListener('change', decidir)
     return () => {
-      web.removeEventListener('change', decidir)
+      pantalla.removeEventListener('change', decidir)
       quieto.removeEventListener('change', decidir)
     }
-  }, [])
+  }, [medios])
 
   return (
     <div className="relative">
-      <Image src="/hero/anglo-bucle-inicio.png" alt="" width={1280} height={720} priority className="h-auto w-full" />
+      <Image src={`/hero/${poster}`} alt="" width={ancho} height={alto} priority={prioridad} className="h-auto w-full" />
       {conVideo && (
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          disablePictureInPicture
           className="absolute inset-0 h-full w-full"
-          data-testid="anglo-video"
+          data-testid={`anglo-video-${variante}`}
         >
-          <source src="/hero/anglo-bucle.webm" type="video/webm" />
-          <source src="/hero/anglo-bucle.mp4" type="video/mp4" />
+          <source src={`/hero/${archivo}.webm`} type="video/webm" />
+          <source src={`/hero/${archivo}.mp4`} type="video/mp4" />
         </video>
       )}
     </div>
