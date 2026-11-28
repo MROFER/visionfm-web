@@ -502,7 +502,7 @@
     z-index: -1;
     border-radius: inherit;
     pointer-events: none;
-    box-shadow: 0 26px 46px rgb(3 28 59 / 0.12);
+    box-shadow: 0 26px 46px rgb(1 16 35 / 0.12);
     opacity: 0;
     will-change: opacity;
     animation: flotar-claro-sombra 6s cubic-bezier(0.37, 0, 0.63, 1) infinite;

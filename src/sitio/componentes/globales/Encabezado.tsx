@@ -179,7 +179,7 @@ export function Encabezado({
           <Cinta notas={cinta.notas} clima={cinta.clima} />
           {menuAbierto && (
             // Encima de la página, sin empujarla: tapa la línea del encabezado y la repite abajo
-            <div className="absolute inset-x-0 top-full z-10 border-b-[3px] border-marino bg-blanco px-4 pb-3 shadow-[0_16px_24px_rgb(3_28_59/0.18)] md:px-6">
+            <div className="absolute inset-x-0 top-full z-10 border-b-[3px] border-marino bg-blanco px-4 pb-3 shadow-[0_16px_24px_rgb(1_16_35/0.18)] md:px-6">
               <nav
                 id="menu-movil"
                 aria-label="Principal"

@@ -1,12 +1,12 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { aContinuacion, aMinutos, momentoMontevideo } from '../../lib/grilla'
 import { BotonEnVivo } from '../reproductor/BotonEnVivo'
 import { IndicadorAlAire } from '../reproductor/IndicadorAlAire'
 import { useRadio } from '../reproductor/Radio'
 import { IconoFlechaAbajo } from '../ui/iconos'
+import { AngloEnMovimiento } from './AngloEnMovimiento'
 import { ListaSiguientes } from './ListaSiguientes'
 
 /** Qué parte del programa ya pasó, de 0 a 1. */
@@ -40,12 +40,12 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
   return (
     <section aria-label="Visión FM 96.5" className="relative isolate overflow-hidden bg-blanco text-marino">
-      {/* Web: el dibujo del Anglo, con más agua abajo para llenar el hueco debajo de los botones */}
+      {/* Web: el dibujo del Anglo en movimiento lento, con más agua abajo para llenar el hueco debajo de los botones */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-16 left-[calc(50%-222.5px)] hidden w-[907px] [mask-image:linear-gradient(90deg,transparent,#000_3%),linear-gradient(0deg,transparent,#000_3%)] [mask-composite:intersect] lg:block"
       >
-        <Image src="/hero/anglo-rio.png" alt="" width={1188} height={622} priority className="h-auto w-full" />
+        <AngloEnMovimiento variante="web" prioridad />
       </div>
 
       <div className="contenedor relative flex flex-wrap items-center gap-x-14 gap-y-8 pt-10 pb-8 md:pt-16 md:pb-14 lg:min-h-[max(600px,calc(100svh-103px))] lg:items-start lg:pt-[83px] lg:pb-24">
@@ -74,12 +74,12 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
         {/* Celular y tablet: el dibujo entre los botones y el panel */}
         <div aria-hidden className="-mx-4 w-[calc(100%+32px)] md:-mx-6 md:w-[calc(100%+48px)] lg:hidden">
-          <Image src="/hero/anglo-celular.png" alt="" width={1013} height={436} className="h-auto w-full" />
+          <AngloEnMovimiento variante="celular" />
         </div>
 
         <div
           id="programacion"
-          className="relative flex min-w-0 flex-[1_1_360px] flex-col rounded-[8px] border border-marino bg-blanco px-5 pt-5 pb-1.5 shadow-[0_14px_40px_rgb(3_28_59/0.14)] md:px-6 md:pt-[22px] flotante-claro lg:absolute lg:top-[351px] lg:left-[847.5px] lg:w-[360px]"
+          className="relative flex min-w-0 flex-[1_1_360px] flex-col rounded-[8px] border border-marino bg-blanco px-5 pt-5 pb-1.5 shadow-[0_14px_40px_rgb(1_16_35/0.14)] md:px-6 md:pt-[22px] flotante-claro lg:absolute lg:top-[351px] lg:left-[847.5px] lg:w-[360px]"
         >
           <div className="flex items-center justify-between gap-3 pb-3">
             <h2 className="m-0 flex items-center gap-2 text-xs font-extrabold tracking-[0.12em] text-acento uppercase md:text-[13px]">
