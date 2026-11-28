@@ -55,7 +55,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
         <div className="flex min-w-0 flex-[999_1_540px] flex-col gap-5 md:gap-6">
           {/* Web y tablet: tres renglones a la izquierda. Celular (28/11/2026): dos renglones centrados que llenan
               el ancho entre los márgenes, "Visión FM 96.5" y abajo "La radio de Fray Bentos" con Fray Bentos en
-              naranja, separados 8 px. La frase sigue a la izquierda */}
+              naranja, separados 8 px. La frase va justificada, de margen a margen como el título */}
           <h1 className="m-0 font-[family-name:var(--fuente-destacada)] text-[44px] leading-[1.03] font-extrabold tracking-[-0.035em] max-md:text-center md:text-[64px] lg:text-[71px]">
             <span className="block max-md:text-[length:min(calc((100vw-32px)*0.152),68px)] max-md:tracking-[-0.035em] max-md:whitespace-nowrap">
               Visión FM 96.5
@@ -66,7 +66,7 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
             </span>
           </h1>
           {/* En web, una idea por renglón */}
-          <p className="m-0 max-w-[520px] text-[17px] leading-[1.5] text-pretty text-marino [text-shadow:0_0_10px_#fff,0_0_4px_#fff] md:text-xl lg:max-w-none">
+          <p className="m-0 max-w-[520px] text-[17px] leading-[1.5] text-pretty text-marino [text-shadow:0_0_10px_#fff,0_0_4px_#fff] max-md:text-justify md:text-xl lg:max-w-none">
             <span className="lg:block">Escuchá la radio en vivo,</span>{' '}
             <span className="lg:block">
               leé las noticias de Fray{'\u00a0'}Bentos y Río{'\u00a0'}Negro
