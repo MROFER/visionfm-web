@@ -39,7 +39,10 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
     .replace('.', '')
 
   return (
-    <section aria-label="Visión FM 96.5" className="relative isolate overflow-hidden bg-blanco text-marino">
+    <section
+      aria-label="Visión FM 96.5"
+      className="relative isolate overflow-hidden bg-blanco text-marino"
+    >
       {/* Web: el dibujo del Anglo en movimiento lento, con más agua abajo para llenar el hueco debajo de los botones */}
       <div
         aria-hidden
@@ -50,14 +53,24 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
       <div className="contenedor relative flex flex-wrap items-center gap-x-14 gap-y-8 pt-10 pb-8 md:pt-16 md:pb-14 lg:min-h-[max(600px,calc(100svh-103px))] lg:items-start lg:pt-[83px] lg:pb-24">
         <div className="flex min-w-0 flex-[999_1_540px] flex-col gap-5 md:gap-6">
-          <h1 className="m-0 font-[family-name:var(--fuente-destacada)] text-[44px] leading-[1.03] font-extrabold tracking-[-0.035em] md:text-[64px] lg:text-[71px]">
-            <span className="block">Visión FM 96.5</span> <span className="block">la radio de</span>{' '}
-            <span className="block">Fray Bentos</span>
+          {/* Web y tablet: tres renglones a la izquierda. Celular (28/11/2026): dos renglones centrados que llenan
+              el ancho entre los márgenes, "Visión FM 96.5" y abajo "La radio de Fray Bentos" con Fray Bentos en
+              naranja, separados 8 px. La frase sigue a la izquierda */}
+          <h1 className="m-0 font-[family-name:var(--fuente-destacada)] text-[44px] leading-[1.03] font-extrabold tracking-[-0.035em] max-md:text-center md:text-[64px] lg:text-[71px]">
+            <span className="block max-md:text-[length:min(calc((100vw-32px)*0.152),68px)] max-md:tracking-[-0.035em] max-md:whitespace-nowrap">
+              Visión FM 96.5
+            </span>{' '}
+            <span className="block max-md:mt-2 max-md:text-[length:min(calc((100vw-32px)*0.1003),44px)] max-md:tracking-[-0.035em] max-md:whitespace-nowrap max-md:first-letter:uppercase">
+              <span className="md:block">la radio de</span>{' '}
+              <span className="max-md:text-acento md:block">Fray Bentos</span>
+            </span>
           </h1>
           {/* En web, una idea por renglón */}
           <p className="m-0 max-w-[520px] text-[17px] leading-[1.5] text-pretty text-marino [text-shadow:0_0_10px_#fff,0_0_4px_#fff] md:text-xl lg:max-w-none">
             <span className="lg:block">Escuchá la radio en vivo,</span>{' '}
-            <span className="lg:block">leé las noticias de Fray{'\u00a0'}Bentos y Río{'\u00a0'}Negro</span>{' '}
+            <span className="lg:block">
+              leé las noticias de Fray{'\u00a0'}Bentos y Río{'\u00a0'}Negro
+            </span>{' '}
             <span className="lg:block">y mirá la cartelera de Cinevisión.</span>
           </p>
           {/* En el celular el play ya está en el encabezado: acá no se repite */}
@@ -73,7 +86,10 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
         </div>
 
         {/* Celular y tablet: el dibujo entre los botones y el panel */}
-        <div aria-hidden className="-mx-4 w-[calc(100%+32px)] md:-mx-6 md:w-[calc(100%+48px)] lg:hidden">
+        <div
+          aria-hidden
+          className="-mx-4 w-[calc(100%+32px)] md:-mx-6 md:w-[calc(100%+48px)] lg:hidden"
+        >
           <AngloEnMovimiento variante="celular" />
         </div>
 
@@ -86,7 +102,9 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
               <IndicadorAlAire className="size-2" />
               {alAire ? alAire.programa.nombre : 'A continuación'}
             </h2>
-            <span className="hidden text-[13px] text-meta first-letter:uppercase md:inline">{fechaCabecera}</span>
+            <span className="hidden text-[13px] text-meta first-letter:uppercase md:inline">
+              {fechaCabecera}
+            </span>
             <Link href="/radio/programacion" className="text-xs font-bold text-marino md:hidden">
               Ver toda
             </Link>
