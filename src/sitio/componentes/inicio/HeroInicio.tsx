@@ -7,6 +7,7 @@ import { BotonEnVivo } from '../reproductor/BotonEnVivo'
 import { IndicadorAlAire } from '../reproductor/IndicadorAlAire'
 import { useRadio } from '../reproductor/Radio'
 import { IconoFlechaAbajo } from '../ui/iconos'
+import { AngloEnMovimiento } from './AngloEnMovimiento'
 import { ListaSiguientes } from './ListaSiguientes'
 
 /** Qué parte del programa ya pasó, de 0 a 1. */
@@ -40,12 +41,12 @@ export function HeroInicio({ children }: { children?: React.ReactNode }) {
 
   return (
     <section aria-label="Visión FM 96.5" className="relative isolate overflow-hidden bg-blanco text-marino">
-      {/* Web: el dibujo del Anglo, con más agua abajo para llenar el hueco debajo de los botones */}
+      {/* Web: el dibujo del Anglo en movimiento lento, con más agua abajo para llenar el hueco debajo de los botones */}
       <div
         aria-hidden
         className="pointer-events-none absolute top-16 left-[calc(50%-222.5px)] hidden w-[907px] [mask-image:linear-gradient(90deg,transparent,#000_3%),linear-gradient(0deg,transparent,#000_3%)] [mask-composite:intersect] lg:block"
       >
-        <Image src="/hero/anglo-rio.png" alt="" width={1188} height={622} priority className="h-auto w-full" />
+        <AngloEnMovimiento />
       </div>
 
       <div className="contenedor relative flex flex-wrap items-center gap-x-14 gap-y-8 pt-10 pb-8 md:pt-16 md:pb-14 lg:min-h-[max(600px,calc(100svh-103px))] lg:items-start lg:pt-[83px] lg:pb-24">

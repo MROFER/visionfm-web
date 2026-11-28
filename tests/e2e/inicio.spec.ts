@@ -37,3 +37,18 @@ test('en el celular, las noticias chicas van en 128×96 y Todas las entrevistas 
     page.getByRole('link', { name: nombre }).filter({ visible: true }).evaluate((a) => getComputedStyle(a).backgroundColor)
   expect(await fondo(/^Todas las entrevistas/)).toBe(await fondo(/^Todas las noticias/))
 })
+
+// El dibujo del hero se mueve con el video lento solo en web y sin "reducir movimiento" (28/11/2026)
+for (const [ancho, movimiento, esperado] of [
+  [1529, 'no-preference', 1],
+  [1529, 'reduce', 0],
+  [390, 'no-preference', 0],
+] as const) {
+  test(`el video del Anglo, a ${ancho} px con movimiento ${movimiento}: ${esperado}`, async ({ page }) => {
+    await page.setViewportSize({ width: ancho, height: 800 })
+    await page.emulateMedia({ reducedMotion: movimiento })
+    await page.goto('/')
+    await expect(page.locator('section[aria-label="Visión FM 96.5"] img').first()).toBeAttached()
+    await expect(page.getByTestId('anglo-video')).toHaveCount(esperado)
+  })
+}
